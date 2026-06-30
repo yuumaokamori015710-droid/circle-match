@@ -1,4 +1,6 @@
 import csv
+import base64
+import hmac
 import json
 import os
 import sqlite3
@@ -16,6 +18,9 @@ PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
 CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@example.com")
+ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
+LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
 PREFECTURES = [
     "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
@@ -85,6 +90,53 @@ SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニ
 SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "不明"]
+
+PUBLIC_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#65758a;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--blue:#2767a5}
+    *{box-sizing:border-box}body{margin:0;background:#eef3f7;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    h1{margin:0;font-size:23px}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:var(--blue);font-weight:800;text-decoration:none}
+    main{max-width:1120px;margin:auto;padding:18px}.hero{padding:18px 0 16px}.hero p{max-width:740px;color:var(--muted);line-height:1.7;margin:8px 0 0}
+    .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:800}.metric strong{display:block;margin-top:6px;font-size:24px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.filters{display:grid;grid-template-columns:minmax(220px,1fr) 150px 150px;gap:8px;padding:14px;border-bottom:1px solid var(--line)}
+    input,select{width:100%;border:1px solid #c8d4df;border-radius:8px;min-height:40px;padding:9px 10px;font:inherit;background:#fff;color:var(--ink)}
+    .tablewrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{position:sticky;top:0;background:#f7fafc;color:var(--muted);font-size:12px}.name{font-weight:850}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:22px;padding:3px 8px;font-size:12px;font-weight:850}.ok{background:#e1f4eb;color:#0b624d}.blue{background:#e2edf8;color:#20598f}
+    footer{max-width:1120px;margin:0 auto;padding:20px 18px 38px;color:var(--muted);font-size:13px}.admin-link{color:#65758a}
+    @media(max-width:760px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><h1>__SITE_NAME__</h1><nav class="nav"><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <main>
+    <section class="hero"><h2>全国大学サークル検索</h2><p>大学公式ページなどの公開出典をもとに、サークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
+    <section class="summary"><div class="metric"><span>都道府県</span><strong id="prefCount">0</strong></div><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div></section>
+    <section class="panel"><div class="filters"><input id="q" placeholder="大学名・団体名・競技で検索"><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>種別</th><th>競技</th><th>検証</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+  </main>
+  <footer>掲載情報の訂正・削除は問い合わせページから連絡してください。<a class="admin-link" href="/admin">管理画面</a></footer>
+  <script>
+    const prefs = __PREFS__;
+    const sports = __SPORTS__;
+    const $ = id => document.getElementById(id);
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    function statusLabel(v){return ({university_verified:"公式確認済み",admin_verified:"運営確認済み",claimed:"申請済み",unverified:"未確認"}[v] || v)}
+    function sourceLabel(v){return ({university_official:"大学公式",self_registered:"本人登録",public_sns:"SNS等",other:"その他"}[v] || v)}
+    function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
+    function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
+    async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
+    async function summary(){const s=await api("/api/summary"); $("prefCount").textContent=s.prefectures; $("uniCount").textContent=s.universities; $("circleCount").textContent=s.circles; $("verifiedCount").textContent=s.verified_circles}
+    async function refresh(){const qs=new URLSearchParams({q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); const data=await api("/api/circles?"+qs); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="6">データなし</td></tr>`}
+    async function boot(){fillSelect($("prefFilter"),prefs,"全都道府県"); fillSelect($("sportFilter"),sports,"全競技"); await summary(); await refresh()}
+    ["q","prefFilter","sportFilter"].forEach(id=>$(id).addEventListener("input",refresh));
+    boot().catch(e=>alert(e.message));
+  </script>
+</body>
+</html>"""
 
 HTML = """<!doctype html>
 <html lang="ja">
@@ -181,6 +233,36 @@ def log(message):
         handle.write(f"{now()} {message}\n")
 
 
+def is_local_host():
+    return HOST in LOCAL_HOSTS
+
+
+def admin_auth_enabled():
+    return bool(ADMIN_PASSWORD)
+
+
+def render_public_html():
+    return (
+        PUBLIC_HTML
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
+        .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
+def render_admin_html():
+    return (
+        HTML
+        .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
+        .replace("__SOURCE_TYPES__", json.dumps(SOURCE_TYPES, ensure_ascii=False))
+        .replace("__STATUSES__", json.dumps(VERIFICATION_STATUSES, ensure_ascii=False))
+        .replace("__ORG_TYPES__", json.dumps(ORGANIZATION_TYPES, ensure_ascii=False))
+        .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
 def connect():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -249,7 +331,7 @@ def legal_layout(title, body):
   <title>{title} | {SITE_NAME}</title>
   <style>{LEGAL_CSS}</style>
 </head>
-<body><main><a class="back" href="/">管理画面へ戻る</a><div class="panel">{body}</div></main></body></html>"""
+<body><main><a class="back" href="/">トップへ戻る</a><div class="panel">{body}</div></main></body></html>"""
     return html.encode("utf-8")
 
 
@@ -769,6 +851,38 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         return
 
+    def require_admin(self):
+        if not admin_auth_enabled():
+            return True
+        header = self.headers.get("Authorization", "")
+        if not header.startswith("Basic "):
+            self.send_auth_required()
+            return False
+        try:
+            raw = base64.b64decode(header.split(" ", 1)[1]).decode("utf-8")
+        except Exception:
+            self.send_auth_required()
+            return False
+        username, separator, password = raw.partition(":")
+        if not separator:
+            self.send_auth_required()
+            return False
+        valid_user = hmac.compare_digest(username, ADMIN_USERNAME)
+        valid_pass = hmac.compare_digest(password, ADMIN_PASSWORD)
+        if not (valid_user and valid_pass):
+            self.send_auth_required()
+            return False
+        return True
+
+    def send_auth_required(self):
+        body = json.dumps({"error": "admin authentication required"}, ensure_ascii=False).encode("utf-8")
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="Circle Match Admin"')
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def send_json(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
@@ -794,12 +908,11 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         try:
             if parsed.path == "/":
-                body = HTML.replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False)).replace("__SOURCE_TYPES__", json.dumps(SOURCE_TYPES, ensure_ascii=False)).replace("__STATUSES__", json.dumps(VERIFICATION_STATUSES, ensure_ascii=False)).replace("__ORG_TYPES__", json.dumps(ORGANIZATION_TYPES, ensure_ascii=False)).replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False)).encode("utf-8")
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.send_header("Content-Length", str(len(body)))
-                self.end_headers()
-                self.wfile.write(body)
+                self.send_html(render_public_html())
+            elif parsed.path == "/admin":
+                if not self.require_admin():
+                    return
+                self.send_html(render_admin_html())
             elif parsed.path == "/privacy":
                 self.send_html(privacy_page())
             elif parsed.path == "/terms":
@@ -821,14 +934,24 @@ class Handler(BaseHTTPRequestHandler):
                     order by coalesce(m.scheduled_at, ''), m.created_at desc
                 """))
             elif parsed.path == "/api/collection_status":
+                if not self.require_admin():
+                    return
                 self.send_json(collection_status())
             elif parsed.path == "/api/candidates":
+                if not self.require_admin():
+                    return
                 self.send_json(candidate_rows())
             elif parsed.path == "/api/admin_metrics":
+                if not self.require_admin():
+                    return
                 self.send_json(admin_metrics())
             elif parsed.path == "/api/privacy_metrics":
+                if not self.require_admin():
+                    return
                 self.send_json(privacy_metrics())
             elif parsed.path == "/api/audit_logs":
+                if not self.require_admin():
+                    return
                 self.send_json(rows("select * from audit_logs order by audit_id desc limit 200"))
             else:
                 self.send_json({"error": "not found"}, 404)
@@ -838,6 +961,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            if not self.require_admin():
+                return
             data = self.read_json()
             with connect() as conn:
                 if parsed.path == "/api/universities":
@@ -1195,6 +1320,8 @@ def reject_candidate(conn, candidate_id):
 def main():
     try:
         log("starting")
+        if not is_local_host() and not admin_auth_enabled():
+            raise RuntimeError("CIRCLEMATCH_ADMIN_PASSWORD is required when HOST is not local")
         init_db()
         if len(sys.argv) > 1 and sys.argv[1] == "--init-only":
             print(json.dumps({"db": str(DB_PATH), **summary()}, ensure_ascii=False, indent=2))

@@ -16,6 +16,12 @@ Open:
 http://127.0.0.1:8787/
 ```
 
+Admin:
+
+```text
+http://127.0.0.1:8787/admin
+```
+
 Initialize only:
 
 ```powershell
@@ -32,6 +38,8 @@ PORT=8787
 CIRCLEMATCH_SITE_NAME=Circle Match
 CIRCLEMATCH_OPERATOR=Circle Match 運営
 CIRCLEMATCH_CONTACT_EMAIL=contact@example.com
+CIRCLEMATCH_ADMIN_USERNAME=admin
+CIRCLEMATCH_ADMIN_PASSWORD=
 CIRCLEMATCH_DB_PATH=outputs/circlematch.sqlite
 ```
 
@@ -41,8 +49,12 @@ For production, set:
 HOST=0.0.0.0
 PORT=<provider assigned port>
 CIRCLEMATCH_CONTACT_EMAIL=<real contact address>
+CIRCLEMATCH_ADMIN_USERNAME=<admin user>
+CIRCLEMATCH_ADMIN_PASSWORD=<strong password>
 CIRCLEMATCH_DB_PATH=<path outside the repository>
 ```
+
+When `HOST` is not local, `CIRCLEMATCH_ADMIN_PASSWORD` is required. This prevents accidentally exposing the admin UI in production.
 
 ## Do Not Commit
 
@@ -74,6 +86,7 @@ Public API:
 
 - `GET /api/circles` returns public facts only.
 - It does not return `owner_notes`, `sns_url`, `claimant_email`, representative names, or internal notes.
+- `/admin` and admin APIs require Basic authentication when `CIRCLEMATCH_ADMIN_PASSWORD` is set.
 
 Database separation:
 
@@ -97,4 +110,3 @@ Recommended next production steps:
 3. Move from SQLite to managed PostgreSQL.
 4. Configure HTTPS and a custom domain.
 5. Add backups, monitoring, and incident response procedures.
-

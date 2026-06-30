@@ -17,12 +17,15 @@ PORT=<hosting provider assigned port>
 CIRCLEMATCH_SITE_NAME=Circle Match
 CIRCLEMATCH_OPERATOR=<real operator name>
 CIRCLEMATCH_CONTACT_EMAIL=<real contact email>
+CIRCLEMATCH_ADMIN_USERNAME=<admin user>
+CIRCLEMATCH_ADMIN_PASSWORD=<strong password>
 CIRCLEMATCH_DB_PATH=<path outside repository or mounted volume>
 ```
 
 ## 初期デプロイ時の注意
 
-- 管理画面を一般公開しない
+- `/admin` はBasic認証で保護する
+- 本番では `CIRCLEMATCH_ADMIN_PASSWORD` を必ず設定する
 - `/privacy`, `/terms`, `/about-data`, `/contact` は公開する
 - AdSense申請前に独自ドメインとHTTPSを有効にする
 - DBファイルをコンテナイメージに含めない
@@ -36,4 +39,3 @@ CIRCLEMATCH_DB_PATH=<path outside repository or mounted volume>
 4. 代表者申請フォーム
 5. 問い合わせフォーム、またはメールリンクの本番連絡先化
 6. robots.txt と sitemap.xml
-
