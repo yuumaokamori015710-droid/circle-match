@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>サークルマッチ台帳</title>
+  <style>
+    :root {
+      --ink: #1d2733;
+      --muted: #617084;
+      --line: #dbe3ec;
+      --soft: #f5f8fb;
+      --panel: #ffffff;
+      --brand: #13795b;
+      --brand-strong: #0d5d47;
+      --accent: #c9472c;
+      --warn: #a66a00;
+      --shadow: 0 10px 30px rgba(29, 39, 51, .08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #eef3f7;
+      letter-spacing: 0;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--brand);
+      font-weight: 900;
+    }
+
+    nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 650;
+      min-height: 38px;
+    }
+
+    .tab[aria-selected="true"] {
+      background: #e5f3ee;
+      border-color: #b9ded1;
+      color: var(--brand-strong);
+    }
+
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 22px 18px 42px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      min-height: 86px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 26px;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2, .panel h3 {
+      margin: 0;
+      padding: 16px 16px 0;
+      font-size: 17px;
+    }
+
+    .panel-body { padding: 16px; }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #c9d4df;
+      border-radius: 8px;
+      padding: 10px 11px;
+      color: var(--ink);
+      background: #fff;
+      font: inherit;
+      min-height: 40px;
+    }
+
+    textarea { min-height: 86px; resize: vertical; }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    button {
+      border: 1px solid #c9d4df;
+      background: #fff;
+      color: var(--ink);
+      padding: 9px 12px;
+      border-radius: 8px;
+      min-height: 40px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+
+    button.danger {
+      color: #8b2b1d;
+      border-color: #efc1b7;
+      background: #fff5f2;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .searchbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) 150px 150px;
+      gap: 8px;
+      flex: 1;
+      min-width: min(100%, 620px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      background: #f7fafc;
+      font-size: 12px;
+      position: sticky;
+      top: 67px;
+      z-index: 2;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 620px;
+      border-top: 1px solid var(--line);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #edf2f7;
+      color: #405164;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.ok { background: #e3f5ed; color: #0f624b; }
+    .badge.warn { background: #fff1d6; color: #7d5300; }
+    .badge.hot { background: #fde8e1; color: #8b2b1d; }
+
+    .muted { color: var(--muted); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }
+
+    .schema {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .schema-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+    }
+
+    .schema-item h3 {
+      padding: 0;
+      margin-bottom: 10px;
+    }
+
+    .schema-item ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .notice {
+      border: 1px solid #f0d9ad;
+      background: #fff8ec;
+      color: #6f4a00;
+      border-radius: 8px;
+      padding: 12px 14px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .empty {
+      padding: 26px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .summary, .schema { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid { grid-template-columns: 1fr; }
+      .searchbar { grid-template-columns: 1fr; }
+      th { top: 114px; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      nav { justify-content: flex-start; }
+      .summary, .schema, .row { grid-template-columns: 1fr; }
+      main { padding-inline: 12px; }
+      .metric strong { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand"><span class="brand-mark">C</span>サークルマッチ台帳</div>
+      <nav aria-label="画面切替">
+        <button class="tab" data-view="dashboard" aria-selected="true">台帳</button>
+        <button class="tab" data-view="circles" aria-selected="false">サークル登録</button>
+        <button class="tab" data-view="matches" aria-selected="false">募集投稿</button>
+        <button class="tab" data-view="schema" aria-selected="false">設計</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary" aria-label="集計">
+      <div class="metric"><span>大学マスタ</span><strong id="universityCount">0</strong></div>
+      <div class="metric"><span>サークルマスタ</span><strong id="circleCount">0</strong></div>
+      <div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div>
+      <div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div>
+    </section>
+
+    <section id="dashboard" class="view active">
+      <div class="notice">
+        既存サイトは候補発見と出典確認に留め、紹介文・画像・レビューはコピーしない設計です。公開前提の項目だけを保存し、団体本人の申請で詳細を補完します。
+      </div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="toolbar">
+            <div class="searchbar">
+              <input id="searchInput" type="search" placeholder="大学名、サークル名、競技、地域で検索">
+              <select id="sportFilter">
+                <option value="">全競技</option>
+              </select>
+              <select id="statusFilter">
+                <option value="">全ステータス</option>
+                <option value="unverified">未確認</option>
+                <option value="claimed">本人申請</option>
+                <option value="university_verified">大学公式確認</option>
+                <option value="admin_verified">運営確認</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button id="exportJson">JSON出力</button>
+              <button id="exportCsv">CSV出力</button>
+              <button id="resetSeed" class="danger">初期化</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>大学</th>
+                <th>サークル</th>
+                <th>競技/地域</th>
+                <th>出典</th>
+                <th>検証</th>
+                <th>募集</th>
+              </tr>
+            </thead>
+            <tbody id="circleTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="circles" class="view">
+      <div class="grid">
+        <section class="panel">
+          <h2>サークルを追加</h2>
+          <div class="panel-body">
+            <form id="circleForm" class="form-grid">
+              <label>大学
+                <select id="circleUniversity" required></select>
+              </label>
+              <label>サークル名
+                <input id="circleName" required placeholder="例: 早稲田フットサル同好会">
+              </label>
+              <div class="row">
+                <label>競技
+                  <select id="circleSport" required>
+                    <option>サッカー</option>
+                    <option>フットサル</option>
+                    <option>バスケットボール</option>
+                    <option>テニス</option>
+                    <option>バレーボール</option>
+                    <option>野球</option>
+                    <option>その他</option>
+                  </select>
+                </label>
+                <label>活動地域
+                  <input id="circleArea" required placeholder="例: 東京都新宿区">
+                </label>
+              </div>
+              <div class="row">
+                <label>出典種別
+                  <select id="sourceType">
+                    <option value="university_official">大学公式</option>
+                    <option value="self_registered">自己登録</option>
+                    <option value="public_sns">公開SNS</option>
+                    <option value="other">その他公開情報</option>
+                  </select>
+                </label>
+                <label>検証ステータス
+                  <select id="verificationStatus">
+                    <option value="unverified">未確認</option>
+                    <option value="claimed">本人申請</option>
+                    <option value="university_verified">大学公式確認</option>
+                    <option value="admin_verified">運営確認</option>
+                  </select>
+                </label>
+              </div>
+              <label>出典URL
+                <input id="sourceUrl" type="url" placeholder="https://...">
+              </label>
+              <label>SNS URL
+                <input id="snsUrl" type="url" placeholder="https://...">
+              </label>
+              <label>団体本人が書くメモ
+                <textarea id="ownerNotes" placeholder="レベル感、活動曜日、募集したい相手など"></textarea>
+              </label>
+              <button class="primary" type="submit">サークルを保存</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>大学マスタを追加</h2>
+          <div class="panel-body">
+            <form id="universityForm" class="form-grid">
+              <label>大学名
+                <input id="universityName" required placeholder="例: 明治大学">
+              </label>
+              <div class="row">
+                <label>都道府県
+                  <input id="prefecture" required placeholder="例: 東京都">
+                </label>
+                <label>市区町村
+                  <input id="city" required placeholder="例: 千代田区">
+                </label>
+              </div>
+              <label>キャンパス/地域
+                <input id="campusName" placeholder="例: 駿河台キャンパス">
+              </label>
+              <label>公式URL
+                <input id="officialUrl" type="url" placeholder="https://...">
+              </label>
+              <button class="primary" type="submit">大学を保存</button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="matches" class="view">
+      <div class="grid">
+        <section class="panel">
+          <h2>募集を作成</h2>
+          <div class="panel-body">
+            <form id="matchForm" class="form-grid">
+              <label>募集元サークル
+                <select id="matchCircle" required></select>
+              </label>
+              <div class="row">
+                <label>募集種別
+                  <select id="matchType">
+                    <option>練習試合</option>
+                    <option>合同練習</option>
+                    <option>助っ人募集</option>
+                    <option>大会参加者募集</option>
+                  </select>
+                </label>
+                <label>レベル
+                  <select id="matchLevel">
+                    <option>初心者歓迎</option>
+                    <option>中級</option>
+                    <option>経験者多め</option>
+                    <option>大会志向</option>
+                  </select>
+                </label>
+              </div>
+              <label>日時
+                <input id="matchDate" type="datetime-local" required>
+              </label>
+              <label>場所
+                <input id="matchPlace" required placeholder="例: 江戸川区臨海球技場">
+              </label>
+              <label>条件
+                <textarea id="matchNote" placeholder="人数、費用、男女混合可否、雨天時など"></textarea>
+              </label>
+              <button class="primary" type="submit">募集を保存</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>募集中一覧</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>サークル</th>
+                  <th>種別</th>
+                  <th>日時/場所</th>
+                  <th>条件</th>
+                </tr>
+              </thead>
+              <tbody id="matchTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="schema" class="view">
+      <div class="schema">
+        <article class="schema-item">
+          <h3>universities</h3>
+          <ul>
+            <li>university_id</li>
+            <li>university_name</li>
+            <li>prefecture / city</li>
+            <li>campus_name</li>
+            <li>official_url</li>
+          </ul>
+        </article>
+        <article class="schema-item">
+          <h3>circles</h3>
+          <ul>
+            <li>circle_id</li>
+            <li>university_id</li>
+            <li>circle_name</li>
+            <li>sport_category</li>
+            <li>activity_area</li>
+            <li>source_type / source_url</li>
+            <li>verification_status</li>
+          </ul>
+        </article>
+        <article class="schema-item">
+          <h3>match_posts</h3>
+          <ul>
+            <li>match_post_id</li>
+            <li>circle_id</li>
+            <li>type / level</li>
+            <li>scheduled_at</li>
+            <li>place</li>
+            <li>conditions</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const storageKey = "circle-match-master-v1";
+
+    const seed = {
+      universities: [
+        { university_id: "u_waseda", university_name: "早稲田大学", prefecture: "東京都", city: "新宿区", campus_name: "早稲田キャンパス", official_url: "https://www.waseda.jp/" },
+        { university_id: "u_keio", university_name: "慶應義塾大学", prefecture: "東京都", city: "港区", campus_name: "三田キャンパス", official_url: "https://www.keio.ac.jp/" },
+        { university_id: "u_meiji", university_name: "明治大学", prefecture: "東京都", city: "千代田区", campus_name: "駿河台キャンパス", official_url: "https://www.meiji.ac.jp/" },
+        { university_id: "u_tokyo", university_name: "東京大学", prefecture: "東京都", city: "文京区", campus_name: "本郷キャンパス", official_url: "https://www.u-tokyo.ac.jp/" }
+      ],
+      circles: [
+        {
+          circle_id: "c_001",
+          university_id: "u_waseda",
+          circle_name: "サンプル フットサル同好会",
+          sport_category: "フットサル",
+          activity_area: "東京都新宿区",
+          source_type: "self_registered",
+          source_url: "",
+          verification_status: "claimed",
+          public_status: "published",
+          last_checked_at: "2026-06-26",
+          sns_url: "",
+          owner_notes: "経験者と初心者が混在。平日夜に練習試合希望。"
+        },
+        {
+          circle_id: "c_002",
+          university_id: "u_keio",
+          circle_name: "サンプル バスケットボールサークル",
+          sport_category: "バスケットボール",
+          activity_area: "東京都港区",
+          source_type: "university_official",
+          source_url: "",
+          verification_status: "university_verified",
+          public_status: "published",
+          last_checked_at: "2026-06-26",
+          sns_url: "",
+          owner_notes: "中級中心。体育館確保済みの日に相手募集。"
+        }
+      ],
+      matchPosts: [
+        {
+          match_post_id: "m_001",
+          circle_id: "c_001",
+          type: "練習試合",
+          level: "中級",
+          scheduled_at: "2026-07-12T18:00",
+          place: "都内フットサルコート",
+          conditions: "5人制、コート代折半、2時間"
+        }
+      ]
+    };
+
+    const sourceLabels = {
+      university_official: "大学公式",
+      self_registered: "自己登録",
+      public_sns: "公開SNS",
+      other: "その他"
+    };
+
+    const statusLabels = {
+      unverified: "未確認",
+      claimed: "本人申請",
+      university_verified: "大学公式確認",
+      admin_verified: "運営確認"
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      const stored = localStorage.getItem(storageKey);
+      return stored ? JSON.parse(stored) : structuredClone(seed);
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      render();
+    }
+
+    function id(prefix) {
+      return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+    }
+
+    function universityName(universityId) {
+      const university = state.universities.find(item => item.university_id === universityId);
+      return university ? university.university_name : "未設定";
+    }
+
+    function circleName(circleId) {
+      const circle = state.circles.find(item => item.circle_id === circleId);
+      return circle ? circle.circle_name : "未設定";
+    }
+
+    function statusBadge(status) {
+      const cls = status === "university_verified" || status === "admin_verified" ? "ok" : status === "claimed" ? "warn" : "";
+      return `<span class="badge ${cls}">${statusLabels[status] || status}</span>`;
+    }
+
+    function sourceBadge(source) {
+      const cls = source === "self_registered" ? "ok" : source === "university_official" ? "warn" : "";
+      return `<span class="badge ${cls}">${sourceLabels[source] || source}</span>`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[char]);
+    }
+
+    function render() {
+      document.getElementById("universityCount").textContent = state.universities.length;
+      document.getElementById("circleCount").textContent = state.circles.length;
+      document.getElementById("verifiedCount").textContent = state.circles.filter(circle =>
+        ["claimed", "university_verified", "admin_verified"].includes(circle.verification_status)
+      ).length;
+      document.getElementById("matchCount").textContent = state.matchPosts.length;
+
+      renderOptions();
+      renderCircleTable();
+      renderMatches();
+    }
+
+    function renderOptions() {
+      const universityOptions = state.universities
+        .map(item => `<option value="${escapeHtml(item.university_id)}">${escapeHtml(item.university_name)} / ${escapeHtml(item.prefecture)}</option>`)
+        .join("");
+      document.getElementById("circleUniversity").innerHTML = universityOptions;
+      document.getElementById("matchCircle").innerHTML = state.circles
+        .map(item => `<option value="${escapeHtml(item.circle_id)}">${escapeHtml(universityName(item.university_id))} - ${escapeHtml(item.circle_name)}</option>`)
+        .join("");
+
+      const sports = [...new Set(state.circles.map(item => item.sport_category))].sort();
+      document.getElementById("sportFilter").innerHTML = '<option value="">全競技</option>' + sports
+        .map(sport => `<option value="${escapeHtml(sport)}">${escapeHtml(sport)}</option>`)
+        .join("");
+    }
+
+    function renderCircleTable() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const sport = document.getElementById("sportFilter").value;
+      const status = document.getElementById("statusFilter").value;
+      const matchesByCircle = new Map();
+      state.matchPosts.forEach(post => matchesByCircle.set(post.circle_id, (matchesByCircle.get(post.circle_id) || 0) + 1));
+
+      const rows = state.circles.filter(circle => {
+        const haystack = [
+          circle.circle_name,
+          universityName(circle.university_id),
+          circle.sport_category,
+          circle.activity_area
+        ].join(" ").toLowerCase();
+        return (!query || haystack.includes(query)) &&
+          (!sport || circle.sport_category === sport) &&
+          (!status || circle.verification_status === status);
+      }).map(circle => {
+        const sourceUrl = circle.source_url
+          ? `<a href="${escapeHtml(circle.source_url)}" target="_blank" rel="noopener">出典URL</a>`
+          : '<span class="muted">未登録</span>';
+        return `
+          <tr>
+            <td><strong>${escapeHtml(universityName(circle.university_id))}</strong><br><span class="muted">${escapeHtml(circle.activity_area)}</span></td>
+            <td><strong>${escapeHtml(circle.circle_name)}</strong><br><span class="muted">${escapeHtml(circle.owner_notes || "")}</span></td>
+            <td>${escapeHtml(circle.sport_category)}<br><span class="mono">${escapeHtml(circle.circle_id)}</span></td>
+            <td>${sourceBadge(circle.source_type)}<br>${sourceUrl}</td>
+            <td>${statusBadge(circle.verification_status)}<br><span class="muted">確認日 ${escapeHtml(circle.last_checked_at)}</span></td>
+            <td><span class="badge hot">${matchesByCircle.get(circle.circle_id) || 0}件</span></td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("circleTable").innerHTML = rows || '<tr><td colspan="6" class="empty">条件に合うサークルがありません</td></tr>';
+    }
+
+    function renderMatches() {
+      const rows = state.matchPosts.map(post => `
+        <tr>
+          <td><strong>${escapeHtml(circleName(post.circle_id))}</strong></td>
+          <td>${escapeHtml(post.type)}<br><span class="badge">${escapeHtml(post.level)}</span></td>
+          <td>${escapeHtml(formatDate(post.scheduled_at))}<br><span class="muted">${escapeHtml(post.place)}</span></td>
+          <td>${escapeHtml(post.conditions)}</td>
+        </tr>
+      `).join("");
+      document.getElementById("matchTable").innerHTML = rows || '<tr><td colspan="4" class="empty">募集はまだありません</td></tr>';
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return new Intl.DateTimeFormat("ja-JP", {
+        year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"
+      }).format(date);
+    }
+
+    function download(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function toCsv() {
+      const header = ["circle_id", "university_name", "circle_name", "sport_category", "activity_area", "source_type", "source_url", "verification_status", "sns_url", "owner_notes"];
+      const lines = state.circles.map(circle => header.map(key => {
+        const value = key === "university_name" ? universityName(circle.university_id) : circle[key];
+        return `"${String(value ?? "").replace(/"/g, '""')}"`;
+      }).join(","));
+      return [header.join(","), ...lines].join("\n");
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.setAttribute("aria-selected", "false"));
+        document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+        tab.setAttribute("aria-selected", "true");
+        document.getElementById(tab.dataset.view).classList.add("active");
+      });
+    });
+
+    ["searchInput", "sportFilter", "statusFilter"].forEach(controlId => {
+      document.getElementById(controlId).addEventListener("input", renderCircleTable);
+      document.getElementById(controlId).addEventListener("change", renderCircleTable);
+    });
+
+    document.getElementById("universityForm").addEventListener("submit", event => {
+      event.preventDefault();
+      state.universities.push({
+        university_id: id("u"),
+        university_name: document.getElementById("universityName").value.trim(),
+        prefecture: document.getElementById("prefecture").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        campus_name: document.getElementById("campusName").value.trim(),
+        official_url: document.getElementById("officialUrl").value.trim()
+      });
+      event.target.reset();
+      saveState();
+    });
+
+    document.getElementById("circleForm").addEventListener("submit", event => {
+      event.preventDefault();
+      state.circles.push({
+        circle_id: id("c"),
+        university_id: document.getElementById("circleUniversity").value,
+        circle_name: document.getElementById("circleName").value.trim(),
+        sport_category: document.getElementById("circleSport").value,
+        activity_area: document.getElementById("circleArea").value.trim(),
+        source_type: document.getElementById("sourceType").value,
+        source_url: document.getElementById("sourceUrl").value.trim(),
+        verification_status: document.getElementById("verificationStatus").value,
+        public_status: "published",
+        last_checked_at: new Date().toISOString().slice(0, 10),
+        sns_url: document.getElementById("snsUrl").value.trim(),
+        owner_notes: document.getElementById("ownerNotes").value.trim()
+      });
+      event.target.reset();
+      saveState();
+    });
+
+    document.getElementById("matchForm").addEventListener("submit", event => {
+      event.preventDefault();
+      state.matchPosts.push({
+        match_post_id: id("m"),
+        circle_id: document.getElementById("matchCircle").value,
+        type: document.getElementById("matchType").value,
+        level: document.getElementById("matchLevel").value,
+        scheduled_at: document.getElementById("matchDate").value,
+        place: document.getElementById("matchPlace").value.trim(),
+        conditions: document.getElementById("matchNote").value.trim()
+      });
+      event.target.reset();
+      saveState();
+    });
+
+    document.getElementById("exportJson").addEventListener("click", () => {
+      download("circle-match-master.json", JSON.stringify(state, null, 2), "application/json");
+    });
+
+    document.getElementById("exportCsv").addEventListener("click", () => {
+      download("circle-master.csv", toCsv(), "text/csv;charset=utf-8");
+    });
+
+    document.getElementById("resetSeed").addEventListener("click", () => {
+      if (confirm("ローカル保存された台帳を初期データに戻しますか？")) {
+        state = structuredClone(seed);
+        saveState();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

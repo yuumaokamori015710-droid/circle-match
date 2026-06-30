@@ -1,0 +1,48 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+token.json
+
+# Databases and private runtime data
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+outputs/circlematch.sqlite
+outputs/circlematch.sqlite-*
+
+# Logs and generated runtime files
+*.log
+work/*.log
+work/*.out.log
+work/*.err.log
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Node caches
+node_modules/
+npm-debug.log*
+
+# Local artifacts and scraped/source files that may need review before publishing
+work/*.pdf
+work/*.xlsx
+work/*.xls
+work/*.csv
+work/*.tsv
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
