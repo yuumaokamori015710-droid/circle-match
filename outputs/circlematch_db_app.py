@@ -1,5 +1,6 @@
 import csv
 import base64
+import hashlib
 import hmac
 import json
 import os
@@ -12,12 +13,14 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
+PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 LOG_PATH = ROOT.parent / "work" / "circlematch_db_app.log"
 HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
 CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@example.com")
+SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
@@ -263,6 +266,36 @@ def render_admin_html():
     )
 
 
+def base_url():
+    return SITE_BASE_URL.rstrip("/")
+
+
+def robots_txt():
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin",
+        "Disallow: /api/",
+    ]
+    if base_url():
+        lines.append(f"Sitemap: {base_url()}/sitemap.xml")
+    return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def sitemap_xml():
+    root = base_url() or "http://127.0.0.1:8787"
+    paths = ["/", "/privacy", "/terms", "/about-data", "/contact"]
+    urls = "\n".join(
+        f"  <url><loc>{root}{path}</loc></url>"
+        for path in paths
+    )
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{urls}
+</urlset>
+""".encode("utf-8")
+
+
 def connect():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -272,7 +305,10 @@ def connect():
 
 def slug(prefix, text):
     base = "".join(ch.lower() if ch.isalnum() else "_" for ch in text).strip("_")
-    return f"{prefix}_{base[:40]}" if base else f"{prefix}_{int(datetime.now().timestamp())}"
+    if not base:
+        return f"{prefix}_{int(datetime.now().timestamp())}"
+    digest = hashlib.sha1(text.encode("utf-8")).hexdigest()[:10]
+    return f"{prefix}_{base[:36]}_{digest}"
 
 
 def infer_organization_type(name, source_type=""):
@@ -610,7 +646,8 @@ def init_db():
                 "source_url": url,
             }, audit=False)
         if conn.execute("select count(*) from circles").fetchone()[0] == 0:
-            seed_circles(conn)
+            if not seed_public_circles_from_csv(conn):
+                seed_circles(conn)
         migrate_circle_private_data(conn)
         redact_existing_audit_logs(conn)
         seed_collection_targets(conn)
@@ -661,6 +698,50 @@ def upsert_university(conn, data, audit=True):
         globals()["audit"](conn, "upsert", "university", audit_log_id, data)
         return audit_log_id
     return uni_id
+
+
+def seed_public_circles_from_csv(conn):
+    if not PUBLIC_SEED_PATH.exists():
+        return 0
+    with PUBLIC_SEED_PATH.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        imported = 0
+        for item in reader:
+            uni_name = (item.get("university_name") or "").strip()
+            circle_name = (item.get("circle_name") or "").strip()
+            if not uni_name or not circle_name:
+                continue
+            uni = conn.execute(
+                "select university_id from universities where university_name=? order by campus_name limit 1",
+                (uni_name,),
+            ).fetchone()
+            if uni:
+                university_id = uni["university_id"]
+            else:
+                university_id = upsert_university(conn, {
+                    "university_name": uni_name,
+                    "prefecture": item.get("prefecture") or "東京都",
+                    "city": item.get("city", ""),
+                    "campus_name": item.get("campus_name", ""),
+                    "official_url": item.get("official_url", ""),
+                    "source_url": item.get("official_url", ""),
+                }, audit=False)
+            upsert_circle(conn, {
+                "university_id": university_id,
+                "circle_name": circle_name,
+                "organization_type": item.get("organization_type") or infer_organization_type(circle_name, item.get("source_type") or "other"),
+                "sport_category": item.get("sport_category") or "その他",
+                "activity_area": item.get("activity_area", ""),
+                "source_type": item.get("source_type") or "other",
+                "source_url": item.get("source_url", ""),
+                "verification_status": item.get("verification_status") or "unverified",
+                "public_status": item.get("public_status") or "published",
+                "last_checked_at": item.get("last_checked_at", ""),
+            })
+            imported += 1
+        if imported:
+            audit(conn, "public_seed_import", "circle", None, {"imported": imported, "source": str(PUBLIC_SEED_PATH)})
+        return imported
 
 
 def upsert_circle_private_profile(conn, circle_id, data):
@@ -898,6 +979,13 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_text(self, body, content_type="text/plain; charset=utf-8", status=200):
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def read_json(self):
         length = int(self.headers.get("Content-Length", "0"))
         if not length:
@@ -921,6 +1009,12 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(about_data_page())
             elif parsed.path == "/contact":
                 self.send_html(contact_page())
+            elif parsed.path == "/healthz":
+                self.send_json({"ok": True, **summary()})
+            elif parsed.path == "/robots.txt":
+                self.send_text(robots_txt())
+            elif parsed.path == "/sitemap.xml":
+                self.send_text(sitemap_xml(), "application/xml; charset=utf-8")
             elif parsed.path == "/api/summary":
                 self.send_json(summary())
             elif parsed.path == "/api/universities":

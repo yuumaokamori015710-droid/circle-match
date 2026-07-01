@@ -28,6 +28,17 @@ SENSITIVE_TEXT_PATTERNS = [
     "xoxb-",
 ]
 
+FORBIDDEN_PUBLIC_SEED_COLUMNS = {
+    "claimant_name",
+    "claimant_email",
+    "owner_notes",
+    "internal_notes",
+    "sns_url",
+    "public_sns_url",
+    "phone",
+    "line_id",
+}
+
 
 def is_blocked(path):
     rel = path.as_posix()
@@ -39,6 +50,7 @@ def is_blocked(path):
 def main():
     blocked_files = []
     suspicious_text = []
+    public_seed_errors = []
     for current_root, dirnames, filenames in os.walk(ROOT):
         rel_root = Path(current_root).relative_to(ROOT)
         dirnames[:] = [
@@ -47,10 +59,15 @@ def main():
         ]
         for filename in filenames:
             path = rel_root / filename
+            full_path = ROOT / path
             if is_blocked(path):
                 blocked_files.append(path.as_posix())
                 continue
-            full_path = ROOT / path
+            if path.as_posix() == "outputs/public_circles_seed.csv":
+                header = full_path.read_text(encoding="utf-8").splitlines()[0].split(",")
+                forbidden = sorted(FORBIDDEN_PUBLIC_SEED_COLUMNS.intersection(header))
+                if forbidden:
+                    public_seed_errors.append(f"{path.as_posix()}: forbidden columns {', '.join(forbidden)}")
             if full_path.suffix.lower() in {".pyc", ".png", ".jpg", ".jpeg", ".gif", ".pdf", ".sqlite"}:
                 continue
             try:
@@ -70,6 +87,12 @@ def main():
     if suspicious_text:
         print("Suspicious text found:")
         for item in suspicious_text:
+            print(f"  - {item}")
+        raise SystemExit(1)
+
+    if public_seed_errors:
+        print("Public seed errors found:")
+        for item in public_seed_errors:
             print(f"  - {item}")
         raise SystemExit(1)
 

@@ -17,9 +17,11 @@ PORT=<hosting provider assigned port>
 CIRCLEMATCH_SITE_NAME=Circle Match
 CIRCLEMATCH_OPERATOR=<real operator name>
 CIRCLEMATCH_CONTACT_EMAIL=<real contact email>
+CIRCLEMATCH_SITE_BASE_URL=<https production URL>
 CIRCLEMATCH_ADMIN_USERNAME=<admin user>
 CIRCLEMATCH_ADMIN_PASSWORD=<strong password>
 CIRCLEMATCH_DB_PATH=<path outside repository or mounted volume>
+CIRCLEMATCH_PUBLIC_SEED_PATH=outputs/public_circles_seed.csv
 ```
 
 ## 初期デプロイ時の注意
@@ -30,6 +32,7 @@ CIRCLEMATCH_DB_PATH=<path outside repository or mounted volume>
 - AdSense申請前に独自ドメインとHTTPSを有効にする
 - DBファイルをコンテナイメージに含めない
 - 本番DBはバックアップ対象にする
+- 空DBで起動した場合は `outputs/public_circles_seed.csv` から公開データを初期投入する
 
 ## 次に必要な実装
 

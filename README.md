@@ -38,9 +38,11 @@ PORT=8787
 CIRCLEMATCH_SITE_NAME=Circle Match
 CIRCLEMATCH_OPERATOR=Circle Match 運営
 CIRCLEMATCH_CONTACT_EMAIL=contact@example.com
+CIRCLEMATCH_SITE_BASE_URL=http://127.0.0.1:8787
 CIRCLEMATCH_ADMIN_USERNAME=admin
 CIRCLEMATCH_ADMIN_PASSWORD=
 CIRCLEMATCH_DB_PATH=outputs/circlematch.sqlite
+CIRCLEMATCH_PUBLIC_SEED_PATH=outputs/public_circles_seed.csv
 ```
 
 For production, set:
@@ -49,9 +51,11 @@ For production, set:
 HOST=0.0.0.0
 PORT=<provider assigned port>
 CIRCLEMATCH_CONTACT_EMAIL=<real contact address>
+CIRCLEMATCH_SITE_BASE_URL=<https production URL>
 CIRCLEMATCH_ADMIN_USERNAME=<admin user>
 CIRCLEMATCH_ADMIN_PASSWORD=<strong password>
 CIRCLEMATCH_DB_PATH=<path outside the repository>
+CIRCLEMATCH_PUBLIC_SEED_PATH=outputs/public_circles_seed.csv
 ```
 
 When `HOST` is not local, `CIRCLEMATCH_ADMIN_PASSWORD` is required. This prevents accidentally exposing the admin UI in production.
@@ -105,8 +109,8 @@ outputs/production-privacy-security-checklist.md
 
 Recommended next production steps:
 
-1. Move the app into a framework suitable for public service operation.
-2. Add authentication to admin routes.
-3. Move from SQLite to managed PostgreSQL.
-4. Configure HTTPS and a custom domain.
+1. Deploy with `render.yaml` or equivalent PaaS settings.
+2. Set real contact/admin environment variables.
+3. Configure HTTPS and a custom domain.
+4. Move from SQLite to managed PostgreSQL before heavier usage.
 5. Add backups, monitoring, and incident response procedures.

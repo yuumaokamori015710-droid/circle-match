@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: circle-match
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python outputs/circlematch_db_app.py
+    healthCheckPath: /healthz
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: CIRCLEMATCH_SITE_NAME
+        value: Circle Match
+      - key: CIRCLEMATCH_OPERATOR
+        value: Circle Match 運営
+      - key: CIRCLEMATCH_CONTACT_EMAIL
+        sync: false
+      - key: CIRCLEMATCH_ADMIN_USERNAME
+        value: admin
+      - key: CIRCLEMATCH_ADMIN_PASSWORD
+        sync: false
+      - key: CIRCLEMATCH_DB_PATH
+        value: /var/data/circlematch.sqlite
+      - key: CIRCLEMATCH_PUBLIC_SEED_PATH
+        value: outputs/public_circles_seed.csv
+      - key: CIRCLEMATCH_SITE_BASE_URL
+        sync: false
+    disk:
+      name: circlematch-data
+      mountPath: /var/data
+      sizeGB: 1
