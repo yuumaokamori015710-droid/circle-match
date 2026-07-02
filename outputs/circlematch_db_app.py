@@ -113,21 +113,21 @@ MATCH_HTML = """<!doctype html>
     .section{margin-top:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:24px}.panel-head p{margin:8px 0 0;color:var(--muted);line-height:1.7;max-width:760px}
     .filters{display:grid;grid-template-columns:minmax(240px,1fr) 170px 170px 170px;gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
     .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
-    .empty{padding:28px;color:var(--muted);line-height:1.8}.guide-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.guide{padding:18px;line-height:1.8}.guide h2,.guide h3{margin-top:0}.steps{display:grid;gap:10px}.step{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff}.step b{display:block;margin-bottom:5px}
+    .empty{padding:28px;color:var(--muted);line-height:1.8}.join-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.join-card{padding:18px;display:flex;flex-direction:column;gap:13px;min-height:210px}.join-card h2{margin:0;font-size:23px}.join-card p{margin:0;color:var(--muted);line-height:1.75}.join-card .button{width:max-content}.mini{display:flex;gap:8px;flex-wrap:wrap}.mini span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#405164;background:#f8fbfd}
     footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
-    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.guide-grid{grid-template-columns:1fr}.hero{min-height:520px}}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.join-grid{grid-template-columns:1fr}.hero{min-height:520px}}
     @media(max-width:620px){.top{align-items:flex-start}.nav{gap:9px}.filters{grid-template-columns:1fr}.hero-inner{padding-top:70px}.metric strong{font-size:22px}}
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="primary-link" href="/">募集を探す</a><a href="/circles">サークルDB</a><a href="/about-data">掲載情報</a><a href="/privacy">プライバシー</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="primary-link" href="/">募集を探す</a><a href="/signin">ログイン</a><a href="/representative">サークル代表はこちら</a><a href="/circles">サークルDB</a><a href="/contact">問い合わせ</a></nav></div></header>
   <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>大学サークルの練習試合と交流相手を、公開DBから探す。</h1><p class="lead">Circle Matchは、全国の大学サークル・部活動DBを土台に、練習試合、合同練習、助っ人募集、交流イベントを探しやすくするマッチングサービスです。</p><div class="actions"><a class="button primary" href="#matches">募集中を見る</a><a class="button secondary" href="/circles">サークルDBを見る</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
-    <section id="matches" class="section panel"><div class="panel-head"><div><h2>練習試合・交流募集</h2><p>競技、地域、大学名、団体名で絞り込めます。正式な連絡先や代表者情報は公開せず、まずは募集情報だけを整理します。</p></div><a class="button light" href="/admin">募集を登録</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="prefFilter"><option value="">全地域</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div></section>
-    <section class="section guide-grid"><article class="panel guide"><h2>DBは裏側に置き、表はマッチング体験に寄せる</h2><p>サークルDBは検索・検証・掲載管理の基盤として残し、トップページでは「今どんな相手を探しているか」を前面に出します。大学名、競技、地域、レベル感、日時、場所がそろうほど、練習試合の相手探しに使いやすくなります。</p><p><a href="/circles">全国サークルDBはこちら</a></p></article><aside class="steps"><div class="step"><b>1. サークルを登録</b>大学・団体名・競技・出典をDBに蓄積します。</div><div class="step"><b>2. 募集を公開</b>練習試合や合同練習の条件を登録します。</div><div class="step"><b>3. 連絡導線を整備</b>大学メール確認や運営確認を入れて、なりすましを抑えます。</div></aside></section>
+    <section id="matches" class="section panel"><div class="panel-head"><div><h2>練習試合・交流募集</h2><p>競技、地域、大学名、団体名で絞り込めます。正式な連絡先や代表者情報は公開せず、まずは募集情報だけを整理します。</p></div><a class="button light" href="/representative">サークル代表はこちら</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="prefFilter"><option value="">全地域</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div></section>
+    <section class="section join-grid"><article class="panel join-card"><h2>一般ユーザーとして探す</h2><p>Googleアカウントでログインして、気になる募集の保存や問い合わせ準備ができるようにします。</p><div class="mini"><span>Google認証</span><span>募集保存</span><span>閲覧無料</span></div><a class="button primary" href="/signin">Googleでログイン</a></article><article class="panel join-card"><h2>サークル代表として登録する</h2><p>大学メールと公開出典をもとに代表申請します。承認後、練習試合や合同練習の募集を掲載できます。</p><div class="mini"><span>大学メール確認</span><span>代表申請</span><span>募集掲載</span></div><a class="button light" href="/representative">新規登録へ</a></article></section>
   </main>
-  <footer><span>掲載情報の訂正・削除は問い合わせページから連絡してください。</span><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/admin">管理画面</a></footer>
+  <footer><span>掲載情報の訂正・削除は問い合わせページから連絡してください。</span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/admin">管理画面</a></footer>
   <script>
     const prefs = __PREFS__;
     const sports = __SPORTS__;
@@ -142,6 +142,75 @@ MATCH_HTML = """<!doctype html>
     async function boot(){fillSelect($("sportFilter"),sports,"全競技"); fillSelect($("prefFilter"),prefs,"全地域"); await summary(); await refresh()}
     ["q","typeFilter","sportFilter","prefFilter"].forEach(id=>$(id).addEventListener("input",refresh));
     boot().catch(e=>alert(e.message));
+  </script>
+</body>
+</html>"""
+
+SIGNIN_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログイン | __SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--brand:#0f7a62;--accent:#e15b31}
+    *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
+    main{max-width:1040px;margin:auto;padding:38px 18px 60px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.hero h1{font-size:36px;line-height:1.15;margin:0}.hero p,.panel p{color:var(--muted);line-height:1.8}.button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.google-dot{width:20px;height:20px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0)}
+    .note{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:14px;line-height:1.7}.rep{background:#f9fbfd}
+    @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/representative">サークル代表はこちら</a><a href="/circles">サークルDB</a></nav></div></header>
+  <main>
+    <section class="hero"><h1>Googleアカウントで、練習試合探しを始める。</h1><p>一般ユーザーはGoogleログインで利用開始できます。閲覧はログイン不要、保存・問い合わせ準備などの個人機能はログイン後に使える設計にします。</p></section>
+    <section class="panel"><a class="button" href="/signin?provider=google"><span class="google-dot"></span><span>Googleでログイン</span></a><p class="note">現在は認証導線の画面モックです。本番実装ではGoogle OAuthを接続し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p><div class="panel rep"><p><b>サークル代表の方</b><br>募集掲載や代表申請はGoogleログインではなく、大学メール確認を含む代表専用フローから行います。</p><a class="button" href="/representative">サークル代表はこちら</a></div></section>
+  </main>
+</body>
+</html>"""
+
+REPRESENTATIVE_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>サークル代表登録 | __SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--brand:#0f7a62;--accent:#e15b31;--soft:#f4f7fa}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
+    main{max-width:1120px;margin:auto;padding:26px 18px 60px}.intro{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-bottom:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}.intro h1{font-size:34px;line-height:1.18;margin:0 0 10px}.intro p,.help p{color:var(--muted);line-height:1.8;margin:0}.steps{display:grid;gap:9px}.step{border:1px solid var(--line);border-radius:8px;padding:12px;background:#f9fbfd}.step b{display:block;margin-bottom:4px}
+    form{display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:11px 16px;border:1px solid transparent;background:var(--accent);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850}.result.error{background:#fde8e4;color:#9b2f1a}
+    @media(max-width:820px){.intro,.form-grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.intro h1{font-size:29px}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/signin">ログイン</a><a href="/circles">サークルDB</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <main>
+    <section class="intro"><article class="panel"><h1>サークル代表として登録する</h1><p>大学メールと公開出典を使って、団体の代表申請を行います。承認後に練習試合・合同練習・助っ人募集を掲載できる流れにします。</p></article><aside class="steps"><div class="step"><b>1. 団体情報を入力</b>大学、団体名、競技、公式ページやSNSなどの出典を登録します。</div><div class="step"><b>2. 大学メールで申請</b>本人確認用の大学メールを非公開で保存します。</div><div class="step"><b>3. 運営確認後に掲載</b>なりすましを抑えたうえで募集掲載へ進みます。</div></aside></section>
+    <section class="panel">
+      <form id="claimForm">
+        <div class="form-grid"><label>大学<select id="universityId" required></select></label><label>団体名<input id="circleName" required placeholder="例: フットサル同好会"></label></div>
+        <div class="form-grid"><label>競技<select id="sportCategory"></select></label><label>団体種別<select id="organizationType"></select></label></div>
+        <div class="form-grid"><label>代表者名<small>公開されません</small><input id="claimantName" required></label><label>大学メール<small>公開されません</small><input id="claimantEmail" type="email" required placeholder="name@university.ac.jp"></label></div>
+        <label>出典URL<small>大学公式ページ、団体公式SNS、サークル紹介ページなど</small><input id="evidenceUrl" type="url" placeholder="https://"></label>
+        <label>補足<small>活動場所、人数、練習頻度、募集したい内容など</small><textarea id="message"></textarea></label>
+        <div id="result" class="result"></div>
+        <div class="actions"><button class="button" type="submit">代表申請を送信</button><a class="button ghost" href="/signin">一般ユーザーとしてログイン</a></div>
+      </form>
+    </section>
+  </main>
+  <script>
+    const sports = __SPORTS__;
+    const orgTypes = __ORG_TYPES__;
+    const $ = id => document.getElementById(id);
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    function fill(el, rows, label){el.innerHTML=`<option value="">${label}</option>`+rows.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("")}
+    async function api(path, options){const r=await fetch(path, options); const data=await r.json(); if(!r.ok)throw new Error(data.error||"送信に失敗しました"); return data}
+    async function boot(){const universities=await api("/api/universities"); fill($("universityId"),universities.map(u=>({value:u.university_id,label:`${u.university_name} / ${u.prefecture}`})),"大学を選択"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("organizationType"),orgTypes.map(v=>({value:v,label:v})),"団体種別を選択")}
+    $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const payload={university_id:$("universityId").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,evidence_url:$("evidenceUrl").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.textContent=`代表申請を受け付けました。申請ID: ${data.claim_id}`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
+    boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
   </script>
 </body>
 </html>"""
@@ -316,6 +385,20 @@ def render_circles_html():
     )
 
 
+def render_signin_html():
+    return SIGNIN_HTML.replace("__SITE_NAME__", SITE_NAME).encode("utf-8")
+
+
+def render_representative_html():
+    return (
+        REPRESENTATIVE_HTML
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
+        .replace("__ORG_TYPES__", json.dumps(ORGANIZATION_TYPES, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
 def render_admin_html():
     return (
         HTML
@@ -346,7 +429,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/signin", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -930,6 +1013,49 @@ def upsert_circle(conn, data):
     return saved_id
 
 
+def create_circle_claim(conn, data):
+    university_id = (data.get("university_id") or "").strip()
+    circle_name = (data.get("circle_name") or "").strip()
+    claimant_email = (data.get("claimant_email") or "").strip()
+    claimant_name = (data.get("claimant_name") or "").strip()
+    if not university_id or not circle_name or not claimant_email:
+        raise ValueError("university_id, circle_name and claimant_email are required")
+    if "@" not in claimant_email:
+        raise ValueError("valid claimant_email is required")
+    if not conn.execute("select 1 from universities where university_id=?", (university_id,)).fetchone():
+        raise ValueError("university not found")
+    circle_id = upsert_circle(conn, {
+        "university_id": university_id,
+        "circle_name": circle_name,
+        "organization_type": data.get("organization_type") if data.get("organization_type") in ORGANIZATION_TYPES else "不明",
+        "sport_category": data.get("sport_category") if data.get("sport_category") in SPORTS else "その他",
+        "activity_area": "",
+        "source_type": "self_registered",
+        "source_url": data.get("evidence_url", ""),
+        "verification_status": "claimed",
+        "public_status": "published",
+        "owner_notes": data.get("message", ""),
+        "consent_status": "representative_claim",
+    })
+    timestamp = now()
+    claim_id = slug("claim", circle_id + claimant_email + timestamp)
+    conn.execute(
+        """
+        insert into circle_claims(claim_id, circle_id, claimant_name, claimant_email, university_email_verified, status, evidence_url, reviewed_at, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?,?,?)
+        """,
+        (claim_id, circle_id, claimant_name, claimant_email, 0, "pending", data.get("evidence_url", ""), "", timestamp, timestamp),
+    )
+    audit(conn, "representative_claim", "circle_claim", claim_id, {
+        "circle_id": circle_id,
+        "claimant_name": claimant_name,
+        "claimant_email": claimant_email,
+        "evidence_url": data.get("evidence_url", ""),
+        "message": data.get("message", ""),
+    })
+    return claim_id, circle_id
+
+
 def seed_circles(conn):
     samples = [
         ("早稲田大学", "サンプル フットサル同好会", "フットサル", "東京都新宿区", "self_registered", "claimed", "経験者と初心者が混在。平日夜に練習試合希望。"),
@@ -1071,6 +1197,10 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/":
                 self.send_html(render_public_html())
+            elif parsed.path == "/signin":
+                self.send_html(render_signin_html())
+            elif parsed.path == "/representative":
+                self.send_html(render_representative_html())
             elif parsed.path == "/circles":
                 self.send_html(render_circles_html())
             elif parsed.path == "/assets/hero-court.png":
@@ -1133,6 +1263,13 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/claims":
+                data = self.read_json()
+                with connect() as conn:
+                    claim_id, circle_id = create_circle_claim(conn, data)
+                    conn.commit()
+                    self.send_json({"ok": True, "claim_id": claim_id, "circle_id": circle_id})
+                return
             if not self.require_admin():
                 return
             data = self.read_json()
