@@ -25,6 +25,12 @@ services:
         value: outputs/public_circles_seed.csv
       - key: CIRCLEMATCH_SITE_BASE_URL
         sync: false
+      - key: CIRCLEMATCH_GOOGLE_CLIENT_ID
+        sync: false
+      - key: CIRCLEMATCH_GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: CIRCLEMATCH_SESSION_SECRET
+        sync: false
     disk:
       name: circlematch-data
       mountPath: /var/data

@@ -4,12 +4,14 @@ import hashlib
 import hmac
 import json
 import os
+import secrets
 import sqlite3
 import sys
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse
+from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
@@ -23,6 +25,9 @@ CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@example.com
 SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
+GOOGLE_CLIENT_ID = os.environ.get("CIRCLEMATCH_GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("CIRCLEMATCH_GOOGLE_CLIENT_SECRET", "")
+SESSION_SECRET = os.environ.get("CIRCLEMATCH_SESSION_SECRET", ADMIN_PASSWORD or "local-dev-session-secret")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
 PREFECTURES = [
@@ -90,6 +95,17 @@ UNIVERSITY_SEED = [
 ]
 
 SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニス", "バレーボール", "野球", "バドミントン", "ラグビー", "その他"]
+POPULAR_SPORTS = [
+    ("野球", "Baseball", "BS", "#1f6f8b"),
+    ("サッカー", "Football", "SC", "#0f7a62"),
+    ("テニス", "Tennis", "TN", "#b2601d"),
+    ("バスケットボール", "Basketball", "BK", "#9a3b24"),
+    ("バレーボール", "Volleyball", "VB", "#315b9a"),
+    ("バドミントン", "Badminton", "BD", "#6d4aa2"),
+    ("フットサル", "Futsal", "FS", "#2d806b"),
+    ("ラグビー", "Rugby", "RG", "#7a4b2b"),
+]
+KANTO_PREFECTURES = ["東京都", "神奈川県", "埼玉県", "千葉県", "茨城県", "栃木県", "群馬県"]
 SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "不明"]
@@ -113,9 +129,9 @@ MATCH_HTML = """<!doctype html>
     .section{margin-top:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:24px}.panel-head p{margin:8px 0 0;color:var(--muted);line-height:1.7;max-width:760px}
     .filters{display:grid;grid-template-columns:minmax(240px,1fr) 170px 170px 170px;gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
     .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
-    .empty{padding:28px;color:var(--muted);line-height:1.8}.join-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.join-card{padding:18px;display:flex;flex-direction:column;gap:13px;min-height:210px}.join-card h2{margin:0;font-size:23px}.join-card p{margin:0;color:var(--muted);line-height:1.75}.join-card .button{width:max-content}.mini{display:flex;gap:8px;flex-wrap:wrap}.mini span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#405164;background:#f8fbfd}
+    .empty{padding:28px;color:var(--muted);line-height:1.8}.sport-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sport-card{position:relative;overflow:hidden;min-height:118px;border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between}.sport-card::after{content:attr(data-code);position:absolute;right:10px;bottom:-10px;font-size:58px;font-weight:950;color:rgba(23,33,47,.07)}.sport-card span{position:relative;z-index:1;color:var(--muted);font-size:12px;font-weight:900}.sport-card strong{position:relative;z-index:1;font-size:20px}.sport-card b{position:relative;z-index:1;width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--tone);color:#fff}.join-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.join-card{padding:18px;display:flex;flex-direction:column;gap:13px;min-height:210px}.join-card h2{margin:0;font-size:23px}.join-card p{margin:0;color:var(--muted);line-height:1.75}.join-card .button{width:max-content}.mini{display:flex;gap:8px;flex-wrap:wrap}.mini span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#405164;background:#f8fbfd}
     footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
-    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.join-grid{grid-template-columns:1fr}.hero{min-height:520px}}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.join-grid{grid-template-columns:1fr}.hero{min-height:520px}}
     @media(max-width:620px){.top{align-items:flex-start}.nav{gap:9px}.filters{grid-template-columns:1fr}.hero-inner{padding-top:70px}.metric strong{font-size:22px}}
   </style>
 </head>
@@ -124,6 +140,7 @@ MATCH_HTML = """<!doctype html>
   <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>大学サークルの練習試合と交流相手を、公開DBから探す。</h1><p class="lead">Circle Matchは、全国の大学サークル・部活動DBを土台に、練習試合、合同練習、助っ人募集、交流イベントを探しやすくするマッチングサービスです。</p><div class="actions"><a class="button primary" href="#matches">募集中を見る</a><a class="button secondary" href="/circles">サークルDBを見る</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
+    <section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>まずは関東の大学を中心に、競技別のサークルDBと交流募集をまとめて見られるようにします。</p></div><a class="button light" href="/circles?region=kanto">関東DBを見る</a></div><div class="sport-grid" id="sportGrid"></div></section>
     <section id="matches" class="section panel"><div class="panel-head"><div><h2>練習試合・交流募集</h2><p>競技、地域、大学名、団体名で絞り込めます。正式な連絡先や代表者情報は公開せず、まずは募集情報だけを整理します。</p></div><a class="button light" href="/representative">サークル代表はこちら</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="prefFilter"><option value="">全地域</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div></section>
     <section class="section join-grid"><article class="panel join-card"><h2>一般ユーザーとして探す</h2><p>Googleアカウントでログインして、気になる募集の保存や問い合わせ準備ができるようにします。</p><div class="mini"><span>Google認証</span><span>募集保存</span><span>閲覧無料</span></div><a class="button primary" href="/signin">Googleでログイン</a></article><article class="panel join-card"><h2>サークル代表として登録する</h2><p>大学メールと公開出典をもとに代表申請します。承認後、練習試合や合同練習の募集を掲載できます。</p><div class="mini"><span>大学メール確認</span><span>代表申請</span><span>募集掲載</span></div><a class="button light" href="/representative">新規登録へ</a></article></section>
   </main>
@@ -131,15 +148,17 @@ MATCH_HTML = """<!doctype html>
   <script>
     const prefs = __PREFS__;
     const sports = __SPORTS__;
+    const popularSports = __POPULAR_SPORTS__;
     const $ = id => document.getElementById(id);
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
+    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><b>${esc(s.code)}</b><strong>${esc(s.name)}</strong><span>${esc(s.label)} / 関東中心</span></a>`).join("") }
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     async function summary(){const s=await api("/api/summary"); $("uniCount").textContent=s.universities; $("circleCount").textContent=s.circles; $("verifiedCount").textContent=s.verified_circles; $("matchCount").textContent=s.match_posts}
     function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const blob=[m.university_name,m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if($("sportFilter").value && m.sport_category!==$("sportFilter").value)return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
     function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
     async function refresh(){const all=await api("/api/matches"); const data=all.filter(matchesFilter); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。管理画面からサークルに紐づけて募集を登録できます。</div>`}
-    async function boot(){fillSelect($("sportFilter"),sports,"全競技"); fillSelect($("prefFilter"),prefs,"全地域"); await summary(); await refresh()}
+    async function boot(){renderSports(); fillSelect($("sportFilter"),sports,"全競技"); fillSelect($("prefFilter"),prefs,"全地域"); await summary(); await refresh()}
     ["q","typeFilter","sportFilter","prefFilter"].forEach(id=>$(id).addEventListener("input",refresh));
     boot().catch(e=>alert(e.message));
   </script>
@@ -165,8 +184,49 @@ SIGNIN_HTML = """<!doctype html>
   <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/representative">サークル代表はこちら</a><a href="/circles">サークルDB</a></nav></div></header>
   <main>
     <section class="hero"><h1>Googleアカウントで、練習試合探しを始める。</h1><p>一般ユーザーはGoogleログインで利用開始できます。閲覧はログイン不要、保存・問い合わせ準備などの個人機能はログイン後に使える設計にします。</p></section>
-    <section class="panel"><a class="button" href="/signin?provider=google"><span class="google-dot"></span><span>Googleでログイン</span></a><p class="note">現在は認証導線の画面モックです。本番実装ではGoogle OAuthを接続し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p><div class="panel rep"><p><b>サークル代表の方</b><br>募集掲載や代表申請はGoogleログインではなく、大学メール確認を含む代表専用フローから行います。</p><a class="button" href="/representative">サークル代表はこちら</a></div></section>
+    <section class="panel"><a id="googleButton" class="button" href="/auth/google"><span class="google-dot"></span><span>Googleでログイン</span></a><p id="oauthNote" class="note">Google OAuthで認証し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p><div class="panel rep"><p><b>サークル代表の方</b><br>募集掲載や代表申請はGoogleログインではなく、大学メール確認を含む代表専用フローから行います。</p><a class="button" href="/representative">サークル代表はこちら</a></div></section>
   </main>
+  <script>
+    const oauthReady = __OAUTH_READY__;
+    if(!oauthReady){document.getElementById("googleButton").href="/signin";document.getElementById("oauthNote").textContent="Google OAuthのClient ID/Secretが未設定です。Renderの環境変数を入れると、このボタンから実ログインできます。"}
+  </script>
+</body>
+</html>"""
+
+SPORT_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__SPORT__ | __SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--accent:#e15b31;--blue:#2767a5}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1180px;margin:auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
+    main{max-width:1180px;margin:auto;padding:24px 18px 54px}.hero{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:14px}.hero h1{font-size:38px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.75}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.button.primary{background:var(--accent);color:#fff;border-color:transparent}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:6px;font-size:27px}
+    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.area-list{display:grid;gap:8px;padding:14px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px;background:#fafcff}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.tablewrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.empty{padding:18px;color:var(--muted);line-height:1.7}
+    @media(max-width:860px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.hero h1{font-size:31px}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/circles?region=kanto">関東DB</a><a href="/representative">サークル代表はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <main>
+    <section class="hero"><div><h1>__SPORT__の相手を探す</h1><p>関東の大学を中心に、__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。</p></div><a class="button primary" href="/representative">募集を出す</a></section>
+    <section class="stats"><div class="metric"><span>関東サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都県</span><strong>7</strong></div></section>
+    <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="areaList" class="area-list"></div></aside><section class="panel"><h2>関東の__SPORT__サークルDB</h2><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>種別</th><th>検証</th><th>出典</th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
+  </main>
+  <script>
+    const sport = __SPORT_JSON__;
+    const $ = id => document.getElementById(id);
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    function statusLabel(v){return ({university_verified:"公式確認済み",admin_verified:"運営確認済み",claimed:"申請済み",unverified:"未確認"}[v] || v)}
+    function sourceLabel(v){return ({university_official:"大学公式",self_registered:"本人登録",public_sns:"SNS等",other:"その他"}[v] || v)}
+    function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
+    async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
+    async function boot(){const data=await api(`/api/sport_overview?sport=${encodeURIComponent(sport)}&region=kanto`); $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("areaList").innerHTML=data.areas.map(a=>`<div class="area"><b>${esc(a.prefecture)}</b><span>${badge(`${a.match_count}件`,a.match_count>0?"ok":"")}${badge(`DB ${a.circle_count}件`)}</span></div>`).join(""); $("circleRows").innerHTML=data.circles.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)} ${esc(c.city||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">データなし</td></tr>`}
+    boot().catch(e=>alert(e.message));
+  </script>
 </body>
 </html>"""
 
@@ -238,7 +298,7 @@ PUBLIC_HTML = """<!doctype html>
 <body>
   <header><div class="top"><h1>全国サークルDB</h1><nav class="nav"><a href="/">募集を探す</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
-    <section class="hero"><h2>全国大学サークル検索</h2><p>大学公式ページなどの公開出典をもとに、サークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
+    <section class="hero"><h2>大学サークル検索</h2><p>当面は関東の大学を中心に、公開出典をもとにサークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
     <section class="summary"><div class="metric"><span>都道府県</span><strong id="prefCount">0</strong></div><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div></section>
     <section class="panel"><div class="filters"><input id="q" placeholder="大学名・団体名・競技で検索"><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>種別</th><th>競技</th><th>検証</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
   </main>
@@ -246,6 +306,7 @@ PUBLIC_HTML = """<!doctype html>
   <script>
     const prefs = __PREFS__;
     const sports = __SPORTS__;
+    const params = new URLSearchParams(location.search);
     const $ = id => document.getElementById(id);
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function statusLabel(v){return ({university_verified:"公式確認済み",admin_verified:"運営確認済み",claimed:"申請済み",unverified:"未確認"}[v] || v)}
@@ -254,8 +315,8 @@ PUBLIC_HTML = """<!doctype html>
     function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     async function summary(){const s=await api("/api/summary"); $("prefCount").textContent=s.prefectures; $("uniCount").textContent=s.universities; $("circleCount").textContent=s.circles; $("verifiedCount").textContent=s.verified_circles}
-    async function refresh(){const qs=new URLSearchParams({q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); const data=await api("/api/circles?"+qs); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="6">データなし</td></tr>`}
-    async function boot(){fillSelect($("prefFilter"),prefs,"全都道府県"); fillSelect($("sportFilter"),sports,"全競技"); await summary(); await refresh()}
+    async function refresh(){const qs=new URLSearchParams({q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); if(params.get("region")==="kanto" && !$("prefFilter").value) qs.set("region","kanto"); const data=await api("/api/circles?"+qs); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="6">データなし</td></tr>`}
+    async function boot(){fillSelect($("prefFilter"),prefs,params.get("region")==="kanto"?"関東すべて":"全都道府県"); fillSelect($("sportFilter"),sports,"全競技"); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; await summary(); await refresh()}
     ["q","prefFilter","sportFilter"].forEach(id=>$(id).addEventListener("input",refresh));
     boot().catch(e=>alert(e.message));
   </script>
@@ -365,11 +426,105 @@ def admin_auth_enabled():
     return bool(ADMIN_PASSWORD)
 
 
+def google_oauth_enabled():
+    return bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET and SESSION_SECRET)
+
+
+def oauth_redirect_uri():
+    root = base_url() or f"http://{HOST}:{PORT}"
+    return f"{root}/auth/google/callback"
+
+
+def secure_cookie_suffix():
+    root = base_url() or f"http://{HOST}:{PORT}"
+    return "; Secure" if root.startswith("https://") else ""
+
+
+def sign_value(value):
+    return hmac.new(SESSION_SECRET.encode("utf-8"), value.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def make_oauth_state():
+    payload = f"{secrets.token_urlsafe(18)}.{int(datetime.now().timestamp())}"
+    return f"{payload}.{sign_value(payload)}"
+
+
+def verify_oauth_state(state):
+    parts = (state or "").split(".")
+    if len(parts) != 3:
+        return False
+    payload = ".".join(parts[:2])
+    return hmac.compare_digest(sign_value(payload), parts[2])
+
+
+def google_authorize_url(state):
+    params = {
+        "client_id": GOOGLE_CLIENT_ID,
+        "redirect_uri": oauth_redirect_uri(),
+        "response_type": "code",
+        "scope": "openid email profile",
+        "state": state,
+        "access_type": "offline",
+        "prompt": "select_account",
+    }
+    return "https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params)
+
+
+def post_form(url, data):
+    body = urlencode(data).encode("utf-8")
+    request = Request(url, data=body, headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"})
+    with urlopen(request, timeout=15) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def fetch_json(url, access_token):
+    request = Request(url, headers={"Authorization": f"Bearer {access_token}", "Accept": "application/json"})
+    with urlopen(request, timeout=15) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def upsert_oauth_user(conn, profile):
+    subject = profile.get("sub", "")
+    email = profile.get("email", "")
+    if not subject or not email:
+        raise ValueError("Google profile missing subject or email")
+    timestamp = now()
+    user_id = slug("user", "google_" + subject)
+    conn.execute(
+        """
+        insert into user_accounts(user_id, provider, provider_subject, email, display_name, picture_url, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?)
+        on conflict(provider, provider_subject) do update set
+          email=excluded.email,
+          display_name=excluded.display_name,
+          picture_url=excluded.picture_url,
+          updated_at=excluded.updated_at
+        """,
+        (user_id, "google", subject, email, profile.get("name", ""), profile.get("picture", ""), timestamp, timestamp),
+    )
+    row = conn.execute("select user_id from user_accounts where provider='google' and provider_subject=?", (subject,)).fetchone()
+    return row["user_id"]
+
+
+def create_user_session(conn, user_id):
+    session_id = secrets.token_urlsafe(32)
+    timestamp = now()
+    conn.execute(
+        "insert into user_sessions(session_id, user_id, created_at, expires_at) values(?,?,?,datetime('now','+30 days'))",
+        (session_id, user_id, timestamp),
+    )
+    return session_id
+
+
 def render_public_html():
     return (
         MATCH_HTML
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
+        .replace("__POPULAR_SPORTS__", json.dumps([
+            {"name": name, "label": label, "code": code, "color": color}
+            for name, label, code, color in POPULAR_SPORTS
+        ], ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
         .encode("utf-8")
     )
@@ -386,7 +541,23 @@ def render_circles_html():
 
 
 def render_signin_html():
-    return SIGNIN_HTML.replace("__SITE_NAME__", SITE_NAME).encode("utf-8")
+    return (
+        SIGNIN_HTML
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__OAUTH_READY__", "true" if google_oauth_enabled() else "false")
+        .encode("utf-8")
+    )
+
+
+def render_sport_html(sport):
+    sport = sport if sport in SPORTS else "野球"
+    return (
+        SPORT_HTML
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORT__", sport)
+        .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
+        .encode("utf-8")
+    )
 
 
 def render_representative_html():
@@ -430,6 +601,7 @@ def robots_txt():
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
     paths = ["/", "/signin", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
+    paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _ in POPULAR_SPORTS])
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -689,6 +861,23 @@ def init_db():
           created_at text not null,
           updated_at text not null
         );
+        create table if not exists user_accounts (
+          user_id text primary key,
+          provider text not null,
+          provider_subject text not null,
+          email text not null,
+          display_name text,
+          picture_url text,
+          created_at text not null,
+          updated_at text not null,
+          unique(provider, provider_subject)
+        );
+        create table if not exists user_sessions (
+          session_id text primary key,
+          user_id text not null references user_accounts(user_id) on delete cascade,
+          created_at text not null,
+          expires_at text not null
+        );
         create table if not exists match_posts (
           match_post_id text primary key,
           circle_id text not null references circles(circle_id),
@@ -760,6 +949,7 @@ def init_db():
         create index if not exists idx_circle_private_profiles_circle on circle_private_profiles(circle_id);
         create index if not exists idx_circle_claims_circle on circle_claims(circle_id);
         create index if not exists idx_circle_claims_status on circle_claims(status);
+        create index if not exists idx_user_sessions_user on user_sessions(user_id);
         create index if not exists idx_circle_candidates_university on circle_candidates(university_id);
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
@@ -1079,10 +1269,11 @@ def seed_circles(conn):
 
 def seed_collection_targets(conn):
     timestamp = now()
-    universities = conn.execute("select university_id, university_name from universities").fetchall()
+    universities = conn.execute("select university_id, university_name, prefecture from universities").fetchall()
     for university in universities:
         count = conn.execute("select count(*) from circles where university_id=?", (university["university_id"],)).fetchone()[0]
-        status = "partial" if count else "not_started"
+        in_focus = university["prefecture"] in KANTO_PREFECTURES
+        status = "partial" if count else ("not_started" if in_focus else "out_of_scope")
         query = f"{university['university_name']} 公認団体 サークル 一覧"
         conn.execute(
             """
@@ -1094,16 +1285,18 @@ def seed_collection_targets(conn):
                 when ? > 0 then 'partial'
                 else collection_targets.collection_status
               end,
+              priority=excluded.priority,
               source_search_query=coalesce(collection_targets.source_search_query, excluded.source_search_query),
+              notes=excluded.notes,
               updated_at=excluded.updated_at
             """,
             (
                 university["university_id"],
                 status,
-                3,
+                1 if in_focus else 5,
                 query,
                 "",
-                "大学公式・競技連盟・団体公式SNSから収集予定",
+                "関東重点収集対象" if in_focus else "関東中心方針のため当面は収集優先度低",
                 now()[:10] if count else "",
                 timestamp,
                 count,
@@ -1174,6 +1367,21 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def redirect(self, location, cookies=None):
+        self.send_response(302)
+        self.send_header("Location", location)
+        for cookie in cookies or []:
+            self.send_header("Set-Cookie", cookie)
+        self.end_headers()
+
+    def cookie_value(self, name):
+        raw = self.headers.get("Cookie", "")
+        for part in raw.split(";"):
+            key, _, value = part.strip().partition("=")
+            if key == name:
+                return value
+        return ""
+
     def send_file(self, path, content_type):
         if not path.exists():
             self.send_text(b"Not found\n", "text/plain; charset=utf-8", 404)
@@ -1192,15 +1400,54 @@ class Handler(BaseHTTPRequestHandler):
             return {}
         return json.loads(self.rfile.read(length).decode("utf-8"))
 
+    def handle_google_callback(self, query):
+        if not google_oauth_enabled():
+            self.send_html(render_signin_html(), 503)
+            return
+        code = (query.get("code", [""])[0] or "").strip()
+        state = (query.get("state", [""])[0] or "").strip()
+        if not code or not state or not verify_oauth_state(state) or state != self.cookie_value("cm_oauth_state"):
+            self.send_json({"error": "invalid oauth state"}, 400)
+            return
+        token = post_form("https://oauth2.googleapis.com/token", {
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": oauth_redirect_uri(),
+        })
+        profile = fetch_json("https://openidconnect.googleapis.com/v1/userinfo", token["access_token"])
+        with connect() as conn:
+            user_id = upsert_oauth_user(conn, profile)
+            session_id = create_user_session(conn, user_id)
+            conn.commit()
+        self.redirect("/", [
+            "cm_oauth_state=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax",
+            f"cm_session={session_id}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax{secure_cookie_suffix()}",
+        ])
+
     def do_GET(self):
         parsed = urlparse(self.path)
         try:
             if parsed.path == "/":
                 self.send_html(render_public_html())
+            elif parsed.path == "/auth/google":
+                if not google_oauth_enabled():
+                    self.send_html(render_signin_html(), 503)
+                    return
+                state = make_oauth_state()
+                self.redirect(google_authorize_url(state), [f"cm_oauth_state={state}; Path=/; Max-Age=600; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"])
+            elif parsed.path == "/auth/google/callback":
+                self.handle_google_callback(parse_qs(parsed.query))
             elif parsed.path == "/signin":
                 self.send_html(render_signin_html())
+            elif parsed.path == "/logout":
+                self.redirect("/", ["cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"])
             elif parsed.path == "/representative":
                 self.send_html(render_representative_html())
+            elif parsed.path == "/sports":
+                sport = (parse_qs(parsed.query).get("sport", ["野球"])[0] or "野球").strip()
+                self.send_html(render_sport_html(sport))
             elif parsed.path == "/circles":
                 self.send_html(render_circles_html())
             elif parsed.path == "/assets/hero-court.png":
@@ -1230,11 +1477,11 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/api/circles":
                 self.send_json(search_circles(parse_qs(parsed.query)))
             elif parsed.path == "/api/matches":
-                self.send_json(rows("""
-                    select m.*, c.circle_name, c.sport_category, u.university_name, u.prefecture
-                    from match_posts m join circles c on c.circle_id=m.circle_id join universities u on u.university_id=c.university_id
-                    order by coalesce(m.scheduled_at, ''), m.created_at desc
-                """))
+                self.send_json(search_matches(parse_qs(parsed.query)))
+            elif parsed.path == "/api/sport_overview":
+                self.send_json(sport_overview(parse_qs(parsed.query)))
+            elif parsed.path == "/api/me":
+                self.send_json(current_user(self.cookie_value("cm_session")))
             elif parsed.path == "/api/collection_status":
                 if not self.require_admin():
                     return
@@ -1329,6 +1576,7 @@ def summary():
 def search_circles(params):
     query = (params.get("q", [""])[0] or "").strip()
     prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    region = (params.get("region", [""])[0] or "").strip()
     organization_type = (params.get("organization_type", [""])[0] or "").strip()
     sport = (params.get("sport", [""])[0] or "").strip()
     status = (params.get("status", [""])[0] or "").strip()
@@ -1340,6 +1588,9 @@ def search_circles(params):
     if prefecture:
         where.append("u.prefecture=?")
         args.append(prefecture)
+    elif region == "kanto":
+        where.append("u.prefecture in (%s)" % ",".join(["?"] * len(KANTO_PREFECTURES)))
+        args.extend(KANTO_PREFECTURES)
     if organization_type:
         where.append("c.organization_type=?")
         args.append(organization_type)
@@ -1373,6 +1624,70 @@ def search_circles(params):
         sql += " where " + " and ".join(where)
     sql += " order by u.prefecture, u.university_name, c.sport_category, c.circle_name"
     return rows(sql, args)
+
+
+def search_matches(params):
+    sport = (params.get("sport", [""])[0] or "").strip()
+    prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    region = (params.get("region", [""])[0] or "").strip()
+    where = []
+    args = []
+    if sport:
+        where.append("c.sport_category=?")
+        args.append(sport)
+    if prefecture:
+        where.append("u.prefecture=?")
+        args.append(prefecture)
+    elif region == "kanto":
+        where.append("u.prefecture in (%s)" % ",".join(["?"] * len(KANTO_PREFECTURES)))
+        args.extend(KANTO_PREFECTURES)
+    sql = """
+        select m.*, c.circle_name, c.sport_category, u.university_name, u.prefecture
+        from match_posts m join circles c on c.circle_id=m.circle_id join universities u on u.university_id=c.university_id
+    """
+    if where:
+        sql += " where " + " and ".join(where)
+    sql += " order by coalesce(m.scheduled_at, ''), m.created_at desc"
+    return rows(sql, args)
+
+
+def sport_overview(params):
+    sport = (params.get("sport", ["野球"])[0] or "野球").strip()
+    region = (params.get("region", ["kanto"])[0] or "kanto").strip()
+    circles = search_circles({"sport": [sport], "region": [region]})
+    matches = search_matches({"sport": [sport], "region": [region]})
+    areas = []
+    for pref in KANTO_PREFECTURES if region == "kanto" else PREFECTURES:
+        circle_count = sum(1 for c in circles if c["prefecture"] == pref)
+        match_count = sum(1 for m in matches if m["prefecture"] == pref)
+        if circle_count or match_count or region == "kanto":
+            areas.append({"prefecture": pref, "circle_count": circle_count, "match_count": match_count})
+    return {
+        "sport": sport,
+        "region": region,
+        "circle_count": len(circles),
+        "match_count": len(matches),
+        "areas": areas,
+        "matches": matches,
+        "circles": circles[:250],
+    }
+
+
+def current_user(session_id):
+    if not session_id:
+        return {"authenticated": False}
+    with connect() as conn:
+        row = conn.execute(
+            """
+            select u.user_id, u.email, u.display_name, u.picture_url
+            from user_sessions s join user_accounts u on u.user_id=s.user_id
+            where s.session_id=? and datetime(s.expires_at) > datetime('now')
+            """,
+            (session_id,),
+        ).fetchone()
+        if not row:
+            return {"authenticated": False}
+        return {"authenticated": True, **dict(row)}
 
 
 def collection_status():

@@ -114,3 +114,25 @@ Recommended next production steps:
 3. Configure HTTPS and a custom domain.
 4. Move from SQLite to managed PostgreSQL before heavier usage.
 5. Add backups, monitoring, and incident response procedures.
+
+## Google OAuth
+
+Set these values in Render environment variables. Do not commit the actual values.
+
+```text
+CIRCLEMATCH_GOOGLE_CLIENT_ID=<Google OAuth client ID>
+CIRCLEMATCH_GOOGLE_CLIENT_SECRET=<Google OAuth client secret>
+CIRCLEMATCH_SESSION_SECRET=<random long secret>
+```
+
+Google Cloud Console OAuth redirect URI:
+
+```text
+https://circle-match.onrender.com/auth/google/callback
+```
+
+After the custom domain HTTPS is ready, also add:
+
+```text
+https://circle-match.jp/auth/google/callback
+```
