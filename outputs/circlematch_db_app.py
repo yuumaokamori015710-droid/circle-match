@@ -94,12 +94,64 @@ SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "不明"]
 
+MATCH_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f3f7fb;--brand:#0f7a62;--accent:#e15b31;--blue:#2767a5}
+    *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    a{color:inherit}.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .top{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#0f7a62;color:#fff}
+    .nav{display:flex;gap:14px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:800;color:#31506b;text-decoration:none}.nav a.primary-link{color:var(--brand)}
+    .hero{position:relative;min-height:560px;display:grid;align-items:end;overflow:hidden;background:#102034}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,31,.86),rgba(8,18,31,.54) 48%,rgba(8,18,31,.18))}
+    .hero-inner{position:relative;max-width:1180px;margin:0 auto;width:100%;padding:84px 18px 54px;color:#fff}.eyebrow{margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bde8dc}.hero h1{max-width:780px;margin:0;font-size:clamp(34px,6vw,68px);line-height:1.05;letter-spacing:0}.lead{max-width:720px;margin:18px 0 0;color:#e9f3f1;font-size:17px;line-height:1.8}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:11px 16px;font-weight:900;text-decoration:none;border:1px solid transparent}.button.primary{background:var(--accent);color:#fff}.button.secondary{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);color:#fff}.button.light{background:#fff;color:var(--ink);border-color:var(--line)}
+    main{max-width:1180px;margin:auto;padding:22px 18px 48px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:-42px;position:relative;z-index:2}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:850}.metric strong{display:block;margin-top:6px;font-size:26px}
+    .section{margin-top:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:24px}.panel-head p{margin:8px 0 0;color:var(--muted);line-height:1.7;max-width:760px}
+    .filters{display:grid;grid-template-columns:minmax(240px,1fr) 170px 170px 170px;gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
+    .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
+    .empty{padding:28px;color:var(--muted);line-height:1.8}.guide-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.guide{padding:18px;line-height:1.8}.guide h2,.guide h3{margin-top:0}.steps{display:grid;gap:10px}.step{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff}.step b{display:block;margin-bottom:5px}
+    footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.guide-grid{grid-template-columns:1fr}.hero{min-height:520px}}
+    @media(max-width:620px){.top{align-items:flex-start}.nav{gap:9px}.filters{grid-template-columns:1fr}.hero-inner{padding-top:70px}.metric strong{font-size:22px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="primary-link" href="/">募集を探す</a><a href="/circles">サークルDB</a><a href="/about-data">掲載情報</a><a href="/privacy">プライバシー</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>大学サークルの練習試合と交流相手を、公開DBから探す。</h1><p class="lead">Circle Matchは、全国の大学サークル・部活動DBを土台に、練習試合、合同練習、助っ人募集、交流イベントを探しやすくするマッチングサービスです。</p><div class="actions"><a class="button primary" href="#matches">募集中を見る</a><a class="button secondary" href="/circles">サークルDBを見る</a></div></div></section>
+  <main>
+    <section class="stats"><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
+    <section id="matches" class="section panel"><div class="panel-head"><div><h2>練習試合・交流募集</h2><p>競技、地域、大学名、団体名で絞り込めます。正式な連絡先や代表者情報は公開せず、まずは募集情報だけを整理します。</p></div><a class="button light" href="/admin">募集を登録</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="prefFilter"><option value="">全地域</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div></section>
+    <section class="section guide-grid"><article class="panel guide"><h2>DBは裏側に置き、表はマッチング体験に寄せる</h2><p>サークルDBは検索・検証・掲載管理の基盤として残し、トップページでは「今どんな相手を探しているか」を前面に出します。大学名、競技、地域、レベル感、日時、場所がそろうほど、練習試合の相手探しに使いやすくなります。</p><p><a href="/circles">全国サークルDBはこちら</a></p></article><aside class="steps"><div class="step"><b>1. サークルを登録</b>大学・団体名・競技・出典をDBに蓄積します。</div><div class="step"><b>2. 募集を公開</b>練習試合や合同練習の条件を登録します。</div><div class="step"><b>3. 連絡導線を整備</b>大学メール確認や運営確認を入れて、なりすましを抑えます。</div></aside></section>
+  </main>
+  <footer><span>掲載情報の訂正・削除は問い合わせページから連絡してください。</span><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/admin">管理画面</a></footer>
+  <script>
+    const prefs = __PREFS__;
+    const sports = __SPORTS__;
+    const $ = id => document.getElementById(id);
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
+    async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
+    async function summary(){const s=await api("/api/summary"); $("uniCount").textContent=s.universities; $("circleCount").textContent=s.circles; $("verifiedCount").textContent=s.verified_circles; $("matchCount").textContent=s.match_posts}
+    function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const blob=[m.university_name,m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if($("sportFilter").value && m.sport_category!==$("sportFilter").value)return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
+    function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
+    async function refresh(){const all=await api("/api/matches"); const data=all.filter(matchesFilter); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。管理画面からサークルに紐づけて募集を登録できます。</div>`}
+    async function boot(){fillSelect($("sportFilter"),sports,"全競技"); fillSelect($("prefFilter"),prefs,"全地域"); await summary(); await refresh()}
+    ["q","typeFilter","sportFilter","prefFilter"].forEach(id=>$(id).addEventListener("input",refresh));
+    boot().catch(e=>alert(e.message));
+  </script>
+</body>
+</html>"""
+
 PUBLIC_HTML = """<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>__SITE_NAME__</title>
+  <title>__SITE_NAME__ | 全国サークルDB</title>
   <style>
     :root{--ink:#17212f;--muted:#65758a;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--blue:#2767a5}
     *{box-sizing:border-box}body{margin:0;background:#eef3f7;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
@@ -115,7 +167,7 @@ PUBLIC_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><h1>__SITE_NAME__</h1><nav class="nav"><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header><div class="top"><h1>全国サークルDB</h1><nav class="nav"><a href="/">募集を探す</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
     <section class="hero"><h2>全国大学サークル検索</h2><p>大学公式ページなどの公開出典をもとに、サークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
     <section class="summary"><div class="metric"><span>都道府県</span><strong id="prefCount">0</strong></div><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div></section>
@@ -246,6 +298,16 @@ def admin_auth_enabled():
 
 def render_public_html():
     return (
+        MATCH_HTML
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
+        .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
+def render_circles_html():
+    return (
         PUBLIC_HTML
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
@@ -284,7 +346,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -986,6 +1048,18 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_file(self, path, content_type):
+        if not path.exists():
+            self.send_text(b"Not found\n", "text/plain; charset=utf-8", 404)
+            return
+        body = path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Cache-Control", "public, max-age=86400")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def read_json(self):
         length = int(self.headers.get("Content-Length", "0"))
         if not length:
@@ -997,6 +1071,10 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/":
                 self.send_html(render_public_html())
+            elif parsed.path == "/circles":
+                self.send_html(render_circles_html())
+            elif parsed.path == "/assets/hero-court.png":
+                self.send_file(ROOT / "hero-court.png", "image/png")
             elif parsed.path == "/admin":
                 if not self.require_admin():
                     return
@@ -1023,7 +1101,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(search_circles(parse_qs(parsed.query)))
             elif parsed.path == "/api/matches":
                 self.send_json(rows("""
-                    select m.*, c.circle_name, u.university_name
+                    select m.*, c.circle_name, c.sport_category, u.university_name, u.prefecture
                     from match_posts m join circles c on c.circle_id=m.circle_id join universities u on u.university_id=c.university_id
                     order by coalesce(m.scheduled_at, ''), m.created_at desc
                 """))
