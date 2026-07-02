@@ -96,14 +96,15 @@ UNIVERSITY_SEED = [
 
 SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニス", "バレーボール", "野球", "バドミントン", "ラグビー", "その他"]
 POPULAR_SPORTS = [
-    ("野球", "Baseball", "BS", "#1f6f8b"),
-    ("サッカー", "Football", "SC", "#0f7a62"),
-    ("テニス", "Tennis", "TN", "#b2601d"),
-    ("バスケットボール", "Basketball", "BK", "#9a3b24"),
-    ("バレーボール", "Volleyball", "VB", "#315b9a"),
-    ("バドミントン", "Badminton", "BD", "#6d4aa2"),
-    ("フットサル", "Futsal", "FS", "#2d806b"),
-    ("ラグビー", "Rugby", "RG", "#7a4b2b"),
+    ("野球", "Baseball", "BS", "#1f6f8b", "baseball.png"),
+    ("サッカー", "Football", "SC", "#0f7a62", "soccer.png"),
+    ("テニス", "Tennis", "TN", "#b2601d", "tennis.png"),
+    ("バスケットボール", "Basketball", "BK", "#9a3b24", "basketball.png"),
+    ("バレーボール", "Volleyball", "VB", "#315b9a", "volleyball.png"),
+    ("バドミントン", "Badminton", "BD", "#6d4aa2", "badminton.png"),
+    ("フットサル", "Futsal", "FS", "#2d806b", "futsal.png"),
+    ("ラグビー", "Rugby", "RG", "#7a4b2b", "rugby.png"),
+    ("その他", "Other Sports", "OT", "#42526b", "other.png"),
 ]
 KANTO_PREFECTURES = ["東京都", "神奈川県", "埼玉県", "千葉県", "茨城県", "栃木県", "群馬県"]
 SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
@@ -120,8 +121,8 @@ MATCH_HTML = """<!doctype html>
     :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f3f7fb;--brand:#0f7a62;--accent:#e15b31;--blue:#2767a5}
     *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     a{color:inherit}.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
-    .top{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#0f7a62;color:#fff}
-    .nav{display:flex;gap:14px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:800;color:#31506b;text-decoration:none}.nav a.primary-link{color:var(--brand)}
+    .top{max-width:1180px;margin:auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#0f7a62;color:#fff}
+    .nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:850;color:#31506b;text-decoration:none}.nav a.primary-link{color:var(--brand)}.nav a.login-user,.nav a.login-rep{display:inline-flex;align-items:center;min-height:38px;border-radius:8px;padding:8px 12px;border:1px solid var(--line)}.nav a.login-user{background:#fff;color:var(--ink)}.nav a.login-rep{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(225,91,49,.22)}
     .hero{position:relative;min-height:560px;display:grid;align-items:end;overflow:hidden;background:#102034}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,31,.86),rgba(8,18,31,.54) 48%,rgba(8,18,31,.18))}
     .hero-inner{position:relative;max-width:1180px;margin:0 auto;width:100%;padding:84px 18px 54px;color:#fff}.eyebrow{margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bde8dc}.hero h1{max-width:780px;margin:0;font-size:clamp(34px,6vw,68px);line-height:1.05;letter-spacing:0}.lead{max-width:720px;margin:18px 0 0;color:#e9f3f1;font-size:17px;line-height:1.8}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:11px 16px;font-weight:900;text-decoration:none;border:1px solid transparent}.button.primary{background:var(--accent);color:#fff}.button.secondary{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);color:#fff}.button.light{background:#fff;color:var(--ink);border-color:var(--line)}
@@ -129,20 +130,19 @@ MATCH_HTML = """<!doctype html>
     .section{margin-top:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:24px}.panel-head p{margin:8px 0 0;color:var(--muted);line-height:1.7;max-width:760px}
     .filters{display:grid;grid-template-columns:minmax(240px,1fr) 170px 170px 170px;gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
     .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
-    .empty{padding:28px;color:var(--muted);line-height:1.8}.sport-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sport-card{position:relative;overflow:hidden;min-height:118px;border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between}.sport-card::after{content:attr(data-code);position:absolute;right:10px;bottom:-10px;font-size:58px;font-weight:950;color:rgba(23,33,47,.07)}.sport-card span{position:relative;z-index:1;color:var(--muted);font-size:12px;font-weight:900}.sport-card strong{position:relative;z-index:1;font-size:20px}.sport-card b{position:relative;z-index:1;width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--tone);color:#fff}.join-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.join-card{padding:18px;display:flex;flex-direction:column;gap:13px;min-height:210px}.join-card h2{margin:0;font-size:23px}.join-card p{margin:0;color:var(--muted);line-height:1.75}.join-card .button{width:max-content}.mini{display:flex;gap:8px;flex-wrap:wrap}.mini span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#405164;background:#f8fbfd}
+    .empty{padding:28px;color:var(--muted);line-height:1.8}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sport-card{position:relative;overflow:hidden;min-height:158px;border:1px solid var(--line);border-radius:8px;padding:14px;background:#102034;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;color:#fff;isolation:isolate}.sport-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}.sport-card::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,20,34,.18),rgba(9,20,34,.78))}.sport-card::after{content:attr(data-code);position:absolute;right:10px;bottom:-12px;font-size:64px;font-weight:950;color:rgba(255,255,255,.15)}.sport-card span{position:relative;z-index:1;color:rgba(255,255,255,.84);font-size:12px;font-weight:900}.sport-card strong{position:relative;z-index:1;font-size:23px;text-shadow:0 2px 10px rgba(0,0,0,.25)}.sport-card b{position:relative;z-index:1;width:36px;height:36px;border-radius:8px;display:grid;place-items:center;background:var(--tone);color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.18)}
     footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
-    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.join-grid{grid-template-columns:1fr}.hero{min-height:520px}}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:520px}}
     @media(max-width:620px){.top{align-items:flex-start}.nav{gap:9px}.filters{grid-template-columns:1fr}.hero-inner{padding-top:70px}.metric strong{font-size:22px}}
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="primary-link" href="/">募集を探す</a><a href="/signin">ログイン</a><a href="/representative">サークル代表はこちら</a><a href="/circles">サークルDB</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="primary-link" href="/">募集を探す</a><a href="/circles">サークルDB</a><a href="/contact">問い合わせ</a><a class="login-user" href="/signin">一般ログイン</a><a class="login-rep" href="/representative">代表者ログイン/登録</a></nav></div></header>
   <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>大学サークルの練習試合と交流相手を、公開DBから探す。</h1><p class="lead">Circle Matchは、全国の大学サークル・部活動DBを土台に、練習試合、合同練習、助っ人募集、交流イベントを探しやすくするマッチングサービスです。</p><div class="actions"><a class="button primary" href="#matches">募集中を見る</a><a class="button secondary" href="/circles">サークルDBを見る</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>まずは関東の大学を中心に、競技別のサークルDBと交流募集をまとめて見られるようにします。</p></div><a class="button light" href="/circles?region=kanto">関東DBを見る</a></div><div class="sport-grid" id="sportGrid"></div></section>
     <section id="matches" class="section panel"><div class="panel-head"><div><h2>練習試合・交流募集</h2><p>競技、地域、大学名、団体名で絞り込めます。正式な連絡先や代表者情報は公開せず、まずは募集情報だけを整理します。</p></div><a class="button light" href="/representative">サークル代表はこちら</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="prefFilter"><option value="">全地域</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div></section>
-    <section class="section join-grid"><article class="panel join-card"><h2>一般ユーザーとして探す</h2><p>Googleアカウントでログインして、気になる募集の保存や問い合わせ準備ができるようにします。</p><div class="mini"><span>Google認証</span><span>募集保存</span><span>閲覧無料</span></div><a class="button primary" href="/signin">Googleでログイン</a></article><article class="panel join-card"><h2>サークル代表として登録する</h2><p>大学メールと公開出典をもとに代表申請します。承認後、練習試合や合同練習の募集を掲載できます。</p><div class="mini"><span>大学メール確認</span><span>代表申請</span><span>募集掲載</span></div><a class="button light" href="/representative">新規登録へ</a></article></section>
   </main>
   <footer><span>掲載情報の訂正・削除は問い合わせページから連絡してください。</span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/admin">管理画面</a></footer>
   <script>
@@ -152,7 +152,7 @@ MATCH_HTML = """<!doctype html>
     const $ = id => document.getElementById(id);
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
-    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><b>${esc(s.code)}</b><strong>${esc(s.name)}</strong><span>${esc(s.label)} / 関東中心</span></a>`).join("") }
+    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><img src="/assets/sports/${esc(s.image)}" alt=""><b>${esc(s.code)}</b><strong>${esc(s.name)}</strong><span>${esc(s.label)} / 関東中心</span></a>`).join("") }
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     async function summary(){const s=await api("/api/summary"); $("uniCount").textContent=s.universities; $("circleCount").textContent=s.circles; $("verifiedCount").textContent=s.verified_circles; $("matchCount").textContent=s.match_posts}
     function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const blob=[m.university_name,m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if($("sportFilter").value && m.sport_category!==$("sportFilter").value)return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
@@ -522,8 +522,8 @@ def render_public_html():
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(SPORTS, ensure_ascii=False))
         .replace("__POPULAR_SPORTS__", json.dumps([
-            {"name": name, "label": label, "code": code, "color": color}
-            for name, label, code, color in POPULAR_SPORTS
+            {"name": name, "label": label, "code": code, "color": color, "image": image}
+            for name, label, code, color, image in POPULAR_SPORTS
         ], ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
         .encode("utf-8")
@@ -601,7 +601,7 @@ def robots_txt():
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
     paths = ["/", "/signin", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
-    paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _ in POPULAR_SPORTS])
+    paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -1452,6 +1452,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(render_circles_html())
             elif parsed.path == "/assets/hero-court.png":
                 self.send_file(ROOT / "hero-court.png", "image/png")
+            elif parsed.path.startswith("/assets/sports/"):
+                self.send_file(ROOT / "sports" / Path(parsed.path).name, "image/png")
             elif parsed.path == "/admin":
                 if not self.require_admin():
                     return
