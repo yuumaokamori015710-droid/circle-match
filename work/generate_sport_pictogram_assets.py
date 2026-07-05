@@ -138,15 +138,19 @@ def write_png(path, pixels):
 
 
 def base(title_color):
-    img = make_canvas()
-    bg2 = mix((246, 249, 250), title_color, 0.09)
+    dark = mix((8, 17, 31), title_color, 0.22)
+    img = make_canvas(dark)
+    glow = mix((255, 255, 255), title_color, 0.22)
     for y in range(H * SCALE):
-        t = y / (H * SCALE)
-        color = mix((246, 249, 250), bg2, t)
+        ty = y / (H * SCALE)
         for x in range(W * SCALE):
+            tx = x / (W * SCALE)
+            color = mix(dark, title_color, min(0.55, tx * 0.45 + ty * 0.18))
             img[y][x] = (*color, 255)
-    rect(img, 0, 0, W, 18, (*title_color, 255))
-    circle(img, 480, 310, 220, (*mix((255, 255, 255), title_color, 0.07), 255))
+    circle(img, 750, 170, 230, (*mix(glow, title_color, 0.38), 255))
+    circle(img, 820, 500, 180, (*mix(dark, (255, 255, 255), 0.08), 255))
+    line(img, 46, 520, 910, 520, 4, (255, 255, 255, 64))
+    line(img, 92, 84, 880, 84, 2, (255, 255, 255, 46))
     return img
 
 
@@ -168,101 +172,104 @@ def person(img, x, y, c=(24, 36, 52, 255), pose="run"):
 
 def equipment_ball(img, x, y, r, c):
     circle(img, x, y, r, c)
-    line(img, x - r * 0.7, y, x + r * 0.7, y, 5, (246, 249, 250, 255))
-    line(img, x, y - r * 0.7, x, y + r * 0.7, 5, (246, 249, 250, 255))
+    line(img, x - r * 0.72, y, x + r * 0.72, y, 7, (255, 255, 255, 230))
+    line(img, x, y - r * 0.72, x, y + r * 0.72, 7, (255, 255, 255, 230))
 
 
 def draw_baseball(img):
-    navy, accent = (20, 35, 54, 255), (190, 54, 46, 255)
-    line(img, 360, 410, 650, 166, 34, navy)
-    line(img, 632, 154, 702, 94, 16, accent)
-    equipment_ball(img, 318, 198, 72, accent)
-    line(img, 278, 170, 358, 226, 7, (246, 249, 250, 255))
-    line(img, 278, 226, 358, 170, 7, (246, 249, 250, 255))
+    white, accent, deep = (255, 255, 255, 255), (231, 68, 57, 255), (13, 29, 48, 255)
+    line(img, 470, 472, 780, 158, 56, white)
+    line(img, 760, 140, 840, 60, 26, accent)
+    equipment_ball(img, 280, 240, 120, accent)
+    line(img, 214, 198, 346, 286, 10, white)
+    line(img, 214, 286, 346, 198, 10, white)
+    line(img, 160, 456, 420, 456, 6, (255, 255, 255, 90))
+    polygon(img, [(650, 520), (878, 520), (878, 590), (584, 590)], deep)
 
 
 def draw_soccer(img):
-    navy, accent = (17, 48, 67, 255), (22, 126, 93, 255)
-    equipment_ball(img, 418, 312, 142, navy)
-    polygon(img, [(418, 206), (486, 258), (460, 342), (376, 342), (350, 258)], accent)
-    line(img, 266, 312, 570, 312, 9, (246, 249, 250, 255))
-    line(img, 418, 160, 418, 464, 9, (246, 249, 250, 255))
-    rect(img, 638, 218, 770, 404, navy)
-    rect(img, 662, 242, 770, 404, (246, 249, 250, 255))
+    white, accent, deep = (255, 255, 255, 255), (34, 177, 128, 255), (11, 35, 55, 255)
+    equipment_ball(img, 342, 330, 158, white)
+    polygon(img, [(342, 212), (416, 270), (388, 360), (296, 360), (268, 270)], deep)
+    line(img, 174, 330, 510, 330, 10, accent)
+    line(img, 342, 162, 342, 498, 10, accent)
+    rect(img, 626, 212, 810, 430, white)
+    rect(img, 658, 244, 810, 430, deep)
+    line(img, 626, 212, 810, 430, 4, (255, 255, 255, 80))
 
 
 def draw_tennis(img):
-    navy, accent = (31, 43, 58, 255), (190, 123, 37, 255)
-    ellipse(img, 390, 278, 116, 156, navy, -0.68)
-    ellipse(img, 390, 278, 88, 126, (246, 249, 250, 255), -0.68)
-    for offset in (-44, -18, 8, 34):
-        line(img, 318 + offset, 186, 454 + offset, 370, 5, accent)
-    line(img, 446, 396, 590, 514, 26, navy)
-    equipment_ball(img, 666, 184, 46, accent)
+    white, accent = (255, 255, 255, 255), (235, 174, 58, 255)
+    ellipse(img, 360, 288, 138, 188, white, -0.7)
+    ellipse(img, 360, 288, 104, 150, (15, 24, 40, 255), -0.7)
+    for offset in (-54, -24, 6, 36, 66):
+        line(img, 276 + offset, 168, 470 + offset, 410, 6, accent)
+    line(img, 448, 420, 656, 580, 34, white)
+    equipment_ball(img, 700, 180, 62, accent)
 
 
 def draw_basketball(img):
-    navy, accent = (26, 39, 54, 255), (198, 84, 39, 255)
-    equipment_ball(img, 398, 310, 148, accent)
-    line(img, 256, 310, 540, 310, 8, (246, 249, 250, 255))
-    line(img, 398, 168, 398, 452, 8, (246, 249, 250, 255))
-    line(img, 648, 266, 778, 266, 18, navy)
-    rect(img, 748, 140, 778, 406, navy)
-    ellipse(img, 646, 304, 92, 28, accent, 0)
+    white, accent, deep = (255, 255, 255, 255), (229, 91, 45, 255), (15, 24, 40, 255)
+    equipment_ball(img, 350, 320, 178, accent)
+    line(img, 182, 320, 520, 320, 10, white)
+    line(img, 350, 152, 350, 488, 10, white)
+    ellipse(img, 350, 320, 68, 178, (255, 255, 255, 190), 0)
+    ellipse(img, 350, 320, 178, 68, (255, 255, 255, 190), 0)
+    line(img, 632, 250, 820, 250, 26, white)
+    rect(img, 780, 118, 820, 448, white)
+    ellipse(img, 620, 308, 128, 38, accent, 0)
+    rect(img, 820, 118, 900, 448, deep)
 
 
 def draw_volleyball(img):
-    navy, accent = (27, 48, 71, 255), (49, 91, 154, 255)
-    equipment_ball(img, 374, 246, 128, accent)
-    line(img, 292, 182, 456, 310, 7, (246, 249, 250, 255))
-    line(img, 300, 312, 452, 182, 7, (246, 249, 250, 255))
-    line(img, 580, 200, 804, 200, 14, navy)
-    line(img, 580, 150, 580, 462, 10, navy)
-    line(img, 804, 150, 804, 462, 10, navy)
-    line(img, 580, 276, 804, 276, 8, navy)
-    line(img, 580, 352, 804, 352, 8, navy)
+    white, accent = (255, 255, 255, 255), (78, 116, 204, 255)
+    equipment_ball(img, 344, 258, 148, white)
+    line(img, 240, 186, 448, 330, 9, accent)
+    line(img, 254, 342, 446, 182, 9, accent)
+    line(img, 574, 172, 836, 172, 18, white)
+    line(img, 574, 124, 574, 492, 12, white)
+    line(img, 836, 124, 836, 492, 12, white)
+    for y in (250, 326, 402):
+        line(img, 574, y, 836, y, 8, (255, 255, 255, 170))
 
 
 def draw_badminton(img):
-    navy, accent = (30, 42, 58, 255), (108, 74, 162, 255)
-    ellipse(img, 392, 240, 86, 126, navy, -0.55)
-    ellipse(img, 392, 240, 64, 102, (246, 249, 250, 255), -0.55)
-    line(img, 440, 346, 594, 494, 24, navy)
-    polygon(img, [(636, 170), (782, 132), (742, 338)], accent)
-    line(img, 636, 170, 742, 338, 8, (246, 249, 250, 255))
-    line(img, 684, 158, 742, 338, 8, (246, 249, 250, 255))
-    line(img, 732, 146, 742, 338, 8, (246, 249, 250, 255))
+    white, accent = (255, 255, 255, 255), (146, 103, 220, 255)
+    ellipse(img, 344, 238, 104, 150, white, -0.55)
+    ellipse(img, 344, 238, 78, 120, (16, 24, 42, 255), -0.55)
+    line(img, 402, 366, 620, 572, 30, white)
+    polygon(img, [(610, 154), (824, 96), (764, 386)], accent)
+    for x in (610, 668, 726, 784):
+        line(img, x, 154 - (x - 610) * 0.27, 764, 386, 8, white)
 
 
 def draw_futsal(img):
-    navy, accent = (21, 49, 60, 255), (45, 128, 107, 255)
-    rect(img, 228, 198, 458, 420, navy)
-    rect(img, 264, 234, 458, 420, (246, 249, 250, 255))
-    line(img, 248, 496, 458, 198, 9, accent)
-    equipment_ball(img, 638, 366, 102, accent)
-    polygon(img, [(638, 292), (690, 328), (670, 394), (606, 394), (586, 328)], (246, 249, 250, 255))
+    white, accent, deep = (255, 255, 255, 255), (60, 174, 142, 255), (10, 36, 52, 255)
+    rect(img, 214, 178, 500, 450, white)
+    rect(img, 254, 218, 500, 450, deep)
+    line(img, 230, 536, 500, 178, 10, accent)
+    equipment_ball(img, 658, 366, 130, accent)
+    polygon(img, [(658, 268), (724, 316), (696, 404), (620, 404), (592, 316)], white)
 
 
 def draw_rugby(img):
-    navy, accent = (38, 43, 45, 255), (122, 75, 43, 255)
-    ellipse(img, 472, 304, 232, 122, accent, -0.18)
-    line(img, 320, 304, 624, 304, 10, (246, 249, 250, 255))
-    line(img, 398, 242, 398, 366, 7, (246, 249, 250, 255))
-    line(img, 472, 232, 472, 376, 7, (246, 249, 250, 255))
-    line(img, 546, 242, 546, 366, 7, (246, 249, 250, 255))
-    line(img, 732, 162, 732, 452, 12, navy)
-    line(img, 656, 162, 808, 162, 12, navy)
+    white, accent = (255, 255, 255, 255), (154, 100, 55, 255)
+    ellipse(img, 432, 310, 270, 136, accent, -0.18)
+    line(img, 250, 310, 614, 310, 12, white)
+    for x in (344, 432, 520):
+        line(img, x, 232, x, 388, 8, white)
+    line(img, 760, 132, 760, 498, 16, white)
+    line(img, 666, 132, 854, 132, 16, white)
 
 
 def draw_other(img):
-    navy, accent = (33, 44, 62, 255), (66, 82, 107, 255)
-    equipment_ball(img, 330, 238, 84, accent)
-    line(img, 480, 454, 650, 274, 26, navy)
-    ellipse(img, 674, 246, 74, 98, navy, 0.62)
-    rect(img, 280, 388, 522, 452, navy)
-    line(img, 326, 388, 326, 452, 8, (246, 249, 250, 255))
-    line(img, 404, 388, 404, 452, 8, (246, 249, 250, 255))
-    line(img, 482, 388, 482, 452, 8, (246, 249, 250, 255))
+    white, accent = (255, 255, 255, 255), (90, 110, 144, 255)
+    equipment_ball(img, 284, 224, 104, accent)
+    line(img, 476, 478, 672, 280, 34, white)
+    ellipse(img, 706, 246, 88, 118, white, 0.62)
+    rect(img, 250, 410, 566, 486, white)
+    for x in (318, 414, 510):
+        line(img, x, 410, x, 486, 10, (18, 29, 48, 255))
 
 
 SPORTS = {
