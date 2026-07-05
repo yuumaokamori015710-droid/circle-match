@@ -980,9 +980,9 @@ def init_db():
                 "official_url": url,
                 "source_url": url,
             }, audit=False)
-        if conn.execute("select count(*) from circles").fetchone()[0] == 0:
-            if not seed_public_circles_from_csv(conn):
-                seed_circles(conn)
+        imported_seed = seed_public_circles_from_csv(conn)
+        if conn.execute("select count(*) from circles").fetchone()[0] == 0 and not imported_seed:
+            seed_circles(conn)
         migrate_circle_private_data(conn)
         redact_existing_audit_logs(conn)
         seed_collection_targets(conn)
@@ -1072,7 +1072,7 @@ def seed_public_circles_from_csv(conn):
                 "verification_status": item.get("verification_status") or "unverified",
                 "public_status": item.get("public_status") or "published",
                 "last_checked_at": item.get("last_checked_at", ""),
-            })
+            }, audit_entry=False)
             imported += 1
         if imported:
             audit(conn, "public_seed_import", "circle", None, {"imported": imported, "source": str(PUBLIC_SEED_PATH)})
@@ -1147,7 +1147,7 @@ def redact_existing_audit_logs(conn):
         )
 
 
-def upsert_circle(conn, data):
+def upsert_circle(conn, data, audit_entry=True):
     name = data.get("circle_name", "").strip()
     university_id = data.get("university_id", "").strip()
     if not name or not university_id:
@@ -1199,7 +1199,8 @@ def upsert_circle(conn, data):
             "insert or replace into data_sources(source_id, entity_type, entity_id, source_type, source_url, memo, checked_at, created_at) values(?,?,?,?,?,?,?,?)",
             (slug("src", saved_id + data.get("source_url", "")), "circle", saved_id, data.get("source_type", "other"), data.get("source_url", ""), "circle source", now()[:10], timestamp),
         )
-    audit(conn, "upsert", "circle", saved_id, data)
+    if audit_entry:
+        audit(conn, "upsert", "circle", saved_id, data)
     return saved_id
 
 
