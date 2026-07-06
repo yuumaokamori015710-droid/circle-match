@@ -27,6 +27,8 @@ ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
 GOOGLE_CLIENT_ID = os.environ.get("CIRCLEMATCH_GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("CIRCLEMATCH_GOOGLE_CLIENT_SECRET", "")
+SUPABASE_URL = os.environ.get("CIRCLEMATCH_SUPABASE_URL", "").rstrip("/")
+SUPABASE_ANON_KEY = os.environ.get("CIRCLEMATCH_SUPABASE_ANON_KEY", "")
 SESSION_SECRET = os.environ.get("CIRCLEMATCH_SESSION_SECRET", ADMIN_PASSWORD or "local-dev-session-secret")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
@@ -132,7 +134,7 @@ MATCH_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     a{color:inherit}.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
     .top{max-width:1180px;margin:auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#0f7a62;color:#fff}
-    .nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:850;color:#31506b;text-decoration:none}.nav a.login-user,.nav a.login-rep{display:inline-flex;align-items:center;min-height:38px;border-radius:8px;padding:8px 12px;border:1px solid var(--line)}.nav a.login-user{background:#fff;color:var(--ink)}.nav a.login-rep{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(225,91,49,.22)}
+    .nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:850;color:#31506b;text-decoration:none}.nav a.login-user{display:inline-flex;align-items:center;min-height:38px;border-radius:8px;padding:8px 12px;border:1px solid var(--line);background:#fff;color:var(--ink)}
     .hero{position:relative;min-height:560px;display:grid;align-items:end;overflow:hidden;background:#102034}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,31,.86),rgba(8,18,31,.54) 48%,rgba(8,18,31,.18))}
     .hero-inner{position:relative;max-width:1180px;margin:0 auto;width:100%;padding:84px 18px 54px;color:#fff}.eyebrow{margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bde8dc}.hero h1{max-width:780px;margin:0;font-size:clamp(34px,6vw,68px);line-height:1.05;letter-spacing:0}.lead{max-width:720px;margin:18px 0 0;color:#e9f3f1;font-size:17px;line-height:1.8}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:11px 16px;font-weight:900;text-decoration:none;border:1px solid transparent}.button.primary{background:var(--accent);color:#fff}.button.secondary{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);color:#fff}.button.light{background:#fff;color:var(--ink);border-color:var(--line)}.hero-cta{min-height:56px;font-size:18px;padding:14px 22px}.db-bridge{background:#14344d!important;color:#fff!important;border-color:#14344d!important}
@@ -147,7 +149,7 @@ MATCH_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="login-user" href="/signin">一般ログイン</a><a class="login-rep" href="/representative">代表者ログイン/登録</a></nav></div></header>
+  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="login-user" href="/signin">ログイン</a></nav></div></header>
   <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>まずは募集中の相手を探す。足りなければDBから候補を広げる。</h1><p class="lead">Circle Matchは、大学サークル・部活動DBを土台に、練習試合、合同練習、助っ人募集、交流イベントを探しやすくするマッチングサービスです。</p><div class="actions"><a class="button primary hero-cta" href="#matches">募集中を見る</a><a class="button secondary" href="/circles">サークルDBを見る</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>対象大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>候補サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
@@ -193,20 +195,65 @@ SIGNIN_HTML = """<!doctype html>
     :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--brand:#0f7a62;--accent:#e15b31}
     *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
-    main{max-width:1040px;margin:auto;padding:38px 18px 60px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.hero h1{font-size:36px;line-height:1.15;margin:0}.hero p,.panel p{color:var(--muted);line-height:1.8}.button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.google-dot{width:20px;height:20px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0)}
-    .note{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:14px;line-height:1.7}.rep{background:#f9fbfd}
+    main{max-width:1040px;margin:auto;padding:38px 18px 60px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.hero h1{font-size:36px;line-height:1.15;margin:0}.hero p,.panel p{color:var(--muted);line-height:1.8}.button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--brand);border-color:var(--brand);color:#fff}.button.accent{background:var(--accent);border-color:var(--accent);color:#fff}.google-dot{width:20px;height:20px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0)}
+    .note{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:14px;line-height:1.7}.choice{display:none;gap:10px}.choice.active{display:grid}.status{margin-top:12px;padding:12px;border-radius:8px;background:#f9fbfd;color:var(--muted);line-height:1.7;font-size:14px}.status.error{background:#fff1f1;color:#a33}
     @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/representative">サークル代表はこちら</a><a href="/circles">サークルDB</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/circles">サークルDB</a></nav></div></header>
   <main>
-    <section class="hero"><h1>Googleアカウントで、練習試合探しを始める。</h1><p>一般ユーザーはGoogleログインで利用開始できます。閲覧はログイン不要、保存・問い合わせ準備などの個人機能はログイン後に使える設計にします。</p></section>
-    <section class="panel"><a id="googleButton" class="button" href="/auth/google"><span class="google-dot"></span><span>Googleでログイン</span></a><p id="oauthNote" class="note">Google OAuthで認証し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p><div class="panel rep"><p><b>サークル代表の方</b><br>募集掲載や代表申請はGoogleログインではなく、大学メール確認を含む代表専用フローから行います。</p><a class="button" href="/representative">サークル代表はこちら</a></div></section>
+    <section class="hero"><h1>ログインして、練習試合探しを始める。</h1><p>ログイン後に、一般ユーザーとして使うか、サークル代表として登録へ進むかを選べます。閲覧だけならログイン不要です。</p></section>
+    <section class="panel">
+      <button id="googleButton" class="button" type="button"><span class="google-dot"></span><span>Googleでログイン</span></button>
+      <div id="choice" class="choice">
+        <a class="button primary" href="/">一般ユーザーとして続ける</a>
+        <a class="button accent" href="/representative">サークル代表として登録する</a>
+      </div>
+      <p id="oauthNote" class="note">Supabase AuthでGoogle認証し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p>
+      <div id="status" class="status">ログイン状態を確認しています。</div>
+    </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const oauthReady = __OAUTH_READY__;
-    if(!oauthReady){document.getElementById("googleButton").href="/signin";document.getElementById("oauthNote").textContent="Google OAuthのClient ID/Secretが未設定です。Renderの環境変数を入れると、このボタンから実ログインできます。"}
+    const supabaseUrl = __SUPABASE_URL__;
+    const supabaseAnonKey = __SUPABASE_ANON_KEY__;
+    const authReady = __AUTH_READY__;
+    const statusEl = document.getElementById("status");
+    const choiceEl = document.getElementById("choice");
+    const loginButton = document.getElementById("googleButton");
+    function setStatus(text, error=false){statusEl.textContent=text; statusEl.className=error?"status error":"status"}
+    async function syncSession(client, session){
+      if(!session?.access_token) return null;
+      const res = await fetch("/api/auth/supabase", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({access_token:session.access_token})});
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || "ログイン同期に失敗しました");
+      return data.user;
+    }
+    async function boot(){
+      if(!authReady){
+        loginButton.disabled = true;
+        setStatus("SupabaseのURL/Anon Keyが未設定です。Renderの環境変数を入れると、このボタンから実ログインできます。", true);
+        return;
+      }
+      const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+      const { data } = await client.auth.getSession();
+      if(data.session){
+        const user = await syncSession(client, data.session);
+        loginButton.style.display = "none";
+        choiceEl.classList.add("active");
+        setStatus(`${user?.email || "ログイン済み"} でログインしています。利用方法を選んでください。`);
+      }else{
+        setStatus("Googleアカウントでログインしてください。");
+      }
+      loginButton.onclick = async () => {
+        setStatus("Googleログインへ移動します。");
+        const redirectTo = `${location.origin}/signin`;
+        const { error } = await client.auth.signInWithOAuth({provider:"google", options:{redirectTo, queryParams:{prompt:"select_account"}}});
+        if(error) setStatus(error.message, true);
+      };
+    }
+    boot().catch(err=>setStatus(err.message, true));
   </script>
 </body>
 </html>"""
@@ -456,6 +503,10 @@ def google_oauth_enabled():
     return bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET and SESSION_SECRET)
 
 
+def supabase_auth_enabled():
+    return bool(SUPABASE_URL and SUPABASE_ANON_KEY and SESSION_SECRET)
+
+
 def oauth_redirect_uri():
     root = base_url() or f"http://{HOST}:{PORT}"
     return f"{root}/auth/google/callback"
@@ -509,6 +560,21 @@ def fetch_json(url, access_token):
         return json.loads(response.read().decode("utf-8"))
 
 
+def fetch_supabase_user(access_token):
+    if not supabase_auth_enabled():
+        raise ValueError("Supabase Auth is not configured")
+    request = Request(
+        f"{SUPABASE_URL}/auth/v1/user",
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "apikey": SUPABASE_ANON_KEY,
+            "Accept": "application/json",
+        },
+    )
+    with urlopen(request, timeout=15) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
 def upsert_oauth_user(conn, profile):
     subject = profile.get("sub", "")
     email = profile.get("email", "")
@@ -529,6 +595,39 @@ def upsert_oauth_user(conn, profile):
         (user_id, "google", subject, email, profile.get("name", ""), profile.get("picture", ""), timestamp, timestamp),
     )
     row = conn.execute("select user_id from user_accounts where provider='google' and provider_subject=?", (subject,)).fetchone()
+    return row["user_id"]
+
+
+def upsert_supabase_user(conn, profile):
+    subject = profile.get("id", "")
+    email = profile.get("email", "")
+    if not subject or not email:
+        raise ValueError("Supabase profile missing id or email")
+    metadata = profile.get("user_metadata") or {}
+    timestamp = now()
+    user_id = slug("user", "supabase_" + subject)
+    conn.execute(
+        """
+        insert into user_accounts(user_id, provider, provider_subject, email, display_name, picture_url, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?)
+        on conflict(provider, provider_subject) do update set
+          email=excluded.email,
+          display_name=excluded.display_name,
+          picture_url=excluded.picture_url,
+          updated_at=excluded.updated_at
+        """,
+        (
+            user_id,
+            "supabase",
+            subject,
+            email,
+            metadata.get("full_name") or metadata.get("name") or "",
+            metadata.get("avatar_url") or metadata.get("picture") or "",
+            timestamp,
+            timestamp,
+        ),
+    )
+    row = conn.execute("select user_id from user_accounts where provider='supabase' and provider_subject=?", (subject,)).fetchone()
     return row["user_id"]
 
 
@@ -572,7 +671,9 @@ def render_signin_html():
     return (
         SIGNIN_HTML
         .replace("__SITE_NAME__", SITE_NAME)
-        .replace("__OAUTH_READY__", "true" if google_oauth_enabled() else "false")
+        .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
+        .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
+        .replace("__AUTH_READY__", "true" if supabase_auth_enabled() else "false")
         .encode("utf-8")
     )
 
@@ -1544,10 +1645,12 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def send_json(self, data, status=200):
+    def send_json(self, data, status=200, cookies=None):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
+        for cookie in cookies or []:
+            self.send_header("Set-Cookie", cookie)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -1715,6 +1818,24 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/auth/supabase":
+                if not supabase_auth_enabled():
+                    self.send_json({"error": "Supabase Auth is not configured"}, 503)
+                    return
+                data = self.read_json()
+                access_token = (data.get("access_token") or "").strip()
+                if not access_token:
+                    self.send_json({"error": "access_token is required"}, 400)
+                    return
+                profile = fetch_supabase_user(access_token)
+                with connect() as conn:
+                    user_id = upsert_supabase_user(conn, profile)
+                    session_id = create_user_session(conn, user_id)
+                    conn.commit()
+                self.send_json({"ok": True, "user": current_user(session_id)}, 200, [
+                    f"cm_session={session_id}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"
+                ])
+                return
             if parsed.path == "/api/claims":
                 data = self.read_json()
                 with connect() as conn:

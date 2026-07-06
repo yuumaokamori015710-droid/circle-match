@@ -25,9 +25,9 @@ services:
         value: outputs/public_circles_seed.csv
       - key: CIRCLEMATCH_SITE_BASE_URL
         sync: false
-      - key: CIRCLEMATCH_GOOGLE_CLIENT_ID
+      - key: CIRCLEMATCH_SUPABASE_URL
         sync: false
-      - key: CIRCLEMATCH_GOOGLE_CLIENT_SECRET
+      - key: CIRCLEMATCH_SUPABASE_ANON_KEY
         sync: false
       - key: CIRCLEMATCH_SESSION_SECRET
         sync: false
