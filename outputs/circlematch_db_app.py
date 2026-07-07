@@ -4,6 +4,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 import secrets
 import sqlite3
 import sys
@@ -113,7 +114,6 @@ REGION_GROUPS = {
     "hokkaido": {"label": "北海道", "prefectures": ["北海道"]},
     "tohoku": {"label": "東北", "prefectures": ["青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"]},
     "kanto": {"label": "関東", "prefectures": KANTO_PREFECTURES},
-    "metro": {"label": "関東（首都圏）", "prefectures": ["東京都", "神奈川県", "埼玉県", "千葉県"]},
     "chubu": {"label": "中部", "prefectures": ["新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県"]},
     "kansai": {"label": "関西", "prefectures": ["三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県"]},
     "chugoku_shikoku": {"label": "中国・四国", "prefectures": ["鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県"]},
@@ -134,7 +134,7 @@ MATCH_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     a{color:inherit}.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
     .top{max-width:1180px;margin:auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#0f7a62;color:#fff}
-    .nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:900;color:#31506b;text-decoration:none}.nav a.login-user{display:inline-flex;align-items:center;min-height:44px;border-radius:8px;padding:10px 17px;border:1px solid var(--accent);background:var(--accent);color:#fff;box-shadow:0 8px 18px rgba(225,91,49,.24)}
+    .nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a{font-size:14px;font-weight:900;color:#31506b;text-decoration:none}.nav a.login-user{display:inline-flex;align-items:center;min-height:40px;border-radius:8px;padding:9px 15px;border:1px solid var(--accent);background:#fff;color:var(--accent)}
     .hero{position:relative;min-height:560px;display:grid;align-items:end;overflow:hidden;background:#102034}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,31,.86),rgba(8,18,31,.54) 48%,rgba(8,18,31,.18))}
     .hero-inner{position:relative;max-width:1180px;margin:0 auto;width:100%;padding:84px 18px 54px;color:#fff}.eyebrow{margin:0 0 12px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bde8dc}.hero h1{max-width:780px;margin:0;font-size:clamp(34px,6vw,68px);line-height:1.05;letter-spacing:0}.lead{max-width:720px;margin:18px 0 0;color:#e9f3f1;font-size:17px;line-height:1.8}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:11px 16px;font-weight:900;text-decoration:none;border:1px solid transparent}.button.primary{background:var(--accent);color:#fff}.button.secondary{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);color:#fff}.button.light{background:#fff;color:var(--ink);border-color:var(--line)}.hero-cta{min-height:56px;font-size:18px;padding:14px 22px}.db-bridge{background:#14344d!important;color:#fff!important;border-color:#14344d!important}
@@ -270,7 +270,7 @@ SPORT_HTML = """<!doctype html>
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1180px;margin:auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}.nav a.find-link{display:inline-flex;align-items:center;min-height:38px;border-radius:8px;padding:8px 12px;background:var(--accent);color:#fff}
     main{max-width:1180px;margin:auto;padding:24px 18px 54px}.hero{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:14px}.hero h1{font-size:38px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.75}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.button.primary{background:var(--accent);color:#fff;border-color:transparent}
     .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:6px;font-size:27px}
-    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.region-list,.area-list{display:grid;gap:8px;padding:14px}.region-list{grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line);background:#f9fbfd}.region-button{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;text-align:left;color:var(--ink);font:inherit;cursor:pointer}.region-button.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.region-button b{display:block}.region-button span{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px;background:#fafcff}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.tablewrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.empty{padding:18px;color:var(--muted);line-height:1.7}footer{max-width:1180px;margin:0 auto;padding:0 18px 38px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
+    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.region-list,.area-list{display:grid;gap:8px;padding:14px}.region-list{grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line);background:#f9fbfd}.region-button,.area{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}.region-button{padding:10px;text-align:left}.region-button.active,.area.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.region-button b{display:block}.region-button span{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;background:#fafcff;text-align:left}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.tablewrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.empty{padding:18px;color:var(--muted);line-height:1.7}footer{max-width:1180px;margin:0 auto;padding:0 18px 38px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
     @media(max-width:860px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.hero h1{font-size:31px}}
   </style>
 </head>
@@ -286,6 +286,7 @@ SPORT_HTML = """<!doctype html>
     const sport = __SPORT_JSON__;
     const params = new URLSearchParams(location.search);
     let selectedRegion = params.get("region") || "";
+    let selectedPrefecture = params.get("prefecture") || "";
     const $ = id => document.getElementById(id);
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function statusLabel(v){return ({university_verified:"公式確認済み",admin_verified:"運営確認済み",claimed:"申請済み",unverified:"未確認"}[v] || v)}
@@ -293,7 +294,8 @@ SPORT_HTML = """<!doctype html>
     function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function regionButton(r){return `<button class="region-button ${r.value===selectedRegion?"active":""}" data-region="${esc(r.value)}"><b>${esc(r.label)}</b><span>${badge(`${r.match_count}件`,r.match_count>0?"ok":"")}${badge(`DB ${r.circle_count}件`)}</span></button>`}
-    async function boot(){const regionQs=selectedRegion?`&region=${encodeURIComponent(selectedRegion)}`:""; const data=await api(`/api/sport_overview?sport=${encodeURIComponent(sport)}${regionQs}`); $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("prefCount").textContent=data.areas.filter(a=>a.circle_count||a.match_count).length; $("regionList").innerHTML=data.regions.map(regionButton).join(""); $("areaList").innerHTML=data.areas.map(a=>`<div class="area"><b>${esc(a.prefecture)}</b><span>${badge(`${a.match_count}件`,a.match_count>0?"ok":"")}${badge(`DB ${a.circle_count}件`)}</span></div>`).join("") || `<div class="empty">この地域の募集・DB候補はまだありません。</div>`; $("circleRows").innerHTML=data.circles.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)} ${esc(c.city||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">データなし</td></tr>`; document.querySelectorAll("[data-region]").forEach(b=>b.onclick=()=>{selectedRegion=b.dataset.region; const next=new URL(location.href); if(selectedRegion) next.searchParams.set("region",selectedRegion); else next.searchParams.delete("region"); history.replaceState(null,"",next); boot().catch(e=>alert(e.message));});}
+    function areaButton(a){return `<button class="area ${a.prefecture===selectedPrefecture?"active":""}" data-prefecture="${esc(a.prefecture)}"><b>${esc(a.prefecture)}</b><span>${badge(`${a.match_count}件`,a.match_count>0?"ok":"")}${badge(`DB ${a.circle_count}件`)}</span></button>`}
+    async function boot(){const regionQs=selectedRegion?`&region=${encodeURIComponent(selectedRegion)}`:""; const prefQs=selectedPrefecture?`&prefecture=${encodeURIComponent(selectedPrefecture)}`:""; const data=await api(`/api/sport_overview?sport=${encodeURIComponent(sport)}${regionQs}${prefQs}`); selectedPrefecture=data.prefecture||""; $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("prefCount").textContent=data.areas.filter(a=>a.circle_count||a.match_count).length; $("regionList").innerHTML=data.regions.map(regionButton).join(""); $("areaList").innerHTML=data.areas.map(areaButton).join("") || `<div class="empty">この地域の募集・DB候補はまだありません。</div>`; $("circleRows").innerHTML=data.circles.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)} ${esc(c.city||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${badge(c.organization_type||"不明")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">データなし</td></tr>`; document.querySelectorAll("[data-region]").forEach(b=>b.onclick=()=>{selectedRegion=b.dataset.region; selectedPrefecture=""; const next=new URL(location.href); if(selectedRegion) next.searchParams.set("region",selectedRegion); else next.searchParams.delete("region"); next.searchParams.delete("prefecture"); history.replaceState(null,"",next); boot().catch(e=>alert(e.message));}); document.querySelectorAll("[data-prefecture]").forEach(b=>b.onclick=()=>{selectedPrefecture=b.dataset.prefecture; const next=new URL(location.href); next.searchParams.set("prefecture",selectedPrefecture); history.replaceState(null,"",next); boot().catch(e=>alert(e.message));});}
     boot().catch(e=>alert(e.message));
   </script>
 </body>
@@ -884,6 +886,19 @@ INVALID_CIRCLE_PHRASES = [
     "団体合同ハロウィンライブ",
     "新設団体活動予定書",
 ]
+INVALID_CIRCLE_EVENT_WORDS = [
+    "大会", "選手権", "リーグ戦", "トーナメント", "決定戦", "試合結果", "試合予定",
+    "戦績", "順位", "結果", "速報", "場所", "活動場所：", "活動日：", "活動時間：",
+]
+INVALID_SOURCE_PATH_PARTS = [
+    "/sports/result", "/result", "/results", "/news", "/event", "/events", "/schedule", "/calendar",
+]
+INVALID_CIRCLE_TITLE_PATTERNS = [
+    r"(TOP|一覧|こちら|を見る|について|もっと知る|ご確認ください)",
+    r"(届|補助金|住所変更|研究データ|研究インテグリティ|倫理委員会|認定証|指針|セレクション|再開|レベル\d)",
+    r"(紹介動画|活動場所[:：]|活動日[:：]|団体旅行|学部・大学院|付属校|練習しています|活動しています)",
+    r"サークル・部会活動",
+]
 
 
 def infer_sport_category(name, current="その他"):
@@ -896,11 +911,26 @@ def infer_sport_category(name, current="その他"):
     return current or "その他"
 
 
-def is_invalid_circle_name(name):
+def is_invalid_circle_name(name, source_url=""):
     text = (name or "").strip()
+    url = (source_url or "").lower()
     if not text:
         return True
     if text in INVALID_CIRCLE_EXACT_NAMES:
+        return True
+    if any(part in url for part in INVALID_SOURCE_PATH_PARTS) and any(word in text for word in INVALID_CIRCLE_EVENT_WORDS + ["優勝", "準優勝", "位"]):
+        return True
+    if any(re.search(pattern, text) for pattern in INVALID_CIRCLE_TITLE_PATTERNS):
+        return True
+    if re.search(r"^\d{1,2}\.\d{1,2}\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun|月|火|水|木|金|土|日|\()", text, re.I):
+        return True
+    if re.search(r"^\d{4}年", text) and any(word in text for word in INVALID_CIRCLE_EVENT_WORDS):
+        return True
+    if any(word in text for word in ["優勝", "準優勝", "ベスト", "ブロック…", "…"]) and any(word in text for word in INVALID_CIRCLE_EVENT_WORDS + ["リーグ", "位"]):
+        return True
+    if any(word in text for word in INVALID_CIRCLE_EVENT_WORDS) and not any(marker in text for marker in ["部", "会", "サークル", "クラブ", "団体", "委員会", "同好会"]):
+        return True
+    if len(text) > 14 and re.search(r"。$", text) and not any(marker in text for marker in ["部", "会", "サークル", "クラブ", "団体", "委員会", "同好会"]):
         return True
     if any(phrase in text for phrase in ["誓約書", "WORD／", "PDF", "文部科学省定義", "学生表彰", "新設団体活動予定書"]):
         return True
@@ -1321,7 +1351,7 @@ def seed_public_circles_from_csv(conn):
             circle_name = (item.get("circle_name") or "").strip()
             if not uni_name or not circle_name:
                 continue
-            if is_invalid_circle_name(circle_name):
+            if is_invalid_circle_name(circle_name, item.get("source_url", "")):
                 continue
             uni = conn.execute(
                 "select university_id from universities where university_name=? order by campus_name limit 1",
@@ -1359,9 +1389,9 @@ def seed_public_circles_from_csv(conn):
 def normalize_circle_records(conn):
     removed = 0
     updated = 0
-    for row in conn.execute("select circle_id, circle_name, sport_category from circles").fetchall():
+    for row in conn.execute("select circle_id, circle_name, sport_category, source_url from circles").fetchall():
         name = row["circle_name"]
-        if is_invalid_circle_name(name):
+        if is_invalid_circle_name(name, row["source_url"] or ""):
             conn.execute("delete from data_sources where entity_type='circle' and entity_id=?", (row["circle_id"],))
             conn.execute("delete from circle_private_profiles where circle_id=?", (row["circle_id"],))
             conn.execute("delete from circle_claims where circle_id=?", (row["circle_id"],))
@@ -1453,7 +1483,7 @@ def upsert_circle(conn, data, audit_entry=True):
     university_id = data.get("university_id", "").strip()
     if not name or not university_id:
         raise ValueError("university_id and circle_name are required")
-    if is_invalid_circle_name(name):
+    if is_invalid_circle_name(name, data.get("source_url", "")):
         raise ValueError("circle_name looks like an event result or non-circle record")
     circle_id = data.get("circle_id") or slug("c", university_id + "_" + name)
     timestamp = now()
@@ -2007,10 +2037,19 @@ def search_matches(params):
 def sport_overview(params):
     sport = (params.get("sport", ["野球"])[0] or "野球").strip()
     region = (params.get("region", [""])[0] or "").strip()
+    prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    if prefecture:
+        matching_region = next((key for key, data in REGION_GROUPS.items() if prefecture in data["prefectures"]), "")
+        if region and prefecture not in region_prefectures(region):
+            prefecture = ""
+        elif not region:
+            region = matching_region
     all_circles = search_circles({"sport": [sport]})
     all_matches = search_matches({"sport": [sport]})
-    circles = search_circles({"sport": [sport], "region": [region]})
-    matches = search_matches({"sport": [sport], "region": [region]})
+    region_circles = search_circles({"sport": [sport], "region": [region]})
+    region_matches = search_matches({"sport": [sport], "region": [region]})
+    circles = search_circles({"sport": [sport], "region": [region], "prefecture": [prefecture]})
+    matches = search_matches({"sport": [sport], "region": [region], "prefecture": [prefecture]})
     region_summaries = []
     for key, data in REGION_GROUPS.items():
         prefs = set(data["prefectures"])
@@ -2025,13 +2064,14 @@ def sport_overview(params):
     areas = []
     region_prefs = region_prefectures(region)
     for pref in region_prefs if region_prefs else PREFECTURES:
-        circle_count = sum(1 for c in circles if c["prefecture"] == pref)
-        match_count = sum(1 for m in matches if m["prefecture"] == pref)
+        circle_count = sum(1 for c in region_circles if c["prefecture"] == pref)
+        match_count = sum(1 for m in region_matches if m["prefecture"] == pref)
         if circle_count or match_count or region:
             areas.append({"prefecture": pref, "circle_count": circle_count, "match_count": match_count})
     return {
         "sport": sport,
         "region": region,
+        "prefecture": prefecture,
         "circle_count": len(circles),
         "match_count": len(matches),
         "regions": region_summaries,
@@ -2183,6 +2223,8 @@ def import_circles_csv(conn, text):
         circle_name = (item.get("circle_name") or "").strip()
         if not uni_name or not circle_name:
             continue
+        if is_invalid_circle_name(circle_name, item.get("source_url", "")):
+            continue
         uni = conn.execute("select university_id from universities where university_name=? order by campus_name limit 1", (uni_name,)).fetchone()
         if not uni:
             university_id = upsert_university(conn, {
@@ -2218,6 +2260,8 @@ def import_candidates_csv(conn, text):
         uni_name = (item.get("university_name") or "").strip()
         candidate_name = (item.get("candidate_name") or item.get("circle_name") or "").strip()
         if not uni_name or not candidate_name:
+            continue
+        if is_invalid_circle_name(candidate_name, item.get("source_url", "")):
             continue
         uni = conn.execute(
             "select university_id from universities where university_name=? order by campus_name limit 1",

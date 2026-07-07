@@ -73,6 +73,17 @@ EXCLUDE_WORDS = [
     "お知らせ",
     "募集",
     "大会",
+    "選手権",
+    "リーグ戦",
+    "トーナメント",
+    "試合",
+    "戦績",
+    "順位",
+    "結果",
+    "速報",
+    "場所",
+    "活動場所",
+    "活動日",
     "選手",
     "実施",
     "開催",
@@ -84,6 +95,16 @@ EXCLUDE_WORDS = [
     "金メダル",
     "講習会",
     "活躍",
+    "一覧",
+    "こちら",
+    "について",
+    "もっと知る",
+    "紹介動画",
+    "認定証",
+    "補助金",
+    "住所変更",
+    "研究データ",
+    "倫理委員会",
     "令和",
     "年度",
     "全ての方向け",
@@ -208,6 +229,10 @@ def is_candidate_name(text):
     if not (2 <= len(text) <= 45):
         return False
     if any(word in text for word in EXCLUDE_WORDS):
+        return False
+    if re.search(r"^\d{1,2}\.\d{1,2}\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun|月|火|水|木|金|土|日|\()", text, re.I):
+        return False
+    if re.search(r"(TOP|一覧|こちら|を見る|について|もっと知る|ご確認ください|活動場所[:：]|活動日[:：])", text):
         return False
     if re.search(r"[。！？、:：/\\]|\\d{4}|http|www\\.|^[A-Z]{3}\\s+\\d+", text, re.I):
         return False
