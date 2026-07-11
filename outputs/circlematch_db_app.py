@@ -123,6 +123,13 @@ REGION_GROUPS = {
 SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "不明"]
+ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
+
+
+def with_adsense(html):
+    if ADSENSE_HEAD in html:
+        return html
+    return html.replace("</head>", f"  {ADSENSE_HEAD}\n</head>", 1)
 
 MATCH_HTML = """<!doctype html>
 <html lang="ja">
@@ -705,7 +712,7 @@ def create_user_session(conn, user_id):
 
 def render_public_html():
     return (
-        MATCH_HTML
+        with_adsense(MATCH_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
@@ -720,7 +727,7 @@ def render_public_html():
 
 def render_circles_html():
     return (
-        PUBLIC_HTML
+        with_adsense(PUBLIC_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
@@ -731,7 +738,7 @@ def render_circles_html():
 
 def render_signin_html():
     return (
-        SIGNIN_HTML
+        with_adsense(SIGNIN_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
         .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
@@ -743,7 +750,7 @@ def render_signin_html():
 def render_sport_html(sport):
     sport = sport if sport in sport_options() else "野球"
     return (
-        SPORT_HTML
+        with_adsense(SPORT_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORT__", sport)
         .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
@@ -753,7 +760,7 @@ def render_sport_html(sport):
 
 def render_representative_html():
     return (
-        REPRESENTATIVE_HTML
+        with_adsense(REPRESENTATIVE_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__ORG_TYPES__", json.dumps(ORGANIZATION_TYPES, ensure_ascii=False))
@@ -782,7 +789,7 @@ def render_circle_profile_html(profile_slug):
         return html.escape(value if value else fallback)
     sport = data.get("sport_category") or "その他"
     page = (
-        CIRCLE_PROFILE_HTML
+        with_adsense(CIRCLE_PROFILE_HTML)
         .replace("__SITE_NAME__", html.escape(SITE_NAME))
         .replace("__UNIVERSITY_NAME__", clean(data.get("university_name")))
         .replace("__SPORT__", clean(sport))
@@ -804,7 +811,7 @@ def render_circle_profile_html(profile_slug):
 
 def render_admin_html():
     return (
-        HTML
+        with_adsense(HTML)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__SOURCE_TYPES__", json.dumps(SOURCE_TYPES, ensure_ascii=False))
         .replace("__STATUSES__", json.dumps(VERIFICATION_STATUSES, ensure_ascii=False))
@@ -1097,7 +1104,7 @@ def legal_layout(title, body):
   <style>{LEGAL_CSS}</style>
 </head>
 <body><main><a class="back" href="/">トップへ戻る</a><div class="panel">{body}</div></main></body></html>"""
-    return html.encode("utf-8")
+    return with_adsense(html).encode("utf-8")
 
 
 def privacy_page():
