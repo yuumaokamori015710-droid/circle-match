@@ -1113,9 +1113,14 @@ INVALID_CIRCLE_PHRASES = [
 INVALID_CIRCLE_ALWAYS_PHRASES = [
     "合同ライブ",
     "合同ハロウィンライブ",
+    "合同演奏会",
     "活動予定書",
     "参加しました",
     "戦績報告会",
+    "活動報告会",
+    "定期演奏会",
+    "運動会",
+    "インタビュー",
 ]
 INVALID_CIRCLE_EVENT_WORDS = [
     "大会", "選手権", "リーグ戦", "トーナメント", "決定戦", "試合結果", "試合予定",
@@ -1176,6 +1181,10 @@ def is_invalid_circle_name(name, source_url=""):
     if any(ch.isdigit() for ch in text) and any(phrase in text for phrase in ["名・", "%", "合同ライブ", "活動予定書"]):
         return True
     if "第" in text and any(word in text for word in ["大会", "選手権", "リーグ戦", "トーナメント"]):
+        return True
+    if "第" in text and any(word in text for word in ["演奏会", "運動会", "外語祭"]):
+        return True
+    if len(text) > 36 and any(word in text for word in ["インタビュー", "振り返る", "を前に"]):
         return True
     if any(phrase in text for phrase in ["本学学生が", "号 歴史を変えた"]):
         return True
