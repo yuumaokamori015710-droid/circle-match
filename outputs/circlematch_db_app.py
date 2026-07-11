@@ -160,7 +160,7 @@ MATCH_HTML = """<!doctype html>
 </head>
 <body>
   <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative">新規登録</a></nav></div></header>
-  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative">募集する</a></div></div></section>
+  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/post-match">募集する</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>対象大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>候補サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
     <section id="matches" class="section panel"><div class="panel-head"><div><h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p></div></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sortFilter"><option value="date">日時が近い順</option><option value="new">新着順</option><option value="university">大学名順</option><option value="sport">競技順</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div><div class="section-link"><a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a></div></section>
@@ -294,9 +294,9 @@ SPORT_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative">サークル代表はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
   <main>
-    <section class="hero"><div><h1>__SPORT__の相手を探す</h1><p>__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。</p></div><a class="button primary" href="/representative">募集する</a></section>
+    <section class="hero"><div><h1>__SPORT__の相手を探す</h1><p>__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。</p></div><a class="button primary" href="/post-match">募集する</a></section>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都道府県</span><strong id="prefCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="regionList" class="region-list"></div><div id="areaList" class="area-list"></div></aside><section class="panel db-panel"><h2>__SPORT__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><span id="activeFilterText"></span></div><div id="filterMenu" class="filter-menu hidden"></div><div class="tablewrap"><table><thead><tr><th><button class="th-filter" data-filter="university">大学 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="circle">団体名 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th>登録済み</th><th><button class="th-filter" data-filter="type">種別 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="source">出典 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
   </main>
@@ -348,9 +348,9 @@ REGION_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative">募集する</a><a href="/signin">ログイン</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
   <main>
-    <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/representative">募集する</a></section>
+    <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/post-match">募集する</a></section>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象競技</span><strong id="sportCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>スポーツ別の交流募集</h2><div id="sportList" class="sport-list"></div><div id="areaList" class="area-list"></div></aside><section class="right-stack"><div class="panel"><h2>交流募集</h2><div id="matchList" class="match-list"></div></div><div class="panel"><h2>__REGION_LABEL__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><a id="dbLink" class="admin-link" href="/circles">DBで詳しく見る</a></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section></section>
   </main>
@@ -371,6 +371,61 @@ REGION_HTML = """<!doctype html>
     function updateUrl(){const next=new URL(location.href); next.searchParams.set("region",region); if(selectedSport)next.searchParams.set("sport",selectedSport); else next.searchParams.delete("sport"); if(selectedPrefecture)next.searchParams.set("prefecture",selectedPrefecture); else next.searchParams.delete("prefecture"); history.replaceState(null,"",next)}
     async function boot(){updateUrl(); const qs=new URLSearchParams({region}); if(selectedSport)qs.set("sport",selectedSport); if(selectedPrefecture)qs.set("prefecture",selectedPrefecture); const data=await api(`/api/region_overview?${qs}`); selectedPrefecture=data.prefecture||""; $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("sportCount").textContent=data.sports.filter(s=>s.circle_count||s.match_count).length; $("sportList").innerHTML=[{name:"",circle_count:data.region_circle_count,match_count:data.region_match_count},...data.sports].map(sportButton).join(""); $("areaList").innerHTML=data.areas.map(areaButton).join("") || `<div class="empty">この地域の候補はまだありません。</div>`; $("matchList").innerHTML=data.matches.map(matchCard).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件のDB候補は ${data.circle_count} 件あります。</div>`; $("visibleCircleCount").textContent=data.circles.length; $("circleRows").innerHTML=data.circles.map(circleRow).join("") || `<tr><td colspan="5" class="empty">データなし</td></tr>`; const dbQs=new URLSearchParams({region}); if(selectedSport)dbQs.set("sport",selectedSport); if(selectedPrefecture)dbQs.set("prefecture",selectedPrefecture); $("dbLink").href="/circles?"+dbQs; document.querySelectorAll("[data-sport]").forEach(b=>b.onclick=()=>{selectedSport=b.dataset.sport; selectedPrefecture=""; boot().catch(e=>alert(e.message))}); document.querySelectorAll("[data-prefecture]").forEach(b=>b.onclick=()=>{selectedPrefecture=b.dataset.prefecture; boot().catch(e=>alert(e.message))})}
     boot().catch(e=>alert(e.message));
+  </script>
+</body>
+</html>"""
+
+POST_MATCH_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>募集する | __SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--soft:#f4f7fa;--accent:#e15b31;--brand:#0f7a62}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}.nav a.db-request{margin-left:auto;border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#fff}
+    main{max-width:1120px;margin:auto;padding:28px 18px 60px}.hero{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:14px}.hero h1{font-size:36px;line-height:1.15;margin:0 0 10px}.hero p{margin:0;color:var(--muted);line-height:1.8;max-width:760px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.button.ghost{background:#fff;color:var(--accent);border-color:var(--accent)}
+    .layout{display:grid;grid-template-columns:.92fr 1.08fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.panel-body{padding:16px}.search-row{display:grid;gap:8px}.circle-list{display:grid;gap:8px;margin-top:12px;max-height:520px;overflow:auto}.circle-option{border:1px solid var(--line);border-radius:8px;background:#fff;text-align:left;padding:12px;cursor:pointer;color:var(--ink)}.circle-option:hover,.circle-option.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.circle-option b{display:block;font-size:16px}.sub{display:block;margin-top:4px;color:var(--muted);font-size:13px;line-height:1.45}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900;margin-top:8px}.selected{margin-top:12px;border-radius:8px;background:#f9fbfd;border:1px solid var(--line);padding:12px;color:#405164;line-height:1.7}
+    form{display:grid;gap:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500;line-height:1.5}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:98px;resize:vertical}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850;line-height:1.7}.result.error{background:#fde8e4;color:#9b2f1a}.notice{border:1px solid #f2d0bd;background:#fff8f4;color:#7c3a20;border-radius:8px;padding:12px;line-height:1.7;font-size:14px}.login-needed{display:none}
+    @media(max-width:860px){.layout,.hero,.form-grid{grid-template-columns:1fr}.hero h1{font-size:30px}.top{align-items:flex-start}.nav a.db-request{margin-left:0}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集中を見る</a><a href="/circles">サークルDB</a><a class="db-request" href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <main>
+    <section class="hero"><div><h1>練習試合・交流募集を出す</h1><p>まず自分のサークルをDBから検索して選び、募集したい期間・練習内容・場所・条件を登録します。DBにない場合は右上の登録依頼から申請してください。</p></div><a class="button ghost" href="/representative">DBへの登録依頼はこちら</a></section>
+    <section id="loginNeeded" class="notice login-needed">募集を投稿するにはログインが必要です。<a href="/signin">ログイン / 新規登録</a> してから投稿してください。</section>
+    <section class="layout">
+      <aside class="panel"><h2>自分のサークルを検索</h2><div class="panel-body"><div class="search-row"><input id="circleSearch" placeholder="大学名・団体名・競技で検索"><select id="sportFilter"><option value="">全競技</option></select></div><div id="circleList" class="circle-list"></div><div id="selectedCircle" class="selected">サークルを選択してください。</div></div></aside>
+      <section class="panel"><h2>募集内容</h2><div class="panel-body">
+        <form id="matchForm">
+          <div class="form-grid"><label>募集種別<select id="matchType" required><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>交流イベント</option><option>大会参加者募集</option></select></label><label>レベル感<select id="levelLabel"><option value="">選択してください</option><option>初心者歓迎</option><option>ゆるめ</option><option>中級</option><option>経験者中心</option><option>競技志向</option></select></label></div>
+          <div class="form-grid"><label>募集開始日<small>この日以降で相手を探す</small><input id="periodStart" type="date" required></label><label>募集終了日<small>この日までに実施したい</small><input id="periodEnd" type="date" required></label></div>
+          <div class="form-grid"><label>場所<small>キャンパス、体育館、グラウンド、地域など</small><input id="place" required placeholder="例: 東京都内体育館、大学グラウンド"></label><label>希望人数・形式<small>任意</small><input id="capacity" placeholder="例: 5対5、10人程度、1チーム"></label></div>
+          <label>何の練習をしたいか<small>例: 練習試合、基礎練、ゲーム形式、合同練習、助っ人募集など</small><textarea id="practiceDetail" required placeholder="例: 週末にフットサルの練習試合をしたいです。経験者多めですが、楽しく交流できる相手を探しています。"></textarea></label>
+          <label>相手への条件・補足<small>費用、持ち物、雨天時、連絡方法、希望する相手のレベルなど</small><textarea id="conditions" placeholder="例: コート代折半、男女ミックス可、日程はDMで調整したいです。"></textarea></label>
+          <div id="result" class="result"></div>
+          <button class="button primary" type="submit">募集を投稿する</button>
+        </form>
+      </div></section>
+    </section>
+  </main>
+  <script>
+    const sports = __SPORTS__;
+    const $ = id => document.getElementById(id);
+    let circles = [];
+    let selectedCircle = null;
+    let authenticated = false;
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    async function api(path, options){const r=await fetch(path, options); const data=await r.json(); if(!r.ok)throw new Error(data.error||"通信に失敗しました"); return data}
+    function fillSports(){ $("sportFilter").innerHTML='<option value="">全競技</option>'+sports.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("") }
+    function renderCircles(){const q=$("circleSearch").value.trim().toLowerCase(); const sport=$("sportFilter").value; const rows=circles.filter(c=>{const blob=[c.university_name,c.circle_name,c.sport_category,c.prefecture,c.city].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if(sport && c.sport_category!==sport)return false; return true}).slice(0,80); $("circleList").innerHTML=rows.map(c=>`<button type="button" class="circle-option ${selectedCircle?.circle_id===c.circle_id?"active":""}" data-circle="${esc(c.circle_id)}"><b>${esc(c.circle_name)}</b><span class="sub">${esc(c.university_name)} / ${esc(c.prefecture)} ${esc(c.city||"")} / ${esc(c.sport_category||"競技未設定")}</span><span class="badge">${esc(c.organization_type||"不明")}</span></button>`).join("") || `<div class="selected">候補が見つかりません。DBへの登録依頼をしてください。</div>`; document.querySelectorAll("[data-circle]").forEach(b=>b.onclick=()=>selectCircle(b.dataset.circle))}
+    function selectCircle(id){selectedCircle=circles.find(c=>c.circle_id===id); if(!selectedCircle)return; $("selectedCircle").innerHTML=`<b>${esc(selectedCircle.circle_name)}</b><span class="sub">${esc(selectedCircle.university_name)} / ${esc(selectedCircle.prefecture)} / ${esc(selectedCircle.sport_category||"")}</span>`; if(selectedCircle.sport_category) $("sportFilter").value=selectedCircle.sport_category; renderCircles()}
+    async function boot(){fillSports(); const me=await api("/api/me"); authenticated=!!me.authenticated; $("loginNeeded").style.display=authenticated?"none":"block"; circles=await api("/api/circles"); renderCircles()}
+    ["circleSearch","sportFilter"].forEach(id=>$(id).addEventListener("input",renderCircles));
+    $("matchForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; try{if(!authenticated)throw new Error("募集投稿にはログインが必要です。"); if(!selectedCircle)throw new Error("自分のサークルを選択してください。"); const payload={circle_id:selectedCircle.circle_id,match_type:$("matchType").value,level_label:$("levelLabel").value,period_start:$("periodStart").value,period_end:$("periodEnd").value,place:$("place").value,capacity:$("capacity").value,practice_detail:$("practiceDetail").value,conditions:$("conditions").value}; result.textContent="投稿中です"; const data=await api("/api/matches/public",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`募集を投稿しました。投稿ID: ${esc(data.match_post_id)}<br><a href="/?q=${encodeURIComponent(selectedCircle.circle_name)}#matches">募集掲示板で確認する</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
+    boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
   </script>
 </body>
 </html>"""
@@ -813,6 +868,15 @@ def render_region_html(region):
     )
 
 
+def render_post_match_html():
+    return (
+        with_adsense(POST_MATCH_HTML)
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
 def render_representative_html():
     return (
         with_adsense(REPRESENTATIVE_HTML)
@@ -894,7 +958,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/signin", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/signin", "/post-match", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
     paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
     urls = "\n".join(
@@ -1376,9 +1440,14 @@ def init_db():
           match_type text not null,
           level_label text,
           scheduled_at text,
+          period_start text,
+          period_end text,
           place text,
+          practice_detail text,
+          capacity text,
           conditions text,
           status text not null default 'open',
+          created_by text,
           created_at text not null,
           updated_at text not null
         );
@@ -1448,6 +1517,11 @@ def init_db():
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
         ensure_column(conn, "circles", "organization_type", "text not null default '不明'")
+        ensure_column(conn, "match_posts", "period_start", "text")
+        ensure_column(conn, "match_posts", "period_end", "text")
+        ensure_column(conn, "match_posts", "practice_detail", "text")
+        ensure_column(conn, "match_posts", "capacity", "text")
+        ensure_column(conn, "match_posts", "created_by", "text")
         conn.execute("create index if not exists idx_circles_organization_type on circles(organization_type)")
         conn.execute("""
             update circles
@@ -2018,6 +2092,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(render_signin_html())
             elif parsed.path == "/logout":
                 self.redirect("/", ["cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"])
+            elif parsed.path == "/post-match":
+                self.send_html(render_post_match_html())
             elif parsed.path == "/representative":
                 self.send_html(render_representative_html())
             elif parsed.path == "/sports":
@@ -2127,6 +2203,17 @@ class Handler(BaseHTTPRequestHandler):
                     claim_id, circle_id = create_circle_claim(conn, data)
                     conn.commit()
                     self.send_json({"ok": True, "claim_id": claim_id, "circle_id": circle_id, "profile_url": f"/circles/{quote(circle_id)}"})
+                return
+            if parsed.path == "/api/matches/public":
+                data = self.read_json()
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.send_json({"error": "login required"}, 401)
+                    return
+                with connect() as conn:
+                    match_post_id = create_public_match_post(conn, data, user)
+                    conn.commit()
+                    self.send_json({"ok": True, "match_post_id": match_post_id})
                 return
             if not self.require_admin():
                 return
@@ -2415,6 +2502,65 @@ def current_user(session_id):
         if not row:
             return {"authenticated": False}
         return {"authenticated": True, **dict(row)}
+
+
+def create_public_match_post(conn, data, user):
+    if not user.get("authenticated"):
+        raise ValueError("login required")
+    circle_id = (data.get("circle_id") or "").strip()
+    if not circle_id:
+        raise ValueError("circle_id is required")
+    circle = conn.execute("select circle_id from circles where circle_id=?", (circle_id,)).fetchone()
+    if not circle:
+        raise ValueError("circle not found")
+    match_type = (data.get("match_type") or "練習試合").strip()
+    period_start = (data.get("period_start") or "").strip()
+    period_end = (data.get("period_end") or "").strip()
+    place = (data.get("place") or "").strip()
+    practice_detail = (data.get("practice_detail") or "").strip()
+    if not period_start or not period_end or not place or not practice_detail:
+        raise ValueError("period_start, period_end, place and practice_detail are required")
+    timestamp = now()
+    scheduled_at = f"{period_start}〜{period_end}" if period_start != period_end else period_start
+    capacity = (data.get("capacity") or "").strip()
+    conditions = (data.get("conditions") or "").strip()
+    if capacity:
+        conditions = f"希望人数・形式: {capacity}\n{conditions}".strip()
+    if practice_detail:
+        conditions = f"{practice_detail}\n{conditions}".strip()
+    entity_id = slug("m", circle_id + match_type + period_start + period_end + timestamp)
+    conn.execute(
+        """
+        insert into match_posts(match_post_id, circle_id, match_type, level_label, scheduled_at,
+          period_start, period_end, place, practice_detail, capacity, conditions, status, created_by, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """,
+        (
+            entity_id,
+            circle_id,
+            match_type,
+            (data.get("level_label") or "").strip(),
+            scheduled_at,
+            period_start,
+            period_end,
+            place,
+            practice_detail,
+            capacity,
+            conditions,
+            "open",
+            user.get("user_id", ""),
+            timestamp,
+            timestamp,
+        ),
+    )
+    audit(conn, "public_insert", "match_post", entity_id, {
+        "circle_id": circle_id,
+        "match_type": match_type,
+        "period_start": period_start,
+        "period_end": period_end,
+        "created_by": user.get("user_id", ""),
+    })
+    return entity_id
 
 
 def collection_status():
