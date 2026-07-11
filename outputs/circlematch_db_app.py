@@ -184,7 +184,7 @@ MATCH_HTML = """<!doctype html>
     function fillRegions(){ $("regionFilter").innerHTML='<option value="">全地域</option>'+regions.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("") }
     async function drawJapanMap(){if(!window.d3||!window.topojson)return; const svg=d3.select("#japanMap"); if(svg.select(".country").size())return; const world=await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"); const countries=topojson.feature(world, world.objects.countries); const japan=countries.features.find(d=>String(d.id)==="392"); if(!japan)return; const projection=d3.geoMercator().fitSize([520,560],japan); const path=d3.geoPath(projection); svg.append("path").datum(japan).attr("class","country").attr("d",path); svg.append("path").datum(topojson.mesh(world, world.objects.countries, (a,b)=>String(a.id)==="392"||String(b.id)==="392")).attr("class","outline").attr("d",path)}
     function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>相手を探す</b></a>`).join("") }
-    function renderRegions(circles,matches){const pos={hokkaido:"pos-hokkaido",tohoku:"pos-tohoku",kanto:"pos-kanto",chubu:"pos-chubu",kansai:"pos-kansai",chugoku_shikoku:"pos-chugoku_shikoku",kyushu:"pos-kyushu"}; $("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; return `<a class="map-region ${esc(pos[r.value]||"")}" href="/?region=${encodeURIComponent(r.value)}#matches"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span></a>`}).join("")}
+    function renderRegions(circles,matches){const pos={hokkaido:"pos-hokkaido",tohoku:"pos-tohoku",kanto:"pos-kanto",chubu:"pos-chubu",kansai:"pos-kansai",chugoku_shikoku:"pos-chugoku_shikoku",kyushu:"pos-kyushu"}; $("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; return `<a class="map-region ${esc(pos[r.value]||"")}" href="/regions?region=${encodeURIComponent(r.value)}"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span></a>`}).join("")}
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
@@ -326,6 +326,50 @@ SPORT_HTML = """<!doctype html>
     async function boot(){const regionQs=selectedRegion?`&region=${encodeURIComponent(selectedRegion)}`:""; const prefQs=selectedPrefecture?`&prefecture=${encodeURIComponent(selectedPrefecture)}`:""; const data=await api(`/api/sport_overview?sport=${encodeURIComponent(sport)}${regionQs}${prefQs}`); selectedPrefecture=data.prefecture||""; currentCircles=data.circles; $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("prefCount").textContent=data.areas.filter(a=>a.circle_count||a.match_count).length; $("regionList").innerHTML=data.regions.map(regionButton).join(""); $("areaList").innerHTML=data.areas.map(areaButton).join("") || `<div class="empty">この地域の募集・DB候補はまだありません。</div>`; renderCircleRows(); document.querySelectorAll("[data-region]").forEach(b=>b.onclick=()=>{selectedRegion=b.dataset.region; selectedPrefecture=""; const next=new URL(location.href); if(selectedRegion) next.searchParams.set("region",selectedRegion); else next.searchParams.delete("region"); next.searchParams.delete("prefecture"); history.replaceState(null,"",next); boot().catch(e=>alert(e.message));}); document.querySelectorAll("[data-prefecture]").forEach(b=>b.onclick=()=>{selectedPrefecture=b.dataset.prefecture; const next=new URL(location.href); next.searchParams.set("prefecture",selectedPrefecture); history.replaceState(null,"",next); boot().catch(e=>alert(e.message));});}
     document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation(); openFilterMenu(b.dataset.filter)}));
     document.addEventListener("click",e=>{if(!$("filterMenu").contains(e.target)&&!e.target.closest("[data-filter]"))$("filterMenu").classList.add("hidden")});
+    boot().catch(e=>alert(e.message));
+  </script>
+</body>
+</html>"""
+
+REGION_HTML = """<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__REGION_LABEL__ | __SITE_NAME__</title>
+  <style>
+    :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--soft:#f4f7fa;--accent:#e15b31;--brand:#0f7a62}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1180px;margin:auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;color:#31506b;text-decoration:none;font-weight:850;line-height:1}.nav a.find-link{border-radius:8px;padding:10px 14px;background:var(--accent);color:#fff}
+    main{max-width:1180px;margin:auto;padding:24px 18px 54px}.hero{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:14px}.hero h1{font-size:38px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.75}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.button.primary{background:var(--accent);color:#fff;border-color:transparent}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:6px;font-size:27px}
+    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.sport-list,.area-list{display:grid;gap:8px;padding:14px}.sport-list{grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line);background:#f9fbfd}.sport-button,.area{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}.sport-button{padding:10px;text-align:left}.sport-button.active,.area.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.sport-button b{display:block}.sport-button span{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;background:#fafcff;text-align:left}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.match-list{display:grid;gap:10px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:13px;background:#fff}.match-card h3{margin:6px 0 8px;font-size:17px}.meta{display:grid;gap:4px;color:var(--muted);font-size:13px}.empty{padding:18px;color:var(--muted);line-height:1.7}.table-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:850}.tablewrap{overflow:auto;max-height:520px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.right-stack{display:grid;gap:14px}footer{max-width:1180px;margin:0 auto;padding:0 18px 38px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
+    @media(max-width:860px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.hero h1{font-size:31px}.sport-list{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative">募集する</a><a href="/signin">ログイン</a></nav></div></header>
+  <main>
+    <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/representative">募集する</a></section>
+    <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象競技</span><strong id="sportCount">0</strong></div></section>
+    <section class="grid"><aside class="panel"><h2>スポーツ別の交流募集</h2><div id="sportList" class="sport-list"></div><div id="areaList" class="area-list"></div></aside><section class="right-stack"><div class="panel"><h2>交流募集</h2><div id="matchList" class="match-list"></div></div><div class="panel"><h2>__REGION_LABEL__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><a id="dbLink" class="admin-link" href="/circles">DBで詳しく見る</a></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section></section>
+  </main>
+  <footer><span>他の条件で探す場合は</span><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a></footer>
+  <script>
+    const region = __REGION_JSON__;
+    const params = new URLSearchParams(location.search);
+    let selectedSport = params.get("sport") || "";
+    let selectedPrefecture = params.get("prefecture") || "";
+    const $ = id => document.getElementById(id);
+    function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
+    function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
+    async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
+    function sportButton(s){return `<button class="sport-button ${s.name===selectedSport?"active":""}" data-sport="${esc(s.name)}"><b>${esc(s.name || "すべて")}</b><span>${badge(`${s.match_count}件`,s.match_count>0?"ok":"")}${badge(`DB ${s.circle_count}件`)}</span></button>`}
+    function areaButton(a){return `<button class="area ${a.prefecture===selectedPrefecture?"active":""}" data-prefecture="${esc(a.prefecture)}"><b>${esc(a.prefecture)}</b><span>${badge(`${a.match_count}件`,a.match_count>0?"ok":"")}${badge(`DB ${a.circle_count}件`)}</span></button>`}
+    function matchCard(m){return `<article class="match-card"><div>${badge(m.status||"open","ok")} ${badge(m.match_type)} ${badge(m.sport_category||"競技未設定")}</div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div></article>`}
+    function circleRow(c){return `<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)} ${esc(c.city||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明")}</td><td>${esc(c.sport_category||"その他")}</td></tr>`}
+    function updateUrl(){const next=new URL(location.href); next.searchParams.set("region",region); if(selectedSport)next.searchParams.set("sport",selectedSport); else next.searchParams.delete("sport"); if(selectedPrefecture)next.searchParams.set("prefecture",selectedPrefecture); else next.searchParams.delete("prefecture"); history.replaceState(null,"",next)}
+    async function boot(){updateUrl(); const qs=new URLSearchParams({region}); if(selectedSport)qs.set("sport",selectedSport); if(selectedPrefecture)qs.set("prefecture",selectedPrefecture); const data=await api(`/api/region_overview?${qs}`); selectedPrefecture=data.prefecture||""; $("circleCount").textContent=data.circle_count; $("matchCount").textContent=data.match_count; $("sportCount").textContent=data.sports.filter(s=>s.circle_count||s.match_count).length; $("sportList").innerHTML=[{name:"",circle_count:data.region_circle_count,match_count:data.region_match_count},...data.sports].map(sportButton).join(""); $("areaList").innerHTML=data.areas.map(areaButton).join("") || `<div class="empty">この地域の候補はまだありません。</div>`; $("matchList").innerHTML=data.matches.map(matchCard).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件のDB候補は ${data.circle_count} 件あります。</div>`; $("visibleCircleCount").textContent=data.circles.length; $("circleRows").innerHTML=data.circles.map(circleRow).join("") || `<tr><td colspan="5" class="empty">データなし</td></tr>`; const dbQs=new URLSearchParams({region}); if(selectedSport)dbQs.set("sport",selectedSport); if(selectedPrefecture)dbQs.set("prefecture",selectedPrefecture); $("dbLink").href="/circles?"+dbQs; document.querySelectorAll("[data-sport]").forEach(b=>b.onclick=()=>{selectedSport=b.dataset.sport; selectedPrefecture=""; boot().catch(e=>alert(e.message))}); document.querySelectorAll("[data-prefecture]").forEach(b=>b.onclick=()=>{selectedPrefecture=b.dataset.prefecture; boot().catch(e=>alert(e.message))})}
     boot().catch(e=>alert(e.message));
   </script>
 </body>
@@ -758,6 +802,17 @@ def render_sport_html(sport):
     )
 
 
+def render_region_html(region):
+    region = region if region in REGION_GROUPS else "kanto"
+    return (
+        with_adsense(REGION_HTML)
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__REGION_LABEL__", REGION_GROUPS[region]["label"])
+        .replace("__REGION_JSON__", json.dumps(region, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
 def render_representative_html():
     return (
         with_adsense(REPRESENTATIVE_HTML)
@@ -841,6 +896,7 @@ def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
     paths = ["/", "/signin", "/representative", "/circles", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
+    paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -1967,6 +2023,9 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/sports":
                 sport = (parse_qs(parsed.query).get("sport", ["野球"])[0] or "野球").strip()
                 self.send_html(render_sport_html(sport))
+            elif parsed.path == "/regions":
+                region = (parse_qs(parsed.query).get("region", ["kanto"])[0] or "kanto").strip()
+                self.send_html(render_region_html(region))
             elif parsed.path == "/circles":
                 self.send_html(render_circles_html())
             elif parsed.path.startswith("/circles/"):
@@ -2012,6 +2071,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(search_matches(parse_qs(parsed.query)))
             elif parsed.path == "/api/sport_overview":
                 self.send_json(sport_overview(parse_qs(parsed.query)))
+            elif parsed.path == "/api/region_overview":
+                self.send_json(region_overview(parse_qs(parsed.query)))
             elif parsed.path == "/api/me":
                 self.send_json(current_user(self.cookie_value("cm_session")))
             elif parsed.path == "/api/collection_status":
@@ -2283,6 +2344,58 @@ def sport_overview(params):
         "regions": region_summaries,
         "areas": areas,
         "matches": matches,
+        "circles": circles[:250],
+    }
+
+
+def region_overview(params):
+    region = (params.get("region", ["kanto"])[0] or "kanto").strip()
+    if region not in REGION_GROUPS:
+        region = "kanto"
+    sport = (params.get("sport", [""])[0] or "").strip()
+    prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    if prefecture and prefecture not in region_prefectures(region):
+        prefecture = ""
+    region_label = REGION_GROUPS[region]["label"]
+    region_circles_all = search_circles({"region": [region]})
+    region_matches_all = search_matches({"region": [region]})
+    circles = search_circles({"region": [region], "sport": [sport], "prefecture": [prefecture]})
+    matches = search_matches({"region": [region], "sport": [sport], "prefecture": [prefecture]})
+    sports = []
+    for name in sport_options():
+        circle_count = sum(1 for c in region_circles_all if c["sport_category"] == name)
+        match_count = sum(1 for m in region_matches_all if m["sport_category"] == name)
+        if circle_count or match_count or name in SPORTS:
+            sports.append({
+                "name": name,
+                "circle_count": circle_count,
+                "match_count": match_count,
+            })
+    sports.sort(key=lambda item: (-item["match_count"], -item["circle_count"], item["name"]))
+    scoped_circles = search_circles({"region": [region], "sport": [sport]})
+    scoped_matches = search_matches({"region": [region], "sport": [sport]})
+    areas = []
+    for pref in region_prefectures(region):
+        circle_count = sum(1 for c in scoped_circles if c["prefecture"] == pref)
+        match_count = sum(1 for m in scoped_matches if m["prefecture"] == pref)
+        if circle_count or match_count or sport:
+            areas.append({
+                "prefecture": pref,
+                "circle_count": circle_count,
+                "match_count": match_count,
+            })
+    return {
+        "region": region,
+        "region_label": region_label,
+        "sport": sport,
+        "prefecture": prefecture,
+        "region_circle_count": len(region_circles_all),
+        "region_match_count": len(region_matches_all),
+        "circle_count": len(circles),
+        "match_count": len(matches),
+        "sports": sports,
+        "areas": areas,
+        "matches": matches[:50],
         "circles": circles[:250],
     }
 
