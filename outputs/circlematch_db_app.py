@@ -23,7 +23,7 @@ HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
-CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@example.com")
+CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@circle-match.jp")
 SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
@@ -152,6 +152,7 @@ MATCH_HTML = """<!doctype html>
     .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
     .empty{padding:28px;color:var(--muted);line-height:1.8}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.sport-card{position:relative;overflow:hidden;min-height:176px;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:0;background:#132238;text-decoration:none;color:#fff;box-shadow:0 14px 30px rgba(20,36,56,.18)}.sport-card:hover{box-shadow:0 18px 38px rgba(20,36,56,.25);transform:translateY(-2px)}.sport-visual{position:absolute;inset:0;overflow:hidden}.sport-visual img{width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05)}.sport-card::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,18,31,.9),rgba(9,18,31,.52) 54%,rgba(9,18,31,.08))}.sport-card::after{content:"";position:absolute;z-index:1;right:-44px;bottom:-56px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.12)}.sport-copy{position:relative;z-index:2;display:grid;gap:7px;max-width:68%;padding:18px}.sport-copy strong{font-size:25px;line-height:1.08;text-shadow:0 2px 12px rgba(0,0,0,.35)}.sport-copy em{font-style:normal;color:rgba(255,255,255,.8);font-size:12px;font-weight:850}.sport-card b{position:absolute;z-index:2;left:18px;bottom:16px;width:max-content;min-height:34px;border-radius:999px;display:inline-flex;align-items:center;padding:7px 12px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;backdrop-filter:blur(8px)}
     .map-board{padding:18px;background:linear-gradient(180deg,#fff,#f7fbf1)}.map-headline{margin:0 0 16px;font-size:25px;font-weight:950;line-height:1.25}.map-headline strong{color:var(--accent);font-size:38px}.map-stage{position:relative;min-height:560px;border:1px solid #d7e4cc;border-radius:8px;overflow:hidden;background:radial-gradient(circle at 38% 48%,rgba(157,207,79,.14),transparent 34%),linear-gradient(135deg,#fbfdf8,#eef7e6)}.japan-silhouette{position:absolute;left:8%;top:8%;width:54%;height:84%;filter:drop-shadow(0 9px 13px rgba(49,111,31,.22))}.japan-silhouette .country{fill:#83c945;stroke:#fff;stroke-width:1.2;stroke-linejoin:round}.japan-silhouette .outline{fill:none;stroke:rgba(49,111,31,.22);stroke-width:1.8}.map-region-buttons{position:absolute;right:22px;top:22px;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:360px}.map-region{display:grid;gap:5px;min-height:82px;padding:12px 14px;border:1px solid #cbd7e2;border-radius:8px;background:linear-gradient(rgba(255,255,255,.96),rgba(242,245,248,.94));box-shadow:0 8px 18px rgba(27,45,69,.13);color:var(--ink);text-align:center;text-decoration:none;font-weight:900;backdrop-filter:blur(3px)}.map-region strong{font-size:19px;line-height:1.2}.map-region:hover{border-color:var(--accent);box-shadow:0 12px 24px rgba(225,91,49,.18);transform:translateY(-2px)}.map-region span{color:#516680;font-size:13px;font-weight:850}
+    .coverage-notice{display:none;margin-top:14px;border:1px solid #f1d2be;background:#fff8f4;color:#7b3b22;border-radius:8px;padding:12px 14px;font-weight:850;line-height:1.7}
     footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
     @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:1fr}.hero{min-height:520px}.map-stage{min-height:520px}.japan-silhouette{left:6%;width:52%}.map-region-buttons{right:14px;width:330px;gap:10px}.map-region{min-height:78px;padding:11px 12px}.map-region strong{font-size:18px}}
     @media(max-width:760px){.map-headline{font-size:20px}.map-headline strong{font-size:30px}.map-stage{min-height:auto;padding:14px;display:grid;gap:12px}.japan-silhouette{position:relative;left:auto;top:auto;width:100%;height:auto;max-height:320px}.map-region-buttons{position:relative;right:auto;top:auto;width:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.map-region{min-width:0}.map-region:hover{transform:translateY(-2px)}}
@@ -163,11 +164,12 @@ MATCH_HTML = """<!doctype html>
   <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/post-match">募集する</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>対象大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>候補サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
+    <div id="coverageNotice" class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <section id="matches" class="section panel"><div class="panel-head"><div><h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p></div></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sortFilter"><option value="date">日時が近い順</option><option value="new">新着順</option><option value="university">大学名順</option><option value="sport">競技順</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div><div class="section-link"><a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>競技を押すと、サークルDBと交流募集を同時に確認できます。</p></div></div><div class="sport-grid" id="sportGrid"></div><div class="section-link"><a href="/circles">サークルDBで候補を広げる</a></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>地域から探す</h2><p>地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。</p></div></div><div class="map-board"><p class="map-headline"><strong id="mapCircleCount">0</strong>件の大学サークル候補から地域で探す</p><div class="map-stage"><svg class="japan-silhouette" id="japanMap" viewBox="0 0 520 560" role="img" aria-label="日本地図"></svg><div class="map-region-buttons" id="regionGrid"></div></div></div></section>
   </main>
-  <footer><span>掲載情報の訂正・削除は問い合わせページから連絡してください。</span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/admin">管理画面</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <script>
@@ -196,9 +198,10 @@ MATCH_HTML = """<!doctype html>
     function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
     function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
     async function refresh(){const qs=currentQuery(); $("dbBridge").href="/circles?"+qs; const all=await api("/api/matches?"+qs); const circles=await api("/api/circles?"+qs); if(!allCircleCache) allCircleCache=await api("/api/circles"); if(!allMatchCache) allMatchCache=await api("/api/matches"); const data=sortMatches(all.filter(matchesFilter)); renderRegions(allCircleCache,allMatchCache); updateStats(circles,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件のDB候補は ${circles.length} 件あります。下のDBリンクから候補団体を確認できます。</div>`}
-    async function boot(){renderSports(); drawJapanMap().catch(()=>{}); fillRegions(); fillSelect($("sportFilter"),sports,"全競技"); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; await refresh()}
+    function updateCoverageNotice(){const region=$("regionFilter").value; $("coverageNotice").style.display=region && region!=="kanto" ? "block" : "none"}
+    async function boot(){renderSports(); drawJapanMap().catch(()=>{}); fillRegions(); fillSelect($("sportFilter"),sports,"全競技"); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); updateCoverageNotice(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; await refresh()}
     ["q","typeFilter","sportFilter","prefFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh));
-    $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); refresh()});
+    $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); updateCoverageNotice(); refresh()});
     boot().catch(e=>alert(e.message));
   </script>
 </body>
@@ -300,7 +303,7 @@ SPORT_HTML = """<!doctype html>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都道府県</span><strong id="prefCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="regionList" class="region-list"></div><div id="areaList" class="area-list"></div></aside><section class="panel db-panel"><h2>__SPORT__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><span id="activeFilterText"></span></div><div id="filterMenu" class="filter-menu hidden"></div><div class="tablewrap"><table><thead><tr><th><button class="th-filter" data-filter="university">大学 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="circle">団体名 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th>登録済み</th><th><button class="th-filter" data-filter="type">種別 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="source">出典 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
   </main>
-  <footer><span>候補を広げたい場合は</span><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const sport = __SPORT_JSON__;
     const params = new URLSearchParams(location.search);
@@ -343,7 +346,7 @@ REGION_HTML = """<!doctype html>
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1180px;margin:auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;color:#31506b;text-decoration:none;font-weight:850;line-height:1}.nav a.find-link{border-radius:8px;padding:10px 14px;background:var(--accent);color:#fff}
     main{max-width:1180px;margin:auto;padding:24px 18px 54px}.hero{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:14px}.hero h1{font-size:38px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.75}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.button.primary{background:var(--accent);color:#fff;border-color:transparent}
     .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:6px;font-size:27px}
-    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.sport-list,.area-list{display:grid;gap:8px;padding:14px}.sport-list{grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line);background:#f9fbfd}.sport-button,.area{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}.sport-button{padding:10px;text-align:left}.sport-button.active,.area.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.sport-button b{display:block}.sport-button span{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;background:#fafcff;text-align:left}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.match-list{display:grid;gap:10px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:13px;background:#fff}.match-card h3{margin:6px 0 8px;font-size:17px}.meta{display:grid;gap:4px;color:var(--muted);font-size:13px}.empty{padding:18px;color:var(--muted);line-height:1.7}.table-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:850}.tablewrap{overflow:auto;max-height:520px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.right-stack{display:grid;gap:14px}footer{max-width:1180px;margin:0 auto;padding:0 18px 38px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
+    .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel h2{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:21px}.coverage-notice{display:__REGION_NOTICE_DISPLAY__;margin-bottom:14px;border:1px solid #f1d2be;background:#fff8f4;color:#7b3b22;border-radius:8px;padding:12px 14px;font-weight:850;line-height:1.7}.sport-list,.area-list{display:grid;gap:8px;padding:14px}.sport-list{grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line);background:#f9fbfd}.sport-button,.area{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}.sport-button{padding:10px;text-align:left}.sport-button.active,.area.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(225,91,49,.14)}.sport-button b{display:block}.sport-button span{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.area{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;background:#fafcff;text-align:left}.area b{font-size:16px}.badge{display:inline-flex;border-radius:999px;background:#edf2f7;color:#405164;min-height:23px;padding:3px 8px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}.match-list{display:grid;gap:10px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:13px;background:#fff}.match-card h3{margin:6px 0 8px;font-size:17px}.meta{display:grid;gap:4px;color:var(--muted);font-size:13px}.empty{padding:18px;color:var(--muted);line-height:1.7}.table-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:850}.tablewrap{overflow:auto;max-height:520px}table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.name{font-weight:900}.sub{display:block;color:var(--muted);font-size:12px;margin-top:3px}.right-stack{display:grid;gap:14px}footer{max-width:1180px;margin:0 auto;padding:0 18px 38px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
     @media(max-width:860px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.hero h1{font-size:31px}.sport-list{grid-template-columns:1fr}}
   </style>
 </head>
@@ -352,9 +355,10 @@ REGION_HTML = """<!doctype html>
   <main>
     <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/post-match">募集する</a></section>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象競技</span><strong id="sportCount">0</strong></div></section>
+    <div class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <section class="grid"><aside class="panel"><h2>スポーツ別の交流募集</h2><div id="sportList" class="sport-list"></div><div id="areaList" class="area-list"></div></aside><section class="right-stack"><div class="panel"><h2>交流募集</h2><div id="matchList" class="match-list"></div></div><div class="panel"><h2>__REGION_LABEL__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><a id="dbLink" class="admin-link" href="/circles">DBで詳しく見る</a></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section></section>
   </main>
-  <footer><span>他の条件で探す場合は</span><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const region = __REGION_JSON__;
     const params = new URLSearchParams(location.search);
@@ -519,7 +523,7 @@ PUBLIC_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:#eef3f7;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
     h1{margin:0;font-size:23px}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--blue);font-weight:800;text-decoration:none}.nav a.cta{display:inline-flex;align-items:center;min-height:38px;border-radius:8px;padding:8px 12px;background:var(--accent);color:#fff}
-    main{max-width:1120px;margin:auto;padding:18px}.hero{padding:18px 0 16px}.hero p{max-width:740px;color:var(--muted);line-height:1.7;margin:8px 0 0}
+    main{max-width:1120px;margin:auto;padding:18px}.hero{padding:18px 0 16px}.hero p{max-width:740px;color:var(--muted);line-height:1.7;margin:8px 0 0}.coverage-notice{display:none;margin:0 0 12px;border:1px solid #f1d2be;background:#fff8f4;color:#7b3b22;border-radius:8px;padding:12px 14px;font-weight:850;line-height:1.7}
     .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:800}.metric strong{display:block;margin-top:6px;font-size:24px}.breadcrumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:13px;font-weight:800;margin:0 0 10px}.breadcrumb b{color:var(--ink)}
     .panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.filters{display:grid;grid-template-columns:minmax(220px,1fr) repeat(5,150px);gap:8px;padding:14px;border-bottom:1px solid var(--line)}
     input,select{width:100%;border:1px solid #c8d4df;border-radius:8px;min-height:40px;padding:9px 10px;font:inherit;background:#fff;color:var(--ink)}
@@ -533,10 +537,11 @@ PUBLIC_HTML = """<!doctype html>
   <main>
     <section class="hero"><h2>大学サークル検索</h2><p>公開出典をもとにサークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
     <section class="summary"><div class="metric"><span>対象地域</span><strong id="prefCount">0</strong></div><div class="metric"><span>対象大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>検索結果</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div></section>
+    <div id="coverageNotice" class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <div class="breadcrumb"><span>検索範囲</span><b id="regionCrumb">関東</b><span>›</span><b id="prefCrumb">すべて</b></div>
     <section class="panel"><div class="filters"><input id="q" placeholder="大学名・団体名・競技で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="statusFilter"><option value="">全検証</option><option value="university_verified">公式確認済み</option><option value="admin_verified">運営確認済み</option><option value="claimed">申請済み</option><option value="unverified">未確認</option></select><select id="sortFilter"><option value="university">大学名順</option><option value="circle">団体名順</option><option value="prefecture">都道府県順</option><option value="sport">競技順</option><option value="status">検証順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th><th>検証</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
   </main>
-  <footer>掲載情報の訂正・削除は問い合わせページから連絡してください。<a class="admin-link" href="/admin">管理画面</a></footer>
+  <footer>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a> <a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const prefs = __PREFS__;
     const regions = __REGIONS__;
@@ -554,7 +559,7 @@ PUBLIC_HTML = """<!doctype html>
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
     function currentQuery(){const qs=new URLSearchParams({q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
-    function updateSummary(data){$("prefCount").textContent=new Set(data.map(c=>c.prefecture)).size; $("uniCount").textContent=new Set(data.map(c=>c.university_id)).size; $("circleCount").textContent=data.length; $("verifiedCount").textContent=data.filter(c=>["claimed","university_verified","admin_verified"].includes(c.verification_status)).length; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"}
+    function updateSummary(data){$("prefCount").textContent=new Set(data.map(c=>c.prefecture)).size; $("uniCount").textContent=new Set(data.map(c=>c.university_id)).size; $("circleCount").textContent=data.length; $("verifiedCount").textContent=data.filter(c=>["claimed","university_verified","admin_verified"].includes(c.verification_status)).length; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
     async function refresh(){const qs=currentQuery(); $("matchBridge").href="/?"+qs+"#matches"; const data=await api("/api/circles?"+qs); updateSummary(data); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="7">データなし</td></tr>`}
     async function boot(){fillRegions(); fillSelect($("sportFilter"),sports,"全競技"); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"university"; await refresh()}
     ["q","prefFilter","sportFilter","statusFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh));
@@ -813,6 +818,7 @@ def render_public_html():
     return (
         with_adsense(MATCH_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__POPULAR_SPORTS__", json.dumps([
@@ -828,6 +834,7 @@ def render_circles_html():
     return (
         with_adsense(PUBLIC_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
@@ -852,6 +859,7 @@ def render_sport_html(sport):
         with_adsense(SPORT_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORT__", sport)
+        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
         .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
         .encode("utf-8")
     )
@@ -863,6 +871,8 @@ def render_region_html(region):
         with_adsense(REGION_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__REGION_LABEL__", REGION_GROUPS[region]["label"])
+        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__REGION_NOTICE_DISPLAY__", "none" if region == "kanto" else "block")
         .replace("__REGION_JSON__", json.dumps(region, ensure_ascii=False))
         .encode("utf-8")
     )
@@ -1089,6 +1099,7 @@ INVALID_CIRCLE_EXACT_NAMES = {
     "本部", "体育会本部", "クラブ活動", "クラブ＆サークル", "サークル・同好会", "その他の団体",
     "学生団体", "学術団体", "上部団体", "中央執行委員会", "強化クラブ", "関連団体",
     "文化団体連合会", "文化系クラブ", "文化系団体", "校友会", "学生校友会", "体育施設・サークル共用施設",
+    "戸塚グラウンド・ラフォーレ倶楽部",
 }
 INVALID_CIRCLE_PHRASES = [
     "本学学生が",
@@ -1109,6 +1120,29 @@ INVALID_CIRCLE_PHRASES = [
     "団体合同ライブ",
     "団体合同ハロウィンライブ",
     "新設団体活動予定書",
+    "団体見学申込用紙",
+    "参加団体ポスター",
+    "団体見学",
+    "学生団体出演依頼書",
+    "出演依頼書",
+    "委員会挨拶",
+    "特別使用申込書",
+    "使用申込書",
+    "販売報告書",
+    "チケット販売願",
+    "助成金",
+    "受付に関する方針",
+    "外部団体を活用",
+    "外部団体による",
+    "転部・転科",
+    "勝敗表",
+    "ダウンロード",
+    "団体情報シート",
+    "Primary Division",
+    "幼稚部",
+    "キャンパス見学",
+    "認定こども園",
+    "課外学習会",
 ]
 INVALID_CIRCLE_ALWAYS_PHRASES = [
     "合同ライブ",
@@ -1121,6 +1155,27 @@ INVALID_CIRCLE_ALWAYS_PHRASES = [
     "定期演奏会",
     "運動会",
     "インタビュー",
+    "申込用紙",
+    "申込書",
+    "販売報告書",
+    "助成金",
+    "特別講演会",
+    "受付に関する方針",
+    "参加団体ポスター",
+    "団体見学",
+    "出演依頼書",
+    "委員会挨拶",
+    "外部団体を活用",
+    "外部団体による",
+    "転部・転科",
+    "勝敗表",
+    "ダウンロード",
+    "団体情報シート",
+    "Primary Division",
+    "幼稚部",
+    "キャンパス見学",
+    "認定こども園",
+    "課外学習会",
 ]
 INVALID_CIRCLE_EVENT_WORDS = [
     "大会", "選手権", "リーグ戦", "トーナメント", "決定戦", "試合結果", "試合予定",
@@ -1129,11 +1184,19 @@ INVALID_CIRCLE_EVENT_WORDS = [
 INVALID_SOURCE_PATH_PARTS = [
     "/sports/result", "/result", "/results", "/news", "/event", "/events", "/schedule", "/calendar",
 ]
+INVALID_SOURCE_ALWAYS_PARTS = [
+    "tamagawa.jp/academy/",
+]
 INVALID_CIRCLE_TITLE_PATTERNS = [
     r"(TOP|一覧|こちら|を見る|について|もっと知る|ご確認ください)",
     r"(届|補助金|住所変更|研究データ|研究インテグリティ|倫理委員会|認定証|指針|セレクション|再開|レベル\d)",
-    r"(紹介動画|活動場所[:：]|活動日[:：]|団体旅行|学部・大学院|付属校|練習しています|活動しています)",
+    r"(紹介動画|活動場所[:：]|活動日[:：]|団体旅行|学部・大学院|付属校|練習しています|活動しています|チケット販売報告書|チケット販売願)",
     r"サークル・部会活動",
+]
+
+DESCRIPTIVE_PARENTHETICAL_WORDS = [
+    "活動", "開催", "運営", "制作", "演奏", "撮影", "講習", "練習", "企画",
+    "研究", "発表", "展示", "交流", "支援", "参加", "出場",
 ]
 
 
@@ -1148,13 +1211,15 @@ def infer_sport_category(name, current="その他"):
 
 
 def is_invalid_circle_name(name, source_url=""):
-    text = (name or "").strip()
+    text = clean_circle_name(name)
     url = (source_url or "").lower()
     if not text:
         return True
     if text.startswith("#"):
         return True
     if text in INVALID_CIRCLE_EXACT_NAMES:
+        return True
+    if any(part in url for part in INVALID_SOURCE_ALWAYS_PARTS):
         return True
     if any(part in url for part in INVALID_SOURCE_PATH_PARTS) and any(word in text for word in INVALID_CIRCLE_EVENT_WORDS + ["優勝", "準優勝", "位"]):
         return True
@@ -1170,7 +1235,7 @@ def is_invalid_circle_name(name, source_url=""):
         return True
     if len(text) > 14 and re.search(r"。$", text) and not any(marker in text for marker in ["部", "会", "サークル", "クラブ", "団体", "委員会", "同好会"]):
         return True
-    if any(phrase in text for phrase in ["誓約書", "WORD／", "PDF", "文部科学省定義", "学生表彰", "新設団体活動予定書"]):
+    if any(phrase in text for phrase in ["誓約書", "WORD／", "PDF", "文部科学省定義", "学生表彰", "新設団体活動予定書", "申込用紙", "申込書", "販売報告書", "助成金"]):
         return True
     if any(phrase in text for phrase in INVALID_CIRCLE_ALWAYS_PHRASES):
         return True
@@ -1186,9 +1251,26 @@ def is_invalid_circle_name(name, source_url=""):
         return True
     if len(text) > 36 and any(word in text for word in ["インタビュー", "振り返る", "を前に"]):
         return True
+    if any(word in text for word in ["講演会", "説明会", "セミナー"]) and (len(text) > 14 or not any(marker in text for marker in ["研究会", "委員会", "同好会", "部"])):
+        return True
     if any(phrase in text for phrase in ["本学学生が", "号 歴史を変えた"]):
         return True
     return False
+
+
+def clean_circle_name(name):
+    text = (name or "").strip()
+    if not text:
+        return ""
+    match = re.match(r"^(.+?)[（(]([^（）()]+)[）)]$", text)
+    if match:
+        base = match.group(1).strip()
+        detail = match.group(2).strip()
+        has_group_marker = any(marker in base for marker in ["部", "会", "サークル", "クラブ", "団体", "委員会", "同好会", "研究会"])
+        looks_descriptive = any(word in detail for word in DESCRIPTIVE_PARENTHETICAL_WORDS)
+        if has_group_marker and looks_descriptive:
+            return base
+    return text
 
 
 def ensure_column(conn, table, column, definition):
@@ -1337,7 +1419,7 @@ def contact_page():
     body = f"""
 <h1>問い合わせ</h1>
 <p class="meta">運営者: {SITE_OPERATOR}</p>
-<p>掲載情報の訂正、削除、代表者申請、個人情報に関する問い合わせは、以下のメールアドレスまで連絡してください。</p>
+<p>サイトへのご意見・ご要望はこちら。掲載情報の訂正、削除、代表者申請、個人情報に関する問い合わせも、以下のメールアドレスまで連絡してください。</p>
 <p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
 <h2>記載してほしい内容</h2>
 <ul>
@@ -1621,7 +1703,7 @@ def seed_public_circles_from_csv(conn):
         imported = 0
         for item in reader:
             uni_name = (item.get("university_name") or "").strip()
-            circle_name = (item.get("circle_name") or "").strip()
+            circle_name = clean_circle_name(item.get("circle_name") or "")
             if not uni_name or not circle_name:
                 continue
             if is_invalid_circle_name(circle_name, item.get("source_url", "")):
@@ -1662,7 +1744,7 @@ def seed_public_circles_from_csv(conn):
 def normalize_circle_records(conn):
     removed = 0
     updated = 0
-    for row in conn.execute("select circle_id, circle_name, sport_category, source_url from circles").fetchall():
+    for row in conn.execute("select circle_id, university_id, circle_name, sport_category, source_url from circles").fetchall():
         name = row["circle_name"]
         if is_invalid_circle_name(name, row["source_url"] or ""):
             conn.execute("delete from data_sources where entity_type='circle' and entity_id=?", (row["circle_id"],))
@@ -1672,6 +1754,26 @@ def normalize_circle_records(conn):
             conn.execute("delete from circles where circle_id=?", (row["circle_id"],))
             removed += 1
             continue
+        clean_name = clean_circle_name(name)
+        if clean_name != name:
+            duplicate = conn.execute(
+                "select circle_id from circles where university_id=? and circle_name=? and circle_id<>?",
+                (row["university_id"], clean_name, row["circle_id"]),
+            ).fetchone()
+            if duplicate:
+                conn.execute("delete from data_sources where entity_type='circle' and entity_id=?", (row["circle_id"],))
+                conn.execute("delete from circle_private_profiles where circle_id=?", (row["circle_id"],))
+                conn.execute("delete from circle_claims where circle_id=?", (row["circle_id"],))
+                conn.execute("delete from match_posts where circle_id=?", (row["circle_id"],))
+                conn.execute("delete from circles where circle_id=?", (row["circle_id"],))
+                removed += 1
+                continue
+            conn.execute(
+                "update circles set circle_name=?, updated_at=? where circle_id=?",
+                (clean_name, now(), row["circle_id"]),
+            )
+            name = clean_name
+            updated += 1
         sport = infer_sport_category(name, row["sport_category"])
         if sport != row["sport_category"]:
             conn.execute(
@@ -1851,7 +1953,7 @@ def upsert_circle(conn, data, audit_entry=True):
 
 def create_circle_claim(conn, data):
     university_id = (data.get("university_id") or "").strip()
-    circle_name = (data.get("circle_name") or "").strip()
+    circle_name = clean_circle_name(data.get("circle_name") or "")
     claimant_email = (data.get("claimant_email") or "").strip()
     claimant_name = (data.get("claimant_name") or "").strip()
     if not university_id or not circle_name or not claimant_email:
@@ -2694,7 +2796,7 @@ def import_circles_csv(conn, text):
     imported = 0
     for item in reader:
         uni_name = (item.get("university_name") or "").strip()
-        circle_name = (item.get("circle_name") or "").strip()
+        circle_name = clean_circle_name(item.get("circle_name") or "")
         if not uni_name or not circle_name:
             continue
         if is_invalid_circle_name(circle_name, item.get("source_url", "")):
@@ -2732,7 +2834,7 @@ def import_candidates_csv(conn, text):
     imported = 0
     for item in reader:
         uni_name = (item.get("university_name") or "").strip()
-        candidate_name = (item.get("candidate_name") or item.get("circle_name") or "").strip()
+        candidate_name = clean_circle_name(item.get("candidate_name") or item.get("circle_name") or "")
         if not uni_name or not candidate_name:
             continue
         if is_invalid_circle_name(candidate_name, item.get("source_url", "")):
