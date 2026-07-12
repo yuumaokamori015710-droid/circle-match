@@ -1619,7 +1619,6 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,ハイキング部,部活,アウトドア,,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,ハンドボール同好会,同好会,ハンドボール,,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,ハンドボール部,部活,ハンドボール,中央大学,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
-中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,ハンドボール部 「男子ネクスト日本代表」メンバーに4名が選出,部活,ハンドボール,中央大学,university_official,https://www.chuo-u.ac.jp/activities/club/sports/news/,university_verified,published,2026-07-05
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,バスケットボール部,部活,バスケットボール,中央大学,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,バドミントンクラブ フレームショット,公認サークル,バドミントン,,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
 中央大学,東京都,八王子市,,https://www.chuo-u.ac.jp/,バドミントン同好会,同好会,バドミントン,,university_official,https://www.chuo-u.ac.jp/activities/club/sports/sports104/,university_verified,published,2026-07-05
@@ -2099,6 +2098,7 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 北里大学,東京都,港区,,https://www.kitasato-u.ac.jp/,陸上競技部,部活,陸上競技,北里大学,university_official,https://www.kitasato-u.ac.jp/jp/campuslife/club/,university_verified,published,2026-07-05
 北里大学,東京都,港区,,https://www.kitasato-u.ac.jp/,音楽団体,学生団体,音楽,北里大学,university_official,https://www.kitasato-u.ac.jp/jp/campuslife/club/guide2024_index.html,university_verified,published,2026-07-05
 北里大学,東京都,港区,,https://www.kitasato-u.ac.jp/,馬術部,部活,馬術,北里大学,university_official,https://www.kitasato-u.ac.jp/jp/campuslife/club/,university_verified,published,2026-07-05
+和光大学,東京都,町田市,,https://www.wako.ac.jp/,全学サークル連合,学生団体,その他,東京都,university_official,https://www.wako.ac.jp/campuslife/extracurriculars/club-introduction.html,university_verified,published,2026-07-12
 嘉悦大学,東京都,小平市,,https://www.kaetsu.ac.jp/,【学生広報部】学生から見た嘉悦,公認サークル,その他,嘉悦大学,university_official,https://www.kaetsu.ac.jp/campuslife/hrc/index.html,university_verified,published,2026-07-05
 嘉悦大学,東京都,小平市,,https://www.kaetsu.ac.jp/,女子バレーボール部,部活,バレーボール,嘉悦大学,university_official,https://www.kaetsu.ac.jp/campuslife/volleyball.html,university_verified,published,2026-07-05
 嘉悦大学,東京都,小平市,,https://www.kaetsu.ac.jp/,学生広報部,部活,その他,嘉悦大学,university_official,https://www.kaetsu.ac.jp/news/campuslife/17583/,university_verified,published,2026-07-05
@@ -2283,6 +2283,40 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 国際基督教大学,東京都,三鷹市,,https://www.icu.ac.jp/,雪面滑走競技部,部活,その他,国際基督教大学,university_official,https://www.icu.ac.jp/campuslife/club/,university_verified,published,2026-07-05
 國學院大學,東京都,渋谷区,,https://www.kokugakuin.ac.jp/,本部主催の会合,公認サークル,その他,國學院大學,university_official,https://www.kokugakuin.ac.jp/student/ikuseikai/p3,university_verified,published,2026-07-05
 國學院大學,東京都,渋谷区,,https://www.kokugakuin.ac.jp/,若木育成会,公認サークル,その他,國學院大學,university_official,https://www.kokugakuin.ac.jp/student/materials/certificate1,university_verified,published,2026-07-05
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,Road Attack Club,公認サークル,自転車,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,WESTERN,公認サークル,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,オカルト研究会,公認サークル,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,ジャズ研究会,公認サークル,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,ジャンベ民族楽器部,部活,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,スキー部,部活,スキー,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,ダンス部,部活,ダンス,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,テキスタイルパフォーマンス,公認サークル,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,テクノ研究会,公認サークル,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,デジタル研究部,部活,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,ハンドメイド部,部活,美術,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,バスケットボール部,部活,バスケットボール,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,バドミントン部,部活,バドミントン,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,フットサル部,部活,サッカー,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,フラメンコ部,部活,ダンス,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,ポケモン大好きクラ部,部活,漫画,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,写真部,部活,写真,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,和太鼓研究会,公認サークル,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,山岳部,部活,アウトドア,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,新聞部,部活,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,映像演出研究会,公認サークル,映画,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,東京五美術大学管弦楽団,公認サークル,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,演劇部,部活,演劇,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,漫画部,部活,漫画,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,版画部,部活,美術,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,特殊撮影技術研究部,部活,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,相生道部,部活,武道,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,硬式テニス部,部活,テニス,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,絵本創作研究会,公認サークル,美術,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,美大生アイドル実行委員会,学生団体,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,虫部,部活,その他,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,野球部,部活,野球,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,陶芸部,部活,美術,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
+多摩美術大学,東京都,八王子市,,https://www.tamabi.ac.jp/,音多摩,公認サークル,音楽,東京都,university_official,https://www.tamabi.ac.jp/campus-life/extracurricular-activities/club/,university_verified,published,2026-07-12
 大妻女子大学,東京都,千代田区,,https://www.otsuma.ac.jp/,FEC（食品加工研究会）,公認サークル,その他,大妻女子大学,university_official,https://www.otsuma.ac.jp/campuslife/activities/club/,university_verified,published,2026-07-05
 大妻女子大学,東京都,千代田区,,https://www.otsuma.ac.jp/,Hand Madeサークル「belle époque」,公認サークル,その他,大妻女子大学,university_official,https://www.otsuma.ac.jp/campuslife/activities/club/,university_verified,published,2026-07-05
 大妻女子大学,東京都,千代田区,,https://www.otsuma.ac.jp/,K-POPカバーダンスサークルMuse,公認サークル,ダンス,大妻女子大学,university_official,https://www.otsuma.ac.jp/campuslife/activities/club/,university_verified,published,2026-07-05
@@ -3052,7 +3086,6 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,少林寺拳法部,部活,武道,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,山岳部,部活,アウトドア,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,探検部,部活,アウトドア,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
-日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,本部学生支援センター,公認サークル,その他,日本大学,university_official,https://www.nihon-u.ac.jp/campuslife/counseling/illegal_drugs/,university_verified,published,2026-07-05
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,管弦楽団,公認サークル,音楽,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,自動車部,部活,自動車,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
 日本大学,東京都,千代田区,,https://www.nihon-u.ac.jp/,軽音楽部フラワーレイ,公認サークル,音楽,,university_official,https://www.nihon-u.ac.jp/campuslife/club/,university_verified,published,2026-06-29
@@ -3093,7 +3126,7 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学かるた会,公認サークル,その他,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学オーケストラ,公認サークル,音楽,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学コール・クライネス,公認サークル,音楽,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
-日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学フィールドアーチェリー同好会,公認サークル,その他,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
+日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学フィールドアーチェリー同好会,公認サークル,アーチェリー,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学レゴサークル,公認サークル,ゲーム,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学合唱団,公認サークル,音楽,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
 日本女子大学,東京都,文京区,,https://www.jwu.ac.jp/,日本女子大学映画研究会,公認サークル,映画,東京都,university_official,https://www.jwu.ac.jp/unv/campuslife/extracurricular/circle/index.html,university_verified,published,2026-07-12
@@ -3738,6 +3771,62 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 昭和女子大学,東京都,世田谷区,,https://www.swu.ac.jp/,軽音楽部,部活,音楽,東京都,university_official,https://www.swu.ac.jp/campuslife-project/campuslife/activity/circle.html,university_verified,published,2026-07-12
 昭和女子大学,東京都,世田谷区,,https://www.swu.ac.jp/,陸上競技部,部活,陸上競技,東京都,university_official,https://www.swu.ac.jp/campuslife-project/campuslife/activity/circle.html,university_verified,published,2026-07-12
 昭和女子大学,東京都,世田谷区,,https://www.swu.ac.jp/,高齢者分野ボランティアサークル「彩り」,公認サークル,ボランティア,東京都,university_official,https://www.swu.ac.jp/campuslife-project/campuslife/activity/circle.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ESS,公認サークル,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,Slave To The Rhythm（ダンス部）,部活,ダンス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,Street Trickers（マジッククラブ）,公認サークル,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,asobi基地・関東学生部@杏林大学,部活,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,かながな〜とぅ(軟式野球),公認サークル,野球,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ぬいぐるみ病院部,部活,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,アイスホッケー部,部活,アイスホッケー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,アプリコットＢＣ(バドミントン),公認サークル,バドミントン,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,アメリカンフットボール部,部活,アメリカンフットボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,アーチェリー部,部活,アーチェリー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ゴルフ部,部活,ゴルフ,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,サッカー部,部活,サッカー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,スキー部,部活,スキー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ソフトテニス部,部活,テニス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ダンス部,部活,ダンス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ハンドボール部,部活,ハンドボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,バスケットボール部,部活,バスケットボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,バドミントン部,部活,バドミントン,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,バレーボール部,部活,バレーボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,フットサル部,部活,フットサル,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ボッチャ部,部活,ボッチャ,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ボランティア団体feel,公認サークル,ボランティア,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ボードゲームサークル,公認サークル,ボードゲーム,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,マンガ研究部,部活,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,メディカルイラストレーション部,部活,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ライフセービング部,部活,ライフセービング,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ラグビーフットボール部,部活,ラグビー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,写真部,部活,写真,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,剣道部,部活,剣道,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,卓球部,部活,卓球,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,女子バスケットボール部,部活,バスケットボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,少林寺拳法部,部活,少林寺拳法,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,弓道部,部活,弓道,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,救急救命クラブ（KELC）,公認サークル,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林大学サッカー部,部活,サッカー,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林大学フットサル部,部活,フットサル,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林大学ボランティア部,部活,ボランティア,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林大学井の頭管弦楽団,公認サークル,音楽,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林大学吹奏楽団,公認サークル,音楽,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,杏林書道会,公認サークル,書道,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,柔道部,部活,柔道,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,水泳部,部活,水泳,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,準硬式野球部,部活,野球,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,男子バスケットボール部,部活,バスケットボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,硬式テニス部,部活,テニス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,硬式庭球部,部活,テニス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,硬式野球部,部活,野球,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,端艇部,部活,ボート,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,管弦楽団,公認サークル,音楽,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,統合医療研究部,部活,その他,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,華道部,部活,華道,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,軟式庭球部,部活,テニス,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,軟式野球部,部活,野球,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,軽音楽部,部活,音楽,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,陸上競技部,部活,陸上競技,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
+杏林大学,東京都,三鷹市,,https://www.kyorin-u.ac.jp/univ/,ＫＨＢＣ(バスケットボール),公認サークル,バスケットボール,,university_official,http://www.kyorin-u.ac.jp/univ/student/campuslife/circle/index.html,university_verified,published,2026-07-12
 東京医療保健大学,東京都,品川区,,https://www.thcu.ac.jp/,2SK会/青少年の性と健康を考え活動する会,公認サークル,その他,東京都,university_official,http://www.thcu.ac.jp/nyushi/campuslife/club.html,university_verified,published,2026-07-12
 東京医療保健大学,東京都,品川区,,https://www.thcu.ac.jp/,Blazing Stones,公認サークル,その他,東京都,university_official,http://www.thcu.ac.jp/nyushi/campuslife/club.html,university_verified,published,2026-07-12
 東京医療保健大学,東京都,品川区,,https://www.thcu.ac.jp/,DaCapo,公認サークル,その他,東京都,university_official,http://www.thcu.ac.jp/nyushi/campuslife/club.html,university_verified,published,2026-07-12
@@ -3859,6 +3948,70 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 東京学芸大学,東京都,小金井市,,https://www.u-gakugei.ac.jp/,舞踊研究部,部活,ダンス,東京都小金井市,university_official,https://www.u-gakugei.ac.jp/05gakusei/circle/,university_verified,published,2026-07-09
 東京学芸大学,東京都,小金井市,,https://www.u-gakugei.ac.jp/,軟式野球部,部活,野球,東京都小金井市,university_official,https://www.u-gakugei.ac.jp/05gakusei/circle/,university_verified,published,2026-07-09
 東京学芸大学,東京都,小金井市,,https://www.u-gakugei.ac.jp/,陸上競技部,部活,陸上競技,東京都小金井市,university_official,https://www.u-gakugei.ac.jp/05gakusei/circle/,university_verified,published,2026-07-09
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,Child Care Circle (C.C.C）,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,G&E,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,SDgirls,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,Space designサークル,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,TEAra～紅茶部～,部活,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,crocus（クロッカス）,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,アニメ・声優研究会,公認サークル,漫画,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,エンターテイメントサークル,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,グラフィックデザインサークル,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,シュナイツスキークラブ,公認サークル,スキー,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ジャズ研究会,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,スカッシュラケット部,部活,スカッシュ,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ストリートダンスサークル,公認サークル,ダンス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,スポーツ栄養研究会,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ソフトテニス部,部活,テニス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ダンス部,部活,ダンス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,チアダンスチームQuartz,公認サークル,ダンス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,チアリーディング部,部活,チアリーディング,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,バスケットボール部,部活,バスケットボール,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,バドミントン同好会,同好会,バドミントン,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,バレーボール部,部活,バレーボール,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,パンサー,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,フラウエンコール,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,フラサークルPuaLani,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ボラガール,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ボードゲーム,公認サークル,ボードゲーム,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,マンドリンクラブ,公認サークル,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ユニバーサルコミュニケーション同好会,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ユースホステルクラブ,公認サークル,アウトドア,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ヨガサークル～Mind Body～,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ラクロス部,部活,ラクロス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,ワンダーフォーゲル部,部活,アウトドア,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,保育ボランティアサークル ぴっちーな,公認サークル,ボランティア,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,児童音楽研究会,公認サークル,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,写真部,部活,写真,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,剣道部,部活,剣道,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,卓球部,部活,卓球,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,吹奏楽部,部活,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,国際交流同好会,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,学生赤十字奉仕団,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,弓道部,部活,弓道,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,手芸同好会,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,文芸部,部活,文芸,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,料理研究会,公認サークル,料理,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,日本茶サークル,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,書道同好会,同好会,書道,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,水泳同好会,同好会,水泳,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,池袋子ども会,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,演劇部,部活,演劇,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,漫画研究会,公認サークル,漫画,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,狭山ボードゲーム同好会,同好会,ボードゲーム,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,球技同好会 Star Lights,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,看護ボランティアサークル,公認サークル,ボランティア,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,競技かるた同好会,同好会,競技かるた,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,競技ダンス,公認サークル,ダンス,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,箏曲部,部活,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,自然研究会,公認サークル,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,茶道部,部活,茶道,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,華道部草月流,部活,華道,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,軽音楽部,部活,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,造形コミュニケーション同好会,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,陸上競技部,部活,陸上競技,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,韓国文化研究同好会,同好会,その他,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
+東京家政大学,東京都,板橋区,,https://www.tokyo-kasei.ac.jp/,音楽サークル,公認サークル,音楽,,university_official,https://www.tokyo-kasei.ac.jp/campus_support/campus_life/club.html,university_verified,published,2026-07-12
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,クオリア部,部活,その他,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,サッカー・フットサル同好会,公認サークル,サッカー,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,ストリートダンス同好会,公認サークル,ダンス,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
@@ -3877,6 +4030,24 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,軽音楽部,部活,音楽,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,馬頭琴同好会,公認サークル,その他,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
 東京富士大学,東京都,新宿区,,https://www.fuji.ac.jp/,麻雀同好会,公認サークル,その他,東京都,university_official,https://www.fuji.ac.jp/life/circle/,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,Creation,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,M.R.E（インターネットラジオ）,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,アメリカンフットボール部,部活,アメリカンフットボール,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,クリエイティブスタッフ,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,クロイツェル室内管弦楽団,公認サークル,音楽,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,バトミントン部,部活,バドミントン,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,ロボット研究部,部活,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,ワークショップデザイン同好会,同好会,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,写真部,部活,写真,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,剣道部,部活,剣道,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,化学サークル,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,化粧品サークルLCC,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,天文同好会,同好会,天文,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,工業・空間デザイン研究同好会,同好会,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,漫画研究同好会,同好会,漫画,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,茶道同好会,同好会,茶道,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,赤平,公認サークル,その他,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
+東京工科大学,東京都,八王子市,,https://www.teu.ac.jp/,軽音楽部,部活,音楽,,university_official,https://www.teu.ac.jp/student/circle/index.html,university_verified,published,2026-07-12
 東京工芸大学,東京都,中野区,,https://www.t-kougei.ac.jp/,BDH (Be-Do-Have),公認サークル,その他,東京都,university_official,https://www.t-kougei.ac.jp/campuslife/club/,university_verified,published,2026-07-12
 東京工芸大学,東京都,中野区,,https://www.t-kougei.ac.jp/,DAG(DeepLearningStudy Group),公認サークル,プログラミング,東京都,university_official,https://www.t-kougei.ac.jp/campuslife/club/,university_verified,published,2026-07-12
 東京工芸大学,東京都,中野区,,https://www.t-kougei.ac.jp/,FOTO.ism,公認サークル,写真,東京都,university_official,https://www.t-kougei.ac.jp/campuslife/club/,university_verified,published,2026-07-12
@@ -4269,6 +4440,63 @@ university_name,prefecture,city,campus_name,official_url,circle_name,organizatio
 桜美林大学,東京都,町田市,,https://www.obirin.ac.jp/,駅伝部,部活,陸上競技,東京都,university_official,https://www.obirin.ac.jp/sports/,university_verified,published,2026-07-12
 武蔵大学,東京都,練馬区,,https://www.musashi.ac.jp/,Web展覧会,公認サークル,その他,武蔵大学,university_official,https://www.musashi.ac.jp/campuslife/career/data/index.html,university_verified,published,2026-07-05
 武蔵大学,東京都,練馬区,,https://www.musashi.ac.jp/,利用可能団体,学生団体,その他,武蔵大学,university_official,https://www.musashi.ac.jp/campuslife/club_circle/facilities.html,university_verified,published,2026-07-05
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,BohPJ 同好会,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,Dance Club Alpha,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,Hand Language Club,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,お茶同好会,公認サークル,茶道,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,こどもボランティア部,部活,ボランティア,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,アカペラサークルMAM,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,エコの民,公認サークル,ボランティア,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,サイクリングクラブ,公認サークル,自転車,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,サブカル研究部,部活,漫画,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,ソフトテニス部,部活,テニス,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,ネイル同好会《nailer》,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,ハワイアンクラブ,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,ピアノコンチェルト,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,写真技術研究部,部活,写真,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,卓球部,部活,卓球,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,和太鼓 隼,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,国際交流の会,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,大学祭実行委員会,学生団体,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,学友会執行部,学生団体,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,学生団体CREATORS,学生団体,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,情報部,部活,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,放課後秘密基地 たまごまなぼ,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,文学研究部,部活,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,料理同好会,公認サークル,料理,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,映像研究同好会スタジオマーリン,公認サークル,映画,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,書道部,部活,美術,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学KPOPカバーダンスサークルMiix,公認サークル,ダンス,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学おさがりモンスター,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学お笑いサークルMOS,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学ウインドアンサンブル,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学サッカー部,部活,サッカー,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学ソサイチサークル,公認サークル,サッカー,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学バドミントン部,部活,バドミントン,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学バレーボール部（女子）,部活,バレーボール,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学バレーボール部（男子）,部活,バレーボール,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学ボードゲーム同好会 いるでぃ,公認サークル,ゲーム,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学マンドリンクラブ,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学合気道部,部活,武道,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学弓道部紫月会,部活,武道,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学放送研究部,部活,放送,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学武蔵野生の遊び場,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学水泳部,部活,水泳,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学漫画研究部,部活,漫画,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学管弦楽団,公認サークル,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学紅茶研究部,部活,茶道,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学裏千家茶道部,部活,茶道,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学軟式野球部,部活,野球,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学邦楽部琴之音会,部活,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,武蔵野大学音楽部ルンビニー合唱団,部活,音楽,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,清談会,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,演劇研究部 def's drop,部活,演劇,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,漣～SAZANAMI～,公認サークル,その他,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,男子バスケットボール部,部活,バスケットボール,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,硬式庭球部,部活,テニス,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,社交舞踏研究部,部活,ダンス,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,美術部,部活,美術,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
+武蔵野大学,東京都,江東区,,https://www.musashino-u.ac.jp/,駅伝部,部活,陸上競技,東京都,university_official,https://www.musashino-u.ac.jp/student-life/campus_life/club/index.html,university_verified,published,2026-07-12
 武蔵野美術大学,東京都,小平市,,https://www.musabi.ac.jp/,MAUコーラス,公認サークル,音楽,東京都,university_official,https://www.musabi.ac.jp/student_life/activity/club/,university_verified,published,2026-07-12
 武蔵野美術大学,東京都,小平市,,https://www.musabi.ac.jp/,MKP,公認サークル,その他,東京都,university_official,https://www.musabi.ac.jp/student_life/activity/club/,university_verified,published,2026-07-12
 武蔵野美術大学,東京都,小平市,,https://www.musabi.ac.jp/,MODERN JAZZ SOCIETY,公認サークル,音楽,東京都,university_official,https://www.musabi.ac.jp/student_life/activity/club/,university_verified,published,2026-07-12
