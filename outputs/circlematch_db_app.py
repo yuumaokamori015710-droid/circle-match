@@ -1647,6 +1647,7 @@ def init_db():
         if conn.execute("select count(*) from circles").fetchone()[0] == 0 and not imported_seed:
             seed_circles(conn)
         normalize_circle_records(conn)
+        delete_known_circle_noise(conn)
         migrate_circle_private_data(conn)
         redact_existing_audit_logs(conn)
         seed_collection_targets(conn)
@@ -1787,6 +1788,40 @@ def normalize_circle_records(conn):
             updated += 1
     if removed or updated:
         audit(conn, "normalize_circle_records", "circle", None, {"removed": removed, "updated": updated})
+
+
+def delete_known_circle_noise(conn):
+    noise = [
+        ("武蔵大学", "Web展覧会"),
+        ("武蔵大学", "利用可能団体"),
+        ("武蔵大学", "All in Musashi"),
+        ("武蔵大学", "TRPG&"),
+        ("武蔵大学", "Web"),
+        ("武蔵大学", "マガジン編集部"),
+        ("武蔵大学", "舞踏研究部（白雉祭）"),
+        ("武蔵大学", "モダンジャズ研究会（白雉祭）"),
+    ]
+    removed = 0
+    for university_name, circle_name in noise:
+        rows = conn.execute(
+            """
+            select c.circle_id
+            from circles c
+            join universities u on u.university_id = c.university_id
+            where u.university_name = ? and c.circle_name = ?
+            """,
+            (university_name, circle_name),
+        ).fetchall()
+        for row in rows:
+            circle_id = row["circle_id"]
+            conn.execute("delete from data_sources where entity_type='circle' and entity_id=?", (circle_id,))
+            conn.execute("delete from circle_private_profiles where circle_id=?", (circle_id,))
+            conn.execute("delete from circle_claims where circle_id=?", (circle_id,))
+            conn.execute("delete from match_posts where circle_id=?", (circle_id,))
+            conn.execute("delete from circles where circle_id=?", (circle_id,))
+            removed += 1
+    if removed:
+        audit(conn, "delete_known_circle_noise", "circle", None, {"removed": removed})
 
 
 def upsert_circle_private_profile(conn, circle_id, data):
