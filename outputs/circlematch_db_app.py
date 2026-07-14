@@ -169,7 +169,7 @@ MATCH_HTML = """<!doctype html>
     <section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>競技を押すと、サークルDBと交流募集を同時に確認できます。</p></div></div><div class="sport-grid" id="sportGrid"></div><div class="section-link"><a href="/circles">サークルDBで候補を広げる</a></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>地域から探す</h2><p>地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。</p></div></div><div class="map-board"><p class="map-headline"><strong id="mapCircleCount">0</strong>件の大学サークル候補から地域で探す</p><div class="map-stage"><svg class="japan-silhouette" id="japanMap" viewBox="0 0 520 560" role="img" aria-label="日本地図"></svg><div class="map-region-buttons" id="regionGrid"></div></div></div></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <script>
@@ -303,7 +303,7 @@ SPORT_HTML = """<!doctype html>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都道府県</span><strong id="prefCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="regionList" class="region-list"></div><div id="areaList" class="area-list"></div></aside><section class="panel db-panel"><h2>__SPORT__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><span id="activeFilterText"></span></div><div id="filterMenu" class="filter-menu hidden"></div><div class="tablewrap"><table><thead><tr><th><button class="th-filter" data-filter="university">大学 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="circle">団体名 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th>登録済み</th><th><button class="th-filter" data-filter="type">種別 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="source">出典 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const sport = __SPORT_JSON__;
     const params = new URLSearchParams(location.search);
@@ -358,7 +358,7 @@ REGION_HTML = """<!doctype html>
     <div class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <section class="grid"><aside class="panel"><h2>スポーツ別の交流募集</h2><div class="sport-search"><input id="sportSearch" placeholder="その他の競技を検索"></div><div id="sportList" class="sport-list"></div><div id="areaList" class="area-list"></div></aside><section class="right-stack"><div class="panel"><h2>交流募集</h2><div id="matchList" class="match-list"></div></div><div class="panel"><h2>__REGION_LABEL__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><a id="dbLink" class="admin-link" href="/circles">DBで詳しく見る</a></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const region = __REGION_JSON__;
     const params = new URLSearchParams(location.search);
@@ -544,7 +544,7 @@ PUBLIC_HTML = """<!doctype html>
     <div class="breadcrumb"><span>検索範囲</span><b id="regionCrumb">関東</b><span>›</span><b id="prefCrumb">すべて</b></div>
     <section class="panel"><div class="filters"><input id="q" placeholder="大学名・団体名・競技で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="statusFilter"><option value="">全検証</option><option value="university_verified">公式確認済み</option><option value="admin_verified">運営確認済み</option><option value="claimed">申請済み</option><option value="unverified">未確認</option></select><select id="sortFilter"><option value="university">大学名順</option><option value="circle">団体名順</option><option value="prefecture">都道府県順</option><option value="sport">競技順</option><option value="status">検証順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th><th>検証</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
   </main>
-  <footer>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a> <a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a> <a class="admin-link" href="/guides">サークル運営ガイド</a> <a class="admin-link" href="/operator">運営者情報</a> <a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const prefs = __PREFS__;
     const regions = __REGIONS__;
@@ -595,7 +595,7 @@ SOCIAL_HTML = """<!doctype html>
     <section class="summary"><div class="metric"><span>社会人サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>対象地域</span><strong id="prefCount">0</strong></div><div class="metric"><span>競技数</span><strong id="sportCount">0</strong></div><div class="metric"><span>登録済みページ</span><strong id="profileCount">0</strong></div></section>
     <section class="panel"><div class="panel-head"><div><h2>社会人サークルDB</h2><p>社会人サークルに限定して検索できます。現在は掲載準備中のため、登録希望の団体から順次追加していきます。</p></div><a class="button secondary" href="/representative?type=social">サークル員を募集する</a></div><div class="filters"><input id="q" placeholder="団体名・競技・地域で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="sortFilter"><option value="prefecture">都道府県順</option><option value="circle">団体名順</option><option value="sport">競技順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table><thead><tr><th>地域</th><th>団体名</th><th>登録済み</th><th>競技</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">大学サークルDB</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">大学サークルDB</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const prefs = __PREFS__;
     const regions = __REGIONS__;
@@ -1033,7 +1033,8 @@ def robots_txt():
 
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/signin", "/post-match", "/representative", "/circles", "/social", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/signin", "/post-match", "/representative", "/circles", "/social", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
+    paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
     paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
     urls = "\n".join(
@@ -1412,6 +1413,140 @@ def legal_layout(title, body):
 </head>
 <body><main><a class="back" href="/">トップへ戻る</a><div class="panel">{body}</div></main></body></html>"""
     return with_adsense(html).encode("utf-8")
+
+
+GUIDE_PAGES = {
+    "practice-match-how-to": {
+        "title": "大学サークルの練習試合相手を探す手順",
+        "lead": "初めて練習試合を組む代表者向けに、募集条件を整理して相手に伝わりやすくするための基本をまとめます。",
+        "sections": [
+            ("先に決めること", ["競技、希望日程、場所、レベル感、人数、審判や用具の有無を先に決めます。", "曖昧な募集は返信が来ても調整に時間がかかるため、最低条件と相談可能な条件を分けて書きます。"]),
+            ("募集文の型", ["大学名、団体名、競技、希望期間、活動エリア、レベル、連絡方法、補足条件の順に書くと読みやすくなります。", "例: 8月中の土日、東京都内、経験者中心、グラウンド確保済み、同程度の相手を募集。"]),
+            ("安全に進めるポイント", ["個人の電話番号やLINE IDをいきなり公開せず、まずはサービス上のフォームや代表メールでやり取りします。", "相手団体の大学名、代表者、活動実態、過去の公開情報を確認してから詳細調整に進みます。"]),
+        ],
+    },
+    "recruiting-template": {
+        "title": "サークル代表向け募集文テンプレート",
+        "lead": "練習試合、合同練習、助っ人募集、メンバー募集で使える文章の型を用意します。",
+        "sections": [
+            ("練習試合募集", ["「競技」「希望日」「場所」「レベル」「人数」「費用負担」「連絡期限」を1つずつ埋めると、相手が判断しやすくなります。", "勝敗より交流重視なのか、公式戦に近い強度なのかを必ず書きます。"]),
+            ("合同練習募集", ["練習メニュー、参加人数、経験者割合、初心者参加可否、途中参加可否を書きます。", "練習後の交流や食事の有無も、雰囲気を判断する材料になります。"]),
+            ("社会人サークルのメンバー募集", ["活動曜日、活動場所、会費、年齢層、初心者歓迎度、体験参加の流れを明記します。", "社会人は時間調整が重要なので、毎週固定か不定期かを先に見せます。"]),
+        ],
+    },
+    "verification-policy": {
+        "title": "Circle Matchの掲載情報と検証の考え方",
+        "lead": "公開DBを安心して使えるように、情報源、検証ステータス、訂正依頼の考え方を説明します。",
+        "sections": [
+            ("公開情報を中心に扱う", ["大学公式ページ、団体本人の登録、公開SNSなど、公開されている情報を中心に整理します。", "代表者の個人メールアドレスや電話番号など、本人確認に使う情報は公開DBに出しません。"]),
+            ("検証ステータス", ["公式確認済み、運営確認済み、申請済み、未確認を分けて表示し、出典がわかるものは出典URLを残します。", "未確認情報は、団体本人や大学関係者からの訂正で更新していきます。"]),
+            ("削除・訂正", ["掲載内容に誤りがある場合は、問い合わせから対象URL、団体名、訂正内容を送ってください。", "個人情報や誤掲載の疑いがあるものは、確認中に非公開化する場合があります。"]),
+        ],
+    },
+    "sports-match-manners": {
+        "title": "練習試合・合同練習のマナー",
+        "lead": "相手団体とのトラブルを避けるため、事前連絡、当日の進行、終了後の対応を整理します。",
+        "sections": [
+            ("事前連絡", ["集合時間、場所、服装、用具、雨天時判断、キャンセル期限を明確にします。", "遅刻や人数変更が出た場合は、判明した時点ですぐに共有します。"]),
+            ("当日の進行", ["代表者同士で最初に挨拶し、時間配分、ルール、危険行為、撮影可否を確認します。", "初心者や助っ人がいる場合は、怪我を防ぐため強度を合わせます。"]),
+            ("終了後", ["お礼、結果、次回候補日、改善点を簡単に共有すると継続的な関係につながります。", "写真や動画をSNSに載せる場合は、相手側の確認を取ります。"]),
+        ],
+    },
+    "kanto-circle-trends": {
+        "title": "関東の大学サークル探しで見ておきたいポイント",
+        "lead": "関東は大学数とサークル数が多いため、地域、競技、移動時間で絞ると探しやすくなります。",
+        "sections": [
+            ("地域で絞る", ["東京都、神奈川県、千葉県、埼玉県、茨城県、栃木県、群馬県で分けると候補を整理しやすくなります。", "同じ関東でも移動時間が大きく変わるため、都道府県だけでなく活動場所も確認します。"]),
+            ("競技で絞る", ["野球、サッカー、テニス、バスケットボールなどは候補が多く、レベル感の確認が重要です。", "候補が少ない競技は、隣接県や合同練習まで広げると見つかりやすくなります。"]),
+            ("DBの使い方", ["まずスポーツ別ページで全体数を見て、次に地域や大学名で絞ると効率的です。", "登録済みURLがある団体は、代表者が紹介ページを整備している可能性が高く、連絡前の確認材料になります。"]),
+        ],
+    },
+    "social-circle-recruiting": {
+        "title": "社会人サークルがメンバー募集で書くべき情報",
+        "lead": "社会人サークルは、練習相手探しよりもメンバー募集の需要が強いため、参加前の不安を減らす情報が大切です。",
+        "sections": [
+            ("参加者が知りたいこと", ["活動頻度、曜日、場所、会費、年齢層、初心者歓迎度、体験参加の可否を最初に見せます。", "雰囲気、経験者割合、男女比、競技レベルも判断材料になります。"]),
+            ("募集ページの作り方", ["写真よりも、いつ・どこで・どんな人が参加しているかを具体的に書くことが重要です。", "体験参加の流れを3ステップで書くと、問い合わせの心理的ハードルが下がります。"]),
+            ("安全性", ["個人情報を公開しすぎず、まずは問い合わせフォームや代表メールを使います。", "未成年参加、保険、怪我、会費徴収の扱いは事前に明確にしておくと安心です。"]),
+        ],
+    },
+    "privacy-for-representatives": {
+        "title": "サークル代表者の個人情報を守る考え方",
+        "lead": "代表者登録や問い合わせ対応で、どこまで公開し、どこから非公開にするべきかを整理します。",
+        "sections": [
+            ("公開してよい情報", ["大学名、団体名、競技、活動場所、公開SNS、公式ページなど、団体として公開している情報を中心にします。", "代表者個人の名前を出す場合でも、本人が公開を望む範囲に限定します。"]),
+            ("公開しない情報", ["個人メールアドレス、電話番号、LINE ID、住所、学籍番号、内部メモは公開ページに出さない設計にします。", "Circle Matchでも、代表者確認情報は公開検索APIに返さない方針です。"]),
+            ("なりすまし対策", ["大学メール確認、公式SNS確認、既存掲載情報との照合を組み合わせます。", "登録済み団体の変更は、申請者の立場を確認してから反映します。"]),
+        ],
+    },
+    "adsense-site-policy": {
+        "title": "Circle Matchの広告掲載ポリシー",
+        "lead": "広告掲載時に、ユーザーの検索体験と安全性を損なわないための方針です。",
+        "sections": [
+            ("広告とコンテンツの区別", ["広告は検索結果や募集情報と紛らわしくならない位置に置き、誤クリックを誘導しません。", "広告の近くに「クリックしてください」などの誘導文は置きません。"]),
+            ("掲載しないコンテンツ", ["誹謗中傷、差別、暴力、性的内容、著作権侵害、詐欺的な募集、本人同意のない個人情報は扱いません。", "公開DBに不適切な情報が混じった場合は、確認次第修正または非公開化します。"]),
+            ("ユーザー価値を優先", ["広告収益よりも、サークル探し、練習試合探し、掲載情報の正確性を優先します。", "検索ページだけでなく、代表者向けのノウハウ記事も継続的に整備します。"]),
+        ],
+    },
+}
+
+
+def operator_page():
+    body = f"""
+<h1>運営者情報</h1>
+<p class="meta">運営者: {SITE_OPERATOR}</p>
+<p>{SITE_NAME}は、大学サークル・部活動・社会人サークルの練習試合、合同練習、助っ人募集、交流イベント、メンバー募集を探しやすくするためのサービスです。</p>
+<h2>運営目的</h2>
+<p>サークル活動は、大学公式サイト、SNS、個別の紹介ページに情報が分散しがちです。本サービスでは、公開情報と代表者からの登録情報を整理し、活動相手や参加先を探す人が比較しやすい状態を目指します。</p>
+<h2>編集方針</h2>
+<ul>
+  <li>公開情報と本人登録情報を分けて管理します。</li>
+  <li>出典がある情報には出典URLや検証ステータスを残します。</li>
+  <li>個人情報や内部メモは公開ページに表示しません。</li>
+  <li>誤掲載、削除依頼、権利侵害の疑いがある情報は確認し、必要に応じて修正または非公開化します。</li>
+</ul>
+<h2>問い合わせ</h2>
+<p>掲載情報の訂正、削除、代表者登録、広告掲載、サービス改善に関する連絡は <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> までお願いします。</p>
+"""
+    return legal_layout("運営者情報", body)
+
+
+def guides_page():
+    items = "\n".join(
+        f"""<li><a href="/guides/{slug}">{data["title"]}</a><br><span class="meta">{data["lead"]}</span></li>"""
+        for slug, data in GUIDE_PAGES.items()
+    )
+    body = f"""
+<h1>サークル運営ガイド</h1>
+<p class="meta">練習試合、合同練習、助っ人募集、メンバー募集をスムーズに進めるための基礎情報です。</p>
+<p>Circle MatchはDB検索だけでなく、代表者が安全に募集し、参加者が安心して比較できるための情報も整備していきます。</p>
+<h2>記事一覧</h2>
+<ul>{items}</ul>
+"""
+    return legal_layout("サークル運営ガイド", body)
+
+
+def guide_page(slug):
+    data = GUIDE_PAGES.get(slug)
+    if not data:
+        return None
+    sections = "\n".join(
+        f"<h2>{title}</h2><ul>{''.join(f'<li>{item}</li>' for item in items)}</ul>"
+        for title, items in data["sections"]
+    )
+    body = f"""
+<h1>{data["title"]}</h1>
+<p class="meta">サークル代表者・参加希望者向けガイド</p>
+<p>{data["lead"]}</p>
+{sections}
+<h2>関連ページ</h2>
+<ul>
+  <li><a href="/guides">サークル運営ガイド一覧</a></li>
+  <li><a href="/circles">サークルDBを見る</a></li>
+  <li><a href="/contact">掲載情報の訂正・問い合わせ</a></li>
+</ul>
+"""
+    return legal_layout(data["title"], body)
 
 
 def privacy_page():
@@ -2371,6 +2506,17 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(about_data_page())
             elif parsed.path == "/contact":
                 self.send_html(contact_page())
+            elif parsed.path == "/operator":
+                self.send_html(operator_page())
+            elif parsed.path == "/guides":
+                self.send_html(guides_page())
+            elif parsed.path.startswith("/guides/"):
+                guide_slug = unquote(parsed.path.removeprefix("/guides/").strip("/"))
+                page = guide_page(guide_slug)
+                if page:
+                    self.send_html(page)
+                else:
+                    self.send_html("<h1>記事が見つかりません</h1>".encode("utf-8"), 404)
             elif parsed.path == "/healthz":
                 self.send_json({"ok": True, **summary()})
             elif parsed.path == "/robots.txt":
