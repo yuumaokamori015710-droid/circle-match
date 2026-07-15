@@ -48,6 +48,8 @@ def main():
           coalesce(c.last_checked_at, '') as last_checked_at
         from circles c
         join universities u on u.university_id = c.university_id
+        where c.public_status = 'published'
+          and c.verification_status in ('university_verified', 'admin_verified')
         order by u.prefecture, u.university_name, c.circle_name
         """
     ).fetchall()
