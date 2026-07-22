@@ -18,6 +18,7 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
+SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
 LOG_PATH = ROOT.parent / "work" / "circlematch_db_app.log"
 HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8787"))
@@ -1986,49 +1987,55 @@ def upsert_university(conn, data, audit=True):
 
 
 def seed_public_circles_from_csv(conn):
-    if not PUBLIC_SEED_PATH.exists():
-        return 0
-    with PUBLIC_SEED_PATH.open("r", encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        imported = 0
-        for item in reader:
-            uni_name = (item.get("university_name") or "").strip()
-            circle_name = clean_circle_name(item.get("circle_name") or "")
-            if not uni_name or not circle_name:
-                continue
-            if is_invalid_circle_name(circle_name, item.get("source_url", "")):
-                continue
-            uni = conn.execute(
-                "select university_id from universities where university_name=? order by campus_name limit 1",
-                (uni_name,),
-            ).fetchone()
-            if uni:
-                university_id = uni["university_id"]
-            else:
-                university_id = upsert_university(conn, {
-                    "university_name": uni_name,
-                    "prefecture": item.get("prefecture") or "東京都",
-                    "city": item.get("city", ""),
-                    "campus_name": item.get("campus_name", ""),
-                    "official_url": item.get("official_url", ""),
-                    "source_url": item.get("official_url", ""),
-                }, audit=False)
-            upsert_circle(conn, {
-                "university_id": university_id,
-                "circle_name": circle_name,
-                "organization_type": item.get("organization_type") or infer_organization_type(circle_name, item.get("source_type") or "other"),
-                "sport_category": infer_sport_category(circle_name, item.get("sport_category") or "その他"),
-                "activity_area": item.get("activity_area", ""),
-                "source_type": item.get("source_type") or "other",
-                "source_url": item.get("source_url", ""),
-                "verification_status": item.get("verification_status") or "unverified",
-                "public_status": item.get("public_status") or "published",
-                "last_checked_at": item.get("last_checked_at", ""),
-            }, audit_entry=False)
-            imported += 1
-        if imported:
-            audit(conn, "public_seed_import", "circle", None, {"imported": imported, "source": str(PUBLIC_SEED_PATH)})
-        return imported
+    imported = 0
+    for seed_path in (PUBLIC_SEED_PATH, SOCIAL_SEED_PATH):
+        if not seed_path.exists():
+            continue
+        seed_imported = 0
+        with seed_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            for item in reader:
+                uni_name = (item.get("university_name") or "").strip()
+                circle_name = clean_circle_name(item.get("circle_name") or "")
+                if not uni_name or not circle_name:
+                    continue
+                if is_invalid_circle_name(circle_name, item.get("source_url", "")):
+                    continue
+                uni = conn.execute(
+                    "select university_id from universities where university_name=? order by campus_name limit 1",
+                    (uni_name,),
+                ).fetchone()
+                if uni:
+                    university_id = uni["university_id"]
+                else:
+                    university_id = upsert_university(conn, {
+                        "university_name": uni_name,
+                        "prefecture": item.get("prefecture") or "東京都",
+                        "city": item.get("city", ""),
+                        "campus_name": item.get("campus_name", ""),
+                        "official_url": item.get("official_url", ""),
+                        "source_url": item.get("official_url", ""),
+                    }, audit=False)
+                upsert_circle(conn, {
+                    "university_id": university_id,
+                    "circle_name": circle_name,
+                    "organization_type": item.get("organization_type") or infer_organization_type(circle_name, item.get("source_type") or "other"),
+                    "sport_category": infer_sport_category(circle_name, item.get("sport_category") or "その他"),
+                    "activity_area": item.get("activity_area", ""),
+                    "source_type": item.get("source_type") or "other",
+                    "source_url": item.get("source_url", ""),
+                    "verification_status": item.get("verification_status") or "unverified",
+                    "public_status": item.get("public_status") or "published",
+                    "last_checked_at": item.get("last_checked_at", ""),
+                }, audit_entry=False)
+                seed_imported += 1
+        if seed_imported:
+            audit(conn, "public_seed_import", "circle", None, {
+                "imported": seed_imported,
+                "source": str(seed_path),
+            })
+            imported += seed_imported
+    return imported
 
 
 def normalize_circle_records(conn):
