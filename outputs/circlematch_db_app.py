@@ -938,6 +938,7 @@ def render_social_html():
     html = html.replace('<a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a>', '<a id="dbBridge" href="#social-db">同じ条件で社会人サークルDBを見る</a>')
     html = html.replace("競技を押すと、サークルDBと交流募集を同時に確認できます。", "競技を押すと、社会人サークルDBとメンバー・交流募集を同時に確認できます。")
     html = html.replace("サークルDBで候補を広げる", "社会人サークルDBで候補を広げる")
+    html = html.replace('<a href="/circles">社会人サークルDBで候補を広げる</a>', '<a href="#social-db">社会人サークルDBで候補を広げる</a>')
     html = html.replace("地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。", "地図上の地域を押すと、社会人の募集掲示板とDB候補をその地域で絞り込めます。")
     html = html.replace('<strong id="mapCircleCount">0</strong>件の大学サークル候補から地域で探す', '<strong id="mapCircleCount">0</strong>件の社会人サークル候補から地域で探す')
     html = html.replace('<a class="admin-link" href="/circles">サークルDB</a>', '<a class="admin-link" href="#social-db">社会人サークルDB</a>')
