@@ -899,12 +899,64 @@ def render_circles_html():
 
 
 def render_social_html():
+    social_db_panel = """
+    <section id="social-db" class="section panel"><div class="panel-head"><div><h2>社会人サークルDB</h2><p>上の条件で絞り込んだ社会人サークルを確認できます。掲載・修正を希望する団体は代表者登録から申請してください。</p></div><a class="button light" href="/representative?type=social">掲載・修正を申請する</a></div><div class="tablewrap"><table><thead><tr><th>活動地域</th><th>団体名</th><th>競技</th><th>種別</th><th>掲載状態</th><th>登録済み</th></tr></thead><tbody id="socialDbRows"></tbody></table></div></section>
+    """
+    social_css = """
+    .tablewrap{overflow:auto;max-height:620px}.tablewrap table{width:100%;min-width:820px;border-collapse:collapse}.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.tablewrap th{position:sticky;top:0;background:#f8fbfd;color:var(--muted);font-size:12px}.db-name{font-weight:900}.db-sub{display:block;margin-top:4px;color:var(--muted);font-size:12px}.db-link{font-weight:900;color:#31506b}
+    """
+    social_js = """
+    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/social?sport=${encodeURIComponent(s.name)}#matches"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>仲間を探す</b></a>`).join("") }
+    function renderRegions(circles,matches){$("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; return `<a class="map-region" href="/social?region=${encodeURIComponent(r.value)}#matches"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span></a>`}).join("")}
+    function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
+    function prefValues(){return selectedRegion()?.prefectures || prefs}
+    function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
+    function currentQuery(){const qs=new URLSearchParams({organization_type:"社会人サークル",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
+    async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
+    function updateStats(circles,matches){$("uniCount").textContent=new Set(circles.map(c=>c.prefecture).filter(Boolean)).size; $("circleCount").textContent=circles.length; $("verifiedCount").textContent=circles.filter(c=>["claimed","university_verified","admin_verified"].includes(c.verification_status)).length; $("matchCount").textContent=matches.length}
+    function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const blob=[m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if($("sportFilter").value && m.sport_category!==$("sportFilter").value)return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
+    function sortMatches(rows){const v=$("sortFilter").value; return rows.slice().sort((a,b)=>{if(v==="new")return String(b.created_at||"").localeCompare(String(a.created_at||"")); if(v==="university")return String(a.circle_name||"").localeCompare(String(b.circle_name||""),"ja"); if(v==="sport")return String(a.sport_category||"").localeCompare(String(b.sport_category||""),"ja"); return String(a.scheduled_at||"9999").localeCompare(String(b.scheduled_at||"9999"))})}
+    function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.prefecture||"地域未設定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.scheduled_at||"日時未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
+    function socialDbRow(c){const status=({university_verified:"公式確認済み",admin_verified:"運営確認済み",claimed:"申請済み",unverified:"未確認"}[c.verification_status]||c.verification_status||"未確認"); return `<tr><td><span class="db-name">${esc(c.prefecture||"地域未設定")}</span><span class="db-sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="db-name">${esc(c.circle_name)}</span><span class="db-sub">${esc(c.activity_area||"")}</span></td><td>${esc(c.sport_category||"その他")}</td><td><span class="badge">${esc(c.organization_type||"社会人サークル")}</span></td><td><span class="badge ${["admin_verified","university_verified"].includes(c.verification_status)?"open":""}">${esc(status)}</span></td><td>${c.profile_url?`<a class="db-link" href="${esc(c.profile_url)}">プロフィール</a>`:""}</td></tr>`}
+    async function refresh(){const qs=currentQuery(); const circles=await api("/api/circles?"+qs); if(!allCircleCache) allCircleCache=await api("/api/circles?organization_type="+encodeURIComponent("社会人サークル")); if(!allMatchCache){const socialIds=new Set(allCircleCache.map(c=>c.circle_id)); allMatchCache=(await api("/api/matches")).filter(m=>socialIds.has(m.circle_id))} const circleIds=new Set(circles.map(c=>c.circle_id)); const data=sortMatches(allMatchCache.filter(m=>circleIds.has(m.circle_id)&&matchesFilter(m))); renderRegions(allCircleCache,allMatchCache); updateStats(circles,data); $("socialDbRows").innerHTML=circles.map(socialDbRow).join("") || `<tr><td colspan="6" class="empty">該当する社会人サークルはまだありません。掲載・修正は代表者登録から申請できます。</td></tr>`; $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件の社会人サークル候補は ${circles.length} 件あります。下のDBから候補団体を確認できます。</div>`}
+    function updateCoverageNotice(){$("coverageNotice").style.display="none"}
+    """
+    html = MATCH_HTML
+    html = html.replace("<title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>", "<title>社会人サークル | __SITE_NAME__</title>")
+    html = html.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative">新規登録</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative?type=social">新規登録</a></nav>')
+    html = html.replace('alt="屋外コートで交流する大学生グループ"', 'alt="屋外コートで交流するスポーツ仲間"')
+    html = html.replace("Practice Match / Circle Meetup", "Social Circle / Member Recruiting")
+    html = html.replace("練習相手も、仲間も、ここで見つかる。", "社会人のスポーツ仲間も、ここで見つかる。")
+    html = html.replace("Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。", "Circle Matchは、社会人スポーツサークルのメンバー募集、練習試合、合同練習、交流イベントをつなぐマッチングサービスです。")
+    html = html.replace('href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/post-match">募集する</a>', 'href="#matches">メンバー募集を見る</a><a class="button primary hero-cta" href="/representative?type=social">サークル員を募集する</a>')
+    html = html.replace("<span>対象大学</span>", "<span>対象地域</span>")
+    html = html.replace("<span>検証済み/申請済み</span>", "<span>掲載・申請済み</span>")
+    html = html.replace("<span>募集中</span>", "<span>メンバー・交流募集中</span>")
+    html = html.replace('<h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p>', '<h2>メンバー募集・交流掲示板</h2><p>地域、都道府県、競技、団体名、活動場所で絞り込めます。募集中が少ない時は、その条件の社会人サークルDB候補へ広げられます。</p>')
+    html = html.replace('<a class="button light" href="/social">社会人サークルを見る</a>', '<a class="button light" href="#social-db">社会人サークルDBを見る</a>')
+    html = html.replace('placeholder="大学名・団体名・場所で検索"', 'placeholder="団体名・競技・活動地域で検索"')
+    html = html.replace('<a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a>', '<a id="dbBridge" href="#social-db">同じ条件で社会人サークルDBを見る</a>')
+    html = html.replace("競技を押すと、サークルDBと交流募集を同時に確認できます。", "競技を押すと、社会人サークルDBとメンバー・交流募集を同時に確認できます。")
+    html = html.replace("サークルDBで候補を広げる", "社会人サークルDBで候補を広げる")
+    html = html.replace("地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。", "地図上の地域を押すと、社会人の募集掲示板とDB候補をその地域で絞り込めます。")
+    html = html.replace('<strong id="mapCircleCount">0</strong>件の大学サークル候補から地域で探す', '<strong id="mapCircleCount">0</strong>件の社会人サークル候補から地域で探す')
+    html = html.replace('<a class="admin-link" href="/circles">サークルDB</a>', '<a class="admin-link" href="#social-db">社会人サークルDB</a>')
+    html = html.replace("  </main>\n  <footer>", social_db_panel + "  </main>\n  <footer>")
+    html = html.replace("  </style>", social_css + "  </style>", 1)
+    start = html.index("    function renderSports(){")
+    end = html.index("    function updateCoverageNotice()", start)
+    replacement_end = html.index("\n", html.index("}", end)) + 1
+    html = html[:start] + social_js + html[replacement_end:]
     return (
-        with_adsense(SOCIAL_HTML)
+        with_adsense(html)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
+        .replace("__POPULAR_SPORTS__", json.dumps([
+            {"name": name, "label": label, "code": code, "color": color, "image": image}
+            for name, label, code, color, image in POPULAR_SPORTS
+        ], ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
         .encode("utf-8")
     )
