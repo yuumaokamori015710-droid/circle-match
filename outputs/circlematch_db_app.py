@@ -449,7 +449,7 @@ REPRESENTATIVE_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
     main{max-width:1120px;margin:auto;padding:26px 18px 60px}.intro{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-bottom:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}.intro h1{font-size:34px;line-height:1.18;margin:0 0 10px}.intro p,.help p{color:var(--muted);line-height:1.8;margin:0}.steps{display:grid;gap:9px}.step{border:1px solid var(--line);border-radius:8px;padding:12px;background:#f9fbfd}.step b{display:block;margin-bottom:4px}
-    form{display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:11px 16px;border:1px solid transparent;background:var(--accent);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850}.result.error{background:#fde8e4;color:#9b2f1a}
+    form{display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical}.consent{display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#f9fbfd;line-height:1.55}.consent input{width:auto;min-height:0;margin:3px 0 0}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:11px 16px;border:1px solid transparent;background:var(--accent);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850}.result.error{background:#fde8e4;color:#9b2f1a}
     @media(max-width:820px){.intro,.form-grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.intro h1{font-size:29px}}
   </style>
 </head>
@@ -462,6 +462,7 @@ REPRESENTATIVE_HTML = """<!doctype html>
         <div class="form-grid"><label>大学<select id="universityId" required></select></label><label>団体名<input id="circleName" required placeholder="例: フットサル同好会"></label></div>
         <div class="form-grid"><label>競技<select id="sportCategory"></select></label><label>団体種別<select id="organizationType"></select></label></div>
         <div class="form-grid"><label>代表者名<small>公開されません</small><input id="claimantName" required></label><label>大学メール<small>公開されません</small><input id="claimantEmail" type="email" required placeholder="name@university.ac.jp"></label></div>
+        <div class="form-grid"><label>公開連絡用メール<small>団体の問い合わせ窓口として公開するアドレスだけを入力してください</small><input id="publicContactEmail" type="email" placeholder="circle@example.com"></label><label class="consent"><input id="publicContactConsent" type="checkbox">このメールアドレスを団体の公開連絡先として掲載することに同意します</label></div>
         <label>出典URL<small>大学公式ページ、団体公式SNS、サークル紹介ページなど</small><input id="evidenceUrl" type="url" placeholder="https://"></label>
         <div class="form-grid"><label>人数<small>例: 20人、50人以上など</small><input id="memberCount" placeholder="例: 35人"></label><label>練習頻度<small>例: 週2回、月2回など</small><input id="practiceFrequency" placeholder="例: 週2回"></label></div>
         <div class="form-grid"><label>雰囲気<select id="atmosphere"><option value="">選択してください</option><option>初心者歓迎</option><option>ゆるめ</option><option>ほどよく真剣</option><option>競技志向</option><option>交流重視</option></select></label><label>経験者割合<select id="experienceRatio"><option value="">選択してください</option><option>初心者中心</option><option>初心者と経験者が半々</option><option>経験者多め</option><option>経験者中心</option><option>未定</option></select></label></div>
@@ -481,7 +482,7 @@ REPRESENTATIVE_HTML = """<!doctype html>
     function fill(el, rows, label){el.innerHTML=`<option value="">${label}</option>`+rows.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("")}
     async function api(path, options){const r=await fetch(path, options); const data=await r.json(); if(!r.ok)throw new Error(data.error||"送信に失敗しました"); return data}
     async function boot(){const universities=await api("/api/universities"); fill($("universityId"),universities.map(u=>({value:u.university_id,label:`${u.university_name} / ${u.prefecture}`})),"大学を選択"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("organizationType"),orgTypes.map(v=>({value:v,label:v})),"団体種別を選択")}
-    $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const payload={university_id:$("universityId").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,evidence_url:$("evidenceUrl").value,member_count:$("memberCount").value,practice_frequency:$("practiceFrequency").value,atmosphere:$("atmosphere").value,experience_ratio:$("experienceRatio").value,activity_place:$("activityPlace").value,introduction:$("introduction").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`代表申請を受け付けました。申請ID: ${esc(data.claim_id)}<br><a href="${esc(data.profile_url)}">作成されたサークルページを見る</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
+    $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const publicContactEmail=$("publicContactEmail").value.trim(); const publicContactConsent=$("publicContactConsent").checked; if(publicContactEmail&&!publicContactConsent)throw new Error("公開連絡用メールを掲載する場合は、公開への同意が必要です。"); if(publicContactConsent&&!publicContactEmail)throw new Error("公開する団体用メールアドレスを入力してください。"); const payload={university_id:$("universityId").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,public_contact_email:publicContactEmail,public_contact_consent:publicContactConsent,evidence_url:$("evidenceUrl").value,member_count:$("memberCount").value,practice_frequency:$("practiceFrequency").value,atmosphere:$("atmosphere").value,experience_ratio:$("experienceRatio").value,activity_place:$("activityPlace").value,introduction:$("introduction").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`代表申請を受け付けました。申請ID: ${esc(data.claim_id)}<br><a href="${esc(data.profile_url)}">作成されたサークルページを見る</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
     boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
   </script>
 </body>
@@ -498,7 +499,7 @@ CIRCLE_PROFILE_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
     main{max-width:1040px;margin:auto;padding:28px 18px 60px}.hero{background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px}.eyebrow{margin:0 0 8px;color:var(--brand);font-size:13px;font-weight:900}.hero h1{margin:0;font-size:38px;line-height:1.16}.lead{margin:14px 0 0;color:#405164;line-height:1.8;font-size:16px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.badge{display:inline-flex;align-items:center;border-radius:999px;background:#edf2f7;color:#405164;min-height:25px;padding:4px 10px;font-size:12px;font-weight:900}.badge.ok{background:#e2f5ed;color:#0d674f}
-    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:5px;font-size:18px;line-height:1.35}.panel{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px}.panel h2{margin:0 0 10px;font-size:22px}.panel p{margin:0;color:#405164;line-height:1.8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:900}.metric strong{display:block;margin-top:5px;font-size:18px;line-height:1.35}.panel{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px}.panel h2{margin:0 0 10px;font-size:22px}.panel p{margin:0;color:#405164;line-height:1.8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.contact-email{font-weight:900;color:var(--brand)!important;word-break:break-all}.invite-template{width:100%;min-height:220px;margin-top:14px;border:1px solid var(--line);border-radius:8px;padding:12px;background:#f9fbfd;color:#405164;font:inherit;line-height:1.7;resize:vertical}
     footer{max-width:1040px;margin:auto;padding:0 18px 34px;color:var(--muted);font-size:13px}
     @media(max-width:760px){.hero h1{font-size:30px}.grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}}
   </style>
@@ -511,6 +512,7 @@ CIRCLE_PROFILE_HTML = """<!doctype html>
     <section class="panel"><h2>サークル紹介</h2><p>__INTRODUCTION__</p></section>
     <section class="panel"><h2>活動場所</h2><p>__ACTIVITY_PLACE__</p></section>
     <section class="panel"><h2>代表コメント</h2><p>__REPRESENTATIVE_COMMENT__</p></section>
+    __CONTACT_SECTION__
   </main>
   <footer>このページはサークル代表の登録内容をもとに自動生成されています。訂正・削除は問い合わせページから連絡してください。</footer>
 </body>
@@ -1085,6 +1087,26 @@ def render_circle_profile_html(profile_slug):
         value = (value or "").strip()
         return html.escape(value if value else fallback)
     sport = data.get("sport_category") or "その他"
+    contact_email = (data.get("public_contact_email") or "").strip()
+    contact_section = ""
+    if contact_email and data.get("public_contact_consent"):
+        subject = f"【{sport}の交流のご相談】Circle Matchを見てご連絡しました"
+        invite_template = "\n".join([
+            f"{data.get('circle_name', 'ご担当者')} ご担当者様",
+            "",
+            "はじめまして。Circle Matchで活動情報を拝見し、ご連絡しました。",
+            "",
+            "【こちらの団体名】",
+            "【希望する内容】練習試合 / 合同練習 / メンバー交流 など",
+            "【希望時期・場所】",
+            "【補足】",
+            "",
+            "ご都合が合いましたら、ぜひ詳細をご相談できれば幸いです。",
+            "",
+            "Circle Match（https://circle-match.jp/）を通じてご連絡しました。",
+        ])
+        mailto_url = f"mailto:{quote(contact_email, safe='@')}?{urlencode({'subject': subject, 'body': invite_template})}"
+        contact_section = f'''<section class="panel contact-panel"><h2>連絡を取るならこちら</h2><p class="contact-email">{html.escape(contact_email)}</p><p>メール作成時は、下の文面をそのまま使うか、必要な箇所を埋めてから送れます。</p><div class="actions"><a class="button primary" href="{html.escape(mailto_url, quote=True)}">メールを作成</a><button class="button" type="button" id="copyInviteTemplate">テンプレートをコピー</button></div><textarea id="inviteTemplate" class="invite-template" readonly>{html.escape(invite_template)}</textarea></section><script>document.getElementById("copyInviteTemplate")?.addEventListener("click",async()=>{{const button=document.getElementById("copyInviteTemplate");try{{await navigator.clipboard.writeText(document.getElementById("inviteTemplate").value);button.textContent="コピーしました"}}catch(_error){{document.getElementById("inviteTemplate").select();document.execCommand("copy");button.textContent="コピーしました"}}}});</script>'''
     page = (
         with_adsense(CIRCLE_PROFILE_HTML)
         .replace("__SITE_NAME__", html.escape(SITE_NAME))
@@ -1102,6 +1124,7 @@ def render_circle_profile_html(profile_slug):
         .replace("__INTRODUCTION__", clean(data.get("introduction"), "代表者からの紹介文はまだ登録されていません。"))
         .replace("__ACTIVITY_PLACE__", clean(data.get("activity_place")))
         .replace("__REPRESENTATIVE_COMMENT__", clean(data.get("representative_comment"), "代表者コメントはまだ登録されていません。"))
+        .replace("__CONTACT_SECTION__", contact_section)
     )
     return page.encode("utf-8")
 
@@ -1672,7 +1695,7 @@ def privacy_page():
   <li>サービス改善、利用状況分析、広告配信、法令遵守</li>
 </ul>
 <h2>公開範囲</h2>
-<p>公開検索ページには、公開情報のみを表示します。代表者氏名、大学メールアドレス、問い合わせ本文、内部メモ、認証情報は公開しません。</p>
+<p>公開検索ページには、公開情報のみを表示します。代表者氏名、大学メールアドレス、問い合わせ本文、内部メモ、認証情報は公開しません。団体が公開に同意した団体用の連絡先メールアドレスだけは、団体紹介ページに表示する場合があります。</p>
 <h2>第三者配信広告とCookie</h2>
 <p>本サービスではGoogle AdSense等の第三者配信広告を利用する場合があります。Googleなどの第三者配信事業者は、Cookieを使用して、ユーザーの過去のアクセス情報に基づく広告を配信することがあります。パーソナライズ広告は、Googleの広告設定ページ等から無効にできます。</p>
 <h2>第三者提供・委託</h2>
@@ -1736,6 +1759,7 @@ def about_data_page():
   <li>本人同意のない個人名、個人写真、非公開グループの情報</li>
   <li>他サイトの紹介文、画像、口コミ、ランキングのコピー</li>
 </ul>
+<p>団体の公開連絡先は、代表者が公開に同意して登録した団体用メールアドレスに限ります。</p>
 <h2>検証ステータス</h2>
 <ul>
   <li>公式確認済み: 大学公式ページで存在確認済み</li>
@@ -1837,6 +1861,8 @@ def init_db():
           practice_frequency text,
           activity_place text,
           representative_comment text,
+          public_contact_email text,
+          public_contact_consent integer not null default 0,
           is_published integer not null default 1,
           created_at text not null,
           updated_at text not null,
@@ -1942,6 +1968,8 @@ def init_db():
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
         ensure_column(conn, "circles", "organization_type", "text not null default '不明'")
+        ensure_column(conn, "circle_public_profiles", "public_contact_email", "text")
+        ensure_column(conn, "circle_public_profiles", "public_contact_consent", "integer not null default 0")
         ensure_column(conn, "match_posts", "period_start", "text")
         ensure_column(conn, "match_posts", "period_end", "text")
         ensure_column(conn, "match_posts", "practice_detail", "text")
@@ -2194,8 +2222,9 @@ def upsert_circle_public_profile(conn, circle_id, data):
     conn.execute(
         """
         insert into circle_public_profiles(profile_id, circle_id, profile_slug, catch_copy, introduction, member_count,
-          atmosphere, experience_ratio, practice_frequency, activity_place, representative_comment, is_published, created_at, updated_at)
-        values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          atmosphere, experience_ratio, practice_frequency, activity_place, representative_comment, public_contact_email,
+          public_contact_consent, is_published, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         on conflict(circle_id) do update set
           catch_copy=excluded.catch_copy,
           introduction=excluded.introduction,
@@ -2205,6 +2234,8 @@ def upsert_circle_public_profile(conn, circle_id, data):
           practice_frequency=excluded.practice_frequency,
           activity_place=excluded.activity_place,
           representative_comment=excluded.representative_comment,
+          public_contact_email=excluded.public_contact_email,
+          public_contact_consent=excluded.public_contact_consent,
           is_published=excluded.is_published,
           updated_at=excluded.updated_at
         """,
@@ -2220,6 +2251,8 @@ def upsert_circle_public_profile(conn, circle_id, data):
             (data.get("practice_frequency") or "").strip(),
             (data.get("activity_place") or "").strip(),
             (data.get("representative_comment") or data.get("message") or "").strip(),
+            (data.get("public_contact_email") or "").strip(),
+            1 if data.get("public_contact_consent") else 0,
             1,
             timestamp,
             timestamp,
@@ -2331,10 +2364,18 @@ def create_circle_claim(conn, data):
     circle_name = clean_circle_name(data.get("circle_name") or "")
     claimant_email = (data.get("claimant_email") or "").strip()
     claimant_name = (data.get("claimant_name") or "").strip()
+    public_contact_email = (data.get("public_contact_email") or "").strip()
+    public_contact_consent = bool(data.get("public_contact_consent"))
     if not university_id or not circle_name or not claimant_email:
         raise ValueError("university_id, circle_name and claimant_email are required")
     if "@" not in claimant_email:
         raise ValueError("valid claimant_email is required")
+    if public_contact_email and "@" not in public_contact_email:
+        raise ValueError("valid public_contact_email is required")
+    if public_contact_email and not public_contact_consent:
+        raise ValueError("public contact consent is required")
+    if public_contact_consent and not public_contact_email:
+        raise ValueError("public_contact_email is required when consent is given")
     if not conn.execute("select 1 from universities where university_id=?", (university_id,)).fetchone():
         raise ValueError("university not found")
     circle_id = upsert_circle(conn, {
@@ -2368,6 +2409,8 @@ def create_circle_claim(conn, data):
         "practice_frequency": data.get("practice_frequency", ""),
         "activity_place": data.get("activity_place", ""),
         "representative_comment": data.get("message", ""),
+        "public_contact_email": public_contact_email,
+        "public_contact_consent": public_contact_consent,
     })
     audit(conn, "representative_claim", "circle_claim", claim_id, {
         "circle_id": circle_id,
