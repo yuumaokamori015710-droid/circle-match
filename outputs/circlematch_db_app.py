@@ -918,7 +918,7 @@ def render_social_html():
     social_css = """
     """
     social_js = """
-    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/social?sport=${encodeURIComponent(s.name)}#matches"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>仲間を探す</b></a>`).join("") }
+    function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/social/sports?sport=${encodeURIComponent(s.name)}"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>仲間を探す</b></a>`).join("") }
     function renderRegions(circles,matches){$("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; return `<a class="map-region" href="/social?region=${encodeURIComponent(r.value)}#matches"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span></a>`}).join("")}
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
@@ -990,6 +990,40 @@ def render_sport_html(sport):
     sport_image = next((image for name, _label, _code, _color, image in POPULAR_SPORTS if name == sport), "other.png")
     return (
         with_adsense(SPORT_HTML)
+        .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SPORT__", sport)
+        .replace("__SPORT_IMAGE__", f"/assets/sports/{sport_image}?v=20260713v1")
+        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
+        .encode("utf-8")
+    )
+
+
+def render_social_sport_html(sport):
+    sport = sport if sport in sport_options() else "野球"
+    sport_image = next((image for name, _label, _code, _color, image in POPULAR_SPORTS if name == sport), "other.png")
+    html = SPORT_HTML
+    html = html.replace("<title>__SPORT__ | __SITE_NAME__</title>", "<title>__SPORT__の社会人サークル | __SITE_NAME__</title>")
+    html = html.replace(
+        '<header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>',
+        '<header><div class="top"><a class="brand" href="/social">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/social">社会人トップへ戻る</a><a href="/representative?type=social">サークル員を募集する</a><a href="/signin">ログイン</a></nav></div></header>',
+    )
+    html = html.replace("__SPORT__の相手を探す", "__SPORT__の仲間を探す")
+    html = html.replace("__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。", "__SPORT__の社会人サークルDBとメンバー・交流募集をまとめて確認できます。")
+    html = html.replace('href="/post-match">募集する</a>', 'href="/representative?type=social">サークル員を募集する</a>')
+    html = html.replace("<span>交流募集</span>", "<span>メンバー・交流募集</span>")
+    html = html.replace("<span>対象都道府県</span>", "<span>対象地域</span>")
+    html = html.replace('<h2>地域別の交流募集</h2>', '<h2>地域別のメンバー・交流募集</h2>')
+    html = html.replace("__SPORT__サークルDB", "__SPORT__ 社会人サークルDB")
+    html = html.replace('data-filter="university">大学', 'data-filter="university">活動地域')
+    html = html.replace('const labels={university:"大学",circle:"団体名",type:"種別",source:"出典"}', 'const labels={university:"活動地域",circle:"団体名",type:"種別",source:"出典"}')
+    html = html.replace('return key==="university"?`${c.university_name||""} ${c.prefecture||""} ${c.city||""}`', 'return key==="university"?`${c.prefecture||""} ${c.city||""} ${c.activity_area||""}`')
+    html = html.replace('return String(a.university_name||"").localeCompare(String(b.university_name||""),"ja")', 'return String(rowValue(a,"university")).localeCompare(String(rowValue(b,"university")),"ja")')
+    html = html.replace('<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)} ${esc(c.city||"")}</span></td>', '<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td>')
+    html = html.replace('`/api/sport_overview?sport=${encodeURIComponent(sport)}${regionQs}${prefQs}`', '`/api/sport_overview?sport=${encodeURIComponent(sport)}&organization_type=${encodeURIComponent("社会人サークル")}${regionQs}${prefQs}`')
+    html = html.replace('<a class="admin-link" href="/circles">サークルDBを見る</a>', '<a class="admin-link" href="/social/circles">社会人サークルDBを見る</a>')
+    return (
+        with_adsense(html)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORT__", sport)
         .replace("__SPORT_IMAGE__", f"/assets/sports/{sport_image}?v=20260713v1")
@@ -2550,6 +2584,9 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(render_representative_html())
             elif parsed.path == "/social/circles":
                 self.send_html(render_social_circles_html())
+            elif parsed.path == "/social/sports":
+                sport = (parse_qs(parsed.query).get("sport", ["野球"])[0] or "野球").strip()
+                self.send_html(render_social_sport_html(sport))
             elif parsed.path == "/social":
                 self.send_html(render_social_html())
             elif parsed.path == "/sports":
@@ -2832,6 +2869,7 @@ def search_matches(params):
     sport = (params.get("sport", [""])[0] or "").strip()
     prefecture = (params.get("prefecture", [""])[0] or "").strip()
     region = (params.get("region", [""])[0] or "").strip()
+    organization_type = (params.get("organization_type", [""])[0] or "").strip()
     where = []
     args = []
     if sport:
@@ -2845,6 +2883,9 @@ def search_matches(params):
         if prefs:
             where.append("u.prefecture in (%s)" % ",".join(["?"] * len(prefs)))
             args.extend(prefs)
+    if organization_type:
+        where.append("c.organization_type=?")
+        args.append(organization_type)
     sql = """
         select m.*, c.circle_name, c.sport_category, u.university_name, u.prefecture
         from match_posts m join circles c on c.circle_id=m.circle_id join universities u on u.university_id=c.university_id
@@ -2859,18 +2900,24 @@ def sport_overview(params):
     sport = (params.get("sport", ["野球"])[0] or "野球").strip()
     region = (params.get("region", [""])[0] or "").strip()
     prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    organization_type = (params.get("organization_type", [""])[0] or "").strip()
     if prefecture:
         matching_region = next((key for key, data in REGION_GROUPS.items() if prefecture in data["prefectures"]), "")
         if region and prefecture not in region_prefectures(region):
             prefecture = ""
         elif not region:
             region = matching_region
-    all_circles = search_circles({"sport": [sport]})
-    all_matches = search_matches({"sport": [sport]})
-    region_circles = search_circles({"sport": [sport], "region": [region]})
-    region_matches = search_matches({"sport": [sport], "region": [region]})
-    circles = search_circles({"sport": [sport], "region": [region], "prefecture": [prefecture]})
-    matches = search_matches({"sport": [sport], "region": [region], "prefecture": [prefecture]})
+    scope = {"sport": [sport]}
+    if organization_type:
+        scope["organization_type"] = [organization_type]
+    all_circles = search_circles(scope)
+    all_matches = search_matches(scope)
+    region_scope = {**scope, "region": [region]}
+    region_circles = search_circles(region_scope)
+    region_matches = search_matches(region_scope)
+    current_scope = {**region_scope, "prefecture": [prefecture]}
+    circles = search_circles(current_scope)
+    matches = search_matches(current_scope)
     region_summaries = []
     for key, data in REGION_GROUPS.items():
         prefs = set(data["prefectures"])
