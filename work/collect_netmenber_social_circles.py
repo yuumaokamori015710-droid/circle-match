@@ -35,13 +35,13 @@ USER_AGENT = "CircleMatchDataBot/1.0 (+https://circle-match.jp/contact)"
 
 # The service's prefecture codes.  Collection intentionally starts with Kanto.
 KANTO = [
-    ("東京都", 8),
     ("神奈川県", 9),
     ("埼玉県", 10),
     ("千葉県", 11),
     ("茨城県", 12),
     ("栃木県", 13),
     ("群馬県", 14),
+    ("東京都", 8),
 ]
 
 TARGET_NEW_ROWS = int(os.environ.get("CIRCLEMATCH_NETMENBER_TARGET", "900"))
