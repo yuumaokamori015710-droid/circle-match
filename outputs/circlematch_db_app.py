@@ -939,7 +939,10 @@ def render_social_html():
     html = MATCH_HTML
     html = html.replace("<title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>", "<title>社会人サークル | __SITE_NAME__</title>")
     html = html.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative">新規登録</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative?type=social">新規登録</a></nav>')
-    html = html.replace('alt="屋外コートで交流する大学生グループ"', 'alt="屋外コートで交流するスポーツ仲間"')
+    html = html.replace(
+        '<img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ">',
+        '<img src="/assets/hero-social-adults.png" alt="仕事帰りに交流する社会人スポーツ仲間">',
+    )
     html = html.replace("Practice Match / Circle Meetup", "Social Circle / Member Recruiting")
     html = html.replace("練習相手も、仲間も、ここで見つかる。", "社会人のスポーツ仲間も、ここで見つかる。")
     html = html.replace("Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。", "Circle Matchは、社会人スポーツサークルのメンバー募集、練習試合、合同練習、交流イベントをつなぐマッチングサービスです。")
@@ -2651,6 +2654,8 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_html("<h1>サークルページが見つかりません</h1>".encode("utf-8"), 404)
             elif parsed.path == "/assets/hero-court.png":
                 self.send_file(ROOT / "hero-court.png", "image/png")
+            elif parsed.path == "/assets/hero-social-adults.png":
+                self.send_file(ROOT / "hero-social-adults.png", "image/png")
             elif parsed.path.startswith("/assets/sports/"):
                 self.send_file(ROOT / "sports" / Path(parsed.path).name, "image/png")
             elif parsed.path == "/admin":
