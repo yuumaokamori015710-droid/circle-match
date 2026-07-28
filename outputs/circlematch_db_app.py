@@ -161,8 +161,8 @@ MATCH_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a href="/social">社会人はこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative">新規登録</a></nav></div></header>
-  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/post-match">募集する</a></div></div></section>
+  <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a href="/social">社会人はこちら</a><a class="signup-user" href="/representative">団体代表者の方へ</a></nav></div></header>
+  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>対象大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>候補サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
     <div id="coverageNotice" class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
@@ -299,9 +299,9 @@ SPORT_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative?intent=post-match">募集を出す</a><a href="/representative">掲載情報を整える</a></nav></div></header>
   <main>
-    <section class="hero"><div><h1>__SPORT__の相手を探す</h1><p>__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。</p></div><a class="button primary" href="/post-match">募集する</a></section>
+    <section class="hero"><div><h1>__SPORT__の相手を探す</h1><p>__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。</p></div><a class="button primary" href="/representative?intent=post-match">募集を出す</a></section>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都道府県</span><strong id="prefCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="regionList" class="region-list"></div><div id="areaList" class="area-list"></div></aside><section class="panel db-panel"><h2>__SPORT__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><span id="activeFilterText"></span></div><div id="filterMenu" class="filter-menu hidden"></div><div class="tablewrap"><table><thead><tr><th><button class="th-filter" data-filter="university">大学 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="circle">団体名 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th>登録済み</th><th><button class="th-filter" data-filter="type">種別 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="source">出典 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
   </main>
@@ -353,9 +353,9 @@ REGION_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative?intent=post-match">募集を出す</a><a href="/representative">掲載情報を整える</a></nav></div></header>
   <main>
-    <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/post-match">募集する</a></section>
+    <section class="hero"><div><h1>__REGION_LABEL__の相手を探す</h1><p>__REGION_LABEL__の練習試合・交流募集を、スポーツ別・都道府県別に確認できます。</p></div><a class="button primary" href="/representative?intent=post-match">募集を出す</a></section>
     <section id="sportContextHero" class="sport-context-hero" hidden><img id="sportContextImage" alt=""><div class="sport-context-copy"><p id="sportContextEyebrow"></p><h2 id="sportContextTitle"></h2><p>サークルDBと交流募集をまとめて確認できます。</p></div></section>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象競技</span><strong id="sportCount">0</strong></div></section>
     <div class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
@@ -405,10 +405,10 @@ POST_MATCH_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集中を見る</a><a href="/circles">サークルDB</a><a class="db-request" href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集中を見る</a><a href="/circles">サークルDB</a><a class="db-request" href="/representative">団体代表者の方へ</a></nav></div></header>
   <main>
     <section class="hero"><div><h1>練習試合・交流募集を出す</h1><p>まず自分のサークルをDBから検索して選び、募集したい期間・練習内容・場所・条件を登録します。DBにない場合は右上の登録依頼から申請してください。</p></div><a class="button ghost" href="/representative">DBへの登録依頼はこちら</a></section>
-    <section id="loginNeeded" class="notice login-needed">募集を投稿するにはログインが必要です。<a href="/signin">ログイン / 新規登録</a> してから投稿してください。</section>
+    <section id="loginNeeded" class="notice login-needed">募集を投稿するには団体代表者の確認が必要です。<a href="/representative?intent=post-match">代表申請</a>から団体情報を登録してください。</section>
     <section class="layout">
       <aside class="panel"><h2>自分のサークルを検索</h2><div class="panel-body"><div class="search-row"><input id="circleSearch" placeholder="大学名・団体名・競技で検索"><select id="sportFilter"><option value="">全競技</option></select></div><div id="circleList" class="circle-list"></div><div id="selectedCircle" class="selected">サークルを選択してください。</div></div></aside>
       <section class="panel"><h2>募集内容</h2><div class="panel-body">
@@ -459,9 +459,9 @@ REPRESENTATIVE_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/signin">ログイン</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
-    <section class="intro"><article class="panel"><h1>自分が所属するサークルを登録しよう！</h1><p>代表者が簡単なアンケートに答えるだけで、サークル紹介ページを自動作成します。大学メールは本人確認のためだけに使い、公開ページには表示しません。</p></article><aside class="steps"><div class="step"><b>1. 団体情報を入力</b>大学、団体名、競技、公式ページやSNSなどの出典を登録します。</div><div class="step"><b>2. 紹介アンケートに回答</b>人数、雰囲気、経験者割合、練習頻度などを入力します。</div><div class="step"><b>3. サークルページを公開</b>登録済みDBから紹介ページへ遷移できるようにします。</div></aside></section>
+    <section class="intro"><article class="panel"><h1 id="representativeTitle">自分が所属するサークルを登録しよう！</h1><p id="representativeLead">代表者が簡単なアンケートに答えるだけで、サークル紹介ページを自動作成します。大学メールは本人確認のためだけに使い、公開ページには表示しません。</p></article><aside class="steps"><div class="step"><b>1. 団体情報を入力</b>大学、団体名、競技、公式ページやSNSなどの出典を登録します。</div><div class="step"><b>2. 紹介アンケートに回答</b>人数、雰囲気、経験者割合、練習頻度などを入力します。</div><div class="step" id="representativeStep3"><b>3. サークルページを公開</b>登録済みDBから紹介ページへ遷移できるようにします。</div></aside></section>
     <section class="panel">
       <form id="claimForm">
         <div class="form-grid"><label>大学<select id="universityId" required></select></label><label>団体名<input id="circleName" required placeholder="例: フットサル同好会"></label></div>
@@ -475,7 +475,7 @@ REPRESENTATIVE_HTML = """<!doctype html>
         <label>紹介文<small>公開ページに表示されます</small><textarea id="introduction" placeholder="どんなサークルか、どんな相手と交流したいかを書いてください"></textarea></label>
         <label>補足<small>運営への連絡、確認してほしいことなど。公開ページにも代表コメントとして使えます。</small><textarea id="message"></textarea></label>
         <div id="result" class="result"></div>
-        <div class="actions"><button class="button" type="submit">代表申請を送信</button><a class="button ghost" href="/signin">一般ユーザーとしてログイン</a></div>
+        <div class="actions"><button class="button" type="submit">代表申請を送信</button><a class="button ghost" href="/">閲覧トップへ戻る</a></div>
       </form>
     </section>
   </main>
@@ -486,7 +486,7 @@ REPRESENTATIVE_HTML = """<!doctype html>
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function fill(el, rows, label){el.innerHTML=`<option value="">${label}</option>`+rows.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("")}
     async function api(path, options){const r=await fetch(path, options); const data=await r.json(); if(!r.ok)throw new Error(data.error||"送信に失敗しました"); return data}
-    async function boot(){const universities=await api("/api/universities"); fill($("universityId"),universities.map(u=>({value:u.university_id,label:`${u.university_name} / ${u.prefecture}`})),"大学を選択"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("organizationType"),orgTypes.map(v=>({value:v,label:v})),"団体種別を選択")}
+    async function boot(){const intent=new URLSearchParams(location.search).get("intent"); if(intent==="post-match"){ $("representativeTitle").textContent="募集を出す前に、団体代表者として申請しよう"; $("representativeLead").textContent="募集投稿は、団体情報と代表者申請を確認した後に開放します。大学メールは本人確認のためだけに使い、公開ページには表示しません。"; $("representativeStep3").innerHTML="<b>3. 確認後に募集を投稿</b>運営確認後、練習試合・合同練習・メンバー募集を公開できます。"} const universities=await api("/api/universities"); fill($("universityId"),universities.map(u=>({value:u.university_id,label:`${u.university_name} / ${u.prefecture}`})),"大学を選択"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("organizationType"),orgTypes.map(v=>({value:v,label:v})),"団体種別を選択")}
     $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const publicContactEmail=$("publicContactEmail").value.trim(); const publicContactConsent=$("publicContactConsent").checked; if(publicContactEmail&&!publicContactConsent)throw new Error("公開連絡用メールを掲載する場合は、公開への同意が必要です。"); if(publicContactConsent&&!publicContactEmail)throw new Error("公開する団体用メールアドレスを入力してください。"); const payload={university_id:$("universityId").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,public_contact_email:publicContactEmail,public_contact_consent:publicContactConsent,evidence_url:$("evidenceUrl").value,member_count:$("memberCount").value,practice_frequency:$("practiceFrequency").value,atmosphere:$("atmosphere").value,experience_ratio:$("experienceRatio").value,activity_place:$("activityPlace").value,introduction:$("introduction").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`代表申請を受け付けました。申請ID: ${esc(data.claim_id)}<br><a href="${esc(data.profile_url)}">作成されたサークルページを見る</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
     boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
   </script>
@@ -946,7 +946,7 @@ def render_social_html():
     """
     html = MATCH_HTML
     html = html.replace("<title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>", "<title>社会人サークル | __SITE_NAME__</title>")
-    html = html.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative">新規登録</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="login-user" href="/signin">ログイン</a><a class="signup-user" href="/representative?type=social">新規登録</a></nav>')
+    html = html.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="signup-user" href="/representative">団体代表者の方へ</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="signup-user" href="/representative?type=social">団体代表者の方へ</a></nav>')
     html = html.replace(
         '<img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ">',
         '<img src="/assets/hero-social-adults.png" alt="仕事帰りに交流する社会人スポーツ仲間">',
@@ -954,7 +954,7 @@ def render_social_html():
     html = html.replace("Practice Match / Circle Meetup", "Social Circle / Member Recruiting")
     html = html.replace("練習相手も、仲間も、ここで見つかる。", "社会人のスポーツ仲間も、ここで見つかる。")
     html = html.replace("Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。", "Circle Matchは、社会人スポーツサークルのメンバー募集、練習試合、合同練習、交流イベントをつなぐマッチングサービスです。")
-    html = html.replace('href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/post-match">募集する</a>', 'href="#matches">メンバー募集を見る</a><a class="button primary hero-cta" href="/representative?type=social">サークル員を募集する</a>')
+    html = html.replace('href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a>', 'href="#matches">メンバー募集を見る</a><a class="button primary hero-cta" href="/representative?type=social&intent=post-match">サークル員を募集する</a>')
     html = html.replace("<span>対象大学</span>", "<span>対象地域</span>")
     html = html.replace("<span>検証済み/申請済み</span>", "<span>公開掲載・代表申請</span>")
     html = html.replace("<span>募集中</span>", "<span>メンバー・交流募集中</span>")
@@ -1020,12 +1020,12 @@ def render_social_sport_html(sport):
     html = SPORT_HTML
     html = html.replace("<title>__SPORT__ | __SITE_NAME__</title>", "<title>__SPORT__の社会人サークル | __SITE_NAME__</title>")
     html = html.replace(
-        '<header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/post-match">募集する</a><a href="/representative">DBへの登録依頼はこちら</a><a href="/signin">ログイン</a></nav></div></header>',
-        '<header><div class="top"><a class="brand" href="/social">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/social">社会人トップへ戻る</a><a href="/representative?type=social">サークル員を募集する</a><a href="/signin">ログイン</a></nav></div></header>',
+        '<header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/">トップへ戻る</a><a href="/representative?intent=post-match">募集を出す</a><a href="/representative">掲載情報を整える</a></nav></div></header>',
+        '<header><div class="top"><a class="brand" href="/social">__SITE_NAME__</a><nav class="nav"><a class="find-link" href="/social">社会人トップへ戻る</a><a href="/representative?type=social&intent=post-match">サークル員を募集する</a><a href="/representative?type=social">掲載情報を整える</a></nav></div></header>',
     )
     html = html.replace("__SPORT__の相手を探す", "__SPORT__の仲間を探す")
     html = html.replace("__SPORT__サークルDBと練習試合・交流募集をまとめて確認できます。", "__SPORT__の社会人サークルDBとメンバー・交流募集をまとめて確認できます。")
-    html = html.replace('href="/post-match">募集する</a>', 'href="/representative?type=social">サークル員を募集する</a>')
+    html = html.replace('href="/representative?intent=post-match">募集を出す</a>', 'href="/representative?type=social&intent=post-match">サークル員を募集する</a>')
     html = html.replace("<span>交流募集</span>", "<span>メンバー・交流募集</span>")
     html = html.replace("<span>対象都道府県</span>", "<span>対象地域</span>")
     html = html.replace('<h2>地域別の交流募集</h2>', '<h2>地域別のメンバー・交流募集</h2>')
@@ -1175,7 +1175,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/signin", "/post-match", "/representative", "/circles", "/social", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/representative", "/circles", "/social", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
     paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
@@ -2625,20 +2625,10 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/":
                 self.send_html(render_public_html())
-            elif parsed.path == "/auth/google":
-                if not google_oauth_enabled():
-                    self.send_html(render_signin_html(), 503)
-                    return
-                state = make_oauth_state()
-                self.redirect(google_authorize_url(state), [f"cm_oauth_state={state}; Path=/; Max-Age=600; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"])
-            elif parsed.path == "/auth/google/callback":
-                self.handle_google_callback(parse_qs(parsed.query))
-            elif parsed.path == "/signin":
-                self.send_html(render_signin_html())
-            elif parsed.path == "/logout":
-                self.redirect("/", ["cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"])
+            elif parsed.path in {"/auth/google", "/auth/google/callback", "/signin", "/logout"}:
+                self.redirect("/representative")
             elif parsed.path == "/post-match":
-                self.send_html(render_post_match_html())
+                self.redirect("/representative?intent=post-match")
             elif parsed.path == "/representative":
                 self.send_html(render_representative_html())
             elif parsed.path == "/social/circles":
