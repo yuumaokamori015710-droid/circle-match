@@ -25,6 +25,7 @@ PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
 CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@circle-match.jp")
+POLICY_UPDATED_AT = "2026年7月29日"
 SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
@@ -1636,18 +1637,27 @@ GUIDE_PAGES = {
 def operator_page():
     body = f"""
 <h1>運営者情報</h1>
-<p class="meta">運営者: {SITE_OPERATOR}</p>
+<p class="meta">最終更新日: {POLICY_UPDATED_AT} / 運営者: {SITE_OPERATOR}</p>
 <p>{SITE_NAME}は、大学サークル・部活動・社会人サークルの練習試合、合同練習、助っ人募集、交流イベント、メンバー募集を探しやすくするためのサービスです。</p>
 <h2>運営目的</h2>
 <p>サークル活動は、大学公式サイト、SNS、個別の紹介ページに情報が分散しがちです。本サービスでは、公開情報と代表者からの登録情報を整理し、活動相手や参加先を探す人が比較しやすい状態を目指します。</p>
+<h2>サービスの位置づけ</h2>
+<ul>
+  <li>本サービスは大学、自治体、競技団体その他の団体から公認・委託を受けたサービスではありません。</li>
+  <li>掲載、検証ステータス、代表者申請の受付は、団体の公認、活動の安全性、募集内容の実現を保証するものではありません。</li>
+  <li>試合・合同練習・イベントへの参加や連絡は、利用者と団体の責任で条件を確認したうえで行ってください。</li>
+</ul>
 <h2>編集方針</h2>
 <ul>
-  <li>公開情報と本人登録情報を分けて管理します。</li>
-  <li>出典がある情報には出典URLや検証ステータスを残します。</li>
+  <li>公開情報と代表者からの申請情報を分けて管理します。</li>
+  <li>団体名、大学名、競技、活動地域、出典URLを照合し、イベント名、試合結果、記事見出しなど団体ではない情報は掲載対象から除外します。</li>
+  <li>出典がある情報には出典URLや検証ステータスを残し、掲載後も訂正依頼や更新情報をもとに見直します。</li>
   <li>個人情報や内部メモは公開ページに表示しません。</li>
   <li>誤掲載、削除依頼、権利侵害の疑いがある情報は確認し、必要に応じて修正または非公開化します。</li>
 </ul>
-<h2>問い合わせ</h2>
+<h2>対応方針</h2>
+<p>掲載情報の訂正・削除、個人情報、権利侵害のおそれに関する連絡は優先して確認します。受付の目安は5営業日以内ですが、内容確認が必要な場合は追加の確認をお願いすることがあります。</p>
+<h2>問い合わせ窓口</h2>
 <p>掲載情報の訂正、削除、代表者登録、広告掲載、サービス改善に関する連絡は <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> までお願いします。</p>
 """
     return legal_layout("運営者情報", body)
@@ -1694,7 +1704,7 @@ def guide_page(slug):
 def privacy_page():
     body = f"""
 <h1>プライバシーポリシー</h1>
-<p class="meta">制定日: 2026年7月1日 / 運営者: {SITE_OPERATOR}</p>
+<p class="meta">制定日: 2026年7月1日 / 最終更新日: {POLICY_UPDATED_AT} / 運営者: {SITE_OPERATOR}</p>
 <p>{SITE_NAME}は、全国の大学サークル・部活動情報の検索、掲載、代表者確認、練習試合等の募集支援を目的としてサービスを運営します。</p>
 <h2>取得する情報</h2>
 <ul>
@@ -1739,11 +1749,12 @@ def privacy_page():
 def terms_page():
     body = f"""
 <h1>利用規約</h1>
-<p class="meta">制定日: 2026年7月1日 / 運営者: {SITE_OPERATOR}</p>
+<p class="meta">制定日: 2026年7月1日 / 最終更新日: {POLICY_UPDATED_AT} / 運営者: {SITE_OPERATOR}</p>
 <h2>目的</h2>
 <p>本規約は、{SITE_NAME}の利用条件を定めるものです。本サービスは、大学サークル・部活動情報の検索、掲載、練習試合等の募集支援を目的とします。</p>
 <h2>掲載情報</h2>
 <p>掲載情報は、大学公式ページ、団体本人の登録、公開SNS、その他公開情報をもとに作成します。正確性の維持に努めますが、内容の完全性、最新性、有用性を保証するものではありません。</p>
+<p>掲載、検証ステータス、代表者申請の受付は、大学その他の団体による公認や、団体・募集内容の安全性を保証するものではありません。</p>
 <h2>禁止事項</h2>
 <ul>
   <li>なりすまし、虚偽登録、第三者の権利侵害</li>
@@ -1766,9 +1777,16 @@ def terms_page():
 def about_data_page():
     body = f"""
 <h1>掲載情報・削除訂正について</h1>
-<p class="meta">最終更新日: 2026年7月1日</p>
+<p class="meta">最終更新日: {POLICY_UPDATED_AT}</p>
 <h2>情報源</h2>
 <p>本サービスは、大学公式ページ、団体本人による登録、公開SNS、その他公開情報を出典として、サークル・部活動の名称、競技、大学、出典URL、検証状態を掲載します。</p>
+<p>本サービスは大学、自治体、競技団体その他の団体の公式サービスではありません。掲載や検証ステータスは、団体の公認や活動内容の保証を意味しません。</p>
+<h2>掲載前の確認</h2>
+<ul>
+  <li>団体名、所属先、競技、出典URLの組み合わせを確認し、重複を整理します。</li>
+  <li>大会名、試合結果、記事見出し、個人名、外部団体名など、団体そのものではない候補は掲載対象から除外します。</li>
+  <li>情報が古い、出典が確認できない、または誤掲載の可能性がある場合は、修正または非公開化の対象とします。</li>
+</ul>
 <h2>掲載しない情報</h2>
 <ul>
   <li>代表者の個人メールアドレス、電話番号、LINE ID</li>
@@ -1784,7 +1802,7 @@ def about_data_page():
   <li>未確認: 公開情報から候補として登録した状態</li>
 </ul>
 <h2>削除・訂正依頼</h2>
-<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名、対象URL、依頼内容、申請者の立場を記載して <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> まで連絡してください。</p>
+<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名、対象URL、依頼内容、申請者の立場を記載して <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> まで連絡してください。個人情報、権利侵害、なりすましのおそれがある内容は優先して確認します。</p>
 """
     return legal_layout("掲載情報・削除訂正について", body)
 
@@ -1792,9 +1810,10 @@ def about_data_page():
 def contact_page():
     body = f"""
 <h1>問い合わせ</h1>
-<p class="meta">運営者: {SITE_OPERATOR}</p>
+<p class="meta">運営者: {SITE_OPERATOR} / 最終更新日: {POLICY_UPDATED_AT}</p>
 <p>サイトへのご意見・ご要望はこちら。掲載情報の訂正、削除、代表者申請、個人情報に関する問い合わせも、以下のメールアドレスまで連絡してください。</p>
 <p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
+<p>原則として5営業日以内の返信を目安にしています。個人情報、権利侵害、なりすましのおそれがある掲載については、対象ページのURLを添えてください。</p>
 <h2>記載してほしい内容</h2>
 <ul>
   <li>大学名、団体名</li>
