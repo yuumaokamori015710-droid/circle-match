@@ -739,9 +739,12 @@ def now():
 
 
 def log(message):
+    entry = f"{now()} {message}"
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     with LOG_PATH.open("a", encoding="utf-8") as handle:
-        handle.write(f"{now()} {message}\n")
+        handle.write(f"{entry}\n")
+    # Render captures stderr, so failed SSR reads are diagnosable in deploy logs.
+    print(entry, file=sys.stderr, flush=True)
 
 
 def is_local_host():
@@ -969,7 +972,8 @@ def render_public_html():
             "__SSR_MATCH_COUNT__": str(initial_summary["match_posts"]),
         }
         initial_summary_json = script_json(initial_summary)
-    except (OSError, sqlite3.Error):
+    except Exception as exc:
+        log(f"SSR top stats failed: {type(exc).__name__}: {exc}")
         stat_values = {
             "__SSR_UNIVERSITY_COUNT__": ssr_error_value(),
             "__SSR_CIRCLE_COUNT__": ssr_error_value(),
@@ -1011,7 +1015,8 @@ def render_circles_html():
         initial_rows = ssr_circle_rows(initial_circles)
         initial_circles_json = script_json(initial_circles)
         initial_summary_json = script_json(initial_summary)
-    except (OSError, sqlite3.Error):
+    except Exception as exc:
+        log(f"SSR circle list failed: {type(exc).__name__}: {exc}")
         stat_values = {
             "__SSR_PREFECTURE_COUNT__": ssr_error_value(),
             "__SSR_UNIVERSITY_COUNT__": ssr_error_value(),
