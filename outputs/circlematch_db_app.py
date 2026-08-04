@@ -100,11 +100,12 @@ UNIVERSITY_SEED = [
     ("琉球大学", "沖縄県", "中頭郡西原町", "", "https://www.u-ryukyu.ac.jp/")
 ]
 
-SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニス", "バレーボール", "野球", "バドミントン", "ラグビー", "その他"]
+SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニス", "ピックルボール", "バレーボール", "野球", "バドミントン", "ラグビー", "その他"]
 POPULAR_SPORTS = [
     ("野球", "Baseball", "BS", "#1f6f8b", "baseball.png"),
     ("サッカー", "Football", "SC", "#0f7a62", "soccer.png"),
     ("テニス", "Tennis", "TN", "#b2601d", "tennis.png"),
+    ("ピックルボール", "Pickleball", "PB", "#356c64", "pickleball.png"),
     ("バスケットボール", "Basketball", "BK", "#9a3b24", "basketball.png"),
     ("バレーボール", "Volleyball", "VB", "#315b9a", "volleyball.png"),
     ("バドミントン", "Badminton", "BD", "#6d4aa2", "badminton.png"),
@@ -1366,6 +1367,7 @@ def infer_organization_type(name, source_type=""):
 
 
 SPORT_KEYWORDS = [
+    ("ピックルボール", ["ピックルボール", "ピックル", "Pickleball", "pickleball", "pickle ball"]),
     ("アメリカンフットボール", ["アメリカンフットボール", "アメフト", "フットボールクラブ", "タッチフットボール"]),
     ("ソフトテニス", ["ソフトテニス"]),
     ("テニス", ["テニス", "Tennis"]),
@@ -1586,6 +1588,11 @@ DESCRIPTIVE_PARENTHETICAL_WORDS = [
 def infer_sport_category(name, current="その他"):
     text = name or ""
     lower_text = text.lower()
+    # Pickleball was historically grouped with tennis or other. Its explicit name
+    # takes precedence so existing university and social-circle records are corrected.
+    for category, keywords in SPORT_KEYWORDS:
+        if category == "ピックルボール" and any(keyword in text or keyword.lower() in lower_text for keyword in keywords):
+            return category
     if current and current != "その他":
         return current
     for category, keywords in SPORT_KEYWORDS:
