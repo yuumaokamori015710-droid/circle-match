@@ -106,6 +106,8 @@ POPULAR_SPORTS = [
     ("サッカー", "Football", "SC", "#0f7a62", "soccer.png"),
     ("テニス", "Tennis", "TN", "#b2601d", "tennis.png"),
     ("ピックルボール", "Pickleball", "PB", "#356c64", "pickleball.png"),
+    ("卓球", "Table Tennis", "TT", "#a4432d", "table-tennis.png"),
+    ("ゴルフ", "Golf", "GF", "#3c764c", "golf.png"),
     ("バスケットボール", "Basketball", "BK", "#9a3b24", "basketball.png"),
     ("バレーボール", "Volleyball", "VB", "#315b9a", "volleyball.png"),
     ("バドミントン", "Badminton", "BD", "#6d4aa2", "badminton.png"),
@@ -1057,6 +1059,29 @@ def render_social_circles_html():
 
 
 def render_social_html():
+    # MATCH_HTML has SSR placeholders shared with the university top page. The
+    # social page needs its own scoped values before its browser-side filters run.
+    initial_sports = SPORTS
+    try:
+        initial_summary = social_summary()
+        initial_sports = sport_options()
+        stat_values = {
+            "__SSR_UNIVERSITY_COUNT__": str(initial_summary["universities"]),
+            "__SSR_CIRCLE_COUNT__": str(initial_summary["circles"]),
+            "__SSR_VERIFIED_COUNT__": str(initial_summary["verified_circles"]),
+            "__SSR_MATCH_COUNT__": str(initial_summary["match_posts"]),
+        }
+        initial_summary_json = script_json(initial_summary)
+    except Exception as exc:
+        log(f"SSR social stats failed: {type(exc).__name__}: {exc}")
+        stat_values = {
+            "__SSR_UNIVERSITY_COUNT__": ssr_error_value(),
+            "__SSR_CIRCLE_COUNT__": ssr_error_value(),
+            "__SSR_VERIFIED_COUNT__": ssr_error_value(),
+            "__SSR_MATCH_COUNT__": ssr_error_value(),
+        }
+        initial_summary_json = "null"
+
     social_db_panel = """
     <section id="social-db" class="section panel"><div class="panel-head"><div><h2>社会人サークルDB</h2><p>大学サークルDBと同じ検索・絞り込み画面で、活動地域、競技、掲載状態、出典を確認できます。</p></div><a class="button light" href="/social/circles">社会人サークルDBを見る</a></div></section>
     """
@@ -1107,19 +1132,21 @@ def render_social_html():
     end = html.index("    function updateCoverageNotice()", start)
     replacement_end = html.index("\n", html.index("}", end)) + 1
     html = html[:start] + social_js + html[replacement_end:]
-    return (
+    page = (
         with_adsense(html)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
-        .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
+        .replace("__SPORTS__", script_json(initial_sports))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__POPULAR_SPORTS__", json.dumps([
             {"name": name, "label": label, "code": code, "color": color, "image": image}
             for name, label, code, color, image in POPULAR_SPORTS
         ], ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
-        .encode("utf-8")
     )
+    for placeholder, value in stat_values.items():
+        page = page.replace(placeholder, value)
+    return page.replace("__INITIAL_SUMMARY__", initial_summary_json).encode("utf-8")
 
 
 def render_signin_html():
@@ -3077,6 +3104,45 @@ def summary():
             "verified_circles": conn.execute("select count(*) from circles where verification_status in ('claimed','university_verified','admin_verified')").fetchone()[0],
             "circle_candidates": conn.execute("select count(*) from circle_candidates").fetchone()[0],
             "match_posts": conn.execute("select count(*) from match_posts").fetchone()[0],
+        }
+
+
+def social_summary():
+    """Summary values for the social-circle top page's server-rendered metrics."""
+    organization_type = "社会人サークル"
+    with connect() as conn:
+        return {
+            "prefectures": conn.execute(
+                """select count(distinct u.prefecture)
+                   from circles c join universities u on u.university_id=c.university_id
+                   where c.organization_type=?""",
+                (organization_type,),
+            ).fetchone()[0],
+            # The existing client contract calls this field universities. On the
+            # social page it represents the number of covered activity regions.
+            "universities": conn.execute(
+                """select count(distinct u.prefecture)
+                   from circles c join universities u on u.university_id=c.university_id
+                   where c.organization_type=?""",
+                (organization_type,),
+            ).fetchone()[0],
+            "circles": conn.execute(
+                "select count(*) from circles where organization_type=?",
+                (organization_type,),
+            ).fetchone()[0],
+            "verified_circles": conn.execute(
+                """select count(*) from circles
+                   where organization_type=?
+                     and (verification_status='claimed'
+                          or (public_status='published' and coalesce(source_url, '')<>''))""",
+                (organization_type,),
+            ).fetchone()[0],
+            "match_posts": conn.execute(
+                """select count(*) from match_posts m
+                   join circles c on c.circle_id=m.circle_id
+                   where c.organization_type=? and m.status='open'""",
+                (organization_type,),
+            ).fetchone()[0],
         }
 
 
