@@ -130,9 +130,11 @@ VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "社会人サークル", "不明"]
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
 BRAND_LOGO_STYLE = """
+  <link rel="icon" type="image/png" sizes="256x256" href="/assets/circle-match-mark.png?v=20260809">
+  <link rel="apple-touch-icon" sizes="256x256" href="/assets/circle-match-mark.png?v=20260809">
   <style id="circle-match-brand-logo">
     a.brand{display:inline-flex;align-items:center;gap:9px;color:#102A43;font-size:20px;line-height:1;font-weight:900;letter-spacing:0;text-decoration:none}
-    a.brand::before{content:"";display:block;flex:0 0 38px;width:38px;height:38px;background:url("/assets/circle-match-mark.svg") center/contain no-repeat}
+    a.brand::before{content:"";display:block;flex:0 0 38px;width:38px;height:38px;background:url("/assets/circle-match-mark.png?v=20260809") center/contain no-repeat}
     a.brand .mark{display:none}
     @media(max-width:620px){a.brand{font-size:18px}a.brand::before{flex-basis:34px;width:34px;height:34px}}
   </style>
@@ -2944,8 +2946,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_file(ROOT / "hero-court.png", "image/png")
             elif parsed.path == "/assets/hero-social-adults.png":
                 self.send_file(ROOT / "hero-social-adults.png", "image/png")
-            elif parsed.path == "/assets/circle-match-mark.svg":
-                self.send_file(ROOT / "circle-match-mark.svg", "image/svg+xml")
+            elif parsed.path == "/assets/circle-match-mark.png":
+                self.send_file(ROOT / "circle-match-mark.png", "image/png")
             elif parsed.path.startswith("/assets/sports/"):
                 self.send_file(ROOT / "sports" / Path(parsed.path).name, "image/png")
             elif parsed.path == "/admin":
