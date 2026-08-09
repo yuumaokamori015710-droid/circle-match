@@ -100,10 +100,10 @@ UNIVERSITY_SEED = [
     ("琉球大学", "沖縄県", "中頭郡西原町", "", "https://www.u-ryukyu.ac.jp/")
 ]
 
-SPORTS = ["サッカー", "フットサル", "バスケットボール", "テニス", "ピックルボール", "バレーボール", "野球", "バドミントン", "ラグビー", "その他"]
+SPORTS = ["サッカー・フットサル", "バスケットボール", "テニス", "ピックルボール", "バレーボール", "野球", "バドミントン", "ラグビー", "ランニング", "その他"]
 POPULAR_SPORTS = [
     ("野球", "Baseball", "BS", "#1f6f8b", "baseball.png"),
-    ("サッカー", "Football", "SC", "#0f7a62", "soccer.png"),
+    ("サッカー・フットサル", "Football & Futsal", "SF", "#0f7a62", "soccer.png"),
     ("テニス", "Tennis", "TN", "#b2601d", "tennis.png"),
     ("ピックルボール", "Pickleball", "PB", "#356c64", "pickleball.png"),
     ("卓球", "Table Tennis", "TT", "#a4432d", "table-tennis.png"),
@@ -111,7 +111,7 @@ POPULAR_SPORTS = [
     ("バスケットボール", "Basketball", "BK", "#9a3b24", "basketball.png"),
     ("バレーボール", "Volleyball", "VB", "#315b9a", "volleyball.png"),
     ("バドミントン", "Badminton", "BD", "#6d4aa2", "badminton.png"),
-    ("フットサル", "Futsal", "FS", "#2d806b", "futsal.png"),
+    ("ランニング", "Running", "RN", "#cc5c2c", "running.png"),
     ("ラグビー", "Rugby", "RG", "#7a4b2b", "rugby.png"),
     ("その他", "Other Sports", "OT", "#42526b", "other.png"),
 ]
@@ -1398,8 +1398,7 @@ SPORT_KEYWORDS = [
     ("アメリカンフットボール", ["アメリカンフットボール", "アメフト", "フットボールクラブ", "タッチフットボール"]),
     ("ソフトテニス", ["ソフトテニス"]),
     ("テニス", ["テニス", "Tennis"]),
-    ("サッカー", ["サッカー", "蹴球", "FC.", "FC "]),
-    ("フットサル", ["フットサル"]),
+    ("サッカー・フットサル", ["サッカー", "蹴球", "フットサル", "FC.", "FC "]),
     ("バスケットボール", ["バスケットボール", "バスケ", "籠球", "3×3", "Basketball", "BA"]),
     ("バレーボール", ["バレーボール", "バレー", "排球", "Volleyball", "Volley"]),
     ("バドミントン", ["バドミントン", "Badminton"]),
@@ -1408,6 +1407,7 @@ SPORT_KEYWORDS = [
     ("ラクロス", ["ラクロス", "Lacrosse"]),
     ("卓球", ["卓球"]),
     ("水泳", ["水泳", "水球"]),
+    ("ランニング", ["ランニング", "マラソン", "ジョギング", "トレイルラン", "ロードレース"]),
     ("陸上競技", ["陸上", "駅伝"]),
     ("ハンドボール", ["ハンドボール"]),
     ("ホッケー", ["ホッケー"]),
@@ -1620,6 +1620,10 @@ def infer_sport_category(name, current="その他"):
     for category, keywords in SPORT_KEYWORDS:
         if category == "ピックルボール" and any(keyword in text or keyword.lower() in lower_text for keyword in keywords):
             return category
+    # Soccer and futsal intentionally share one matching pool. Normalize both
+    # historic categories before honoring any existing category value.
+    if current in {"サッカー", "フットサル"}:
+        return "サッカー・フットサル"
     if current and current != "その他":
         return current
     for category, keywords in SPORT_KEYWORDS:
