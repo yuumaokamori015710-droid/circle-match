@@ -129,9 +129,19 @@ SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "社会人サークル", "不明"]
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
+BRAND_LOGO_STYLE = """
+  <style id="circle-match-brand-logo">
+    a.brand{display:inline-flex;align-items:center;gap:9px;color:#102A43;font-size:20px;line-height:1;font-weight:900;letter-spacing:0;text-decoration:none}
+    a.brand::before{content:"";display:block;flex:0 0 38px;width:38px;height:38px;background:url("/assets/circle-match-mark.svg") center/contain no-repeat}
+    a.brand .mark{display:none}
+    @media(max-width:620px){a.brand{font-size:18px}a.brand::before{flex-basis:34px;width:34px;height:34px}}
+  </style>
+"""
 
 
 def with_adsense(html):
+    if "circle-match-brand-logo" not in html:
+        html = html.replace("</head>", f"{BRAND_LOGO_STYLE}</head>", 1)
     if ADSENSE_HEAD in html:
         return html
     return html.replace("</head>", f"  {ADSENSE_HEAD}\n</head>", 1)
@@ -550,7 +560,7 @@ PUBLIC_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><h1>サークルDB</h1><nav class="nav"><a class="cta" id="matchBridge" href="/">募集を探す</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a class="cta" id="matchBridge" href="/">募集を探す</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
     <section class="hero"><h2>大学サークル検索</h2><p>公開出典をもとにサークル・部活動の名称、競技、検証状態を整理しています。代表者の個人情報や内部メモは公開しません。</p></section>
     <section class="summary"><div class="metric"><span>対象地域</span><strong id="prefCount">__SSR_PREFECTURE_COUNT__</strong></div><div class="metric"><span>対象大学</span><strong id="uniCount">__SSR_UNIVERSITY_COUNT__</strong></div><div class="metric"><span>検索結果</span><strong id="circleCount">__SSR_CIRCLE_COUNT__</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">__SSR_VERIFIED_COUNT__</strong></div></section>
@@ -610,7 +620,7 @@ SOCIAL_HTML = """<!doctype html>
   </style>
 </head>
 <body>
-  <header><div class="top"><h1>社会人サークルDB</h1><nav class="nav"><a class="cta" id="matchBridge" href="/social#matches">募集を探す</a><a href="/">大学サークルはこちら</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
+  <header><div class="top"><a class="brand" href="/social">__SITE_NAME__</a><nav class="nav"><a class="cta" id="matchBridge" href="/social#matches">募集を探す</a><a href="/">大学サークルはこちら</a><a href="/privacy">プライバシー</a><a href="/terms">利用規約</a><a href="/about-data">掲載情報</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
     <section class="hero"><h2>社会人サークル検索</h2><p>公開出典をもとに、社会人サークルの名称、競技、活動地域を整理しています。サークル員募集や掲載・修正の相談は、代表者登録から行えます。</p><p class="listing-note">公開掲載は公開出典をもとにDBへ掲載した状態です。代表申請・検証とは別に表示しています。</p></section>
     <section class="summary"><div class="metric"><span>対象地域</span><strong id="prefCount">0</strong></div><div class="metric"><span>対象競技</span><strong id="sportCount">0</strong></div><div class="metric"><span>検索結果</span><strong id="circleCount">0</strong></div><div class="metric"><span>公開掲載・代表申請</span><strong id="verifiedCount">0</strong></div></section>
@@ -2934,6 +2944,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_file(ROOT / "hero-court.png", "image/png")
             elif parsed.path == "/assets/hero-social-adults.png":
                 self.send_file(ROOT / "hero-social-adults.png", "image/png")
+            elif parsed.path == "/assets/circle-match-mark.svg":
+                self.send_file(ROOT / "circle-match-mark.svg", "image/svg+xml")
             elif parsed.path.startswith("/assets/sports/"):
                 self.send_file(ROOT / "sports" / Path(parsed.path).name, "image/png")
             elif parsed.path == "/admin":

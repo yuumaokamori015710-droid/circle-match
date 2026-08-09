@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Circle Match</title>
+  <desc id="desc">Two connected C-shaped paths that meet at a point.</desc>
+  <path d="M13 39C15.7 22 29.6 10 45.2 12.2C49.3 12.8 53 14.7 56 17.4" fill="none" stroke="#102A43" stroke-width="9.5" stroke-linecap="butt"/>
+  <path d="M11.8 44.5C16.1 57 29.8 62.8 42.5 58.5C48 56.6 52.2 52.7 55 48.1" fill="none" stroke="#F15A2A" stroke-width="9.5" stroke-linecap="butt"/>
+  <circle cx="15.5" cy="43" r="5.1" fill="#F15A2A"/>
+</svg>
