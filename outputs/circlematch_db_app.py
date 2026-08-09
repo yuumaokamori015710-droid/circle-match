@@ -129,6 +129,7 @@ SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "社会人サークル", "不明"]
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
+BRAND_WORDMARK = '<span class="brand-wordmark"><span class="brand-word-circle">Circle</span><span class="brand-word-match">Match</span></span>'
 BRAND_LOGO_STYLE = """
   <link rel="icon" type="image/png" sizes="256x256" href="/assets/circle-match-mark.png?v=20260809">
   <link rel="apple-touch-icon" sizes="256x256" href="/assets/circle-match-mark.png?v=20260809">
@@ -136,12 +137,17 @@ BRAND_LOGO_STYLE = """
     a.brand{display:inline-flex;align-items:center;gap:9px;color:#102A43;font-size:20px;line-height:1;font-weight:900;letter-spacing:0;text-decoration:none}
     a.brand::before{content:"";display:block;flex:0 0 38px;width:38px;height:38px;background:url("/assets/circle-match-mark.png?v=20260809") center/contain no-repeat}
     a.brand .mark{display:none}
+    a.brand .brand-wordmark{display:inline-flex;align-items:baseline;gap:.23em;white-space:nowrap}
+    a.brand .brand-word-circle{color:#102A43}
+    a.brand .brand-word-match{color:#F15A2A}
     @media(max-width:620px){a.brand{font-size:18px}a.brand::before{flex-basis:34px;width:34px;height:34px}}
   </style>
 """
 
 
 def with_adsense(html):
+    html = html.replace('><span class="mark">CM</span><span>__SITE_NAME__</span></a>', f'>{BRAND_WORDMARK}</a>')
+    html = html.replace('>__SITE_NAME__</a>', f'>{BRAND_WORDMARK}</a>')
     if "circle-match-brand-logo" not in html:
         html = html.replace("</head>", f"{BRAND_LOGO_STYLE}</head>", 1)
     if ADSENSE_HEAD in html:
