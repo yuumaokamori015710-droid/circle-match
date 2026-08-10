@@ -10,7 +10,7 @@ import secrets
 import sqlite3
 import sys
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
@@ -2308,6 +2308,7 @@ def init_db():
             seed_circles(conn)
         normalize_circle_records(conn)
         delete_known_circle_noise(conn)
+        seed_demo_match_posts(conn)
         migrate_circle_private_data(conn)
         redact_existing_audit_logs(conn)
         seed_collection_targets(conn)
@@ -2882,11 +2883,83 @@ def seed_circles(conn):
             })
 
 
+def seed_demo_match_posts(conn):
+    """Create clearly labelled sample posts without polluting the public DB."""
+    timestamp = now()
+    base_date = datetime.now(timezone.utc).date()
+    demo_university_id = upsert_university(conn, {
+        "university_name": "Circle Match デモ大学",
+        "prefecture": "東京都",
+        "city": "渋谷区",
+        "campus_name": "サンプルキャンパス",
+    }, audit=False)
+
+    samples = [
+        ("demo_baseball", "【サンプル】デモ野球サークル", "野球", "非公認サークル", 7, "練習試合", "中級", "東京都江東区・夢の島野球場", "9イニングまたは7イニング。ユニフォーム不問で、試合後の合同練習も歓迎です。"),
+        ("demo_tennis", "【サンプル】デモテニスサークル", "テニス", "非公認サークル", 10, "合同練習", "初級〜中級", "東京都世田谷区・区営テニスコート", "ダブルス中心の合同練習です。コート代は参加団体で分担します。"),
+        ("demo_pickleball", "【サンプル】デモピックルボールサークル", "ピックルボール", "非公認サークル", 14, "合同練習", "初心者歓迎", "東京都品川区・屋内スポーツ施設", "ルール説明から一緒に行う体験・合同練習会です。"),
+        ("demo_running", "【サンプル】デモランニングサークル", "ランニング", "非公認サークル", 18, "助っ人募集", "レベル不問", "東京都千代田区・皇居外周", "5kmまたは10kmのペース走。給水係を含む助っ人も募集しています。"),
+    ]
+    social_university_id = upsert_university(conn, {
+        "university_name": "Circle Match 社会人デモ団体",
+        "prefecture": "東京都",
+        "city": "品川区",
+        "campus_name": "社会人サークル",
+    }, audit=False)
+    samples.extend([
+        ("demo_social_futsal", "【サンプル】デモ社会人フットサル", "サッカー・フットサル", SOCIAL_AUDIENCE_TYPE, 9, "合同練習", "初級〜中級", "東京都品川区・屋内フットサルコート", "仕事帰りの1.5時間練習。初参加の方も歓迎です。"),
+        ("demo_social_badminton", "【サンプル】デモ社会人バドミントン", "バドミントン", SOCIAL_AUDIENCE_TYPE, 16, "助っ人募集", "初級〜中級", "東京都目黒区・区民体育館", "ダブルス中心。ラケット貸出あり、1名から参加できます。"),
+    ])
+
+    for sample_id, circle_name, sport, organization_type, days, match_type, level, place, detail in samples:
+        university_id = social_university_id if organization_type == SOCIAL_AUDIENCE_TYPE else demo_university_id
+        circle_id = f"circle_{sample_id}"
+        upsert_circle(conn, {
+            "circle_id": circle_id,
+            "university_id": university_id,
+            "circle_name": circle_name,
+            "organization_type": organization_type,
+            "sport_category": sport,
+            "activity_area": place,
+            "source_type": "other",
+            "verification_status": "unverified",
+            "public_status": "demo",
+            "last_checked_at": timestamp[:10],
+        }, audit_entry=False)
+        scheduled_at = f"{(base_date + timedelta(days=days)).isoformat()} 18:00"
+        conn.execute(
+            """
+            insert into match_posts(match_post_id, circle_id, match_type, level_label, scheduled_at,
+              period_start, period_end, place, practice_detail, capacity, conditions, status, created_at, updated_at)
+            values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            on conflict(match_post_id) do update set
+              match_type=excluded.match_type,
+              level_label=excluded.level_label,
+              scheduled_at=excluded.scheduled_at,
+              period_start=excluded.period_start,
+              period_end=excluded.period_end,
+              place=excluded.place,
+              practice_detail=excluded.practice_detail,
+              conditions=excluded.conditions,
+              status=excluded.status,
+              updated_at=excluded.updated_at
+            """,
+            (
+                f"match_{sample_id}", circle_id, match_type, level, scheduled_at,
+                scheduled_at, scheduled_at, place, detail, "1団体または個人", f"【サンプル募集】{detail}",
+                "open", timestamp, timestamp,
+            ),
+        )
+
+
 def seed_collection_targets(conn):
     timestamp = now()
     universities = conn.execute("select university_id, university_name, prefecture from universities").fetchall()
     for university in universities:
-        count = conn.execute("select count(*) from circles where university_id=?", (university["university_id"],)).fetchone()[0]
+        count = conn.execute(
+            "select count(*) from circles where university_id=? and coalesce(public_status, 'published')<>'demo'",
+            (university["university_id"],),
+        ).fetchone()[0]
         in_focus = university["prefecture"] in KANTO_PREFECTURES
         status = "partial" if count else ("not_started" if in_focus else "out_of_scope")
         query = f"{university['university_name']} 公認団体 サークル 一覧"
@@ -3282,11 +3355,20 @@ def audience_clause(audience, alias="c"):
     return "", []
 
 
+def public_circle_clause(alias="c"):
+    return f"coalesce({alias}.public_status, 'published')<>'demo'"
+
+
 def summary(audience="all"):
     audience = audience_scope(audience)
-    circle_scope, args = audience_clause(audience, "c")
-    where = f" where {circle_scope}" if circle_scope else ""
+    circle_scope, audience_args = audience_clause(audience, "c")
+    filters = [public_circle_clause("c")]
+    if circle_scope:
+        filters.append(circle_scope)
+    where = " where " + " and ".join(filters)
+    args = audience_args
     verified_where = f"{where}{' and ' if where else ' where '}c.verification_status in ('claimed','university_verified','admin_verified')"
+    match_where = f" where {circle_scope}" if circle_scope else ""
     with connect() as conn:
         return {
             "prefectures": conn.execute(
@@ -3299,7 +3381,7 @@ def summary(audience="all"):
             "verified_circles": conn.execute(f"select count(*) from circles c{verified_where}", args).fetchone()[0],
             "circle_candidates": conn.execute("select count(*) from circle_candidates").fetchone()[0] if audience == "all" else 0,
             "match_posts": conn.execute(
-                f"select count(*) from match_posts m join circles c on c.circle_id=m.circle_id{where}", args
+                f"select count(*) from match_posts m join circles c on c.circle_id=m.circle_id{match_where}", audience_args
             ).fetchone()[0],
         }
 
@@ -3312,7 +3394,7 @@ def social_summary():
             "prefectures": conn.execute(
                 """select count(distinct u.prefecture)
                    from circles c join universities u on u.university_id=c.university_id
-                   where c.organization_type=?""",
+                   where c.organization_type=? and coalesce(c.public_status, 'published')<>'demo'""",
                 (organization_type,),
             ).fetchone()[0],
             # The existing client contract calls this field universities. On the
@@ -3320,16 +3402,16 @@ def social_summary():
             "universities": conn.execute(
                 """select count(distinct u.prefecture)
                    from circles c join universities u on u.university_id=c.university_id
-                   where c.organization_type=?""",
+                   where c.organization_type=? and coalesce(c.public_status, 'published')<>'demo'""",
                 (organization_type,),
             ).fetchone()[0],
             "circles": conn.execute(
-                "select count(*) from circles where organization_type=?",
+                "select count(*) from circles where organization_type=? and coalesce(public_status, 'published')<>'demo'",
                 (organization_type,),
             ).fetchone()[0],
             "verified_circles": conn.execute(
                 """select count(*) from circles
-                   where organization_type=?
+                   where organization_type=? and coalesce(public_status, 'published')<>'demo'
                      and (verification_status='claimed'
                           or (public_status='published' and coalesce(source_url, '')<>''))""",
                 (organization_type,),
@@ -3346,7 +3428,9 @@ def social_summary():
 def sport_options(audience="all"):
     audience = audience_scope(audience)
     scope, args = audience_clause(audience)
-    where = f" where {scope}" if scope else ""
+    where = f" where {public_circle_clause()}"
+    if scope:
+        where += f" and {scope}"
     with connect() as conn:
         db_sports = [
             row["sport_category"]
@@ -3375,7 +3459,7 @@ def search_circles(params, limit=None):
     status = (params.get("status", [""])[0] or "").strip()
     sort = (params.get("sort", ["university"])[0] or "university").strip()
     audience = audience_scope(params)
-    where = []
+    where = [public_circle_clause("c")]
     args = []
     scope, scope_args = audience_clause(audience, "c")
     if scope:
