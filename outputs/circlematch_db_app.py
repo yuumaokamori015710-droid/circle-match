@@ -478,19 +478,23 @@ REPRESENTATIVE_HTML = """<!doctype html>
     *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1120px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
     main{max-width:1120px;margin:auto;padding:26px 18px 60px}.intro{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-bottom:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}.intro h1{font-size:34px;line-height:1.18;margin:0 0 10px}.intro p,.help p{color:var(--muted);line-height:1.8;margin:0}.steps{display:grid;gap:9px}.step{border:1px solid var(--line);border-radius:8px;padding:12px;background:#f9fbfd}.step b{display:block;margin-bottom:4px}
-    form{display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical}.consent{display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#f9fbfd;line-height:1.55}.consent input{width:auto;min-height:0;margin:3px 0 0}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:11px 16px;border:1px solid transparent;background:var(--accent);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850}.result.error{background:#fde8e4;color:#9b2f1a}
+    form{display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-weight:850}small{color:var(--muted);font-weight:500}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical}.consent{display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#f9fbfd;line-height:1.55}.consent input{width:auto;min-height:0;margin:3px 0 0}.button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;padding:11px 16px;border:1px solid transparent;background:var(--accent);color:#fff;font-weight:900;text-decoration:none;cursor:pointer}.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{display:none;border-radius:8px;padding:12px 14px;background:#e2f5ed;color:#0d674f;font-weight:850}.result.error{background:#fde8e4;color:#9b2f1a}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mode{border:1px solid #cbd7e2;border-radius:8px;padding:13px;background:#fff;cursor:pointer}.mode:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px #fde8e4}.mode input{width:auto;min-height:0;margin-right:7px}.mode small{display:block;margin:7px 0 0 25px;line-height:1.55}.search-box{border:1px solid var(--line);border-radius:8px;padding:14px;background:#f9fbfd}.search-box h2{font-size:17px;margin:0 0 8px}.search-box p{margin:0 0 10px;color:var(--muted);line-height:1.6}.search-results,.university-results{display:grid;gap:7px;margin-top:9px;max-height:250px;overflow:auto}.search-result{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:7px;background:#fff;padding:10px;cursor:pointer;color:var(--ink);font:inherit}.search-result:hover,.search-result.active{border-color:var(--accent);background:#fff8f4}.search-result b,.search-result span{display:block}.search-result span{color:var(--muted);font-size:13px;margin-top:3px}.selected{border:1px solid #a9d9c9;border-radius:7px;background:#edf9f4;padding:10px;color:#0d674f;font-weight:750}.selected span{display:block;font-size:13px;margin-top:3px;font-weight:600}.hidden{display:none!important}
     @media(max-width:820px){.intro,.form-grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.intro h1{font-size:29px}}
   </style>
 </head>
 <body>
   <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a><a href="/contact">問い合わせ</a></nav></div></header>
   <main>
-    <section class="intro"><article class="panel"><h1 id="representativeTitle">自分が所属するサークルを登録しよう！</h1><p id="representativeLead">代表者が簡単なアンケートに答えるだけで、サークル紹介ページを自動作成します。大学メールは本人確認のためだけに使い、公開ページには表示しません。</p></article><aside class="steps"><div class="step"><b>1. 団体情報を入力</b>大学、団体名、競技、公式ページやSNSなどの出典を登録します。</div><div class="step"><b>2. 紹介アンケートに回答</b>人数、雰囲気、経験者割合、練習頻度などを入力します。</div><div class="step" id="representativeStep3"><b>3. 大学メールを確認</b>大学メールから確認メールを送り、運営確認後に「大学メール確認済み」と表示します。</div></aside></section>
+    <section class="intro"><article class="panel"><h1 id="representativeTitle">自分が所属するサークルを登録しよう！</h1><p id="representativeLead">代表者が簡単なアンケートに答えるだけで、サークル紹介ページを自動作成します。大学団体は大学メールで、社会人サークルは代表者メールで確認します。どちらも公開ページに個人用メールは表示しません。</p></article><aside class="steps"><div class="step"><b>1. 団体を探す</b>まずDBを検索して、登録済みの自分の団体を選びます。見つからなければ新規入力へ進めます。</div><div class="step"><b>2. 紹介アンケートに回答</b>人数、雰囲気、経験者割合、練習頻度などを入力します。</div><div class="step" id="representativeStep3"><b>3. 本人確認</b>大学団体は大学メール、社会人サークルは代表者メールで申請内容を確認します。</div></aside></section>
     <section class="panel">
       <form id="claimForm">
-        <div class="form-grid"><label>大学<select id="universityId" required></select></label><label>団体名<input id="circleName" required placeholder="例: フットサル同好会"></label></div>
-        <div class="form-grid"><label>競技<select id="sportCategory"></select></label><label>団体種別<select id="organizationType"></select></label></div>
-        <div class="form-grid"><label>代表者名<small>公開されません</small><input id="claimantName" required></label><label>大学メール<small>選択した大学の公式メールアドレスを入力してください。公開されず、本人確認にだけ使います。</small><input id="claimantEmail" type="email" required placeholder="name@university.ac.jp"></label></div>
+        <div><label>団体区分</label><div class="mode-grid"><label class="mode"><span><input name="audience" type="radio" value="university" checked>大学サークル・部活動</span><small>大学を選び、大学公式メールで確認します。</small></label><label class="mode"><span><input name="audience" type="radio" value="social">社会人サークル</span><small>大学メールは不要です。代表者メールで確認します。</small></label></div></div>
+        <section class="search-box"><h2>登録済みの団体を検索</h2><p>団体名、大学名、競技、活動地域を入力して候補を選択できます。候補にない場合は、下の入力欄から新規団体として申請してください。</p><input id="existingSearch" autocomplete="off" placeholder="例: 早稲田 フットサル / 渋谷 テニス"><div id="existingResults" class="search-results"><span class="sub">2文字以上入力すると候補を表示します。</span></div><div id="selectedExisting" class="selected hidden"></div><div class="actions"><button id="newCircleButton" class="button ghost" type="button">候補にないため新規で入力する</button></div></section>
+        <input id="selectedCircleId" type="hidden">
+        <section id="universityFields" class="form-grid"><label>大学を検索・選択<small>候補から必ず選んでください</small><input id="universitySearch" autocomplete="off" placeholder="例: 早稲田大学"><input id="universityId" type="hidden"><div id="universityResults" class="university-results"></div></label><label>団体名<small>新規団体の場合に入力してください</small><input id="circleName" required placeholder="例: フットサル同好会"></label></section>
+        <section id="socialFields" class="form-grid hidden"><label>主な活動都道府県<select id="prefecture"></select></label><label>主な活動エリア<small>市区町村・沿線・施設エリアなど</small><input id="socialCity" placeholder="例: 渋谷区、横浜市、都内西部"></label></section>
+        <div class="form-grid"><label>競技<select id="sportCategory" required></select></label><label>団体種別<select id="organizationType"></select></label></div>
+        <div class="form-grid"><label>代表者名<small>公開されません</small><input id="claimantName" required></label><label id="claimantEmailLabel">大学メール<small id="claimantEmailHelp">選択した大学の公式メールアドレスを入力してください。公開されず、本人確認にだけ使います。</small><input id="claimantEmail" type="email" required placeholder="name@university.ac.jp"></label></div>
         <div class="form-grid"><label>公開連絡用メール<small>団体の問い合わせ窓口として公開するアドレスだけを入力してください</small><input id="publicContactEmail" type="email" placeholder="circle@example.com"></label><label class="consent"><input id="publicContactConsent" type="checkbox">このメールアドレスを団体の公開連絡先として掲載することに同意します</label></div>
         <label>出典URL<small>大学公式ページ、団体公式SNS、サークル紹介ページなど</small><input id="evidenceUrl" type="url" placeholder="https://"></label>
         <div class="form-grid"><label>人数<small>例: 20人、50人以上など</small><input id="memberCount" placeholder="例: 35人"></label><label>練習頻度<small>例: 週2回、月2回など</small><input id="practiceFrequency" placeholder="例: 週2回"></label></div>
@@ -506,12 +510,23 @@ REPRESENTATIVE_HTML = """<!doctype html>
   <script>
     const sports = __SPORTS__;
     const orgTypes = __ORG_TYPES__;
+    const prefectures = __PREFS__;
     const $ = id => document.getElementById(id);
+    let universities = [];
+    let selectedExisting = null;
+    let searchTimer = null;
     function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[c]))}
     function fill(el, rows, label){el.innerHTML=`<option value="">${label}</option>`+rows.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("")}
+    function audience(){return document.querySelector('input[name="audience"]:checked').value}
     async function api(path, options){const r=await fetch(path, options); const data=await r.json(); if(!r.ok)throw new Error(data.error||"送信に失敗しました"); return data}
-    async function boot(){const intent=new URLSearchParams(location.search).get("intent"); if(intent==="post-match"){ $("representativeTitle").textContent="募集を出す前に、団体代表者として申請しよう"; $("representativeLead").textContent="募集投稿は、団体情報と代表者申請を確認した後に開放します。大学メールは本人確認のためだけに使い、公開ページには表示しません。"; $("representativeStep3").innerHTML="<b>3. 大学メールを確認</b>確認メールを送信し、運営確認後に練習試合・合同練習・メンバー募集を公開できます。"} const universities=await api("/api/universities"); fill($("universityId"),universities.map(u=>({value:u.university_id,label:`${u.university_name} / ${u.prefecture}`})),"大学を選択"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("organizationType"),orgTypes.map(v=>({value:v,label:v})),"団体種別を選択")}
-    $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const publicContactEmail=$("publicContactEmail").value.trim(); const publicContactConsent=$("publicContactConsent").checked; if(publicContactEmail&&!publicContactConsent)throw new Error("公開連絡用メールを掲載する場合は、公開への同意が必要です。"); if(publicContactConsent&&!publicContactEmail)throw new Error("公開する団体用メールアドレスを入力してください。"); const payload={university_id:$("universityId").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,public_contact_email:publicContactEmail,public_contact_consent:publicContactConsent,evidence_url:$("evidenceUrl").value,member_count:$("memberCount").value,practice_frequency:$("practiceFrequency").value,atmosphere:$("atmosphere").value,experience_ratio:$("experienceRatio").value,activity_place:$("activityPlace").value,introduction:$("introduction").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`代表申請を受け付けました。申請ID: ${esc(data.claim_id)}<br><a href="${esc(data.verification_mailto)}">大学メールから確認メールを作成</a><br><small>確認メールは、入力した大学メールアドレスのアカウントから送信してください。運営が差出人を確認した後に「大学メール確認済み」と表示します。</small><br><a href="${esc(data.profile_url)}">作成されたサークルページを見る</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
+    function clearExisting(){selectedExisting=null; $("selectedCircleId").value=""; $("selectedExisting").classList.add("hidden")}
+    function renderUniversityCandidates(query){const q=query.trim().toLowerCase(); const rows=universities.filter(u=>[u.university_name,u.prefecture,u.city].join(" ").toLowerCase().includes(q)).slice(0,12); $("universityResults").innerHTML=rows.map(u=>`<button class="search-result" type="button" data-university="${esc(u.university_id)}"><b>${esc(u.university_name)}</b><span>${esc(u.prefecture)}${u.city?` / ${esc(u.city)}`:""}</span></button>`).join("") || (q?'<span class="sub">大学が見つかりません。表記を変えて検索してください。</span>':''); document.querySelectorAll("[data-university]").forEach(button=>button.onclick=()=>{const u=universities.find(item=>item.university_id===button.dataset.university); if(!u)return; $("universityId").value=u.university_id; $("universitySearch").value=`${u.university_name} / ${u.prefecture}`; $("universityResults").innerHTML='<div class="selected">大学を選択しました</div>'})}
+    function selectExisting(circle){selectedExisting=circle; $("selectedCircleId").value=circle.circle_id; $("circleName").value=circle.circle_name; $("sportCategory").value=circle.sport_category||""; $("organizationType").value=circle.organization_type||""; if(audience()==="university"){ $("universityId").value=circle.university_id; $("universitySearch").value=`${circle.university_name} / ${circle.prefecture}` }else{$("prefecture").value=circle.prefecture||""; $("socialCity").value=circle.city||circle.activity_area||""} $("selectedExisting").classList.remove("hidden"); $("selectedExisting").innerHTML=`<b>選択中: ${esc(circle.circle_name)}</b><span>${esc(circle.university_name)} / ${esc(circle.prefecture)} / ${esc(circle.sport_category||"その他")}</span>`; $("existingResults").innerHTML=''}
+    function renderExisting(rows){$("existingResults").innerHTML=rows.map(c=>`<button class="search-result" type="button" data-circle="${esc(c.circle_id)}"><b>${esc(c.circle_name)}</b><span>${esc(c.university_name)} / ${esc(c.prefecture)} / ${esc(c.sport_category||"その他")}</span></button>`).join("") || '<span class="sub">候補が見つかりません。このまま新規団体として入力してください。</span>'; document.querySelectorAll("[data-circle]").forEach(button=>button.onclick=()=>{const circle=rows.find(item=>item.circle_id===button.dataset.circle); if(circle)selectExisting(circle)})}
+    async function searchExisting(){const q=$("existingSearch").value.trim(); if(q.length<2){$("existingResults").innerHTML='<span class="sub">2文字以上入力すると候補を表示します。</span>'; return} const qs=new URLSearchParams({q,audience:audience()}); const rows=await api("/api/circle-search?"+qs); renderExisting(rows)}
+    function applyAudience(){const social=audience()==="social"; clearExisting(); $("existingSearch").value=""; $("existingResults").innerHTML='<span class="sub">2文字以上入力すると候補を表示します。</span>'; $("universityFields").classList.toggle("hidden",social); $("socialFields").classList.toggle("hidden",!social); if(social){$("organizationType").innerHTML='<option value="社会人サークル">社会人サークル</option>'}else{fill($("organizationType"),orgTypes.filter(v=>v!=="社会人サークル").map(v=>({value:v,label:v})),"団体種別を選択")} $("organizationType").disabled=social; $("claimantEmailLabel").childNodes[0].textContent=social?"代表者メール":"大学メール"; $("claimantEmailHelp").textContent=social?"団体の代表者として連絡を受け取れるメールアドレスを入力してください。公開されず、本人確認にだけ使います。":"選択した大学の公式メールアドレスを入力してください。公開されず、本人確認にだけ使います。"; $("claimantEmail").placeholder=social?"representative@example.com":"name@university.ac.jp"; $("representativeStep3").innerHTML=social?"<b>3. 代表者メールを確認</b>入力した代表者メールから確認メールを送り、運営確認後に募集を公開できます。":"<b>3. 大学メールを確認</b>大学メールから確認メールを送り、運営確認後に募集を公開できます。"}
+    async function boot(){const intent=new URLSearchParams(location.search).get("intent"); if(intent==="post-match"){ $("representativeTitle").textContent="募集を出す前に、団体代表者として申請しよう"; $("representativeLead").textContent="募集投稿は、団体情報と代表者申請を確認した後に開放します。大学団体は大学メール、社会人サークルは代表者メールで確認します。"} universities=await api("/api/universities"); fill($("sportCategory"),sports.map(v=>({value:v,label:v})),"競技を選択"); fill($("prefecture"),prefectures.map(v=>({value:v,label:v})),"都道府県を選択"); $("universitySearch").addEventListener("input",()=>{ $("universityId").value=""; renderUniversityCandidates($("universitySearch").value) }); $("existingSearch").addEventListener("input",()=>{clearTimeout(searchTimer); searchTimer=setTimeout(()=>searchExisting().catch(err=>$("existingResults").innerHTML=`<span class="sub">${esc(err.message)}</span>`),220)}); document.querySelectorAll('input[name="audience"]').forEach(input=>input.addEventListener("change",applyAudience)); $("newCircleButton").addEventListener("click",()=>{clearExisting(); $("circleName").focus()}); applyAudience()}
+    $("claimForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; result.textContent="送信中です"; try{const social=audience()==="social"; const publicContactEmail=$("publicContactEmail").value.trim(); const publicContactConsent=$("publicContactConsent").checked; if(publicContactEmail&&!publicContactConsent)throw new Error("公開連絡用メールを掲載する場合は、公開への同意が必要です。"); if(publicContactConsent&&!publicContactEmail)throw new Error("公開する団体用メールアドレスを入力してください。"); if(!$("selectedCircleId").value&&!social&&!$("universityId").value)throw new Error("大学を検索して候補から選択してください。"); if(!$("selectedCircleId").value&&social&&!$("prefecture").value)throw new Error("社会人サークルの主な活動都道府県を選択してください。"); const payload={audience:audience(),circle_id:$("selectedCircleId").value,university_id:$("universityId").value,prefecture:$("prefecture").value,social_city:$("socialCity").value,circle_name:$("circleName").value,sport_category:$("sportCategory").value,organization_type:$("organizationType").value,claimant_name:$("claimantName").value,claimant_email:$("claimantEmail").value,public_contact_email:publicContactEmail,public_contact_consent:publicContactConsent,evidence_url:$("evidenceUrl").value,member_count:$("memberCount").value,practice_frequency:$("practiceFrequency").value,atmosphere:$("atmosphere").value,experience_ratio:$("experienceRatio").value,activity_place:$("activityPlace").value,introduction:$("introduction").value,message:$("message").value}; const data=await api("/api/claims",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`代表申請を受け付けました。申請ID: ${esc(data.claim_id)}<br><a href="${esc(data.verification_mailto)}">${esc(data.verification_label)}を作成</a><br><small>${esc(data.verification_note)}</small><br><a href="${esc(data.profile_url)}">作成されたサークルページを見る</a>`; e.target.reset(); clearExisting(); applyAudience()}catch(err){result.className="result error"; result.textContent=err.message}})
     boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
   </script>
 </body>
@@ -729,13 +744,13 @@ HTML = """<!doctype html>
     async function refreshMatches(){const rows=await api("/api/matches"); $("matchRows").innerHTML=rows.map(m=>`<tr><td class="mono">${m.match_post_id}</td><td>${esc(m.university_name)}<br><b>${esc(m.circle_name)}</b></td><td>${esc(m.match_type)}<br><span class="badge">${esc(m.level_label||"")}</span></td><td>${esc(m.scheduled_at||"")}<br><span class="muted">${esc(m.place||"")}</span></td><td>${esc(m.conditions||"")}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">データなし</td></tr>`}
     async function refreshCollection(){const rows=await api("/api/collection_status"); $("collectionRows").innerHTML=rows.map(r=>`<tr><td><b>${esc(r.university_name)}</b><br><span class="mono">${esc(r.university_id)}</span></td><td>${esc(r.prefecture)} ${esc(r.city||"")}</td><td><span class="badge ${r.circle_count>0?"ok":"warn"}">${r.circle_count}件</span></td><td><span class="badge">${esc(r.collection_status)}</span></td><td>${r.source_url?`<a href="${esc(r.source_url)}" target="_blank">出典</a><br>`:""}<span class="muted">${esc(r.source_search_query)}</span></td><td>${esc(r.last_checked_at||"未確認")}</td></tr>`).join("")}
     async function refreshCandidates(){const rows=await api("/api/candidates"); $("candidateRows").innerHTML=rows.map(c=>`<tr><td class="mono">${esc(c.candidate_id)}</td><td><b>${esc(c.university_name)}</b><br><span class="muted">${esc(c.prefecture)} ${esc(c.city||"")}</span></td><td><b>${esc(c.candidate_name)}</b></td><td>${esc(c.sport_category)}<br><span class="badge ${c.review_status==="approved"?"ok":c.review_status==="rejected"?"danger":"warn"}">${esc(c.review_status)}</span></td><td><span class="badge blue">${esc(c.source_type)}</span><br>${c.source_url?`<a href="${esc(c.source_url)}" target="_blank">出典URL</a>`:"<span class='muted'>出典未登録</span>"}<br><span class="muted">${esc(c.evidence_text||"")}</span></td><td>${esc(c.notes||"")}</td><td>${c.review_status==="approved"?"<span class='muted'>昇格済み</span>":`<button data-promote="${esc(c.candidate_id)}">昇格</button> <button class="danger" data-reject="${esc(c.candidate_id)}">却下</button>`}</td></tr>`).join("") || `<tr><td colspan="7" class="muted">候補なし</td></tr>`; document.querySelectorAll("[data-promote]").forEach(b=>b.onclick=()=>promoteCandidate(b.dataset.promote)); document.querySelectorAll("[data-reject]").forEach(b=>b.onclick=()=>rejectCandidate(b.dataset.reject));}
-    function claimStatusLabel(claim){return claim.university_email_verified?"大学メール確認済み":claim.status==="pending"?"確認メール待ち":claim.status||"確認待ち"}
-    async function refreshClaims(){const rows=await api("/api/claims"); $("claimRows").innerHTML=rows.map(c=>`<tr><td>${esc(c.created_at)}<br><span class="mono">${esc(c.claim_id)}</span></td><td><b>${esc(c.university_name)}</b><br>${esc(c.circle_name)}<br><span class="muted">${esc(c.sport_category)}</span></td><td>${esc(c.claimant_name||"")}<br><span class="mono">${esc(c.claimant_email)}</span></td><td><span class="badge ${c.university_email_verified?"ok":"warn"}">${esc(claimStatusLabel(c))}</span><br><span class="muted">公式ドメイン照合: ${c.university_email_domain_checked?"済":"未"}</span></td><td>${c.evidence_url?`<a href="${esc(c.evidence_url)}" target="_blank">出典URL</a>`:"<span class='muted'>未登録</span>"}</td><td>${c.university_email_verified?`<span class="muted">${esc(c.university_email_verified_at||"確認済み")}</span>`:`<button class="primary" data-verify-claim="${esc(c.claim_id)}">大学メール確認済みにする</button>`}</td></tr>`).join("") || `<tr><td colspan="6" class="muted">代表申請はまだありません</td></tr>`; document.querySelectorAll("[data-verify-claim]").forEach(b=>b.onclick=()=>verifyClaim(b.dataset.verifyClaim));}
+    function claimStatusLabel(claim){const label=claim.organization_type==="社会人サークル"?"代表者メール":"大学メール"; return claim.university_email_verified?`${label}確認済み`:claim.status==="pending"?"確認メール待ち":claim.status||"確認待ち"}
+    async function refreshClaims(){const rows=await api("/api/claims"); $("claimRows").innerHTML=rows.map(c=>{const social=c.organization_type==="社会人サークル"; const confirmationLabel=social?"代表者メール確認済みにする":"大学メール確認済みにする"; const domainNote=social?"大学ドメイン照合: 対象外":`公式ドメイン照合: ${c.university_email_domain_checked?"済":"未"}`; return `<tr><td>${esc(c.created_at)}<br><span class="mono">${esc(c.claim_id)}</span></td><td><b>${esc(c.university_name)}</b><br>${esc(c.circle_name)}<br><span class="muted">${esc(c.sport_category)}</span></td><td>${esc(c.claimant_name||"")}<br><span class="mono">${esc(c.claimant_email)}</span></td><td><span class="badge ${c.university_email_verified?"ok":"warn"}">${esc(claimStatusLabel(c))}</span><br><span class="muted">${domainNote}</span></td><td>${c.evidence_url?`<a href="${esc(c.evidence_url)}" target="_blank">出典URL</a>`:"<span class='muted'>未登録</span>"}</td><td>${c.university_email_verified?`<span class="muted">${esc(c.university_email_verified_at||"確認済み")}</span>`:`<button class="primary" data-verify-claim="${esc(c.claim_id)}">${confirmationLabel}</button>`}</td></tr>`}).join("") || `<tr><td colspan="6" class="muted">代表申請はまだありません</td></tr>`; document.querySelectorAll("[data-verify-claim]").forEach(b=>b.onclick=()=>verifyClaim(b.dataset.verifyClaim));}
     async function refreshMetrics(){const data=await api("/api/admin_metrics"); $("metricUniversityRows").innerHTML=data.by_university.map(r=>`<tr><td><b>${esc(r.university_name)}</b></td><td>${esc(r.prefecture)}</td><td><span class="badge ${r.circle_count>0?"ok":"warn"}">${r.circle_count}</span></td><td><span class="badge">${r.candidate_count}</span></td></tr>`).join(""); const sections=[["種別",data.by_organization_type],["競技",data.by_sport],["検証",data.by_verification],["出典",data.by_source]]; $("metricRows").innerHTML=sections.flatMap(([label,rows])=>rows.map(r=>`<tr><td>${label}</td><td>${esc(r.name)}</td><td><span class="badge">${r.count}</span></td></tr>`)).join("")}
     async function refreshPrivacy(){const data=await api("/api/privacy_metrics"); $("privacyRows").innerHTML=data.map(r=>`<tr><td><b>${esc(r.label)}</b><br><span class="muted">${esc(r.description)}</span></td><td><span class="badge">${r.count}</span></td><td>${r.public_api?`<span class="badge warn">返す</span>`:`<span class="badge ok">返さない</span>`}</td></tr>`).join("")}
     async function promoteCandidate(id){if(!confirm("この候補を正式サークルDBへ昇格しますか？"))return; await api("/api/candidates/promote",{method:"POST",body:JSON.stringify({candidate_id:id})}); await refreshAll();}
     async function rejectCandidate(id){if(!confirm("この候補を却下しますか？"))return; await api("/api/candidates/reject",{method:"POST",body:JSON.stringify({candidate_id:id})}); await refreshAll();}
-    async function verifyClaim(id){if(!confirm("大学メールで届いた確認メールの差出人と、この申請内容を照合済みですか？"))return; await api("/api/claims/verify",{method:"POST",body:JSON.stringify({claim_id:id})}); await refreshAll();}
+    async function verifyClaim(id){if(!confirm("届いた確認メールの差出人と、この申請内容を照合済みですか？"))return; await api("/api/claims/verify",{method:"POST",body:JSON.stringify({claim_id:id})}); await refreshAll();}
     async function refreshLogs(){const rows=await api("/api/audit_logs"); $("logRows").innerHTML=rows.map(l=>`<tr><td>${esc(l.created_at)}</td><td><span class="badge">${esc(l.action)}</span></td><td>${esc(l.entity_type)}<br><span class="mono">${esc(l.entity_id)}</span></td><td><span class="mono">${esc(l.payload)}</span></td></tr>`).join("")}
     function switchView(viewId){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===viewId));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));window.scrollTo({top:0,behavior:"smooth"});}
     function loadCircle(id, rows){const c=rows.find(x=>x.circle_id===id); if(!c)return; $("circleUniversity").value=c.university_id; $("circleName").value=c.circle_name; $("organizationType").value=c.organization_type||"不明"; $("sport").value=c.sport_category; $("activityArea").value=c.activity_area||""; $("sourceType").value=c.source_type; $("verificationStatus").value=c.verification_status; $("sourceUrl").value=c.source_url||""; switchView("circle-register");}
@@ -1257,6 +1272,7 @@ def render_representative_html():
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORTS__", json.dumps(sport_options(), ensure_ascii=False))
         .replace("__ORG_TYPES__", json.dumps(ORGANIZATION_TYPES, ensure_ascii=False))
+        .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
         .encode("utf-8")
     )
 
@@ -1304,7 +1320,8 @@ def render_circle_profile_html(profile_slug):
         contact_section = f'''<section class="panel contact-panel"><h2>連絡を取るならこちら</h2><p class="contact-email">{html.escape(contact_email)}</p><p>メール作成時は、下の文面をそのまま使うか、必要な箇所を埋めてから送れます。</p><div class="actions"><a class="button primary" href="{html.escape(mailto_url, quote=True)}">メールを作成</a><button class="button" type="button" id="copyInviteTemplate">テンプレートをコピー</button></div><textarea id="inviteTemplate" class="invite-template" readonly>{html.escape(invite_template)}</textarea></section><script>document.getElementById("copyInviteTemplate")?.addEventListener("click",async()=>{{const button=document.getElementById("copyInviteTemplate");try{{await navigator.clipboard.writeText(document.getElementById("inviteTemplate").value);button.textContent="コピーしました"}}catch(_error){{document.getElementById("inviteTemplate").select();document.execCommand("copy");button.textContent="コピーしました"}}}});</script>'''
     verification_status = data.get("verification_status")
     if data.get("representative_email_verified"):
-        representative_status_badge = '<span class="badge ok">大学メール確認済み</span>'
+        verified_label = "代表者メール確認済み" if data.get("organization_type") == SOCIAL_AUDIENCE_TYPE else "大学メール確認済み"
+        representative_status_badge = f'<span class="badge ok">{verified_label}</span>'
     elif verification_status == "university_verified":
         representative_status_badge = '<span class="badge ok">公式確認済み</span>'
     elif verification_status == "admin_verified":
@@ -2629,15 +2646,33 @@ def verification_mailto(claim_id, circle_name, university_name):
     return f"mailto:{quote(CONTACT_EMAIL, safe='@')}?{urlencode({'subject': subject, 'body': body})}"
 
 
+def social_representative_verification_mailto(claim_id, circle_name):
+    subject = f"【代表者メール確認】{circle_name} / {claim_id}"
+    body = "\n".join([
+        "Circle Match 運営 ご担当者様",
+        "",
+        "社会人サークルの代表者としての申請にあたり、代表者メールの確認をお願いします。",
+        "",
+        f"申請ID: {claim_id}",
+        f"団体名: {circle_name}",
+        "",
+        "このメールは、申請時に入力した代表者メールアドレスから送信しています。",
+    ])
+    return f"mailto:{quote(CONTACT_EMAIL, safe='@')}?{urlencode({'subject': subject, 'body': body})}"
+
+
 def create_circle_claim(conn, data):
+    audience = (data.get("audience") or "university").strip()
+    is_social = audience == "social"
+    selected_circle_id = (data.get("circle_id") or "").strip()
     university_id = (data.get("university_id") or "").strip()
     circle_name = clean_circle_name(data.get("circle_name") or "")
     claimant_email = (data.get("claimant_email") or "").strip()
     claimant_name = (data.get("claimant_name") or "").strip()
     public_contact_email = (data.get("public_contact_email") or "").strip()
     public_contact_consent = bool(data.get("public_contact_consent"))
-    if not university_id or not circle_name or not claimant_email:
-        raise ValueError("university_id, circle_name and claimant_email are required")
+    if not claimant_email:
+        raise ValueError("claimant_email is required")
     if "@" not in claimant_email:
         raise ValueError("valid claimant_email is required")
     if public_contact_email and "@" not in public_contact_email:
@@ -2646,24 +2681,70 @@ def create_circle_claim(conn, data):
         raise ValueError("public contact consent is required")
     if public_contact_consent and not public_contact_email:
         raise ValueError("public_contact_email is required when consent is given")
-    if not conn.execute("select 1 from universities where university_id=?", (university_id,)).fetchone():
-        raise ValueError("university not found")
-    if not email_matches_university(conn, university_id, claimant_email):
-        expected = official_email_domain(conn, university_id)
-        raise ValueError(f"選択した大学の公式メールアドレスを入力してください（{expected or '大学公式ドメイン'}）")
-    circle_id = upsert_circle(conn, {
-        "university_id": university_id,
-        "circle_name": circle_name,
-        "organization_type": data.get("organization_type") if data.get("organization_type") in ORGANIZATION_TYPES else "不明",
-        "sport_category": data.get("sport_category") if data.get("sport_category") in SPORTS else "その他",
-        "activity_area": "",
-        "source_type": "self_registered",
-        "source_url": data.get("evidence_url", ""),
-        "verification_status": "claimed",
-        "public_status": "published",
-        "owner_notes": data.get("message", ""),
-        "consent_status": "representative_claim",
-    })
+    if selected_circle_id:
+        selected = conn.execute(
+            """
+            select c.circle_id, c.circle_name, c.organization_type, c.university_id, u.university_name
+            from circles c join universities u on u.university_id=c.university_id
+            where c.circle_id=?
+            """,
+            (selected_circle_id,),
+        ).fetchone()
+        if not selected:
+            raise ValueError("選択した団体が見つかりません。もう一度検索してください。")
+        selected_is_social = selected["organization_type"] == SOCIAL_AUDIENCE_TYPE
+        if selected_is_social != is_social:
+            raise ValueError("選択した団体の区分が一致しません。団体区分を選び直してください。")
+        circle_id = selected["circle_id"]
+        circle_name = selected["circle_name"]
+        university_id = selected["university_id"]
+        university_name = selected["university_name"]
+        if not is_social and not email_matches_university(conn, university_id, claimant_email):
+            expected = official_email_domain(conn, university_id)
+            raise ValueError(f"選択した大学の公式メールアドレスを入力してください（{expected or '大学公式ドメイン'}）")
+    else:
+        if not circle_name:
+            raise ValueError("新規団体の団体名を入力してください")
+        if is_social:
+            prefecture = (data.get("prefecture") or "").strip()
+            city = (data.get("social_city") or "").strip()
+            if prefecture not in PREFECTURES:
+                raise ValueError("社会人サークルの主な活動都道府県を選択してください")
+            university_name = f"社会人サークル（{prefecture}）"
+            university_id = upsert_university(conn, {
+                "university_name": university_name,
+                "prefecture": prefecture,
+                "city": city,
+                "campus_name": "社会人サークル",
+            }, audit=False)
+            organization_type = SOCIAL_AUDIENCE_TYPE
+        else:
+            if not university_id:
+                raise ValueError("大学を検索して候補から選択してください")
+            university = conn.execute(
+                "select university_name from universities where university_id=?",
+                (university_id,),
+            ).fetchone()
+            if not university:
+                raise ValueError("大学が見つかりません")
+            if not email_matches_university(conn, university_id, claimant_email):
+                expected = official_email_domain(conn, university_id)
+                raise ValueError(f"選択した大学の公式メールアドレスを入力してください（{expected or '大学公式ドメイン'}）")
+            university_name = university["university_name"]
+            organization_type = data.get("organization_type") if data.get("organization_type") in ORGANIZATION_TYPES else "不明"
+        circle_id = upsert_circle(conn, {
+            "university_id": university_id,
+            "circle_name": circle_name,
+            "organization_type": organization_type,
+            "sport_category": data.get("sport_category") if data.get("sport_category") in SPORTS else "その他",
+            "activity_area": data.get("social_city", "") if is_social else "",
+            "source_type": "self_registered",
+            "source_url": data.get("evidence_url", ""),
+            "verification_status": "claimed",
+            "public_status": "published",
+            "owner_notes": data.get("message", ""),
+            "consent_status": "representative_claim",
+        })
     timestamp = now()
     claim_id = slug("claim", circle_id + claimant_email + timestamp)
     conn.execute(
@@ -2671,7 +2752,7 @@ def create_circle_claim(conn, data):
         insert into circle_claims(claim_id, circle_id, claimant_name, claimant_email, university_email_verified, university_email_domain_checked, status, evidence_url, reviewed_at, created_at, updated_at)
         values(?,?,?,?,?,?,?,?,?,?,?)
         """,
-        (claim_id, circle_id, claimant_name, claimant_email, 0, 1, "pending", data.get("evidence_url", ""), "", timestamp, timestamp),
+        (claim_id, circle_id, claimant_name, claimant_email, 0, 0 if is_social else 1, "pending", data.get("evidence_url", ""), "", timestamp, timestamp),
     )
     upsert_circle_public_profile(conn, circle_id, {
         "catch_copy": data.get("catch_copy") or f"{circle_name}の活動紹介",
@@ -2687,13 +2768,14 @@ def create_circle_claim(conn, data):
     })
     audit(conn, "representative_claim", "circle_claim", claim_id, {
         "circle_id": circle_id,
+        "audience": audience,
         "claimant_name": claimant_name,
         "claimant_email": claimant_email,
         "evidence_url": data.get("evidence_url", ""),
         "message": data.get("message", ""),
     })
-    university = conn.execute("select university_name from universities where university_id=?", (university_id,)).fetchone()
-    return claim_id, circle_id, verification_mailto(claim_id, circle_name, university["university_name"])
+    verification_url = social_representative_verification_mailto(claim_id, circle_name) if is_social else verification_mailto(claim_id, circle_name, university_name)
+    return claim_id, circle_id, verification_url, is_social
 
 
 def representative_claim_rows():
@@ -2701,7 +2783,7 @@ def representative_claim_rows():
         select cc.claim_id, cc.claimant_name, cc.claimant_email, cc.university_email_verified,
           cc.university_email_domain_checked, cc.university_email_verified_at, cc.status, cc.evidence_url,
           cc.reviewed_at, cc.created_at, c.circle_id, c.circle_name, c.sport_category,
-          u.university_name, u.prefecture
+          u.university_name, u.prefecture, c.organization_type
         from circle_claims cc
         join circles c on c.circle_id=cc.circle_id
         join universities u on u.university_id=c.university_id
@@ -2995,6 +3077,10 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(region_options())
             elif parsed.path == "/api/circles":
                 self.send_json(search_circles(parse_qs(parsed.query)))
+            elif parsed.path == "/api/circle-search":
+                params = parse_qs(parsed.query)
+                query = (params.get("q", [""])[0] or "").strip()
+                self.send_json(search_circles(params, limit=12) if len(query) >= 2 else [])
             elif parsed.path == "/api/matches":
                 self.send_json(search_matches(parse_qs(parsed.query)))
             elif parsed.path == "/api/sport_overview":
@@ -3056,9 +3142,17 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/api/claims":
                 data = self.read_json()
                 with connect() as conn:
-                    claim_id, circle_id, verification_mailto_url = create_circle_claim(conn, data)
+                    claim_id, circle_id, verification_mailto_url, is_social = create_circle_claim(conn, data)
                     conn.commit()
-                    self.send_json({"ok": True, "claim_id": claim_id, "circle_id": circle_id, "profile_url": f"/circles/{quote(circle_id)}", "verification_mailto": verification_mailto_url})
+                    self.send_json({
+                        "ok": True,
+                        "claim_id": claim_id,
+                        "circle_id": circle_id,
+                        "profile_url": f"/circles/{quote(circle_id)}",
+                        "verification_mailto": verification_mailto_url,
+                        "verification_label": "代表者メールから確認メール" if is_social else "大学メールから確認メール",
+                        "verification_note": "入力した代表者メールのアカウントから送信してください。運営が差出人を確認した後に「代表者メール確認済み」と表示します。" if is_social else "入力した大学メールアドレスのアカウントから送信してください。運営が差出人を確認した後に「大学メール確認済み」と表示します。",
+                    })
                 return
             if parsed.path == "/api/matches/public":
                 data = self.read_json()
