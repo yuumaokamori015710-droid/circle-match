@@ -9,6 +9,7 @@ import re
 import secrets
 import sqlite3
 import sys
+import threading
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -1398,10 +1399,15 @@ def sitemap_xml():
 """.encode("utf-8")
 
 
+_CIRCLE_SCHEMA_LOCK = threading.Lock()
+_CIRCLE_SCHEMA_READY = False
+
+
 def connect():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("pragma foreign_keys = on")
+    ensure_runtime_circle_schema(conn)
     return conn
 
 
@@ -1734,6 +1740,47 @@ def ensure_column(conn, table, column, definition):
     cols = [row["name"] for row in conn.execute(f"pragma table_info({table})").fetchall()]
     if column not in cols:
         conn.execute(f"alter table {table} add column {column} {definition}")
+
+
+def ensure_runtime_circle_schema(conn):
+    """Keep long-lived Render SQLite volumes compatible with current queries.
+
+    Older production databases predate ``circles.organization_type``.  Checking
+    the schema when a connection is opened makes the migration run before any
+    request can use the audience filters that depend on that column.
+    """
+    global _CIRCLE_SCHEMA_READY
+    if _CIRCLE_SCHEMA_READY:
+        return
+    with _CIRCLE_SCHEMA_LOCK:
+        if _CIRCLE_SCHEMA_READY:
+            return
+        table = conn.execute(
+            "select 1 from sqlite_master where type='table' and name='circles'"
+        ).fetchone()
+        if not table:
+            # Fresh databases are created by init_db below.
+            return
+        try:
+            ensure_column(conn, "circles", "organization_type", "text not null default '不明'")
+            columns = {
+                row["name"] for row in conn.execute("pragma table_info(circles)").fetchall()
+            }
+            if "organization_type" not in columns:
+                raise RuntimeError("circles.organization_type migration did not complete")
+            conn.execute(
+                "create index if not exists idx_circles_organization_type "
+                "on circles(organization_type)"
+            )
+            conn.commit()
+            _CIRCLE_SCHEMA_READY = True
+        except Exception as exc:
+            print(
+                f"circle schema migration failed for {DB_PATH}: {exc}",
+                file=sys.stderr,
+                flush=True,
+            )
+            raise
 
 
 SENSITIVE_AUDIT_KEYS = {
