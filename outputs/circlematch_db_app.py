@@ -212,19 +212,19 @@ MATCH_HTML = """<!doctype html>
     function fillRegions(){ $("regionFilter").innerHTML='<option value="">全地域</option>'+regions.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("") }
     async function drawJapanMap(){if(!window.d3||!window.topojson)return; const svg=d3.select("#japanMap"); if(svg.select(".country").size())return; const world=await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"); const countries=topojson.feature(world, world.objects.countries); const japan=countries.features.find(d=>String(d.id)==="392"); if(!japan)return; const projection=d3.geoMercator().fitSize([520,560],japan); const path=d3.geoPath(projection); svg.append("path").datum(japan).attr("class","country").attr("d",path); svg.append("path").datum(topojson.mesh(world, world.objects.countries, (a,b)=>String(a.id)==="392"||String(b.id)==="392")).attr("class","outline").attr("d",path)}
     function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>相手を探す</b></a>`).join("") }
-    function renderRegions(circles,matches){const pos={hokkaido:"pos-hokkaido",tohoku:"pos-tohoku",kanto:"pos-kanto",chubu:"pos-chubu",kansai:"pos-kansai",chugoku_shikoku:"pos-chugoku_shikoku",kyushu:"pos-kyushu"}; $("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; const note=r.value==="kanto"?"":`<span class="region-note">DB拡充中</span>`; return `<a class="map-region ${esc(pos[r.value]||"")}" href="/regions?region=${encodeURIComponent(r.value)}"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span>${note}</a>`}).join("")}
+    function renderRegions(regionData){const pos={hokkaido:"pos-hokkaido",tohoku:"pos-tohoku",kanto:"pos-kanto",chubu:"pos-chubu",kansai:"pos-kansai",chugoku_shikoku:"pos-chugoku_shikoku",kyushu:"pos-kyushu"}; const total=regionData.reduce((sum,r)=>sum+(r.circle_count||0),0); $("mapCircleCount").textContent=total; $("regionGrid").innerHTML=regions.map(r=>{const stat=regionData.find(item=>item.value===r.value)||{}; const note=r.value==="kanto"?"":`<span class="region-note">DB拡充中</span>`; return `<a class="map-region ${esc(pos[r.value]||"")}" href="/regions?region=${encodeURIComponent(r.value)}"><strong>${esc(r.label)}</strong><span>募集 ${stat.match_count||0}件</span><span>DB ${stat.circle_count||0}件</span>${note}</a>`}).join("")}
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
     function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
-    function updateStats(circles,matches){$("uniCount").textContent=new Set(circles.map(c=>c.university_id)).size; $("circleCount").textContent=circles.length; $("verifiedCount").textContent=circles.filter(c=>["claimed","university_verified","admin_verified"].includes(c.verification_status)).length; $("matchCount").textContent=matches.length}
+    function updateStats(stats,matches){$("uniCount").textContent=stats.universities; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("matchCount").textContent=matches.length}
     function applyInitialSummary(){if(!initialSummary)return; $("uniCount").textContent=initialSummary.universities; $("circleCount").textContent=initialSummary.circles; $("verifiedCount").textContent=initialSummary.verified_circles; $("matchCount").textContent=initialSummary.match_posts; $("mapCircleCount").textContent=initialSummary.circles}
     function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const sport=$("sportFilter").value.trim().toLowerCase(); const blob=[m.university_name,m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if(sport && !String(m.sport_category||"").toLowerCase().includes(sport))return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
     function sortMatches(rows){const v=$("sortFilter").value; return rows.slice().sort((a,b)=>{if(v==="new")return String(b.created_at||"").localeCompare(String(a.created_at||"")); if(v==="university")return String(a.university_name||"").localeCompare(String(b.university_name||""),"ja"); if(v==="sport")return String(a.sport_category||"").localeCompare(String(b.sport_category||""),"ja"); return String(a.scheduled_at||"9999").localeCompare(String(b.scheduled_at||"9999"))})}
     function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
     function badge(v,cls=""){return `<span class="badge ${cls}">${esc(v)}</span>`}
-    async function refresh(){const qs=currentQuery(); $("dbBridge").href="/circles?"+qs; const all=await api("/api/matches?"+qs); const circles=await api("/api/circles?"+qs); if(!allCircleCache) allCircleCache=await api("/api/circles?audience=university"); if(!allMatchCache) allMatchCache=await api("/api/matches?audience=university"); const data=sortMatches(all.filter(matchesFilter)); renderRegions(allCircleCache,allMatchCache); updateStats(circles,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件のDB候補は ${circles.length} 件あります。下のDBリンクから候補団体を確認できます。</div>`}
+    async function refresh(){const qs=currentQuery(); $("dbBridge").href="/circles?"+qs; const [all,stats,regionData]=await Promise.all([api("/api/matches?"+qs),api("/api/circle-stats?"+qs),api("/api/region-counts?audience=university")]); const data=sortMatches(all.filter(matchesFilter)); renderRegions(regionData); updateStats(stats,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件のDB候補は ${stats.circles} 件あります。下のDBリンクから候補団体を確認できます。</div>`}
     function updateCoverageNotice(){const region=$("regionFilter").value; $("coverageNotice").style.display=region && region!=="kanto" ? "block" : "none"}
     async function boot(){renderSports(); drawJapanMap().catch(()=>{}); fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); updateCoverageNotice(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; applyInitialSummary(); await refresh()}
     ["q","typeFilter","sportFilter","prefFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh));
@@ -460,7 +460,7 @@ POST_MATCH_HTML = """<!doctype html>
     function fillSports(){ $("sportFilter").innerHTML='<option value="">全競技</option>'+sports.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("") }
     function renderCircles(){const q=$("circleSearch").value.trim().toLowerCase(); const sport=$("sportFilter").value; const rows=circles.filter(c=>{const blob=[c.university_name,c.circle_name,c.sport_category,c.prefecture,c.city].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if(sport && c.sport_category!==sport)return false; return true}).slice(0,80); $("circleList").innerHTML=rows.map(c=>`<button type="button" class="circle-option ${selectedCircle?.circle_id===c.circle_id?"active":""}" data-circle="${esc(c.circle_id)}"><b>${esc(c.circle_name)}</b><span class="sub">${esc(c.university_name)} / ${esc(c.prefecture)} ${esc(c.city||"")} / ${esc(c.sport_category||"競技未設定")}</span><span class="badge">${esc(c.organization_type||"不明")}</span></button>`).join("") || `<div class="selected">候補が見つかりません。DBへの登録依頼をしてください。</div>`; document.querySelectorAll("[data-circle]").forEach(b=>b.onclick=()=>selectCircle(b.dataset.circle))}
     function selectCircle(id){selectedCircle=circles.find(c=>c.circle_id===id); if(!selectedCircle)return; $("selectedCircle").innerHTML=`<b>${esc(selectedCircle.circle_name)}</b><span class="sub">${esc(selectedCircle.university_name)} / ${esc(selectedCircle.prefecture)} / ${esc(selectedCircle.sport_category||"")}</span>`; if(selectedCircle.sport_category) $("sportFilter").value=selectedCircle.sport_category; renderCircles()}
-    async function boot(){fillSports(); const me=await api("/api/me"); authenticated=!!me.authenticated; $("loginNeeded").style.display=authenticated?"none":"block"; circles=await api("/api/circles"); renderCircles()}
+    async function boot(){fillSports(); const me=await api("/api/me"); authenticated=!!me.authenticated; $("loginNeeded").style.display=authenticated?"none":"block"; circles=[]; renderCircles()}
     ["circleSearch","sportFilter"].forEach(id=>$(id).addEventListener("input",renderCircles));
     $("matchForm").addEventListener("submit",async e=>{e.preventDefault(); const result=$("result"); result.style.display="block"; result.className="result"; try{if(!authenticated)throw new Error("募集投稿にはログインが必要です。"); if(!selectedCircle)throw new Error("自分のサークルを選択してください。"); const payload={circle_id:selectedCircle.circle_id,match_type:$("matchType").value,level_label:$("levelLabel").value,period_start:$("periodStart").value,period_end:$("periodEnd").value,place:$("place").value,capacity:$("capacity").value,practice_detail:$("practiceDetail").value,conditions:$("conditions").value}; result.textContent="投稿中です"; const data=await api("/api/matches/public",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); result.innerHTML=`募集を投稿しました。投稿ID: ${esc(data.match_post_id)}<br><a href="/?q=${encodeURIComponent(selectedCircle.circle_name)}#matches">募集掲示板で確認する</a>`; e.target.reset()}catch(err){result.className="result error"; result.textContent=err.message}})
     boot().catch(e=>{const r=$("result"); r.style.display="block"; r.className="result error"; r.textContent=e.message});
@@ -613,10 +613,10 @@ PUBLIC_HTML = """<!doctype html>
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
     function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
-    function updateSummary(data){$("prefCount").textContent=new Set(data.map(c=>c.prefecture)).size; $("uniCount").textContent=new Set(data.map(c=>c.university_id)).size; $("circleCount").textContent=data.length; $("verifiedCount").textContent=data.filter(c=>["claimed","university_verified","admin_verified"].includes(c.verification_status)).length; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
+    function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("uniCount").textContent=stats.universities; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
     function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="7">データなし</td></tr>`}
     function applyInitialSummary(){if(!initialCircleSummary)return; $("prefCount").textContent=initialCircleSummary.prefectures; $("uniCount").textContent=initialCircleSummary.universities; $("circleCount").textContent=initialCircleSummary.circles; $("verifiedCount").textContent=initialCircleSummary.verified_circles}
-    async function refresh(){const qs=currentQuery(); $("matchBridge").href="/?"+qs+"#matches"; const data=await api("/api/circles?"+qs); updateSummary(data); $("rows").innerHTML=renderRows(data)}
+    async function refresh(){const qs=currentQuery(); qs.set("limit","120"); $("matchBridge").href="/?"+qs+"#matches"; const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]); updateSummary(stats); $("rows").innerHTML=renderRows(data)}
     async function boot(){fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"university"; applyInitialSummary(); if(initialCircles){$("rows").innerHTML=renderRows(initialCircles)} await refresh()}
     ["q","prefFilter","sportFilter","statusFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh));
     $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); refresh()});
@@ -674,8 +674,8 @@ SOCIAL_HTML = """<!doctype html>
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
     function currentQuery(){const qs=new URLSearchParams({audience:"social",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
-    function updateSummary(data){$("prefCount").textContent=new Set(data.map(c=>c.prefecture).filter(Boolean)).size; $("sportCount").textContent=new Set(data.map(c=>c.sport_category).filter(Boolean)).size; $("circleCount").textContent=data.length; $("verifiedCount").textContent=data.filter(c=>c.verification_status==="claimed"||(c.public_status==="published"&&!!c.source_url)).length; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
-    async function refresh(){const qs=currentQuery(); $("matchBridge").href="/social?"+qs+"#matches"; const data=await api("/api/circles?"+qs); updateSummary(data); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
+    function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("sportCount").textContent=stats.sports; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
+    async function refresh(){const qs=currentQuery(); qs.set("limit","120"); $("matchBridge").href="/social?"+qs+"#matches"; const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]); updateSummary(stats); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
     async function boot(){fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"prefecture"; await refresh()}
     $("rows").addEventListener("click",async e=>{const button=e.target.closest("[data-invite]"); if(!button)return; try{await navigator.clipboard.writeText(button.dataset.invite); button.textContent="コピーしました"; button.classList.add("copied"); setTimeout(()=>{button.textContent="文面をコピー";button.classList.remove("copied")},1800)}catch(_){alert("コピーに失敗しました。もう一度お試しください。")}}); ["q","prefFilter","sportFilter","statusFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh)); $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); refresh()}); boot().catch(e=>alert(e.message));
   </script>
@@ -1123,17 +1123,17 @@ def render_social_html():
     """
     social_js = """
     function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/social/sports?sport=${encodeURIComponent(s.name)}"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>仲間を探す</b></a>`).join("") }
-    function renderRegions(circles,matches){$("mapCircleCount").textContent=circles.length; $("regionGrid").innerHTML=regions.map(r=>{const db=circles.filter(c=>r.prefectures.includes(c.prefecture)).length; const open=matches.filter(m=>r.prefectures.includes(m.prefecture)).length; return `<a class="map-region" href="/social?region=${encodeURIComponent(r.value)}#matches"><strong>${esc(r.label)}</strong><span>募集 ${open}件</span><span>DB ${db}件</span></a>`}).join("")}
+    function renderRegions(regionData){$("mapCircleCount").textContent=regionData.reduce((sum,r)=>sum+(r.circle_count||0),0); $("regionGrid").innerHTML=regions.map(r=>{const stat=regionData.find(item=>item.value===r.value)||{}; return `<a class="map-region" href="/social?region=${encodeURIComponent(r.value)}#matches"><strong>${esc(r.label)}</strong><span>募集 ${stat.match_count||0}件</span><span>DB ${stat.circle_count||0}件</span></a>`}).join("")}
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
     function currentQuery(){const qs=new URLSearchParams({audience:"social",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
-    function updateStats(circles,matches){$("uniCount").textContent=new Set(circles.map(c=>c.prefecture).filter(Boolean)).size; $("circleCount").textContent=circles.length; $("verifiedCount").textContent=circles.filter(c=>c.verification_status==="claimed"||(c.public_status==="published"&&!!c.source_url)).length; $("matchCount").textContent=matches.length}
+    function updateStats(stats,matches){$("uniCount").textContent=stats.prefectures; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("matchCount").textContent=matches.length}
     function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const sport=$("sportFilter").value.trim().toLowerCase(); const blob=[m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if(sport && !String(m.sport_category||"").toLowerCase().includes(sport))return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
     function sortMatches(rows){const v=$("sortFilter").value; return rows.slice().sort((a,b)=>{if(v==="new")return String(b.created_at||"").localeCompare(String(a.created_at||"")); if(v==="university")return String(a.circle_name||"").localeCompare(String(b.circle_name||""),"ja"); if(v==="sport")return String(a.sport_category||"").localeCompare(String(b.sport_category||""),"ja"); return String(a.scheduled_at||"9999").localeCompare(String(b.scheduled_at||"9999"))})}
     function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.prefecture||"地域未設定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.scheduled_at||"日時未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
-    async function refresh(){const qs=currentQuery(); $("dbBridge").href="/social/circles?"+qs; const circles=await api("/api/circles?"+qs); if(!allCircleCache) allCircleCache=await api("/api/circles?audience=social"); if(!allMatchCache){const socialIds=new Set(allCircleCache.map(c=>c.circle_id)); allMatchCache=(await api("/api/matches?audience=social")).filter(m=>socialIds.has(m.circle_id))} const circleIds=new Set(circles.map(c=>c.circle_id)); const data=sortMatches(allMatchCache.filter(m=>circleIds.has(m.circle_id)&&matchesFilter(m))); renderRegions(allCircleCache,allMatchCache); updateStats(circles,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件の社会人サークル候補は ${circles.length} 件あります。下のDBから候補団体を確認できます。</div>`}
+    async function refresh(){const qs=currentQuery(); $("dbBridge").href="/social/circles?"+qs; const [all,stats,regionData]=await Promise.all([api("/api/matches?"+qs),api("/api/circle-stats?"+qs),api("/api/region-counts?audience=social")]); const data=sortMatches(all.filter(matchesFilter)); renderRegions(regionData); updateStats(stats,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件の社会人サークル候補は ${stats.circles} 件あります。下のDBから候補団体を確認できます。</div>`}
     function updateCoverageNotice(){$("coverageNotice").style.display="none"}
     """
     html = MATCH_HTML
@@ -3196,7 +3196,20 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/api/regions":
                 self.send_json(region_options())
             elif parsed.path == "/api/circles":
-                self.send_json(search_circles(parse_qs(parsed.query)))
+                params = parse_qs(parsed.query)
+                try:
+                    limit = int((params.get("limit", ["120"])[0] or "120").strip())
+                except ValueError:
+                    limit = 120
+                try:
+                    offset = int((params.get("offset", ["0"])[0] or "0").strip())
+                except ValueError:
+                    offset = 0
+                self.send_json(search_circles(params, limit=max(1, min(limit, 200)), offset=max(0, offset)))
+            elif parsed.path == "/api/circle-stats":
+                self.send_json(circle_query_stats(parse_qs(parsed.query)))
+            elif parsed.path == "/api/region-counts":
+                self.send_json(region_counts(parse_qs(parsed.query)))
             elif parsed.path == "/api/circle-search":
                 params = parse_qs(parsed.query)
                 query = (params.get("q", [""])[0] or "").strip()
@@ -3450,14 +3463,13 @@ def region_prefectures(region):
     return REGION_GROUPS.get(region, {}).get("prefectures", [])
 
 
-def search_circles(params, limit=None):
+def circle_query_conditions(params):
     query = (params.get("q", [""])[0] or "").strip()
     prefecture = (params.get("prefecture", [""])[0] or "").strip()
     region = (params.get("region", [""])[0] or "").strip()
     organization_type = (params.get("organization_type", [""])[0] or "").strip()
     sport = (params.get("sport", [""])[0] or "").strip()
     status = (params.get("status", [""])[0] or "").strip()
-    sort = (params.get("sort", ["university"])[0] or "university").strip()
     audience = audience_scope(params)
     where = [public_circle_clause("c")]
     args = []
@@ -3485,6 +3497,30 @@ def search_circles(params, limit=None):
     if status:
         where.append("c.verification_status=?")
         args.append(status)
+    return where, args
+
+
+def circle_query_stats(params):
+    where, args = circle_query_conditions(params)
+    sql = """
+        select
+          count(*) as circles,
+          count(distinct c.university_id) as universities,
+          count(distinct u.prefecture) as prefectures,
+          count(distinct c.sport_category) as sports,
+          sum(case when c.verification_status in ('claimed','university_verified','admin_verified') then 1 else 0 end) as verified_circles
+        from circles c join universities u on u.university_id=c.university_id
+    """
+    if where:
+        sql += " where " + " and ".join(where)
+    with connect() as conn:
+        row = conn.execute(sql, args).fetchone()
+    return {key: int(row[key] or 0) for key in row.keys()}
+
+
+def search_circles(params, limit=None, offset=0):
+    sort = (params.get("sort", ["university"])[0] or "university").strip()
+    where, args = circle_query_conditions(params)
     sql = """
         select
           c.circle_id,
@@ -3524,10 +3560,51 @@ def search_circles(params, limit=None):
     if limit is not None:
         sql += " limit ?"
         args.append(max(1, min(int(limit), 200)))
+        if offset:
+            sql += " offset ?"
+            args.append(max(0, int(offset)))
     result = rows(sql, args)
     for row in result:
         row["profile_url"] = f"/circles/{quote(row['profile_slug'])}" if row.get("profile_slug") else ""
     return result
+
+
+def region_counts(params):
+    """Return compact map data without transferring every circle to the browser."""
+    audience = audience_scope(params, "university")
+    scope, audience_args = audience_clause(audience, "c")
+    circle_filters = [public_circle_clause("c")]
+    if scope:
+        circle_filters.append(scope)
+    circle_where = " where " + " and ".join(circle_filters)
+    match_where = f" where {scope}" if scope else ""
+    with connect() as conn:
+        circle_rows = conn.execute(
+            """
+            select u.prefecture, count(*) as count
+            from circles c join universities u on u.university_id=c.university_id
+            """ + circle_where + " group by u.prefecture",
+            audience_args,
+        ).fetchall()
+        match_rows = conn.execute(
+            """
+            select u.prefecture, count(*) as count
+            from match_posts m join circles c on c.circle_id=m.circle_id
+            join universities u on u.university_id=c.university_id
+            """ + match_where + " group by u.prefecture",
+            audience_args,
+        ).fetchall()
+    circle_by_prefecture = {row["prefecture"]: row["count"] for row in circle_rows}
+    match_by_prefecture = {row["prefecture"]: row["count"] for row in match_rows}
+    return [
+        {
+            "value": key,
+            "label": data["label"],
+            "circle_count": sum(circle_by_prefecture.get(prefecture, 0) for prefecture in data["prefectures"]),
+            "match_count": sum(match_by_prefecture.get(prefecture, 0) for prefecture in data["prefectures"]),
+        }
+        for key, data in REGION_GROUPS.items()
+    ]
 
 
 def search_matches(params):
