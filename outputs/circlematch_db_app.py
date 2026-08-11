@@ -1401,6 +1401,18 @@ def sitemap_xml():
 
 _CIRCLE_SCHEMA_LOCK = threading.Lock()
 _CIRCLE_SCHEMA_READY = False
+_CIRCLE_RUNTIME_COLUMNS = (
+    ("organization_type", "text not null default '不明'"),
+    # Older persistent Render volumes predate the fields below.  These are
+    # public listing fields, so treating legacy rows as published preserves the
+    # existing database instead of making it disappear after a deploy.
+    ("public_status", "text not null default 'published'"),
+    ("last_checked_at", "text"),
+    ("sns_url", "text"),
+    ("owner_notes", "text"),
+)
+STARTUP_MAINTENANCE_REVISION = "2026-08-12.1"
+REFERENCE_DATA_REVISION = "2026-08-12.1"
 
 
 def connect():
@@ -1743,12 +1755,7 @@ def ensure_column(conn, table, column, definition):
 
 
 def ensure_runtime_circle_schema(conn):
-    """Keep long-lived Render SQLite volumes compatible with current queries.
-
-    Older production databases predate ``circles.organization_type``.  Checking
-    the schema when a connection is opened makes the migration run before any
-    request can use the audience filters that depend on that column.
-    """
+    """Keep long-lived Render SQLite volumes compatible with public queries."""
     global _CIRCLE_SCHEMA_READY
     if _CIRCLE_SCHEMA_READY:
         return
@@ -1762,15 +1769,25 @@ def ensure_runtime_circle_schema(conn):
             # Fresh databases are created by init_db below.
             return
         try:
-            ensure_column(conn, "circles", "organization_type", "text not null default '不明'")
+            for column, definition in _CIRCLE_RUNTIME_COLUMNS:
+                ensure_column(conn, "circles", column, definition)
             columns = {
                 row["name"] for row in conn.execute("pragma table_info(circles)").fetchall()
             }
-            if "organization_type" not in columns:
-                raise RuntimeError("circles.organization_type migration did not complete")
+            missing = [column for column, _ in _CIRCLE_RUNTIME_COLUMNS if column not in columns]
+            if missing:
+                raise RuntimeError(f"circles migration did not complete: {', '.join(missing)}")
+            conn.execute(
+                "update circles set public_status='published' "
+                "where public_status is null or trim(public_status)=''"
+            )
             conn.execute(
                 "create index if not exists idx_circles_organization_type "
                 "on circles(organization_type)"
+            )
+            conn.execute(
+                "create index if not exists idx_circles_public_status "
+                "on circles(public_status)"
             )
             conn.commit()
             _CIRCLE_SCHEMA_READY = True
@@ -2090,6 +2107,27 @@ def contact_page():
     return legal_layout("問い合わせ", body)
 
 
+def state_value(conn, key):
+    row = conn.execute(
+        "select state_value from app_state where state_key=?",
+        (key,),
+    ).fetchone()
+    return row["state_value"] if row else ""
+
+
+def set_state_value(conn, key, value):
+    conn.execute(
+        """
+        insert into app_state(state_key, state_value, updated_at)
+        values(?,?,?)
+        on conflict(state_key) do update set
+          state_value=excluded.state_value,
+          updated_at=excluded.updated_at
+        """,
+        (key, value, now()),
+    )
+
+
 def init_db():
     with connect() as conn:
         conn.executescript("""
@@ -2254,6 +2292,11 @@ def init_db():
           started_at text not null,
           finished_at text
         );
+        create table if not exists app_state (
+          state_key text primary key,
+          state_value text not null,
+          updated_at text not null
+        );
         create index if not exists idx_universities_prefecture on universities(prefecture);
         create index if not exists idx_circles_university on circles(university_id);
         create index if not exists idx_circles_sport on circles(sport_category);
@@ -2267,7 +2310,8 @@ def init_db():
         create index if not exists idx_circle_candidates_university on circle_candidates(university_id);
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
-        ensure_column(conn, "circles", "organization_type", "text not null default '不明'")
+        for column, definition in _CIRCLE_RUNTIME_COLUMNS:
+            ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
         ensure_column(conn, "circle_claims", "university_email_verified_at", "text")
         ensure_column(conn, "circle_public_profiles", "public_contact_email", "text")
@@ -2278,40 +2322,62 @@ def init_db():
         ensure_column(conn, "match_posts", "capacity", "text")
         ensure_column(conn, "match_posts", "created_by", "text")
         conn.execute("create index if not exists idx_circles_organization_type on circles(organization_type)")
-        conn.execute("""
-            update circles
-            set organization_type = case
-              when circle_name like '%体育会%' then '体育会'
-              when circle_name like '%同好会%' then '同好会'
-              when circle_name like '%サークル%' and source_type='university_official' then '公認サークル'
-              when circle_name like '%サークル%' then '非公認サークル'
-              when circle_name like '%学生団体%' or circle_name like '%委員会%' or circle_name like '%団体%' then '学生団体'
-              when circle_name like '%部' or circle_name like '%部 %' or circle_name like '%部　%' then '部活'
-              when source_type='university_official' then '公認サークル'
-              else '不明'
-            end
-            where organization_type is null or organization_type='' or organization_type='不明'
-        """)
-        for pref in PREFECTURES:
-            conn.execute("insert or ignore into prefectures(prefecture, region) values(?, '')", (pref,))
-        for name, pref, city, campus, url in UNIVERSITY_SEED:
-            upsert_university(conn, {
-                "university_name": name,
-                "prefecture": pref,
-                "city": city,
-                "campus_name": campus,
-                "official_url": url,
-                "source_url": url,
-            }, audit=False)
-        imported_seed = seed_public_circles_from_csv(conn)
-        if conn.execute("select count(*) from circles").fetchone()[0] == 0 and not imported_seed:
-            seed_circles(conn)
-        normalize_circle_records(conn)
-        delete_known_circle_noise(conn)
+        conn.execute("create index if not exists idx_circles_public_status on circles(public_status)")
+        conn.execute(
+            "update circles set public_status='published' "
+            "where public_status is null or trim(public_status)=''"
+        )
+
+        # The public data lives on Render's persistent disk.  Importing the CSV
+        # and iterating every circle on every process restart caused large write
+        # spikes and unnecessary memory pressure.  A fresh database still gets
+        # the full seed, while an existing database keeps its data as-is.
+        if state_value(conn, "reference_data_revision") != REFERENCE_DATA_REVISION:
+            for pref in PREFECTURES:
+                conn.execute("insert or ignore into prefectures(prefecture, region) values(?, '')", (pref,))
+            for name, pref, city, campus, url in UNIVERSITY_SEED:
+                upsert_university(conn, {
+                    "university_name": name,
+                    "prefecture": pref,
+                    "city": city,
+                    "campus_name": campus,
+                    "official_url": url,
+                    "source_url": url,
+                }, audit=False)
+            set_state_value(conn, "reference_data_revision", REFERENCE_DATA_REVISION)
+
+        if conn.execute("select count(*) from circles").fetchone()[0] == 0:
+            imported_seed = seed_public_circles_from_csv(conn)
+            if not imported_seed:
+                seed_circles(conn)
+
+        # Historical cleanup is intentionally one-time per revision.  The
+        # marker lives in SQLite so routine restarts only run schema checks.
+        if state_value(conn, "startup_maintenance_revision") != STARTUP_MAINTENANCE_REVISION:
+            log("running one-time startup data maintenance")
+            conn.execute("""
+                update circles
+                set organization_type = case
+                  when circle_name like '%体育会%' then '体育会'
+                  when circle_name like '%同好会%' then '同好会'
+                  when circle_name like '%サークル%' and source_type='university_official' then '公認サークル'
+                  when circle_name like '%サークル%' then '非公認サークル'
+                  when circle_name like '%学生団体%' or circle_name like '%委員会%' or circle_name like '%団体%' then '学生団体'
+                  when circle_name like '%部' or circle_name like '%部 %' or circle_name like '%部　%' then '部活'
+                  when source_type='university_official' then '公認サークル'
+                  else '不明'
+                end
+                where organization_type is null or organization_type='' or organization_type='不明'
+            """)
+            normalize_circle_records(conn)
+            delete_known_circle_noise(conn)
+            migrate_circle_private_data(conn)
+            redact_existing_audit_logs(conn)
+            seed_collection_targets(conn)
+            set_state_value(conn, "startup_maintenance_revision", STARTUP_MAINTENANCE_REVISION)
+
+        # This is a bounded six-record upsert; keeping dates current is cheap.
         seed_demo_match_posts(conn)
-        migrate_circle_private_data(conn)
-        redact_existing_audit_logs(conn)
-        seed_collection_targets(conn)
         conn.commit()
 
 
@@ -3215,7 +3281,12 @@ class Handler(BaseHTTPRequestHandler):
                 query = (params.get("q", [""])[0] or "").strip()
                 self.send_json(search_circles(params, limit=12) if len(query) >= 2 else [])
             elif parsed.path == "/api/matches":
-                self.send_json(search_matches(parse_qs(parsed.query)))
+                params = parse_qs(parsed.query)
+                try:
+                    limit = int((params.get("limit", ["100"])[0] or "100").strip())
+                except ValueError:
+                    limit = 100
+                self.send_json(search_matches(params, limit=max(1, min(limit, 200))))
             elif parsed.path == "/api/sport_overview":
                 self.send_json(sport_overview(parse_qs(parsed.query)))
             elif parsed.path == "/api/region_overview":
@@ -3448,7 +3519,7 @@ def sport_options(audience="all"):
         db_sports = [
             row["sport_category"]
             for row in conn.execute(
-                f"select sport_category from circles{where}{' and ' if where else ' where '}sport_category is not null and sport_category<>'' group by sport_category order by count(*) desc, sport_category",
+                f"select c.sport_category from circles c{where}{' and ' if where else ' where '}c.sport_category is not null and c.sport_category<>'' group by c.sport_category order by count(*) desc, c.sport_category",
                 args,
             ).fetchall()
         ]
@@ -3607,7 +3678,7 @@ def region_counts(params):
     ]
 
 
-def search_matches(params):
+def match_query_conditions(params):
     sport = (params.get("sport", [""])[0] or "").strip()
     prefecture = (params.get("prefecture", [""])[0] or "").strip()
     region = (params.get("region", [""])[0] or "").strip()
@@ -3633,6 +3704,63 @@ def search_matches(params):
     if organization_type:
         where.append("c.organization_type=?")
         args.append(organization_type)
+    return where, args
+
+
+def match_query_count(params):
+    where, args = match_query_conditions(params)
+    sql = """
+        select count(*) as count
+        from match_posts m join circles c on c.circle_id=m.circle_id
+        join universities u on u.university_id=c.university_id
+    """
+    if where:
+        sql += " where " + " and ".join(where)
+    with connect() as conn:
+        return int(conn.execute(sql, args).fetchone()["count"] or 0)
+
+
+def grouped_circle_counts(params, group):
+    field = {
+        "prefecture": "u.prefecture",
+        "sport": "c.sport_category",
+    }.get(group)
+    if not field:
+        raise ValueError("unsupported circle count group")
+    where, args = circle_query_conditions(params)
+    sql = f"""
+        select {field} as value, count(*) as count
+        from circles c join universities u on u.university_id=c.university_id
+    """
+    if where:
+        sql += " where " + " and ".join(where)
+    sql += f" group by {field}"
+    with connect() as conn:
+        return {row["value"]: int(row["count"] or 0) for row in conn.execute(sql, args).fetchall()}
+
+
+def grouped_match_counts(params, group):
+    field = {
+        "prefecture": "u.prefecture",
+        "sport": "c.sport_category",
+    }.get(group)
+    if not field:
+        raise ValueError("unsupported match count group")
+    where, args = match_query_conditions(params)
+    sql = f"""
+        select {field} as value, count(*) as count
+        from match_posts m join circles c on c.circle_id=m.circle_id
+        join universities u on u.university_id=c.university_id
+    """
+    if where:
+        sql += " where " + " and ".join(where)
+    sql += f" group by {field}"
+    with connect() as conn:
+        return {row["value"]: int(row["count"] or 0) for row in conn.execute(sql, args).fetchall()}
+
+
+def search_matches(params, limit=None):
+    where, args = match_query_conditions(params)
     sql = """
         select m.*, c.circle_name, c.sport_category, u.university_name, u.prefecture
         from match_posts m join circles c on c.circle_id=m.circle_id join universities u on u.university_id=c.university_id
@@ -3640,6 +3768,9 @@ def search_matches(params):
     if where:
         sql += " where " + " and ".join(where)
     sql += " order by coalesce(m.scheduled_at, ''), m.created_at desc"
+    if limit is not None:
+        sql += " limit ?"
+        args.append(max(1, min(int(limit), 200)))
     return rows(sql, args)
 
 
@@ -3658,19 +3789,19 @@ def sport_overview(params):
     scope = {"sport": [sport], "audience": [audience]}
     if organization_type:
         scope["organization_type"] = [organization_type]
-    all_circles = search_circles(scope)
-    all_matches = search_matches(scope)
     region_scope = {**scope, "region": [region]}
-    region_circles = search_circles(region_scope)
-    region_matches = search_matches(region_scope)
     current_scope = {**region_scope, "prefecture": [prefecture]}
-    circles = search_circles(current_scope)
-    matches = search_matches(current_scope)
+    all_circle_counts = grouped_circle_counts(scope, "prefecture")
+    all_match_counts = grouped_match_counts(scope, "prefecture")
+    region_circle_counts = grouped_circle_counts(region_scope, "prefecture")
+    region_match_counts = grouped_match_counts(region_scope, "prefecture")
+    current_stats = circle_query_stats(current_scope)
+    circles = search_circles(current_scope, limit=120)
+    matches = search_matches(current_scope, limit=50)
     region_summaries = []
     for key, data in REGION_GROUPS.items():
-        prefs = set(data["prefectures"])
-        circle_count = sum(1 for c in all_circles if c["prefecture"] in prefs)
-        match_count = sum(1 for m in all_matches if m["prefecture"] in prefs)
+        circle_count = sum(all_circle_counts.get(pref, 0) for pref in data["prefectures"])
+        match_count = sum(all_match_counts.get(pref, 0) for pref in data["prefectures"])
         region_summaries.append({
             "value": key,
             "label": data["label"],
@@ -3680,20 +3811,20 @@ def sport_overview(params):
     areas = []
     region_prefs = region_prefectures(region)
     for pref in region_prefs if region_prefs else PREFECTURES:
-        circle_count = sum(1 for c in region_circles if c["prefecture"] == pref)
-        match_count = sum(1 for m in region_matches if m["prefecture"] == pref)
+        circle_count = region_circle_counts.get(pref, 0)
+        match_count = region_match_counts.get(pref, 0)
         if circle_count or match_count or region:
             areas.append({"prefecture": pref, "circle_count": circle_count, "match_count": match_count})
     return {
         "sport": sport,
         "region": region,
         "prefecture": prefecture,
-        "circle_count": len(circles),
-        "match_count": len(matches),
+        "circle_count": current_stats["circles"],
+        "match_count": match_query_count(current_scope),
         "regions": region_summaries,
         "areas": areas,
         "matches": matches,
-        "circles": circles[:250],
+        "circles": circles,
     }
 
 
@@ -3708,14 +3839,17 @@ def region_overview(params):
         prefecture = ""
     region_label = REGION_GROUPS[region]["label"]
     base_scope = {"region": [region], "audience": [audience]}
-    region_circles_all = search_circles(base_scope)
-    region_matches_all = search_matches(base_scope)
-    circles = search_circles({**base_scope, "sport": [sport], "prefecture": [prefecture]})
-    matches = search_matches({**base_scope, "sport": [sport], "prefecture": [prefecture]})
+    current_scope = {**base_scope, "sport": [sport], "prefecture": [prefecture]}
+    region_stats = circle_query_stats(base_scope)
+    region_circle_counts = grouped_circle_counts(base_scope, "sport")
+    region_match_counts = grouped_match_counts(base_scope, "sport")
+    current_stats = circle_query_stats(current_scope)
+    circles = search_circles(current_scope, limit=120)
+    matches = search_matches(current_scope, limit=50)
     sports = []
     for name in sport_options(audience):
-        circle_count = sum(1 for c in region_circles_all if c["sport_category"] == name)
-        match_count = sum(1 for m in region_matches_all if m["sport_category"] == name)
+        circle_count = region_circle_counts.get(name, 0)
+        match_count = region_match_counts.get(name, 0)
         if circle_count or match_count or name in SPORTS:
             sports.append({
                 "name": name,
@@ -3723,12 +3857,13 @@ def region_overview(params):
                 "match_count": match_count,
             })
     sports.sort(key=lambda item: (-item["circle_count"], -item["match_count"], item["name"]))
-    scoped_circles = search_circles({**base_scope, "sport": [sport]})
-    scoped_matches = search_matches({**base_scope, "sport": [sport]})
+    scoped_scope = {**base_scope, "sport": [sport]}
+    scoped_circle_counts = grouped_circle_counts(scoped_scope, "prefecture")
+    scoped_match_counts = grouped_match_counts(scoped_scope, "prefecture")
     areas = []
     for pref in region_prefectures(region):
-        circle_count = sum(1 for c in scoped_circles if c["prefecture"] == pref)
-        match_count = sum(1 for m in scoped_matches if m["prefecture"] == pref)
+        circle_count = scoped_circle_counts.get(pref, 0)
+        match_count = scoped_match_counts.get(pref, 0)
         if circle_count or match_count or sport:
             areas.append({
                 "prefecture": pref,
@@ -3740,14 +3875,14 @@ def region_overview(params):
         "region_label": region_label,
         "sport": sport,
         "prefecture": prefecture,
-        "region_circle_count": len(region_circles_all),
-        "region_match_count": len(region_matches_all),
-        "circle_count": len(circles),
-        "match_count": len(matches),
+        "region_circle_count": region_stats["circles"],
+        "region_match_count": match_query_count(base_scope),
+        "circle_count": current_stats["circles"],
+        "match_count": match_query_count(current_scope),
         "sports": sports,
         "areas": areas,
-        "matches": matches[:50],
-        "circles": circles[:250],
+        "matches": matches,
+        "circles": circles,
     }
 
 
