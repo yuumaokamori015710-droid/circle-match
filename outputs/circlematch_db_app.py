@@ -1,5 +1,6 @@
 import csv
 import base64
+from contextlib import contextmanager
 import hashlib
 import hmac
 import html
@@ -1415,12 +1416,28 @@ STARTUP_MAINTENANCE_REVISION = "2026-08-12.1"
 REFERENCE_DATA_REVISION = "2026-08-12.1"
 
 
+@contextmanager
 def connect():
+    """Open a SQLite connection that is always closed after each request.
+
+    ``sqlite3.Connection`` supports ``with`` but its native context manager only
+    commits or rolls back; it does not close the connection.  The public pages
+    open multiple short-lived read connections, so leaving them open made the
+    process retain SQLite's native memory until Render killed the instance.
+    """
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("pragma foreign_keys = on")
-    ensure_runtime_circle_schema(conn)
-    return conn
+    try:
+        ensure_runtime_circle_schema(conn)
+        yield conn
+    except BaseException:
+        conn.rollback()
+        raise
+    else:
+        conn.commit()
+    finally:
+        conn.close()
 
 
 def slug(prefix, text):
