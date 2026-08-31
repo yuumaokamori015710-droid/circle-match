@@ -27,7 +27,7 @@ PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
 CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@circle-match.jp")
-POLICY_UPDATED_AT = "2026年7月29日"
+POLICY_UPDATED_AT = "2026年8月31日"
 SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("CIRCLEMATCH_ADMIN_PASSWORD", "")
@@ -174,28 +174,30 @@ MATCH_HTML = """<!doctype html>
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;padding:11px 16px;font-weight:900;text-decoration:none;border:1px solid transparent}.button.primary{background:var(--accent);color:#fff}.button.secondary{background:#fff;border-color:var(--accent);color:var(--accent)}.button.light{background:#fff;color:var(--ink);border-color:var(--line)}.hero-cta{min-height:56px;font-size:18px;padding:14px 22px}.db-bridge{background:#14344d!important;color:#fff!important;border-color:#14344d!important}
     main{max-width:1180px;margin:auto;padding:22px 18px 48px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:-42px;position:relative;z-index:2}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:850}.metric strong{display:block;margin-top:6px;font-size:26px}
     .section{margin-top:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.panel-head{padding:18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:24px}.panel-head p{margin:8px 0 0;color:var(--muted);line-height:1.7;max-width:760px}.section-link{padding:0 14px 16px}.section-link a{color:#31506b;font-weight:900}.ssr-error{font-size:13px;line-height:1.45;color:#a54822}
+    .database-value{padding:22px}.database-value h2{margin:0;font-size:24px}.database-value>p{margin:10px 0 0;color:#405164;line-height:1.8;max-width:860px}.database-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}.database-point{border:1px solid var(--line);border-radius:8px;padding:15px;background:#f9fbfd}.database-point strong{display:block;font-size:16px}.database-point p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.65}.database-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.database-links a{font-weight:900;color:#31506b}
     .filters{display:grid;grid-template-columns:minmax(220px,1fr) repeat(5,150px);gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;border:1px solid #cbd7e2;border-radius:8px;min-height:42px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
     .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.match-card{border:1px solid var(--line);border-radius:8px;padding:15px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:230px}.match-card h3{margin:0;font-size:18px}.meta{display:grid;gap:6px;color:var(--muted);font-size:13px;line-height:1.5}.tagline{color:#405164;line-height:1.7;margin:0}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:3px 8px;border-radius:999px;background:#eef4f8;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.type{background:#e8eef8;color:#24558a}
     .empty{padding:28px;color:var(--muted);line-height:1.8}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.sport-card{position:relative;overflow:hidden;min-height:176px;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:0;background:#132238;text-decoration:none;color:#fff;box-shadow:0 14px 30px rgba(20,36,56,.18)}.sport-card:hover{box-shadow:0 18px 38px rgba(20,36,56,.25);transform:translateY(-2px)}.sport-visual{position:absolute;inset:0;overflow:hidden}.sport-visual img{width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05)}.sport-card::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,18,31,.9),rgba(9,18,31,.52) 54%,rgba(9,18,31,.08))}.sport-card::after{content:"";position:absolute;z-index:1;right:-44px;bottom:-56px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.12)}.sport-copy{position:relative;z-index:2;display:grid;gap:7px;max-width:68%;padding:18px}.sport-copy strong{font-size:25px;line-height:1.08;text-shadow:0 2px 12px rgba(0,0,0,.35)}.sport-copy em{font-style:normal;color:rgba(255,255,255,.8);font-size:12px;font-weight:850}.sport-card b{position:absolute;z-index:2;left:18px;bottom:16px;width:max-content;min-height:34px;border-radius:999px;display:inline-flex;align-items:center;padding:7px 12px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;backdrop-filter:blur(8px)}
     .map-board{padding:18px;background:linear-gradient(180deg,#fff,#f7fbf1)}.map-headline{margin:0 0 16px;font-size:25px;font-weight:950;line-height:1.25}.map-headline strong{color:var(--accent);font-size:38px}.map-stage{position:relative;min-height:560px;border:1px solid #d7e4cc;border-radius:8px;overflow:hidden;background:radial-gradient(circle at 38% 48%,rgba(157,207,79,.14),transparent 34%),linear-gradient(135deg,#fbfdf8,#eef7e6)}.japan-silhouette{position:absolute;left:8%;top:8%;width:54%;height:84%;filter:drop-shadow(0 9px 13px rgba(49,111,31,.22))}.japan-silhouette .country{fill:#83c945;stroke:#fff;stroke-width:1.2;stroke-linejoin:round}.japan-silhouette .outline{fill:none;stroke:rgba(49,111,31,.22);stroke-width:1.8}.map-region-buttons{position:absolute;right:22px;top:22px;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:360px}.map-region{display:grid;gap:5px;min-height:98px;padding:12px 14px;border:1px solid #cbd7e2;border-radius:8px;background:linear-gradient(rgba(255,255,255,.96),rgba(242,245,248,.94));box-shadow:0 8px 18px rgba(27,45,69,.13);color:var(--ink);text-align:center;text-decoration:none;font-weight:900;backdrop-filter:blur(3px)}.map-region strong{font-size:19px;line-height:1.2}.map-region:hover{border-color:var(--accent);box-shadow:0 12px 24px rgba(225,91,49,.18);transform:translateY(-2px)}.map-region span{color:#516680;font-size:13px;font-weight:850}.map-region .region-note{display:inline-flex;justify-content:center;justify-self:center;width:max-content;max-width:100%;padding:2px 8px;border-radius:999px;background:#fff3e8;color:#a54822;font-size:11px;font-weight:950;line-height:1.5}
     .coverage-notice{display:none;margin-top:14px;border:1px solid #f1d2be;background:#fff8f4;color:#7b3b22;border-radius:8px;padding:12px 14px;font-weight:850;line-height:1.7}
     footer{max-width:1180px;margin:0 auto;padding:0 18px 34px;color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.admin-link{color:#65758a}
-    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:1fr}.hero{min-height:520px}.map-stage{min-height:520px}.japan-silhouette{left:6%;width:52%}.map-region-buttons{right:14px;width:330px;gap:10px}.map-region{min-height:94px;padding:11px 12px}.map-region strong{font-size:18px}}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px}.filters{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.sport-grid{grid-template-columns:1fr}.database-points{grid-template-columns:1fr}.hero{min-height:520px}.map-stage{min-height:520px}.japan-silhouette{left:6%;width:52%}.map-region-buttons{right:14px;width:330px;gap:10px}.map-region{min-height:94px;padding:11px 12px}.map-region strong{font-size:18px}}
     @media(max-width:760px){.map-headline{font-size:20px}.map-headline strong{font-size:30px}.map-stage{min-height:auto;padding:14px;display:grid;gap:12px}.japan-silhouette{position:relative;left:auto;top:auto;width:100%;height:auto;max-height:320px}.map-region-buttons{position:relative;right:auto;top:auto;width:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.map-region{min-width:0}.map-region:hover{transform:translateY(-2px)}}
     @media(max-width:620px){.top{align-items:flex-start}.nav{gap:9px}.filters{grid-template-columns:1fr}.hero-inner{padding-top:70px}.metric strong{font-size:22px}}
   </style>
 </head>
 <body>
   <header class="topbar"><div class="top"><a class="brand" href="/"><span class="mark">CM</span><span>__SITE_NAME__</span></a><nav class="nav"><a href="/social">社会人はこちら</a><a class="signup-user" href="/representative">団体代表者の方へ</a></nav></div></header>
-  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Practice Match / Circle Meetup</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a></div></div></section>
+  <section class="hero"><img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ"><div class="shade"></div><div class="hero-inner"><p class="eyebrow">Sports Circle Database / Practice Match</p><h1>練習相手も、仲間も、ここで見つかる。</h1><p class="lead">Circle Matchは、大学・社会人のスポーツ団体情報を、競技・地域・出典ごとに整理して探せるサークルDBです。練習試合、合同練習、助っ人募集、交流イベントにも活用できます。</p><div class="actions"><a class="button secondary hero-cta" href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a></div></div></section>
   <main>
     <section class="stats"><div class="metric"><span>対象大学</span><strong id="uniCount">__SSR_UNIVERSITY_COUNT__</strong></div><div class="metric"><span>候補サークル</span><strong id="circleCount">__SSR_CIRCLE_COUNT__</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">__SSR_VERIFIED_COUNT__</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">__SSR_MATCH_COUNT__</strong></div></section>
+    <section class="section panel database-value"><h2>Circle Match DBとは</h2><p>大学サークル・部活動と社会人スポーツ団体の情報は、大学公式サイト、団体の公式ページ、SNSなどに分散しています。Circle Matchでは、団体名、所属先、競技、活動地域、出典、検証状態を同じ形式で整理し、比較・確認しやすい情報基盤をつくっています。</p><div class="database-points"><article class="database-point"><strong>競技・地域から探せる</strong><p>競技、地域、都道府県、大学名、団体名の組み合わせで、活動候補を絞り込めます。</p></article><article class="database-point"><strong>出典と状態を残す</strong><p>大学公式、団体本人登録、公開SNSなどの出典種別と、確認・申請の状態を一覧で見られます。</p></article><article class="database-point"><strong>訂正を受けて更新する</strong><p>掲載漏れや情報の誤りは、団体関係者からの連絡をもとに確認し、修正・非公開化します。</p></article></div><div class="database-links"><a href="/circles">大学サークルDBを見る</a><a href="/social/circles">社会人サークルDBを見る</a><a href="/about-data">データの掲載・更新方針</a></div></section>
     <div id="coverageNotice" class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <section id="matches" class="section panel"><div class="panel-head"><div><h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p></div><a class="button light" href="/social">社会人サークルを見る</a></div><div class="filters"><input id="q" placeholder="大学名・団体名・場所で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><input id="sportFilter" list="sportOptions" placeholder="競技名を入力" aria-label="競技名で絞り込み" autocomplete="off"><datalist id="sportOptions"></datalist><select id="typeFilter"><option value="">全募集</option><option>練習試合</option><option>合同練習</option><option>助っ人募集</option><option>大会参加者募集</option></select><select id="sortFilter"><option value="date">日時が近い順</option><option value="new">新着順</option><option value="university">大学名順</option><option value="sport">競技順</option></select></div><div id="matchList" class="match-grid" aria-live="polite"></div><div class="section-link"><a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>競技を押すと、サークルDBと交流募集を同時に確認できます。</p></div></div><div class="sport-grid" id="sportGrid"></div><div class="section-link"><a href="/circles">サークルDBで候補を広げる</a></div></section>
     <section class="section panel"><div class="panel-head"><div><h2>地域から探す</h2><p>地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。</p></div></div><div class="map-board"><p class="map-headline"><strong id="mapCircleCount">__SSR_CIRCLE_COUNT__</strong>件の大学サークル候補から地域で探す</p><div class="map-stage"><svg class="japan-silhouette" id="japanMap" viewBox="0 0 520 560" role="img" aria-label="日本地図"></svg><div class="map-region-buttons" id="regionGrid"></div></div></div></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/about-data">データ方針</a><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <script>
@@ -1885,6 +1887,16 @@ GUIDE_PAGES = {
             ("削除・訂正", ["掲載内容に誤りがある場合は、問い合わせから対象URL、団体名、訂正内容を送ってください。", "個人情報や誤掲載の疑いがあるものは、確認中に非公開化する場合があります。"]),
         ],
     },
+    "circle-database-guide": {
+        "title": "Circle Match DBでスポーツ団体を探す方法",
+        "lead": "分散しやすい大学・社会人スポーツ団体の情報を、競技、地域、出典、検証状態から比較するための見方を説明します。",
+        "sections": [
+            ("まず競技と活動地域を決める", ["スポーツ別ページでは、同じ競技の団体と交流募集をまとめて確認できます。地域を選ぶと、都道府県まで候補を絞り込めます。", "大学名や団体名が分かっている場合は、サークルDBの検索欄から直接調べることもできます。候補が少ない競技では、隣接地域まで広げて確認するのが有効です。"]),
+            ("出典と検証状態を確認する", ["一覧の出典は、大学公式ページ、団体本人登録、公開SNSなど、情報を確認した入口を示します。出典URLがある場合は、連絡前に活動内容や最新情報を確認できます。", "検証状態は掲載団体の存在や申請状況を示すための補助情報です。活動の安全性、募集の実現、公式な公認を保証するものではありません。"]),
+            ("大学団体と社会人サークルを分けて見る", ["大学サークルDBでは大学名・都道府県・競技を軸に、社会人サークルDBでは活動地域・競技を軸に探せます。所属形態が違うため、一覧と検索結果を分けて表示しています。", "練習相手や合同練習の候補を探す場合は、団体の種別、活動場所、競技カテゴリを確認してから連絡条件を調整してください。"]),
+            ("情報をより正確にするために", ["掲載漏れ、活動停止、名称変更、誤掲載に気付いた場合は、対象ページまたは出典URLと訂正内容を問い合わせ窓口へ送ってください。", "団体代表者は自分の団体情報を申請でき、確認後は紹介ページや公開連絡先を整備できます。公開DBは、利用者と団体関係者の訂正によって更新していきます。"]),
+        ],
+    },
     "sports-match-manners": {
         "title": "練習試合・合同練習のマナー",
         "lead": "相手団体とのトラブルを避けるため、事前連絡、当日の進行、終了後の対応を整理します。",
@@ -1937,9 +1949,9 @@ def operator_page():
     body = f"""
 <h1>運営者情報</h1>
 <p class="meta">最終更新日: {POLICY_UPDATED_AT} / 運営者: {SITE_OPERATOR}</p>
-<p>{SITE_NAME}は、大学サークル・部活動・社会人サークルの練習試合、合同練習、助っ人募集、交流イベント、メンバー募集を探しやすくするためのサービスです。</p>
+<p>{SITE_NAME}は、大学サークル・部活動・社会人スポーツ団体の情報を、競技・活動地域・出典・検証状態ごとに整理する検索データベースです。練習試合、合同練習、助っ人募集、交流イベント、メンバー募集の候補探しにも活用できます。</p>
 <h2>運営目的</h2>
-<p>サークル活動は、大学公式サイト、SNS、個別の紹介ページに情報が分散しがちです。本サービスでは、公開情報と代表者からの登録情報を整理し、活動相手や参加先を探す人が比較しやすい状態を目指します。</p>
+<p>サークル活動は、大学公式サイト、SNS、個別の紹介ページに情報が分散しがちです。本サービスでは、公開情報と代表者からの登録情報を団体単位で整理し、活動先や連絡先候補を比較・確認しやすい状態を目指します。マッチング機能は、この情報基盤を活用するための一つの手段です。</p>
 <h2>サービスの位置づけ</h2>
 <ul>
   <li>本サービスは大学、自治体、競技団体その他の団体から公認・委託を受けたサービスではありません。</li>
@@ -2075,11 +2087,21 @@ def terms_page():
 
 def about_data_page():
     body = f"""
-<h1>掲載情報・削除訂正について</h1>
+<h1>Circle Match DBの掲載方針と訂正依頼</h1>
 <p class="meta">最終更新日: {POLICY_UPDATED_AT}</p>
+<h2>Circle Match DBの目的</h2>
+<p>Circle Matchの中心は、大学・社会人スポーツ団体の情報を検索・比較できるデータベースです。大学公式サイト、団体の公式ページ、公開SNSなどに分散した情報を、団体名、所属先、競技、活動地域、出典、検証状態という共通の項目で整理します。</p>
+<p>練習試合やメンバー募集の掲載は、DBで候補を見つけた後の行動を助ける機能です。掲載件数だけを目的に自動で情報を増やすのではなく、団体そのものと確認できる情報を対象に、更新・訂正を続けることを重視します。</p>
 <h2>情報源</h2>
 <p>本サービスは、大学公式ページ、団体本人による登録、公開SNS、その他公開情報を出典として、サークル・部活動の名称、競技、大学、出典URL、検証状態を掲載します。</p>
 <p>本サービスは大学、自治体、競技団体その他の団体の公式サービスではありません。掲載や検証ステータスは、団体の公認や活動内容の保証を意味しません。</p>
+<h2>DBで確認できる項目</h2>
+<ul>
+  <li>大学名または主な活動地域、団体名、競技カテゴリ</li>
+  <li>活動都道府県・市区町村、団体の種別</li>
+  <li>出典種別、出典URL、検証または申請の状態</li>
+  <li>代表者が公開に同意して登録した場合のみ、団体紹介ページと団体用連絡先</li>
+</ul>
 <h2>掲載前の確認</h2>
 <ul>
   <li>団体名、所属先、競技、出典URLの組み合わせを確認し、重複を整理します。</li>
@@ -2102,9 +2124,9 @@ def about_data_page():
   <li>未確認: 公開情報から候補として登録した状態</li>
 </ul>
 <h2>削除・訂正依頼</h2>
-<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名、対象URL、依頼内容、申請者の立場を記載して <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> まで連絡してください。個人情報、権利侵害、なりすましのおそれがある内容は優先して確認します。</p>
+<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名または活動地域、対象URL、依頼内容、申請者の立場を記載して <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> まで連絡してください。個人情報、権利侵害、なりすましのおそれがある内容は優先して確認します。</p>
 """
-    return legal_layout("掲載情報・削除訂正について", body)
+    return legal_layout("Circle Match DBの掲載方針", body)
 
 
 def contact_page():
