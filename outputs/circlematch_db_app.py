@@ -1412,7 +1412,7 @@ _CIRCLE_RUNTIME_COLUMNS = (
     ("sns_url", "text"),
     ("owner_notes", "text"),
 )
-STARTUP_MAINTENANCE_REVISION = "2026-08-12.1"
+STARTUP_MAINTENANCE_REVISION = "2026-08-31.1"
 REFERENCE_DATA_REVISION = "2026-08-12.1"
 
 
@@ -2364,9 +2364,7 @@ def init_db():
             set_state_value(conn, "reference_data_revision", REFERENCE_DATA_REVISION)
 
         if conn.execute("select count(*) from circles").fetchone()[0] == 0:
-            imported_seed = seed_public_circles_from_csv(conn)
-            if not imported_seed:
-                seed_circles(conn)
+            seed_public_circles_from_csv(conn)
 
         # Historical cleanup is intentionally one-time per revision.  The
         # marker lives in SQLite so routine restarts only run schema checks.
@@ -2388,13 +2386,12 @@ def init_db():
             """)
             normalize_circle_records(conn)
             delete_known_circle_noise(conn)
+            remove_demo_content(conn)
             migrate_circle_private_data(conn)
             redact_existing_audit_logs(conn)
             seed_collection_targets(conn)
             set_state_value(conn, "startup_maintenance_revision", STARTUP_MAINTENANCE_REVISION)
 
-        # This is a bounded six-record upsert; keeping dates current is cheap.
-        seed_demo_match_posts(conn)
         conn.commit()
 
 
@@ -2945,6 +2942,31 @@ def mark_claim_university_email_verified(conn, claim_id):
     audit(conn, "university_email_verified", "circle_claim", claim_id, {"circle_id": row["circle_id"]})
 
 
+def remove_demo_content(conn):
+    """Remove legacy demonstration records from the production data set once."""
+    demo_circle_ids = [
+        row["circle_id"]
+        for row in conn.execute(
+            """
+            select c.circle_id
+            from circles c
+            join universities u on u.university_id=c.university_id
+            where c.public_status='demo'
+               or c.circle_id like 'circle_demo_%'
+               or u.university_name in ('Circle Match デモ大学', 'Circle Match 社会人デモ団体')
+            """
+        ).fetchall()
+    ]
+    if not demo_circle_ids:
+        return
+    placeholders = ",".join("?" for _ in demo_circle_ids)
+    conn.execute(f"delete from match_posts where circle_id in ({placeholders})", demo_circle_ids)
+    conn.execute(f"delete from circles where circle_id in ({placeholders})", demo_circle_ids)
+    # Keep the empty legacy university rows: collection targets may still
+    # reference them, while all public counts are derived from circles.
+    log(f"removed {len(demo_circle_ids)} legacy demo circles and their match posts")
+
+
 def seed_circles(conn):
     samples = [
         ("早稲田大学", "サンプル フットサル同好会", "フットサル", "東京都新宿区", "self_registered", "claimed", "経験者と初心者が混在。平日夜に練習試合希望。"),
@@ -3460,6 +3482,21 @@ def public_circle_clause(alias="c"):
     return f"coalesce({alias}.public_status, 'published')<>'demo'"
 
 
+def current_open_match_clause(alias="m"):
+    """Keep closed and expired postings out of public counts and results."""
+    return f"""
+        {alias}.status='open'
+        and (
+          (coalesce(trim({alias}.period_end), '')<>''
+           and substr({alias}.period_end, 1, 10)>=date('now', 'localtime'))
+          or
+          (coalesce(trim({alias}.period_end), '')=''
+           and (coalesce(trim({alias}.scheduled_at), '')=''
+                or substr({alias}.scheduled_at, 1, 10)>=date('now', 'localtime')))
+        )
+    """
+
+
 def summary(audience="all"):
     audience = audience_scope(audience)
     circle_scope, audience_args = audience_clause(audience, "c")
@@ -3469,7 +3506,10 @@ def summary(audience="all"):
     where = " where " + " and ".join(filters)
     args = audience_args
     verified_where = f"{where}{' and ' if where else ' where '}c.verification_status in ('claimed','university_verified','admin_verified')"
-    match_where = f" where {circle_scope}" if circle_scope else ""
+    match_filters = [public_circle_clause("c"), current_open_match_clause("m")]
+    if circle_scope:
+        match_filters.append(circle_scope)
+    match_where = " where " + " and ".join(match_filters)
     with connect() as conn:
         return {
             "prefectures": conn.execute(
@@ -3520,7 +3560,7 @@ def social_summary():
             "match_posts": conn.execute(
                 """select count(*) from match_posts m
                    join circles c on c.circle_id=m.circle_id
-                   where c.organization_type=? and m.status='open'""",
+                   where c.organization_type=? and """ + public_circle_clause("c") + " and " + current_open_match_clause("m"),
                 (organization_type,),
             ).fetchone()[0],
         }
@@ -3665,7 +3705,10 @@ def region_counts(params):
     if scope:
         circle_filters.append(scope)
     circle_where = " where " + " and ".join(circle_filters)
-    match_where = f" where {scope}" if scope else ""
+    match_filters = [public_circle_clause("c"), current_open_match_clause("m")]
+    if scope:
+        match_filters.append(scope)
+    match_where = " where " + " and ".join(match_filters)
     with connect() as conn:
         circle_rows = conn.execute(
             """
@@ -3701,7 +3744,7 @@ def match_query_conditions(params):
     region = (params.get("region", [""])[0] or "").strip()
     organization_type = (params.get("organization_type", [""])[0] or "").strip()
     audience = audience_scope(params)
-    where = []
+    where = [public_circle_clause("c"), current_open_match_clause("m")]
     args = []
     scope, scope_args = audience_clause(audience, "c")
     if scope:
