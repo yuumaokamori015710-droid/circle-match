@@ -131,6 +131,7 @@ SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "社会人サークル", "不明"]
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
+ADSENSE_ADS_TXT = "google.com, pub-5276152865683531, DIRECT, f08c47fec0942fa0\n"
 BRAND_WORDMARK = '<span class="brand-wordmark"><span class="brand-word-circle">Circle</span><span class="brand-word-match">Match</span></span>'
 BRAND_LOGO_STYLE = """
   <link rel="icon" type="image/png" sizes="256x256" href="/assets/circle-match-mark.png?v=20260809">
@@ -3290,6 +3291,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json({"ok": True, **summary()})
             elif parsed.path == "/robots.txt":
                 self.send_text(robots_txt())
+            elif parsed.path == "/ads.txt":
+                self.send_text(ADSENSE_ADS_TXT)
             elif parsed.path == "/sitemap.xml":
                 self.send_text(sitemap_xml(), "application/xml; charset=utf-8")
             elif parsed.path == "/api/summary":
