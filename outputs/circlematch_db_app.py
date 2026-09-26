@@ -130,6 +130,11 @@ REGION_GROUPS = {
 SOURCE_TYPES = ["university_official", "self_registered", "public_sns", "other"]
 VERIFICATION_STATUSES = ["unverified", "claimed", "university_verified", "admin_verified"]
 ORGANIZATION_TYPES = ["体育会", "部活", "公認サークル", "同好会", "非公認サークル", "学生団体", "社会人サークル", "不明"]
+EVENT_TYPES = ["大会", "交流イベント", "練習試合", "合同練習"]
+EVENT_ACCEPTANCE_MODES = {"first_come", "approval"}
+EVENT_PARTICIPATION_TYPES = {"individual", "team", "both"}
+EVENT_STATUSES = {"draft", "published", "closed", "cancelled"}
+APPLICATION_STATUSES = {"pending", "confirmed", "declined", "cancelled"}
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
 ADSENSE_ADS_TXT = b"google.com, pub-5276152865683531, DIRECT, f08c47fec0942fa0\n"
 BRAND_WORDMARK = '<span class="brand-wordmark"><span class="brand-word-circle">Circle</span><span class="brand-word-match">Match</span></span>'
@@ -256,12 +261,12 @@ SIGNIN_HTML = """<!doctype html>
 <body>
   <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a></nav></div></header>
   <main>
-    <section class="hero"><h1>ログインして、練習試合探しを始める。</h1><p>ログイン後に、一般ユーザーとして使うか、サークル代表として登録へ進むかを選べます。閲覧だけならログイン不要です。</p></section>
+    <section class="hero"><h1>ログインして、参加・主催を始める。</h1><p>大会・イベントの閲覧はログイン不要です。申込、募集掲載、受付管理を行う時だけログインしてください。同じアカウントで参加と主催の両方ができます。</p></section>
     <section class="panel">
       <button id="googleButton" class="button" type="button"><span class="google-dot"></span><span>Googleでログイン</span></button>
       <div id="choice" class="choice">
-        <a class="button primary" href="/">一般ユーザーとして続ける</a>
-        <a class="button accent" href="/representative">サークル代表として登録する</a>
+        <a class="button primary" href="/mypage">マイページへ進む</a>
+        <a class="button accent" href="/events/new">募集を掲載する</a>
       </div>
       <p id="oauthNote" class="note">Supabase AuthでGoogle認証し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p>
       <div id="status" class="status">ログイン状態を確認しています。</div>
@@ -272,6 +277,7 @@ SIGNIN_HTML = """<!doctype html>
     const supabaseUrl = __SUPABASE_URL__;
     const supabaseAnonKey = __SUPABASE_ANON_KEY__;
     const authReady = __AUTH_READY__;
+    const returnTo = __RETURN_TO__;
     const statusEl = document.getElementById("status");
     const choiceEl = document.getElementById("choice");
     const loginButton = document.getElementById("googleButton");
@@ -296,12 +302,13 @@ SIGNIN_HTML = """<!doctype html>
         loginButton.style.display = "none";
         choiceEl.classList.add("active");
         setStatus(`${user?.email || "ログイン済み"} でログインしています。利用方法を選んでください。`);
+        if(returnTo && returnTo !== "/") location.replace(returnTo);
       }else{
         setStatus("Googleアカウントでログインしてください。");
       }
       loginButton.onclick = async () => {
         setStatus("Googleログインへ移動します。");
-        const redirectTo = `${location.origin}/signin`;
+        const redirectTo = `${location.origin}/signin?return_to=${encodeURIComponent(returnTo || "/")}`;
         const { error } = await client.auth.signInWithOAuth({provider:"google", options:{redirectTo, queryParams:{prompt:"select_account"}}});
         if(error) setStatus(error.message, true);
       };
@@ -999,7 +1006,7 @@ def ssr_circle_rows(circles):
     return "".join(rendered)
 
 
-def render_public_html():
+def render_legacy_home_html():
     # The public DB lives on the Render persistent disk. Initial HTML is rendered
     # from that server-side source so crawlers do not depend on browser JavaScript.
     initial_sports = SPORTS
@@ -1039,6 +1046,307 @@ def render_public_html():
     for placeholder, value in stat_values.items():
         page = page.replace(placeholder, value)
     return page.encode("utf-8")
+
+
+EVENT_BASE_CSS = """
+  :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--accent:#e15b31;--navy:#102a43;--warning:#a54822}
+  *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}a{color:inherit}.site-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.site-nav{max-width:1180px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}.brand{flex:0 0 auto;font-weight:900;text-decoration:none}.main-nav{display:flex;align-items:center;gap:5px;min-width:0;margin-left:auto}.main-nav a{min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border-radius:8px;color:#405164;font-size:14px;font-weight:900;text-decoration:none;white-space:nowrap}.main-nav a.active{background:#e8f4ef;color:#0d674f}.main-nav a.publish{background:var(--accent);color:#fff}.main-nav a.account{border:1px solid var(--accent);color:var(--accent);background:#fff}.container{max-width:1180px;margin:auto;padding:22px 16px 50px}.intro{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:4px 0 14px}.intro h1{margin:0;font-size:clamp(27px,4vw,42px);line-height:1.15}.intro p{max-width:700px;margin:10px 0 0;color:#50637a;line-height:1.75}.eyebrow{margin:0 0 7px;color:var(--brand);font-weight:950;font-size:12px;letter-spacing:.07em;text-transform:uppercase}.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px}.tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 17px;border-bottom:3px solid transparent;color:#61738b;text-decoration:none;font-weight:900}.tabs a.active{border-color:var(--accent);color:var(--ink)}.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden}.section{margin-top:18px}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:22px}.panel-head p{margin:7px 0 0;color:var(--muted);line-height:1.65}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.button.secondary{background:var(--brand);border-color:var(--brand);color:#fff}.button:disabled{opacity:.55;cursor:not-allowed}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sport-card{position:relative;overflow:hidden;min-height:154px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#132238;text-decoration:none;color:#fff;box-shadow:0 10px 24px rgba(20,36,56,.15)}.sport-card:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(20,36,56,.23)}.sport-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.03)}.sport-card:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,18,31,.92),rgba(9,18,31,.5) 58%,rgba(9,18,31,.1))}.sport-copy{position:relative;z-index:2;display:grid;gap:6px;padding:17px;max-width:76%}.sport-copy strong{font-size:24px;line-height:1.1}.sport-copy span{font-size:12px;font-weight:800;color:rgba(255,255,255,.84)}.sport-copy em{position:absolute;left:17px;top:98px;font-style:normal;font-size:12px;font-weight:900;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.18);white-space:nowrap}.filter-grid{display:grid;grid-template-columns:1.4fr repeat(4,minmax(120px,1fr));gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;min-height:42px;border:1px solid #cbd7e2;border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);font:inherit}textarea{min-height:112px;resize:vertical}.event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.event-card{display:flex;flex-direction:column;gap:10px;min-height:252px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.event-card h3{margin:0;font-size:18px;line-height:1.35}.event-card h3 a{text-decoration:none}.event-card p{margin:0;color:#52657a;font-size:13px;line-height:1.65}.card-meta{display:grid;gap:5px;color:#52657a;font-size:13px}.card-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}.badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 8px;border-radius:999px;background:#edf2f7;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.pending{background:#fff4dd;color:#8a5a00}.badge.closed{background:#f1f3f5;color:#6c7785}.badge.cancelled{background:#fff0f0;color:#a33}.empty,.error-box{padding:24px;color:var(--muted);line-height:1.75}.error-box{color:#9f321e;background:#fff5f2;border:1px solid #f0c6ba;border-radius:8px}.db-toggle{display:flex;gap:7px}.db-toggle a{display:inline-flex;min-height:38px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-size:14px;font-weight:900}.db-toggle a.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.db-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px}.metric{padding:13px;border:1px solid var(--line);border-radius:8px;background:#fff}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:850}.metric strong{display:block;margin-top:6px;font-size:24px}.circle-list{display:grid;gap:0}.circle-row{display:grid;grid-template-columns:1.2fr 1.2fr .8fr .9fr;gap:10px;padding:14px 16px;border-top:1px solid var(--line);font-size:14px}.circle-row strong{display:block}.circle-row small{display:block;margin-top:3px;color:var(--muted)}.notice{margin-top:16px;padding:17px;border:1px solid #d7e7dd;background:#f6fbf8;border-radius:8px;color:#365447;line-height:1.75}.about{margin-top:26px;padding:22px;background:#fff;border-top:1px solid var(--line);color:#53667b;line-height:1.8}.about h2{margin:0 0 9px;color:var(--ink);font-size:20px}.detail{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.detail-main,.detail-side{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px}.detail-main h1{margin:0;font-size:32px;line-height:1.25}.detail-main p{line-height:1.8;color:#405164}.detail-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.detail-meta div{padding:11px;border-radius:8px;background:#f7fafc}.detail-meta span{display:block;color:#64748b;font-size:12px;font-weight:850}.detail-meta strong{display:block;margin-top:4px;line-height:1.55}.detail-side{position:sticky;top:75px;height:max-content}.detail-side h2{margin:0;font-size:18px}.detail-side p{color:#64748b;line-height:1.65}.form-shell{max-width:860px;margin:auto}.stepper{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:16px}.stepper span{padding:9px;border-bottom:3px solid #dbe4ed;color:#76879b;font-size:13px;font-weight:900}.stepper span.active{border-color:var(--accent);color:var(--ink)}.form-section{display:none;padding:20px}.form-section.active{display:block}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:900;color:#405164}.help{color:#64748b;font-size:12px;line-height:1.55}.form-actions{display:flex;justify-content:space-between;gap:10px;padding:16px 20px;border-top:1px solid var(--line);flex-wrap:wrap}.preview{padding:15px;border-radius:8px;background:#f8fbfd;border:1px solid var(--line);line-height:1.7}.mypage-tabs{display:flex;gap:8px;margin-bottom:12px}.mypage-tabs button{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 12px;font:inherit;font-weight:900;cursor:pointer}.mypage-tabs button.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.my-section{display:none}.my-section.active{display:block}.my-card{margin-top:10px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.my-card h3{margin:0 0 6px;font-size:18px}.my-card p{margin:5px 0;color:#607086;font-size:14px;line-height:1.6}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.apps{display:grid;gap:8px;margin-top:12px}.app-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:8px;background:#f8fbfd}.messages{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}.message-log{display:grid;gap:7px;max-height:220px;overflow:auto}.message{padding:8px 10px;border-radius:8px;background:#f4f7fa;font-size:13px;line-height:1.55}.message.mine{background:#e9f6ef}.notification{padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.6}.notification small{display:block;color:#75869b;margin-top:4px}.mobile-apply{display:none}
+  @media(max-width:820px){.site-nav{padding:8px 12px;gap:7px}.main-nav{gap:2px}.main-nav a{min-height:36px;padding:7px;font-size:12px}.main-nav a.db-label{display:none}.container{padding:16px 12px 40px}.intro{align-items:start;flex-direction:column}.sport-grid,.event-grid{grid-template-columns:1fr 1fr}.sport-card{min-height:132px}.sport-copy{padding:13px}.sport-copy strong{font-size:18px}.sport-copy em{left:13px;top:84px}.filter-grid{grid-template-columns:1fr 1fr}.event-grid{padding:12px}.detail{grid-template-columns:1fr}.detail-side{position:static}.detail-meta,.field-grid{grid-template-columns:1fr}.circle-row{grid-template-columns:1fr 1fr}.circle-row>div:nth-child(n+3){display:none}.db-summary{grid-template-columns:1fr 1fr}.mobile-apply{display:flex;position:sticky;bottom:8px;z-index:10;margin-top:12px;box-shadow:0 8px 20px rgba(23,33,47,.18)}}
+  @media(max-width:460px){.main-nav a.tab-link{display:none}.main-nav a.publish{margin-left:auto}.sport-grid,.event-grid{grid-template-columns:1fr}.sport-card{min-height:145px}.filter-grid{grid-template-columns:1fr}.detail-main,.detail-side{padding:16px}.detail-main h1{font-size:26px}.db-summary{grid-template-columns:1fr}.stepper span{font-size:11px}.form-actions .button{flex:1}}
+"""
+
+
+def event_shell(title, body, script=""):
+    page = f"""<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(title)} | __SITE_NAME__</title><style>{EVENT_BASE_CSS}</style></head><body>
+<header class="site-header"><div class="site-nav"><a class="brand" href="/">__SITE_NAME__</a><nav class="main-nav"><a class="tab-link __EVENT_TAB__" href="__EVENT_TAB_URL__">大会・イベント</a><a class="tab-link db-label __DB_TAB__" href="__DB_TAB_URL__">サークルDB</a><a class="publish" href="__POST_URL__">募集を掲載する</a><a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a></nav></div></header>
+<main class="container">{body}</main>{script}</body></html>"""
+    return with_adsense(page).replace("__SITE_NAME__", SITE_NAME)
+
+
+def selected_home_query(params, tab, **updates):
+    values = {}
+    for key in ("sport", "region", "prefecture", "event_type", "participation", "audience"):
+        value = (params.get(key, [""])[0] or "").strip()
+        if value:
+            values[key] = value
+    values.update({key: value for key, value in updates.items() if value})
+    values["tab"] = tab
+    return "/?" + urlencode(values)
+
+
+def event_sport_cards(params, tab, audience="university"):
+    cards = []
+    for name, label, _code, _color, image in POPULAR_SPORTS:
+        href = selected_home_query(params, tab, audience=audience, sport=name)
+        cards.append(
+            f'<a class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{html.escape(image)}?v=20260713v1" alt="{html.escape(name)}"><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>{"募集を見る" if tab == "events" else "団体を探す"}</em></span></a>'
+        )
+    return "".join(cards)
+
+
+def event_sport_options():
+    """Keep event selection focused on sports rather than every DB category."""
+    return list(dict.fromkeys([name for name, _label, _code, _color, _image in POPULAR_SPORTS] + SPORTS))
+
+
+def format_event_datetime(value):
+    if not value:
+        return "日時未定"
+    return html.escape(str(value).replace("-", "/"))
+
+
+def event_fee_text(event):
+    if event.get("fee_amount") is None:
+        return "無料" if event.get("payment_method") == "free" else "現地払い（料金は主催者へ確認）"
+    unit = event.get("fee_unit") or "1人"
+    return f"{int(event['fee_amount']):,}円 / {unit}"
+
+
+def render_event_cards(events):
+    if not events:
+        return '<div class="empty">条件に合う募集中の大会・イベントはありません。条件を変えるか、最初の募集を掲載してください。</div>'
+    rendered = []
+    for event in events:
+        event_id = quote(str(event["event_id"]))
+        status = event_status_label(event.get("status"))
+        status_class = "open" if event.get("status") == "published" else ("cancelled" if event.get("status") == "cancelled" else "closed")
+        organizer = html.escape(event.get("linked_circle_name") or event.get("organizer_name") or "主催者")
+        remaining = "定員なし"
+        if event.get("capacity"):
+            remaining = f"定員 {event.get('confirmed_count', 0)}/{event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
+        rendered.append(
+            f'<article class="event-card"><div><span class="badge {status_class}">{html.escape(status)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div>'
+            f'<h3><a href="/events/{event_id}">{html.escape(event.get("title") or "")}</a></h3>'
+            f'<p>{html.escape(event.get("sport_category") or "")} / {organizer}</p>'
+            f'<div class="card-meta"><span>{format_event_datetime(event.get("starts_at"))}</span><span>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "会場未定")}</span><span>{html.escape(event_fee_text(event))} / {html.escape(event_participation_label(event.get("participation_type") or ""))}</span><span>{remaining}</span></div>'
+            f'<div class="card-footer"><span class="badge">{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</span><a class="button" href="/events/{event_id}">詳細・申込</a></div></article>'
+        )
+    return "".join(rendered)
+
+
+def render_db_rows(circles):
+    if not circles:
+        return '<div class="empty">条件に合う団体はありません。検索条件を変えてください。</div>'
+    output = []
+    for circle in circles:
+        link = f'<a href="{html.escape(circle["profile_url"], quote=True)}">紹介ページ</a>' if circle.get("profile_url") else "掲載準備中"
+        output.append(
+            '<div class="circle-row">'
+            f'<div><strong>{html.escape(circle.get("university_name") or "活動地域")}</strong><small>{html.escape(circle.get("prefecture") or "")}{(" / " + html.escape(circle.get("city") or "")) if circle.get("city") else ""}</small></div>'
+            f'<div><strong>{html.escape(circle.get("circle_name") or "")}</strong><small>{html.escape(circle.get("organization_type") or "不明")}</small></div>'
+            f'<div>{html.escape(circle.get("sport_category") or "その他")}</div><div>{link}</div></div>'
+        )
+    return "".join(output)
+
+
+def render_public_html(params=None):
+    """Render the event-first home while keeping all circle data routes intact."""
+    params = params or {}
+    tab = (params.get("tab", ["events"])[0] or "events").strip()
+    if tab not in {"events", "db"}:
+        tab = "events"
+    audience = audience_scope(params, "university")
+    sport = (params.get("sport", [""])[0] or "").strip()
+    region = (params.get("region", [""])[0] or "").strip()
+    event_url = selected_home_query(params, "events")
+    db_url = selected_home_query(params, "db", audience=audience)
+    post_url = "/events/new" + ("?" + urlencode({"sport": sport}) if sport else "")
+    tabs = f'<div class="tabs"><a class="{"active" if tab == "events" else ""}" href="{html.escape(event_url, quote=True)}">大会・イベント</a><a class="{"active" if tab == "db" else ""}" href="{html.escape(db_url, quote=True)}">サークルDB</a></div>'
+    shared_head = '<section class="intro"><div><p class="eyebrow">SPORTS EVENT DIRECTORY</p><h1>スポーツの大会・イベントを、見つけて参加する。</h1><p>大会、交流イベント、練習試合、合同練習を競技・地域から探せます。サークルDBは、主催団体や活動仲間を調べるための情報基盤として残しています。</p></div></section>'
+    if tab == "events":
+        try:
+            initial_events = search_events(params, limit=30)
+            event_markup = render_event_cards(initial_events)
+            initial_error = ""
+        except Exception as exc:
+            log(f"event home SSR failed: {type(exc).__name__}: {exc}")
+            initial_events = []
+            event_markup = '<div class="error-box">募集データを取得できませんでした。時間をおいて再度お試しください。</div>'
+            initial_error = "イベントデータを取得できませんでした"
+        filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in event_sport_options())
+        region_options_html = ''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())
+        type_options = ''.join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in EVENT_TYPES)
+        body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>競技を選ぶと、同じ条件の大会・イベントをすぐに確認できます。</p></div></div><div class="sport-grid">{event_sport_cards(params, "events")}</div></section>
+<section class="section panel" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p>閲覧は登録不要です。申込時にだけログインをお願いします。</p></div><a class="button primary" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
+<form id="eventFilters" class="filter-grid"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{region_options_html}</select><input name="date_from" type="date" aria-label="開催日以降"><select name="event_type"><option value="">全募集種別</option>{type_options}</select><select name="participation"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></form>
+<div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
+        script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
+    else:
+        try:
+            scoped = dict(params)
+            scoped["audience"] = [audience]
+            initial_circles = search_circles(scoped, limit=24)
+            db_stats = circle_query_stats(scoped)
+            db_markup = render_db_rows(initial_circles)
+            db_error = ""
+        except Exception as exc:
+            log(f"db home SSR failed: {type(exc).__name__}: {exc}")
+            initial_circles, db_stats = [], {"circles": 0, "universities": 0, "prefectures": 0}
+            db_markup = '<div class="error-box">団体データを取得できませんでした。時間をおいて再度お試しください。</div>'
+            db_error = "団体データを取得できませんでした"
+        audience_toggle = f'<div class="db-toggle"><a class="{"active" if audience == "university" else ""}" href="{html.escape(selected_home_query(params, "db", audience="university"), quote=True)}">大学</a><a class="{"active" if audience == "social" else ""}" href="{html.escape(selected_home_query(params, "db", audience="social"), quote=True)}">社会人</a></div>'
+        filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in sport_options(audience))
+        body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><div class="sport-grid">{event_sport_cards(params, "db", audience)}</div><form id="dbFilters" class="filter-grid"><input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())}</select><select name="prefecture"><option value="">全都道府県</option>{''.join(f'<option value="{html.escape(p)}">{html.escape(p)}</option>' for p in PREFECTURES)}</select><a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
+        script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
+    page = event_shell("大会・イベント", body, script)
+    return (page.replace("__EVENT_TAB__", "active" if tab == "events" else "").replace("__DB_TAB__", "active" if tab == "db" else "").replace("__EVENT_TAB_URL__", html.escape(event_url, quote=True)).replace("__DB_TAB_URL__", html.escape(db_url, quote=True)).replace("__POST_URL__", html.escape(post_url, quote=True))).encode("utf-8")
+
+
+EVENT_HOME_SCRIPT = r"""
+<script>
+  const pageTab=__TAB__, pageAudience=__AUDIENCE__, initialEvents=__INITIAL_EVENTS__, initialError=__INITIAL_ERROR__;
+  const initialCircles=typeof __INITIAL_CIRCLES__==='undefined'?[]:__INITIAL_CIRCLES__;
+  const initialDbStats=typeof __INITIAL_DB_STATS__==='undefined'?{}:__INITIAL_DB_STATS__;
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const qs=()=>new URLSearchParams(location.search);
+  const formatDate=v=>v?esc(String(v).replaceAll('-','/')):'日時未定';
+  const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':'現地払い（料金は主催者へ確認）'):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
+  const status=e=>({published:['受付中','open'],closed:['受付終了','closed'],cancelled:['開催中止','cancelled'],draft:['下書き','closed']}[e.status]||[e.status,'closed']);
+  function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
+  function circleRow(c){const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:'掲載準備中';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div>${profile}</div></div>`}
+  async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
+  async function account(){try{const me=await getJson('/api/me');const link=document.getElementById('accountLink');if(me.authenticated){link.textContent='マイページ';link.href='/mypage'} }catch(_){}}
+  function updateUrl(form){const next=qs();for(const [key,value] of new FormData(form).entries()){if(value)next.set(key,value);else next.delete(key)}next.set('tab',pageTab);if(pageTab==='db')next.set('audience',pageAudience);history.replaceState(null,'','/?'+next.toString())}
+  async function bootEvents(){const form=document.getElementById('eventFilters'),list=document.getElementById('eventList');if(!form)return; if(initialError){list.innerHTML=`<div class="error-box">${esc(initialError)}</div>`} function render(items){list.innerHTML=items.length?items.map(eventCard).join(''):'<div class="empty">条件に合う募集中の大会・イベントはありません。条件を変えるか、最初の募集を掲載してください。</div>'}render(initialEvents); const sync=async()=>{updateUrl(form);list.innerHTML='<div class="empty">募集を検索しています。</div>';try{const data=await getJson('/api/events?'+new URLSearchParams(new FormData(form)).toString());render(data)}catch(e){list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`}};form.addEventListener('change',sync);form.addEventListener('input',e=>{if(e.target.type==='date')sync()})}
+  async function bootDb(){const form=document.getElementById('dbFilters'),list=document.getElementById('dbList');if(!form)return;function render(rows){list.innerHTML=rows.length?rows.map(circleRow).join(''):'<div class="empty">条件に合う団体はありません。検索条件を変えてください。</div>'}render(initialCircles); const sync=async()=>{updateUrl(form);try{const query=new URLSearchParams(new FormData(form));query.set('audience',pageAudience);const [data,stats]=await Promise.all([getJson('/api/circles?limit=24&'+query.toString()),getJson('/api/circle-stats?'+query.toString())]);render(data);for(const [key,id] of Object.entries({prefectures:'dbPrefectures',universities:'dbUniversities',circles:'dbCircles'})){const node=document.getElementById(id);if(node)node.textContent=stats[key]??0}}catch(e){list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`}};let timer;form.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(sync,220)});form.addEventListener('change',sync)}
+  account();if(pageTab==='events')bootEvents();else bootDb();
+</script>
+"""
+
+
+def event_page(title, body, script="", tab="events", post_url="/events/new"):
+    return (
+        event_shell(title, body, script)
+        .replace("__EVENT_TAB__", "active" if tab == "events" else "")
+        .replace("__DB_TAB__", "active" if tab == "db" else "")
+        .replace("__EVENT_TAB_URL__", "/?tab=events")
+        .replace("__DB_TAB_URL__", "/?tab=db&audience=university")
+        .replace("__POST_URL__", html.escape(post_url, quote=True))
+    )
+
+
+def render_event_detail_html(event_id):
+    event = get_event(event_id)
+    if not event:
+        return None
+    state = event_status_label(event.get("status"))
+    state_class = "open" if event.get("status") == "published" else ("cancelled" if event.get("status") == "cancelled" else "closed")
+    apply_label = "参加を申請する" if event.get("acceptance_mode") == "approval" else "参加を申し込む"
+    can_apply = event.get("status") == "published" and (not event.get("application_deadline") or event["application_deadline"] >= datetime.now().strftime("%Y-%m-%d %H:%M"))
+    application_url = f"/events/{quote(str(event_id))}/apply"
+    organizer = html.escape(event.get("organizer_name") or "主催者")
+    if event.get("linked_circle_profile_slug"):
+        organizer = f'<a href="/circles/{quote(str(event["linked_circle_profile_slug"]))}">{html.escape(event.get("linked_circle_name") or event.get("organizer_name") or "主催団体")}</a>'
+    fee = html.escape(event_fee_text(event))
+    capacity = "定員なし" if not event.get("capacity") else f"{event.get('confirmed_count', 0)} / {event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
+    body = f'''<section class="intro"><div><p class="eyebrow">EVENT DETAIL</p><p><a href="/?tab=events&sport={quote(str(event.get("sport_category") or ""))}">大会・イベント一覧</a> / {html.escape(event.get("sport_category") or "")}</p></div></section>
+<section class="detail"><article class="detail-main"><div><span class="badge {state_class}">{html.escape(state)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div><h1>{html.escape(event.get("title") or "")}</h1><p>{html.escape(event.get("sport_category") or "")}</p><div class="detail-meta"><div><span>開催日時</span><strong>{format_event_datetime(event.get("starts_at"))}{(" 〜 " + format_event_datetime(event.get("ends_at"))) if event.get("ends_at") else ""}</strong></div><div><span>会場</span><strong>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "")}</strong></div><div><span>参加費</span><strong>{fee}</strong></div><div><span>参加単位・定員</span><strong>{html.escape(event_participation_label(event.get("participation_type") or ""))} / {capacity}</strong></div><div><span>受付方式</span><strong>{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</strong></div><div><span>応募締切</span><strong>{format_event_datetime(event.get("application_deadline")) if event.get("application_deadline") else "設定なし"}</strong></div></div><h2>内容</h2><p>{html.escape(event.get("description") or "").replace(chr(10), '<br>')}</p><h2>参加条件</h2><p>{html.escape(event.get("eligibility") or "特に設定されていません").replace(chr(10), '<br>')}</p><h2>キャンセル・中止条件</h2><p>{html.escape(event.get("cancellation_policy") or "主催者へご確認ください").replace(chr(10), '<br>')}</p><h2>主催者</h2><p>{organizer}<br><small>連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。</small></p></article><aside class="detail-side"><h2>参加受付</h2><p>{"この募集は現在受付中です。" if can_apply else "この募集は現在受け付けていません。"}</p>{f'<a class="button primary" href="{application_url}">{apply_label}</a>' if can_apply else f'<span class="badge {state_class}">{html.escape(state)}</span>'}<p class="help">{"先着順は定員内で参加確定します。" if event.get("acceptance_mode") == "first_come" else "主催者承認制です。申請後、主催者の承認で参加確定します。"}</p></aside></section>{f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>' if can_apply else ""}'''
+    return event_page(event.get("title") or "大会・イベント詳細", body)
+
+
+def render_event_apply_html(event_id, user):
+    event = get_event(event_id)
+    if not event:
+        return None
+    if not user.get("authenticated"):
+        return None
+    apply_label = "参加を申請する" if event.get("acceptance_mode") == "approval" else "参加を申し込む"
+    modes = ["individual", "team"] if event.get("participation_type") == "both" else [event.get("participation_type")]
+    radio = "".join(
+        f'<label><input type="radio" name="participation_type" value="{mode}"{" checked" if index == 0 else ""}> {html.escape(event_participation_label(mode))}</label>'
+        for index, mode in enumerate(modes)
+    )
+    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">EVENT APPLICATION</p><h1>{html.escape(event.get("title") or "")}</h1><p>申込内容を入力して確認してください。申請受付と参加確定は、受付方式により異なります。</p></div></section><section class="panel"><form id="applicationForm" data-event-id="{html.escape(event_id, quote=True)}"><div class="form-section active"><div class="field full"><label>参加単位</label><div id="participationChoices" class="card-actions">{radio}</div></div><div id="individualFields" class="field"><label>参加者名</label><input id="applicant_name" maxlength="80" placeholder="例：山田 太郎"></div><div id="teamFields" class="field-grid" style="display:none"><div class="field"><label>チーム名</label><input id="team_name" maxlength="100"></div><div class="field"><label>代表者名</label><input id="representative_name" maxlength="80"></div><div class="field"><label>参加予定人数</label><input id="participant_count" type="number" min="1" value="1"></div></div><div class="field full"><label>主催者への連絡（任意）</label><textarea id="applicant_message" maxlength="1200" placeholder="確認したいことがあれば入力してください"></textarea></div></div><div class="form-actions"><a class="button" href="/events/{quote(str(event_id))}">戻る</a><button class="button primary" type="submit">{apply_label}</button></div></form></section><div id="applicationStatus" class="notice" hidden></div></section>'''
+    script = f'''<script>
+const form=document.getElementById('applicationForm'),status=document.getElementById('applicationStatus');
+function participation(){{return form.querySelector('input[name="participation_type"]:checked').value}}
+function sync(){{const team=participation()==='team';document.getElementById('teamFields').style.display=team?'grid':'none';document.getElementById('individualFields').style.display=team?'none':'grid'}}
+form.addEventListener('change',sync);sync();
+form.addEventListener('submit',async e=>{{e.preventDefault();const team=participation()==='team';const payload={{participation_type:participation(),applicant_name:document.getElementById('applicant_name').value,team_name:document.getElementById('team_name').value,representative_name:document.getElementById('representative_name').value,participant_count:document.getElementById('participant_count').value,applicant_message:document.getElementById('applicant_message').value}};const button=form.querySelector('button[type=submit]');button.disabled=true;try{{const r=await fetch('/api/events/{quote(str(event_id))}/applications',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify(payload)}});const data=await r.json();if(!r.ok)throw new Error(data.error||'申込に失敗しました');location.assign('/mypage?tab=attending&application='+encodeURIComponent(data.application_id))}}catch(err){{status.hidden=false;status.textContent=err.message;button.disabled=false}}}});
+</script>'''
+    return event_page("参加申込", body, script)
+
+
+def event_input_datetime(value):
+    return str(value or "").replace(" ", "T")[:16]
+
+
+def render_event_form_html(params, user):
+    sport = (params.get("sport", [""])[0] or "").strip()
+    event_id = (params.get("event_id", [""])[0] or "").strip()
+    copy_id = (params.get("copy", [""])[0] or "").strip()
+    initial = {"sport_category": sport, "event_type": "大会", "participation_type": "individual", "capacity_unit": "人", "fee_unit": "1人", "payment_method": "free", "acceptance_mode": "first_come"}
+    if event_id or copy_id:
+        if not user.get("authenticated"):
+            return None
+        with connect() as conn:
+            initial.update(event_copy_for_owner(conn, event_id or copy_id, user))
+        if event_id:
+            initial["event_id"] = event_id
+        else:
+            initial.pop("starts_at", None)
+            initial.pop("ends_at", None)
+            initial.pop("application_deadline", None)
+            initial["title"] = f"{initial.get('title', '')}（複製）".strip()
+    sport_choices = ''.join(f'<option value="{html.escape(name)}">{html.escape(name)}</option>' for name in event_sport_options())
+    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>競技</label><select id="sport_category"><option value="">選択してください</option>{sport_choices}</select></div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><div class="field"><label>終了日時（任意）</label><input id="ends_at" type="datetime-local"></div><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"></div><div class="field"><label>定員の単位</label><input id="capacity_unit" maxlength="20" placeholder="人 / チーム"></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field"><label>参加費（任意）</label><input id="fee_amount" type="number" min="0" placeholder="0"></div><div class="field"><label>料金の単位</label><input id="fee_unit" maxlength="40" placeholder="1人 / 1チーム"></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="free">無料</option><option value="on_site">現地払い</option></select><span class="help">オンライン決済にはまだ対応していません。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
+    script = EVENT_FORM_SCRIPT.replace("__INITIAL_EVENT__", script_json(initial)).replace("__DEFAULT_EMAIL__", script_json(user.get("email") if user.get("authenticated") else "")).replace("__RETURN_TO__", script_json("/events/new" + ("?" + urlencode({"sport": sport}) if sport else "")))
+    return event_page("募集を掲載する", body, script, post_url=post_url_from_initial(initial))
+
+
+def post_url_from_initial(initial):
+    sport = (initial.get("sport_category") or "").strip()
+    return "/events/new" + (("?" + urlencode({"sport": sport})) if sport else "")
+
+
+EVENT_FORM_SCRIPT = r"""
+<script>
+const initialEvent=__INITIAL_EVENT__, defaultEmail=__DEFAULT_EMAIL__, returnTo=__RETURN_TO__, form=document.getElementById('eventForm'), statusBox=document.getElementById('eventFormStatus');
+let step=0; const ids=['event_type','sport_category','title','starts_at','ends_at','prefecture','location','description','participation_type','capacity','capacity_unit','eligibility','fee_amount','fee_unit','payment_method','application_deadline','acceptance_mode','organizer_name','organizer_contact_email','linked_circle_id','cancellation_policy'];
+const $=id=>document.getElementById(id);const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function toInput(v){return String(v||'').replace(' ','T').slice(0,16)}
+function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??'';if(['starts_at','ends_at','application_deadline'].includes(id))value=toInput(value);$(id).value=value});if(!$('organizer_contact_email').value)$('organizer_contact_email').value=defaultEmail||''}
+function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').style.visibility=step===0?'hidden':'visible';$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
+function payload(status){const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);return obj}
+function preview(){const p=payload('published');$('eventPreview').innerHTML=`<strong>${esc(p.title||'タイトル未入力')}</strong><br>${esc(p.event_type||'')} / ${esc(p.sport_category||'')}<br>${esc(p.starts_at||'日時未入力').replace('T',' ')} / ${esc(p.prefecture||'')} ${esc(p.location||'')}<br>${esc(p.participation_type)} / ${esc(p.acceptance_mode==='approval'?'主催者承認制':'先着順')}`}
+async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
+async function save(status){const button=status==='published'?$('publishEvent'):$('saveDraft');button.disabled=true;statusBox.hidden=true;try{const r=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(status))});const data=await r.json();if(r.status===401){sessionStorage.setItem('circle-match:event-draft',JSON.stringify(payload(status)));location.assign('/signin?return_to='+encodeURIComponent(returnTo));return}if(!r.ok)throw new Error(data.error||'保存に失敗しました');sessionStorage.removeItem('circle-match:event-draft');location.assign(status==='published'?`/events/${encodeURIComponent(data.event_id)}`:`/events/new?event_id=${encodeURIComponent(data.event_id)}`)}catch(err){statusBox.hidden=false;statusBox.textContent=err.message;button.disabled=false}}
+fill();try{const saved=JSON.parse(sessionStorage.getItem('circle-match:event-draft')||'null');if(saved&&!initialEvent.event_id){Object.assign(initialEvent,saved);fill();sessionStorage.removeItem('circle-match:event-draft')}}catch(_){}loadOrganizations();showStep(0);$('nextStep').onclick=()=>showStep(step+1);$('backStep').onclick=()=>showStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{if(step===2)preview()});
+</script>
+"""
+
+
+def render_mypage_html(user):
+    if not user.get("authenticated"):
+        return None
+    data = event_my_page(user)
+    hosted = []
+    for event in data["hosted"]:
+        hosted.append(f'''<article class="my-card"><span class="badge {"open" if event.get("status") == "published" else "closed"}">{html.escape(event_status_label(event.get("status")))}</span><h3>{html.escape(event.get("title") or "")}</h3><p>{format_event_datetime(event.get("starts_at"))} / 申込 {event.get("application_count", 0)}件・確定 {event.get("confirmed_count", 0)}{html.escape(event.get("capacity_unit") or "人")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(event["event_id"]))}">公開ページ</a><a class="button" href="/events/new?event_id={quote(str(event["event_id"]))}">編集</a><a class="button" href="/events/new?copy={quote(str(event["event_id"]))}">複製</a><button class="button" data-manage="{html.escape(event["event_id"], quote=True)}">申込者を管理</button><button class="button" data-event-status="closed" data-event="{html.escape(event["event_id"], quote=True)}">締切</button><button class="button" data-event-status="cancelled" data-event="{html.escape(event["event_id"], quote=True)}">中止</button></div><div id="apps-{html.escape(event["event_id"], quote=True)}" class="apps" hidden></div></article>''')
+    attending = []
+    for app in data["attending"]:
+        attending.append(f'''<article class="my-card"><span class="badge {"open" if app.get("application_status") == "confirmed" else "pending"}">{html.escape(application_status_label(app.get("application_status")))}</span><h3>{html.escape(app.get("title") or "")}</h3><p>{format_event_datetime(app.get("starts_at"))} / {html.escape(app.get("location") or "")} / {html.escape(app.get("participation_type") or "")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(app["event_id"]))}">詳細</a><button class="button" data-cancel-app="{html.escape(app["application_id"], quote=True)}" data-event="{html.escape(app["event_id"], quote=True)}">申込を取り消す</button><button class="button" data-message-event="{html.escape(app["event_id"], quote=True)}">主催者に連絡</button></div><div id="messages-{html.escape(app["event_id"], quote=True)}" class="messages" hidden></div></article>''')
+    notices = []
+    for note in data["notifications"]:
+        notices.append(f'<div class="notification"><strong>{html.escape(note.get("title") or "")}</strong><br>{html.escape(note.get("body") or "")}<small>{format_event_datetime(note.get("created_at"))} / メール通知: {"未設定（アプリ内通知のみ）" if note.get("email_status") == "not_configured" else html.escape(note.get("email_status") or "")}</small></div>')
+    body = f'''<section class="intro"><div><p class="eyebrow">MY PAGE</p><h1>マイページ</h1><p>{html.escape(user.get("display_name") or user.get("email") or "")}</p></div></section><section class="panel"><div class="panel-head"><div><h2>大会・イベント</h2><p>参加状況、主催する募集、アプリ内通知を確認できます。</p></div><a class="button primary" href="/events/new">募集を掲載する</a></div><div class="mypage-tabs"><button class="active" data-my-tab="attending">参加するイベント</button><button data-my-tab="hosted">主催するイベント</button><button data-my-tab="notifications">通知</button></div><div id="my-attending" class="my-section active">{"".join(attending) or '<div class="empty">参加を申し込んだイベントはありません。</div>'}</div><div id="my-hosted" class="my-section">{"".join(hosted) or '<div class="empty">主催している募集はありません。</div>'}</div><div id="my-notifications" class="my-section">{"".join(notices) or '<div class="empty">通知はありません。</div>'}</div></section>'''
+    return event_page("マイページ", body, MYPAGE_SCRIPT)
+
+
+MYPAGE_SCRIPT = r"""
+<script>
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+async function request(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})});const d=await r.json();if(!r.ok)throw new Error(d.error||'操作に失敗しました');return d}
+document.querySelectorAll('[data-my-tab]').forEach(button=>button.onclick=()=>{document.querySelectorAll('[data-my-tab]').forEach(b=>b.classList.toggle('active',b===button));document.querySelectorAll('.my-section').forEach(section=>section.classList.toggle('active',section.id==='my-'+button.dataset.myTab))});
+document.querySelectorAll('[data-event-status]').forEach(button=>button.onclick=async()=>{if(!confirm(button.dataset.eventStatus==='cancelled'?'この募集を中止しますか？':'この募集を締め切りますか？'))return;try{await request(`/api/events/${encodeURIComponent(button.dataset.event)}/status`,{status:button.dataset.eventStatus});location.reload()}catch(e){alert(e.message)}});
+document.querySelectorAll('[data-cancel-app]').forEach(button=>button.onclick=async()=>{if(!confirm('申込を取り消しますか？'))return;try{await request(`/api/events/${encodeURIComponent(button.dataset.event)}/applications/${encodeURIComponent(button.dataset.cancelApp)}/cancel`);location.reload()}catch(e){alert(e.message)}});
+async function loadMessages(eventId,recipient){const pane=document.getElementById('messages-'+eventId);const peer=recipient?`?peer_user_id=${encodeURIComponent(recipient)}`:'';try{const r=await fetch(`/api/events/${encodeURIComponent(eventId)}/messages${peer}`);const messages=await r.json();if(!r.ok)throw new Error(messages.error||'メッセージを取得できません');pane.hidden=false;pane.innerHTML=`<div class="message-log">${messages.map(m=>`<div class="message">${esc(m.sender_name||'利用者')}: ${esc(m.body)}</div>`).join('')||'<div class="empty">まだメッセージはありません。</div>'}</div><div class="card-actions"><input id="message-input-${eventId}" placeholder="メッセージを入力"><button class="button" data-send-message="${eventId}" data-recipient="${recipient||''}">送信</button></div>`;pane.querySelector('[data-send-message]').onclick=async b=>{const text=pane.querySelector('#message-input-'+eventId).value;try{await request(`/api/events/${encodeURIComponent(eventId)}/messages`,{body:text,recipient_user_id:recipient||''});await loadMessages(eventId,recipient)}catch(e){alert(e.message)}}}catch(e){alert(e.message)}}
+document.querySelectorAll('[data-message-event]').forEach(button=>button.onclick=()=>loadMessages(button.dataset.messageEvent,''));
+document.querySelectorAll('[data-manage]').forEach(button=>button.onclick=async()=>{const pane=document.getElementById('apps-'+button.dataset.manage);try{const r=await fetch(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications`);const apps=await r.json();if(!r.ok)throw new Error(apps.error||'申込者を取得できません');pane.hidden=false;pane.innerHTML=apps.length?apps.map(a=>`<div class="app-row"><span><strong>${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}</strong><br><small>${esc(a.participant_count)}名 / ${esc(({pending:'承認待ち',confirmed:'参加確定',declined:'見送り',cancelled:'取消済み'})[a.status]||a.status)}</small></span><span class="card-actions">${a.status==='pending'?`<button class="button" data-app-action="confirm" data-app="${esc(a.application_id)}">承認</button><button class="button" data-app-action="decline" data-app="${esc(a.application_id)}">見送り</button>`:''}<button class="button" data-app-message="${esc(a.applicant_user_id)}">連絡</button></span></div>`).join(''):'<div class="empty">申込はまだありません。</div>';pane.querySelectorAll('[data-app-action]').forEach(action=>action.onclick=async()=>{try{await request(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications/${encodeURIComponent(action.dataset.app)}/status`,{action:action.dataset.appAction});button.click()}catch(e){alert(e.message)}});pane.querySelectorAll('[data-app-message]').forEach(action=>action.onclick=()=>loadMessages(button.dataset.manage,action.dataset.appMessage))}catch(e){alert(e.message)}});
+</script>
+"""
 
 
 def render_circles_html():
@@ -1187,13 +1495,14 @@ def render_social_html():
     return page.replace("__INITIAL_SUMMARY__", initial_summary_json).encode("utf-8")
 
 
-def render_signin_html():
+def render_signin_html(return_to="/"):
     return (
         with_adsense(SIGNIN_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
         .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
         .replace("__AUTH_READY__", "true" if supabase_auth_enabled() else "false")
+        .replace("__RETURN_TO__", script_json(safe_return_path(return_to)))
         .encode("utf-8")
     )
 
@@ -1296,6 +1605,14 @@ def render_circle_profile_html(profile_slug):
             """,
             (profile_slug,),
         ).fetchone()
+        hosted_events = []
+        if row:
+            hosted_sql, hosted_args = event_public_select(
+                "e.linked_circle_id=? and e.status in ('published','closed','cancelled')",
+                [row["circle_id"]],
+            )
+            hosted_sql += " order by e.starts_at asc limit 12"
+            hosted_events = [dict(item) for item in conn.execute(hosted_sql, hosted_args).fetchall()]
     if not row:
         return None
     data = dict(row)
@@ -1303,6 +1620,11 @@ def render_circle_profile_html(profile_slug):
         value = (value or "").strip()
         return html.escape(value if value else fallback)
     sport = data.get("sport_category") or "その他"
+    hosted_events_section = (
+        '<section class="panel"><h2>この団体が主催する大会・イベント</h2><div class="event-grid">'
+        + render_event_cards(hosted_events)
+        + "</div></section>"
+    )
     contact_email = (data.get("public_contact_email") or "").strip()
     contact_section = ""
     if contact_email and data.get("public_contact_consent"):
@@ -1335,6 +1657,7 @@ def render_circle_profile_html(profile_slug):
         representative_status_badge = '<span class="badge">代表申請受付</span>'
     else:
         representative_status_badge = '<span class="badge">未確認</span>'
+    contact_section = hosted_events_section + contact_section
     page = (
         with_adsense(CIRCLE_PROFILE_HTML)
         .replace("__SITE_NAME__", html.escape(SITE_NAME))
@@ -1392,6 +1715,14 @@ def sitemap_xml():
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
     paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
+    try:
+        with connect() as conn:
+            event_ids = conn.execute(
+                "select event_id from event_posts where status='published' and starts_at>=datetime('now','localtime') order by starts_at limit 5000"
+            ).fetchall()
+        paths.extend([f"/events/{quote(str(row['event_id']))}" for row in event_ids])
+    except Exception as exc:
+        log(f"event sitemap query failed: {type(exc).__name__}: {exc}")
     urls = "\n".join(
         f"  <url><loc>{root}{path}</loc></url>"
         for path in paths
@@ -2280,6 +2611,73 @@ def init_db():
           created_at text not null,
           updated_at text not null
         );
+        create table if not exists event_posts (
+          event_id text primary key,
+          organizer_user_id text not null references user_accounts(user_id),
+          linked_circle_id text references circles(circle_id),
+          organizer_name text not null,
+          organizer_contact_email text not null,
+          event_type text not null check(event_type in ('大会','交流イベント','練習試合','合同練習')),
+          sport_category text not null,
+          title text not null,
+          starts_at text not null,
+          ends_at text,
+          prefecture text,
+          location text not null,
+          description text not null,
+          participation_type text not null check(participation_type in ('individual','team','both')),
+          capacity integer,
+          capacity_unit text not null default '人',
+          eligibility text,
+          fee_amount integer,
+          fee_unit text,
+          payment_method text not null default 'free' check(payment_method in ('free','on_site')),
+          application_deadline text,
+          acceptance_mode text not null check(acceptance_mode in ('first_come','approval')),
+          cancellation_policy text,
+          status text not null default 'draft' check(status in ('draft','published','closed','cancelled')),
+          published_at text,
+          created_at text not null,
+          updated_at text not null
+        );
+        create table if not exists event_applications (
+          application_id text primary key,
+          event_id text not null references event_posts(event_id) on delete cascade,
+          applicant_user_id text not null references user_accounts(user_id),
+          participation_type text not null check(participation_type in ('individual','team')),
+          applicant_name text,
+          team_name text,
+          representative_name text,
+          participant_count integer not null default 1,
+          answers_json text not null default '{}',
+          applicant_message text,
+          organizer_note text,
+          status text not null check(status in ('pending','confirmed','declined','cancelled')),
+          created_at text not null,
+          updated_at text not null,
+          unique(event_id, applicant_user_id)
+        );
+        create table if not exists event_notifications (
+          notification_id text primary key,
+          recipient_user_id text not null references user_accounts(user_id) on delete cascade,
+          event_id text references event_posts(event_id) on delete cascade,
+          notification_type text not null,
+          title text not null,
+          body text not null,
+          email_status text not null default 'not_configured' check(email_status in ('not_configured','sent','failed')),
+          email_error text,
+          read_at text,
+          created_at text not null
+        );
+        create table if not exists event_messages (
+          message_id text primary key,
+          event_id text not null references event_posts(event_id) on delete cascade,
+          sender_user_id text not null references user_accounts(user_id),
+          recipient_user_id text not null references user_accounts(user_id),
+          body text not null,
+          read_at text,
+          created_at text not null
+        );
         create table if not exists data_sources (
           source_id text primary key,
           entity_type text not null,
@@ -2347,6 +2745,13 @@ def init_db():
         create index if not exists idx_circle_public_profiles_circle on circle_public_profiles(circle_id);
         create index if not exists idx_circle_public_profiles_slug on circle_public_profiles(profile_slug);
         create index if not exists idx_user_sessions_user on user_sessions(user_id);
+        create index if not exists idx_event_posts_public on event_posts(status, starts_at, sport_category, prefecture);
+        create index if not exists idx_event_posts_organizer on event_posts(organizer_user_id, status, updated_at);
+        create index if not exists idx_event_posts_circle on event_posts(linked_circle_id, status);
+        create index if not exists idx_event_applications_event on event_applications(event_id, status, created_at);
+        create index if not exists idx_event_applications_user on event_applications(applicant_user_id, status, created_at);
+        create index if not exists idx_event_notifications_recipient on event_notifications(recipient_user_id, read_at, created_at);
+        create index if not exists idx_event_messages_event on event_messages(event_id, created_at);
         create index if not exists idx_circle_candidates_university on circle_candidates(university_id);
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
@@ -3247,13 +3652,61 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
+        query = parse_qs(parsed.query)
         try:
             if parsed.path == "/":
-                self.send_html(render_public_html())
-            elif parsed.path in {"/auth/google", "/auth/google/callback", "/signin", "/logout"}:
-                self.redirect("/representative")
+                self.send_html(render_public_html(query))
+            elif parsed.path == "/events":
+                redirect_query = urlencode({key: values[0] for key, values in query.items() if values and key in {"sport", "region", "prefecture", "event_type", "participation"}})
+                self.redirect("/?tab=events" + ("&" + redirect_query if redirect_query else ""))
+            elif parsed.path == "/events/new":
+                user = current_user(self.cookie_value("cm_session"))
+                if (query.get("event_id") or query.get("copy")) and not user.get("authenticated"):
+                    self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/events/new")}))
+                    return
+                page = render_event_form_html(query, user)
+                if page:
+                    self.send_html(page.encode("utf-8"))
+                else:
+                    self.send_html(event_page("ログインが必要です", '<div class="error-box">編集するにはログインしてください。</div>').encode("utf-8"), 401)
+            elif parsed.path.startswith("/events/"):
+                parts = [unquote(part) for part in parsed.path.strip("/").split("/")]
+                if len(parts) == 3 and parts[2] == "apply":
+                    user = current_user(self.cookie_value("cm_session"))
+                    if not user.get("authenticated"):
+                        self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
+                        return
+                    page = render_event_apply_html(parts[1], user)
+                    if page:
+                        self.send_html(page.encode("utf-8"))
+                    else:
+                        self.send_html(event_page("募集が見つかりません", '<div class="error-box">募集が見つからないか、現在受け付けていません。</div>').encode("utf-8"), 404)
+                elif len(parts) == 2:
+                    page = render_event_detail_html(parts[1])
+                    if page:
+                        self.send_html(page.encode("utf-8"))
+                    else:
+                        self.send_html(event_page("募集が見つかりません", '<div class="error-box">募集が見つかりません。</div>').encode("utf-8"), 404)
+                else:
+                    self.send_json({"error": "not found"}, 404)
+            elif parsed.path == "/mypage":
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.redirect("/signin?" + urlencode({"return_to": "/mypage"}))
+                    return
+                self.send_html(render_mypage_html(user).encode("utf-8"))
+            elif parsed.path == "/signin":
+                self.send_html(render_signin_html(safe_return_path(query.get("return_to", ["/"])[0])))
+            elif parsed.path == "/logout":
+                self.redirect(safe_return_path(query.get("return_to", ["/"])[0], "/"), [
+                    f"cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"
+                ])
+            elif parsed.path == "/auth/google":
+                self.redirect("/signin?" + urlencode({"return_to": safe_return_path(query.get("return_to", ["/"])[0])}))
+            elif parsed.path == "/auth/google/callback":
+                self.handle_google_callback(query)
             elif parsed.path == "/post-match":
-                self.redirect("/representative?intent=post-match")
+                self.redirect("/events/new" + (("?" + urlencode({key: values[0] for key, values in query.items() if values and key in {"sport", "region", "prefecture"}})) if query else ""))
             elif parsed.path == "/representative":
                 self.send_html(render_representative_html())
             elif parsed.path == "/social/circles":
@@ -3351,6 +3804,38 @@ class Handler(BaseHTTPRequestHandler):
                 except ValueError:
                     limit = 100
                 self.send_json(search_matches(params, limit=max(1, min(limit, 200))))
+            elif parsed.path == "/api/events":
+                try:
+                    limit = int((query.get("limit", ["60"])[0] or "60").strip())
+                except ValueError:
+                    limit = 60
+                self.send_json(search_events(query, limit=max(1, min(limit, 100))))
+            elif parsed.path == "/api/events/mine":
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.send_json({"error": "login required"}, 401)
+                    return
+                self.send_json(event_my_page(user))
+            elif parsed.path == "/api/my-organizations":
+                self.send_json(claimed_circles_for_user(current_user(self.cookie_value("cm_session"))))
+            elif parsed.path.startswith("/api/events/"):
+                parts = [unquote(part) for part in parsed.path.strip("/").split("/")]
+                user = current_user(self.cookie_value("cm_session"))
+                if len(parts) == 3:
+                    event = get_event(parts[2])
+                    self.send_json(event if event else {"error": "not found"}, 200 if event else 404)
+                elif len(parts) == 4 and parts[3] == "applications":
+                    if not user.get("authenticated"):
+                        self.send_json({"error": "login required"}, 401)
+                        return
+                    self.send_json(event_applications_for_owner(parts[2], user))
+                elif len(parts) == 4 and parts[3] == "messages":
+                    if not user.get("authenticated"):
+                        self.send_json({"error": "login required"}, 401)
+                        return
+                    self.send_json(event_messages_for_user(parts[2], user, (query.get("peer_user_id", [""])[0] or "").strip()))
+                else:
+                    self.send_json({"error": "not found"}, 404)
             elif parsed.path == "/api/sport_overview":
                 self.send_json(sport_overview(parse_qs(parsed.query)))
             elif parsed.path == "/api/region_overview":
@@ -3383,8 +3868,13 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(rows("select * from audit_logs order by audit_id desc limit 200"))
             else:
                 self.send_json({"error": "not found"}, 404)
+        except PermissionError as exc:
+            self.send_json({"error": str(exc)}, 403)
+        except ValueError as exc:
+            self.send_json({"error": str(exc)}, 400)
         except Exception as exc:
-            self.send_json({"error": str(exc)}, 500)
+            log(f"GET {parsed.path} failed: {type(exc).__name__}: {exc}")
+            self.send_json({"error": "server error"}, 500)
 
     def do_POST(self):
         parsed = urlparse(self.path)
@@ -3406,6 +3896,56 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json({"ok": True, "user": current_user(session_id)}, 200, [
                     f"cm_session={session_id}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"
                 ])
+                return
+            if parsed.path == "/api/events":
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.send_json({"error": "login required"}, 401)
+                    return
+                data = self.read_json()
+                with connect() as conn:
+                    event_id = save_event_post(conn, data, user)
+                    conn.commit()
+                self.send_json({"ok": True, "event_id": event_id})
+                return
+            if parsed.path.startswith("/api/events/"):
+                parts = [unquote(part) for part in parsed.path.strip("/").split("/")]
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.send_json({"error": "login required"}, 401)
+                    return
+                data = self.read_json()
+                if len(parts) == 4 and parts[3] == "applications":
+                    with connect() as conn:
+                        result = submit_event_application(conn, parts[2], data, user)
+                        conn.commit()
+                    self.send_json({"ok": True, **result})
+                    return
+                if len(parts) == 6 and parts[3] == "applications" and parts[5] == "status":
+                    with connect() as conn:
+                        next_status = set_event_application_status(conn, parts[2], parts[4], data.get("action", ""), user, data.get("organizer_note", ""))
+                        conn.commit()
+                    self.send_json({"ok": True, "status": next_status})
+                    return
+                if len(parts) == 6 and parts[3] == "applications" and parts[5] == "cancel":
+                    with connect() as conn:
+                        cancel_event_application(conn, parts[2], parts[4], user)
+                        conn.commit()
+                    self.send_json({"ok": True})
+                    return
+                if len(parts) == 4 and parts[3] == "status":
+                    with connect() as conn:
+                        set_event_status(conn, parts[2], data.get("status", ""), user)
+                        conn.commit()
+                    self.send_json({"ok": True})
+                    return
+                if len(parts) == 4 and parts[3] == "messages":
+                    with connect() as conn:
+                        message_id = send_event_message(conn, parts[2], data, user)
+                        conn.commit()
+                    self.send_json({"ok": True, "message_id": message_id})
+                    return
+                self.send_json({"error": "not found"}, 404)
                 return
             if parsed.path == "/api/claims":
                 data = self.read_json()
@@ -3477,8 +4017,13 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"ok": True})
                 else:
                     self.send_json({"error": "not found"}, 404)
-        except Exception as exc:
+        except PermissionError as exc:
+            self.send_json({"error": str(exc)}, 403)
+        except ValueError as exc:
             self.send_json({"error": str(exc)}, 400)
+        except Exception as exc:
+            log(f"POST {parsed.path} failed: {type(exc).__name__}: {exc}")
+            self.send_json({"error": "server error"}, 500)
 
 
 SOCIAL_AUDIENCE_TYPE = "社会人サークル"
@@ -4045,6 +4590,608 @@ def create_public_match_post(conn, data, user):
         "created_by": user.get("user_id", ""),
     })
     return entity_id
+
+
+def safe_return_path(value, fallback="/"):
+    """Allow only same-site relative paths after an authentication hand-off."""
+    value = (value or "").strip()
+    if value.startswith("/") and not value.startswith("//") and "\r" not in value and "\n" not in value:
+        return value
+    return fallback
+
+
+def event_datetime(value, field, required=True):
+    value = (value or "").strip()
+    if not value:
+        if required:
+            raise ValueError(f"{field}を入力してください")
+        return ""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError(f"{field}の形式が正しくありません") from exc
+    if parsed.tzinfo:
+        parsed = parsed.astimezone(timezone(timedelta(hours=9))).replace(tzinfo=None)
+    return parsed.strftime("%Y-%m-%d %H:%M")
+
+
+def event_form_value(data, key, label, required=False, max_length=5000):
+    value = str(data.get(key) or "").strip()
+    if required and not value:
+        raise ValueError(f"{label}を入力してください")
+    if len(value) > max_length:
+        raise ValueError(f"{label}は{max_length}文字以内で入力してください")
+    return value
+
+
+def event_capacity_value(data):
+    raw = str(data.get("capacity") or "").strip()
+    if not raw:
+        return None
+    try:
+        capacity = int(raw)
+    except ValueError as exc:
+        raise ValueError("定員は整数で入力してください") from exc
+    if capacity < 1 or capacity > 100000:
+        raise ValueError("定員は1から100000の範囲で入力してください")
+    return capacity
+
+
+def event_fee_value(data):
+    raw = str(data.get("fee_amount") or "").strip()
+    if not raw:
+        return None
+    try:
+        fee = int(raw)
+    except ValueError as exc:
+        raise ValueError("参加費は整数で入力してください") from exc
+    if fee < 0 or fee > 10000000:
+        raise ValueError("参加費は0から10000000の範囲で入力してください")
+    return fee
+
+
+def event_participation_label(value):
+    return {"individual": "個人参加", "team": "チーム参加", "both": "個人・チーム参加"}.get(value, value)
+
+
+def event_acceptance_label(value):
+    return {"first_come": "先着順", "approval": "主催者承認制"}.get(value, value)
+
+
+def event_status_label(value):
+    return {"draft": "下書き", "published": "受付中", "closed": "受付終了", "cancelled": "開催中止"}.get(value, value)
+
+
+def application_status_label(value):
+    return {"pending": "承認待ち", "confirmed": "参加確定", "declined": "見送り", "cancelled": "取消済み"}.get(value, value)
+
+
+def can_link_circle(conn, user, circle_id):
+    """Only a verified representative can present an existing DB circle as host."""
+    if not circle_id:
+        return True
+    if not user.get("email"):
+        return False
+    row = conn.execute(
+        """
+        select 1 from circle_claims
+        where circle_id=? and lower(claimant_email)=lower(?) and university_email_verified=1
+        limit 1
+        """,
+        (circle_id, user["email"]),
+    ).fetchone()
+    return bool(row)
+
+
+def event_payload_from_data(conn, data, user, event_id=""):
+    event_type = event_form_value(data, "event_type", "募集種別", required=True, max_length=50)
+    if event_type not in EVENT_TYPES:
+        raise ValueError("募集種別が正しくありません")
+    sport = event_form_value(data, "sport_category", "競技", required=True, max_length=100)
+    title = event_form_value(data, "title", "タイトル", required=True, max_length=120)
+    starts_at = event_datetime(data.get("starts_at"), "開催日時")
+    ends_at = event_datetime(data.get("ends_at"), "終了日時", required=False)
+    if ends_at and ends_at < starts_at:
+        raise ValueError("終了日時は開催日時より後にしてください")
+    participation_type = event_form_value(data, "participation_type", "参加単位", required=True, max_length=20)
+    if participation_type not in EVENT_PARTICIPATION_TYPES:
+        raise ValueError("参加単位が正しくありません")
+    acceptance_mode = event_form_value(data, "acceptance_mode", "受付方式", required=True, max_length=30)
+    if acceptance_mode not in EVENT_ACCEPTANCE_MODES:
+        raise ValueError("受付方式が正しくありません")
+    payment_method = event_form_value(data, "payment_method", "支払方法", required=True, max_length=30)
+    if payment_method not in {"free", "on_site"}:
+        raise ValueError("オンライン決済にはまだ対応していません。無料または現地払いを選択してください")
+    status = str(data.get("status") or "draft").strip()
+    if status not in {"draft", "published"}:
+        raise ValueError("保存状態が正しくありません")
+    deadline = event_datetime(data.get("application_deadline"), "応募締切", required=False)
+    if deadline and deadline > starts_at:
+        raise ValueError("応募締切は開催日時以前にしてください")
+    linked_circle_id = event_form_value(data, "linked_circle_id", "主催団体", max_length=120)
+    if linked_circle_id and not can_link_circle(conn, user, linked_circle_id):
+        raise ValueError("団体との紐付けには、確認済みの代表権限が必要です。団体なしで公開することはできます")
+    organizer_name = event_form_value(data, "organizer_name", "主催者の表示名", max_length=80) or (user.get("display_name") or user.get("email") or "主催者")
+    contact_email = event_form_value(data, "organizer_contact_email", "主催者連絡先", max_length=255) or (user.get("email") or "")
+    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", contact_email):
+        raise ValueError("主催者連絡先にはメールアドレスを入力してください")
+    payload = {
+        "linked_circle_id": linked_circle_id or None,
+        "organizer_name": organizer_name,
+        "organizer_contact_email": contact_email,
+        "event_type": event_type,
+        "sport_category": sport,
+        "title": title,
+        "starts_at": starts_at,
+        "ends_at": ends_at or None,
+        "prefecture": event_form_value(data, "prefecture", "都道府県", max_length=30) or None,
+        "location": event_form_value(data, "location", "会場", required=True, max_length=250),
+        "description": event_form_value(data, "description", "説明", required=True, max_length=5000),
+        "participation_type": participation_type,
+        "capacity": event_capacity_value(data),
+        "capacity_unit": event_form_value(data, "capacity_unit", "定員の単位", max_length=20) or ("チーム" if participation_type == "team" else "人"),
+        "eligibility": event_form_value(data, "eligibility", "参加条件", max_length=1200),
+        "fee_amount": event_fee_value(data),
+        "fee_unit": event_form_value(data, "fee_unit", "料金の単位", max_length=40) or ("1チーム" if participation_type == "team" else "1人"),
+        "payment_method": payment_method,
+        "application_deadline": deadline or None,
+        "acceptance_mode": acceptance_mode,
+        "cancellation_policy": event_form_value(data, "cancellation_policy", "キャンセル・中止条件", max_length=1600),
+        "status": status,
+    }
+    if status == "published" and starts_at <= datetime.now().strftime("%Y-%m-%d %H:%M"):
+        raise ValueError("公開する募集の開催日時は現在より後にしてください")
+    return payload
+
+
+def event_public_select(where="", params=()):
+    sql = """
+        select e.event_id, e.linked_circle_id, e.organizer_name, e.event_type, e.sport_category,
+          e.title, e.starts_at, e.ends_at, e.prefecture, e.location, e.description,
+          e.participation_type, e.capacity, e.capacity_unit, e.eligibility, e.fee_amount,
+          e.fee_unit, e.payment_method, e.application_deadline, e.acceptance_mode,
+          e.cancellation_policy, e.status, e.published_at, e.created_at, e.updated_at,
+          c.circle_name as linked_circle_name, cp.profile_slug as linked_circle_profile_slug,
+          coalesce(sum(case when a.status='confirmed' then a.participant_count else 0 end), 0) as confirmed_count,
+          coalesce(sum(case when a.status in ('pending','confirmed') then 1 else 0 end), 0) as application_count
+        from event_posts e
+        left join circles c on c.circle_id=e.linked_circle_id
+        left join circle_public_profiles cp on cp.circle_id=e.linked_circle_id and cp.is_published=1
+        left join event_applications a on a.event_id=e.event_id
+    """
+    if where:
+        sql += " where " + where
+    sql += " group by e.event_id "
+    return sql, list(params)
+
+
+def event_query_conditions(params, include_all_statuses=False):
+    sport = (params.get("sport", [""])[0] or "").strip()
+    region = (params.get("region", [""])[0] or "").strip()
+    prefecture = (params.get("prefecture", [""])[0] or "").strip()
+    event_type = (params.get("event_type", [""])[0] or "").strip()
+    participation = (params.get("participation", [""])[0] or "").strip()
+    date_from = (params.get("date_from", [""])[0] or "").strip()
+    date_to = (params.get("date_to", [""])[0] or "").strip()
+    where = [] if include_all_statuses else ["e.status='published'", "e.starts_at>=datetime('now','localtime')"]
+    args = []
+    if sport:
+        where.append("e.sport_category like ?")
+        args.append(f"%{sport}%")
+    if prefecture:
+        where.append("e.prefecture=?")
+        args.append(prefecture)
+    elif region:
+        prefectures = region_prefectures(region)
+        if prefectures:
+            where.append("e.prefecture in (%s)" % ",".join("?" * len(prefectures)))
+            args.extend(prefectures)
+    if event_type in EVENT_TYPES:
+        where.append("e.event_type=?")
+        args.append(event_type)
+    if participation in {"individual", "team"}:
+        where.append("e.participation_type in (?, 'both')")
+        args.append(participation)
+    if date_from:
+        where.append("substr(e.starts_at,1,10)>=?")
+        args.append(date_from[:10])
+    if date_to:
+        where.append("substr(e.starts_at,1,10)<=?")
+        args.append(date_to[:10])
+    return where, args
+
+
+def search_events(params, limit=60):
+    where, args = event_query_conditions(params)
+    sql, args = event_public_select(" and ".join(where), args)
+    sql += " order by e.starts_at asc, e.created_at desc limit ?"
+    args.append(max(1, min(int(limit), 100)))
+    return rows(sql, args)
+
+
+def get_event(event_id, include_private=False):
+    where = "e.event_id=?"
+    if not include_private:
+        where += " and e.status in ('published','closed','cancelled')"
+    sql, args = event_public_select(where, [event_id])
+    with connect() as conn:
+        row = conn.execute(sql, args).fetchone()
+    return dict(row) if row else None
+
+
+def event_owner(conn, event_id, user_id):
+    row = conn.execute(
+        "select * from event_posts where event_id=? and organizer_user_id=?",
+        (event_id, user_id),
+    ).fetchone()
+    if not row:
+        raise PermissionError("この募集を管理する権限がありません")
+    return row
+
+
+def add_event_notification(conn, recipient_user_id, event_id, notification_type, title, body):
+    """Email has no configured provider yet; never claim that an email was sent."""
+    notification_id = slug("notification", f"{recipient_user_id}:{event_id}:{notification_type}:{now()}:{secrets.token_hex(4)}")
+    conn.execute(
+        """
+        insert into event_notifications(notification_id, recipient_user_id, event_id, notification_type,
+          title, body, email_status, created_at)
+        values(?,?,?,?,?,?, 'not_configured', ?)
+        """,
+        (notification_id, recipient_user_id, event_id, notification_type, title, body, now()),
+    )
+    return notification_id
+
+
+def save_event_post(conn, data, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    event_id = event_form_value(data, "event_id", "募集ID", max_length=120)
+    payload = event_payload_from_data(conn, data, user, event_id)
+    timestamp = now()
+    values = (
+        payload["linked_circle_id"], payload["organizer_name"], payload["organizer_contact_email"],
+        payload["event_type"], payload["sport_category"], payload["title"], payload["starts_at"],
+        payload["ends_at"], payload["prefecture"], payload["location"], payload["description"],
+        payload["participation_type"], payload["capacity"], payload["capacity_unit"], payload["eligibility"],
+        payload["fee_amount"], payload["fee_unit"], payload["payment_method"], payload["application_deadline"],
+        payload["acceptance_mode"], payload["cancellation_policy"], payload["status"], timestamp,
+    )
+    if event_id:
+        existing = event_owner(conn, event_id, user["user_id"])
+        if existing["status"] == "cancelled":
+            raise ValueError("中止した募集は再公開できません。複製して新しい募集を作成してください")
+        conn.execute(
+            """
+            update event_posts set linked_circle_id=?, organizer_name=?, organizer_contact_email=?, event_type=?,
+              sport_category=?, title=?, starts_at=?, ends_at=?, prefecture=?, location=?, description=?,
+              participation_type=?, capacity=?, capacity_unit=?, eligibility=?, fee_amount=?, fee_unit=?,
+              payment_method=?, application_deadline=?, acceptance_mode=?, cancellation_policy=?, status=?,
+              published_at=case when ?='published' and published_at is null then ? else published_at end,
+              updated_at=? where event_id=?
+            """,
+            values + (payload["status"], timestamp, timestamp, event_id),
+        )
+    else:
+        event_id = slug("event", f"{user['user_id']}:{payload['title']}:{payload['starts_at']}:{timestamp}")
+        conn.execute(
+            """
+            insert into event_posts(event_id, organizer_user_id, linked_circle_id, organizer_name, organizer_contact_email,
+              event_type, sport_category, title, starts_at, ends_at, prefecture, location, description,
+              participation_type, capacity, capacity_unit, eligibility, fee_amount, fee_unit, payment_method,
+              application_deadline, acceptance_mode, cancellation_policy, status, published_at, created_at, updated_at)
+            values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """,
+            (event_id, user["user_id"], *values[:22], timestamp if payload["status"] == "published" else None, timestamp, timestamp),
+        )
+    audit(conn, "event_save", "event_post", event_id, {"status": payload["status"], "organizer_user_id": user["user_id"]})
+    return event_id
+
+
+def event_is_open_for_application(event):
+    if event["status"] != "published":
+        raise ValueError("この募集は現在受け付けていません")
+    deadline = event["application_deadline"] or ""
+    if deadline and deadline < datetime.now().strftime("%Y-%m-%d %H:%M"):
+        raise ValueError("応募締切を過ぎています")
+    if event["starts_at"] < datetime.now().strftime("%Y-%m-%d %H:%M"):
+        raise ValueError("開催日時を過ぎています")
+
+
+def active_confirmed_capacity(conn, event_id):
+    value = conn.execute(
+        "select coalesce(sum(participant_count), 0) from event_applications where event_id=? and status='confirmed'",
+        (event_id,),
+    ).fetchone()[0]
+    return int(value or 0)
+
+
+def submit_event_application(conn, event_id, data, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    conn.execute("begin immediate")
+    event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+    if not event:
+        raise ValueError("募集が見つかりません")
+    event_is_open_for_application(event)
+    if event["organizer_user_id"] == user["user_id"]:
+        raise ValueError("主催者本人はこの募集に申し込めません")
+    existing = conn.execute(
+        "select application_id from event_applications where event_id=? and applicant_user_id=?",
+        (event_id, user["user_id"]),
+    ).fetchone()
+    if existing:
+        raise ValueError("この募集にはすでに申し込み済みです")
+    participation_type = event_form_value(data, "participation_type", "参加単位", required=True, max_length=20)
+    allowed = {"individual", "team"} if event["participation_type"] == "both" else {event["participation_type"]}
+    if participation_type not in allowed:
+        raise ValueError("この募集で選択できない参加単位です")
+    applicant_name = event_form_value(data, "applicant_name", "参加者名", required=participation_type == "individual", max_length=80)
+    team_name = event_form_value(data, "team_name", "チーム名", required=participation_type == "team", max_length=100)
+    representative_name = event_form_value(data, "representative_name", "代表者名", required=participation_type == "team", max_length=80)
+    raw_count = str(data.get("participant_count") or ("1" if participation_type == "individual" else "")).strip()
+    try:
+        participant_count = int(raw_count)
+    except ValueError as exc:
+        raise ValueError("参加予定人数は整数で入力してください") from exc
+    if participant_count < 1 or participant_count > 100000:
+        raise ValueError("参加予定人数は1から100000の範囲で入力してください")
+    if event["capacity"] and event["acceptance_mode"] == "first_come":
+        if active_confirmed_capacity(conn, event_id) + participant_count > int(event["capacity"]):
+            raise ValueError("定員に達しているため申し込めません")
+    status = "confirmed" if event["acceptance_mode"] == "first_come" else "pending"
+    application_id = slug("application", f"{event_id}:{user['user_id']}:{now()}:{secrets.token_hex(4)}")
+    conn.execute(
+        """
+        insert into event_applications(application_id, event_id, applicant_user_id, participation_type,
+          applicant_name, team_name, representative_name, participant_count, answers_json, applicant_message,
+          status, created_at, updated_at)
+        values(?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """,
+        (
+            application_id, event_id, user["user_id"], participation_type, applicant_name or None,
+            team_name or None, representative_name or None, participant_count,
+            json.dumps(data.get("answers") or {}, ensure_ascii=False),
+            event_form_value(data, "applicant_message", "主催者への連絡", max_length=1200) or None,
+            status, now(), now(),
+        ),
+    )
+    add_event_notification(
+        conn, event["organizer_user_id"], event_id, "new_application", "新しい参加申込があります",
+        f"{event['title']} に{participant_count}{event['capacity_unit'] or '人'}分の申込がありました。",
+    )
+    add_event_notification(
+        conn, user["user_id"], event_id, "application_received",
+        "参加申込を受け付けました" if status == "confirmed" else "参加申請を受け付けました",
+        f"{event['title']} の受付状況は「{application_status_label(status)}」です。",
+    )
+    audit(conn, "event_apply", "event_application", application_id, {"event_id": event_id, "status": status, "applicant_user_id": user["user_id"]})
+    return {"application_id": application_id, "status": status}
+
+
+def set_event_application_status(conn, event_id, application_id, action, user, organizer_note=""):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    conn.execute("begin immediate")
+    event = event_owner(conn, event_id, user["user_id"])
+    application = conn.execute(
+        "select * from event_applications where application_id=? and event_id=?",
+        (application_id, event_id),
+    ).fetchone()
+    if not application:
+        raise ValueError("申込が見つかりません")
+    if application["status"] != "pending":
+        raise ValueError("この申込はすでに処理済みです")
+    if action not in {"confirm", "decline"}:
+        raise ValueError("処理内容が正しくありません")
+    next_status = "confirmed" if action == "confirm" else "declined"
+    if next_status == "confirmed":
+        event_is_open_for_application(event)
+        if event["capacity"] and active_confirmed_capacity(conn, event_id) + int(application["participant_count"] or 0) > int(event["capacity"]):
+            raise ValueError("定員を超えるため参加確定にできません")
+    conn.execute(
+        "update event_applications set status=?, organizer_note=?, updated_at=? where application_id=?",
+        (next_status, str(organizer_note or "").strip()[:1200] or None, now(), application_id),
+    )
+    add_event_notification(
+        conn, application["applicant_user_id"], event_id, f"application_{next_status}",
+        "参加が確定しました" if next_status == "confirmed" else "申込を見送りました",
+        f"{event['title']} の受付状況は「{application_status_label(next_status)}」です。",
+    )
+    audit(conn, "event_application_status", "event_application", application_id, {"event_id": event_id, "status": next_status})
+    return next_status
+
+
+def cancel_event_application(conn, event_id, application_id, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    application = conn.execute(
+        "select * from event_applications where application_id=? and event_id=? and applicant_user_id=?",
+        (application_id, event_id, user["user_id"]),
+    ).fetchone()
+    if not application:
+        raise PermissionError("この申込を取り消す権限がありません")
+    if application["status"] not in {"pending", "confirmed"}:
+        raise ValueError("この申込は取り消せません")
+    event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+    conn.execute("update event_applications set status='cancelled', updated_at=? where application_id=?", (now(), application_id))
+    add_event_notification(
+        conn, event["organizer_user_id"], event_id, "application_cancelled", "参加申込が取り消されました",
+        f"{event['title']} の申込が参加者により取り消されました。",
+    )
+    audit(conn, "event_application_cancel", "event_application", application_id, {"event_id": event_id})
+
+
+def set_event_status(conn, event_id, status, user):
+    if status not in {"closed", "cancelled", "published"}:
+        raise ValueError("募集状態が正しくありません")
+    event = event_owner(conn, event_id, user["user_id"])
+    if event["status"] == "cancelled" and status != "cancelled":
+        raise ValueError("中止した募集は再公開できません。複製して作り直してください")
+    conn.execute("update event_posts set status=?, updated_at=? where event_id=?", (status, now(), event_id))
+    recipients = conn.execute(
+        "select distinct applicant_user_id from event_applications where event_id=? and status in ('pending','confirmed')",
+        (event_id,),
+    ).fetchall()
+    title = "開催中止のお知らせ" if status == "cancelled" else ("募集を締め切りました" if status == "closed" else "募集を再開しました")
+    for recipient in recipients:
+        add_event_notification(conn, recipient["applicant_user_id"], event_id, f"event_{status}", title, f"{event['title']} の状態が「{event_status_label(status)}」に変更されました。")
+    audit(conn, "event_status", "event_post", event_id, {"status": status})
+
+
+def event_applications_for_owner(event_id, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    with connect() as conn:
+        event_owner(conn, event_id, user["user_id"])
+        rows_data = conn.execute(
+            """
+            select a.application_id, a.applicant_user_id, a.participation_type, a.applicant_name, a.team_name, a.representative_name,
+              a.participant_count, a.applicant_message, a.status, a.created_at, a.updated_at,
+              u.display_name as account_name
+            from event_applications a join user_accounts u on u.user_id=a.applicant_user_id
+            where a.event_id=? order by a.created_at desc
+            """,
+            (event_id,),
+        ).fetchall()
+    return [dict(row) for row in rows_data]
+
+
+def event_my_page(user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    with connect() as conn:
+        hosted = conn.execute(
+            """
+            select e.*, coalesce(sum(case when a.status='confirmed' then a.participant_count else 0 end),0) as confirmed_count,
+              count(a.application_id) as application_count
+            from event_posts e left join event_applications a on a.event_id=e.event_id
+            where e.organizer_user_id=? group by e.event_id order by e.updated_at desc
+            """,
+            (user["user_id"],),
+        ).fetchall()
+        attending = conn.execute(
+            """
+            select a.application_id, a.status as application_status, a.participation_type, a.team_name,
+              a.participant_count, a.created_at as application_created_at, e.*
+            from event_applications a join event_posts e on e.event_id=a.event_id
+            where a.applicant_user_id=? order by e.starts_at asc, a.created_at desc
+            """,
+            (user["user_id"],),
+        ).fetchall()
+        notifications = conn.execute(
+            """
+            select n.*, e.title as event_title from event_notifications n
+            left join event_posts e on e.event_id=n.event_id
+            where n.recipient_user_id=? order by n.created_at desc limit 50
+            """,
+            (user["user_id"],),
+        ).fetchall()
+    return {"hosted": [dict(row) for row in hosted], "attending": [dict(row) for row in attending], "notifications": [dict(row) for row in notifications]}
+
+
+def event_messages_for_user(event_id, user, peer_user_id=""):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    with connect() as conn:
+        event = conn.execute("select organizer_user_id from event_posts where event_id=?", (event_id,)).fetchone()
+        if not event:
+            raise ValueError("募集が見つかりません")
+        application = conn.execute(
+            "select 1 from event_applications where event_id=? and applicant_user_id=? and status in ('pending','confirmed')",
+            (event_id, user["user_id"]),
+        ).fetchone()
+        if user["user_id"] != event["organizer_user_id"] and not application:
+            raise PermissionError("この募集の連絡を閲覧する権限がありません")
+        peer_user_id = (peer_user_id or "").strip()
+        if peer_user_id and user["user_id"] == event["organizer_user_id"]:
+            eligible = conn.execute(
+                "select 1 from event_applications where event_id=? and applicant_user_id=? and status in ('pending','confirmed')",
+                (event_id, peer_user_id),
+            ).fetchone()
+            if not eligible:
+                raise PermissionError("この参加者との連絡を閲覧する権限がありません")
+        elif peer_user_id and peer_user_id != event["organizer_user_id"]:
+            raise PermissionError("この連絡先は選択できません")
+        other_user_id = peer_user_id or (event["organizer_user_id"] if user["user_id"] != event["organizer_user_id"] else "")
+        message_sql = """
+            select m.message_id, m.body, m.created_at, m.sender_user_id, u.display_name as sender_name
+            from event_messages m join user_accounts u on u.user_id=m.sender_user_id
+            where m.event_id=? and (m.sender_user_id=? or m.recipient_user_id=?)
+        """
+        message_args = [event_id, user["user_id"], user["user_id"]]
+        if other_user_id:
+            message_sql += " and (m.sender_user_id=? or m.recipient_user_id=?)"
+            message_args.extend([other_user_id, other_user_id])
+        message_sql += " order by m.created_at asc"
+        data = conn.execute(
+            message_sql,
+            message_args,
+        ).fetchall()
+        conn.execute(
+            "update event_messages set read_at=? where event_id=? and recipient_user_id=? and read_at is null",
+            (now(), event_id, user["user_id"]),
+        )
+    return [dict(row) for row in data]
+
+
+def send_event_message(conn, event_id, data, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+    if not event:
+        raise ValueError("募集が見つかりません")
+    sender = user["user_id"]
+    recipient = event["organizer_user_id"]
+    if sender == recipient:
+        applicant_user_id = event_form_value(data, "recipient_user_id", "宛先", required=True, max_length=120)
+        eligible = conn.execute(
+            "select 1 from event_applications where event_id=? and applicant_user_id=? and status in ('pending','confirmed')",
+            (event_id, applicant_user_id),
+        ).fetchone()
+        if not eligible:
+            raise PermissionError("この参加者には連絡できません")
+        recipient = applicant_user_id
+    else:
+        eligible = conn.execute(
+            "select 1 from event_applications where event_id=? and applicant_user_id=? and status in ('pending','confirmed')",
+            (event_id, sender),
+        ).fetchone()
+        if not eligible:
+            raise PermissionError("この募集の主催者へ連絡する権限がありません")
+    body = event_form_value(data, "body", "メッセージ", required=True, max_length=2000)
+    message_id = slug("message", f"{event_id}:{sender}:{recipient}:{now()}:{secrets.token_hex(4)}")
+    conn.execute(
+        "insert into event_messages(message_id,event_id,sender_user_id,recipient_user_id,body,created_at) values(?,?,?,?,?,?)",
+        (message_id, event_id, sender, recipient, body, now()),
+    )
+    add_event_notification(conn, recipient, event_id, "new_message", "新しいメッセージがあります", f"{event['title']} について新しい連絡があります。")
+    return message_id
+
+
+def event_copy_for_owner(conn, event_id, user):
+    event = event_owner(conn, event_id, user["user_id"])
+    data = dict(event)
+    for key in ("event_id", "organizer_user_id", "status", "published_at", "created_at", "updated_at"):
+        data.pop(key, None)
+    return data
+
+
+def claimed_circles_for_user(user):
+    if not user.get("authenticated") or not user.get("email"):
+        return []
+    with connect() as conn:
+        data = conn.execute(
+            """
+            select c.circle_id, c.circle_name, c.sport_category, u.university_name, u.prefecture
+            from circle_claims cc join circles c on c.circle_id=cc.circle_id
+            join universities u on u.university_id=c.university_id
+            where lower(cc.claimant_email)=lower(?) and cc.university_email_verified=1
+            order by u.university_name, c.circle_name
+            """,
+            (user["email"],),
+        ).fetchall()
+    return [dict(row) for row in data]
 
 
 def collection_status():
