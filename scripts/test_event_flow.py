@@ -140,6 +140,10 @@ def main():
 
         published = app.search_events({"sport": ["ピックルボール"]})
         assert any(item["event_id"] == first_come_id for item in published)
+        football = event_payload("サッカー募集の遷移確認大会")
+        football["sport_category"] = "サッカー・フットサル"
+        with app.connect() as conn:
+            app.save_event_post(conn, football, host)
         with app.connect() as conn:
             try:
                 app.event_owner(conn, approval_id, first["user_id"])
@@ -155,6 +159,19 @@ def main():
             with urllib.request.urlopen(base + "/", timeout=10) as response:
                 home = response.read().decode("utf-8")
             assert "大会・イベント" in home and "ピックルボール" in home and "先着順テスト大会" in home
+            football_query = "sport=" + quote("サッカー・フットサル") + "&region=kanto&date_from=2030-05-01"
+            with urllib.request.urlopen(base + "/events?" + football_query, timeout=10) as response:
+                assert response.geturl() == base + "/events?" + football_query
+                listing = response.read().decode("utf-8")
+            assert "サッカー・フットサル<span>大会・イベント</span>" in listing
+            assert "サッカー募集の遷移確認大会" in listing and "先着順テスト大会" not in listing
+            assert 'class="sport-grid"' not in listing and '/assets/sports/soccer.png' in listing
+            assert 'id="eventResultCount" role="status">1件を表示' in listing
+            assert "date_from=2030-05-01" in listing
+            with urllib.request.urlopen(base + "/events?sport=" + quote("ラグビー"), timeout=10) as response:
+                empty_listing = response.read().decode("utf-8")
+            assert "現在、ラグビーの募集中の大会・イベントはありません。" in empty_listing
+            assert 'id="eventResultCount" role="status">0件を表示' in empty_listing
             with urllib.request.urlopen(base + "/events/new?sport=%E3%83%94%E3%83%83%E3%82%AF%E3%83%AB%E3%83%9C%E3%83%BC%E3%83%AB", timeout=10) as response:
                 form = response.read().decode("utf-8")
             assert "募集を掲載する" in form and '"sport_category": "ピックルボール"' in form

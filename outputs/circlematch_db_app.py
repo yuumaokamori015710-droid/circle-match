@@ -1050,6 +1050,7 @@ def render_legacy_home_html():
 
 EVENT_BASE_CSS = """
   [hidden]{display:none!important}
+  .event-breadcrumb{margin:0 0 12px;font-size:14px}.event-results-intro{position:relative;min-height:164px;display:flex;align-items:center;padding:24px;overflow:hidden;color:#fff;background:#102a43}.event-results-intro img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center}.event-results-intro:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,18,31,.88),rgba(9,18,31,.35) 70%,transparent)}.event-results-intro h1{position:relative;z-index:1;margin:0;max-width:75%;font-size:30px;line-height:1.45;overflow-wrap:anywhere}.event-results-intro h1 span{display:block;font-size:18px}.event-grid>.empty,.event-grid>.error-box{grid-column:1/-1}.event-results .filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.event-results .panel-head{align-items:center}.event-results #eventResultCount{margin:4px 0 0}.event-results .filter-grid>*{min-width:0}@media(max-width:600px){.event-results-intro{min-height:132px;padding:16px}.event-results-intro h1{font-size:24px;max-width:85%}.event-results-intro h1 span{font-size:16px}.event-results .filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px}.event-results .panel-head{padding:12px}.event-results .panel-head h2{font-size:19px}.event-results .empty{padding:12px}.event-results .panel-head>.button{display:none}}
   :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--accent:#e15b31;--navy:#102a43;--warning:#a54822}
   *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}a{color:inherit}.site-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.site-nav{max-width:1180px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}.brand{flex:0 0 auto;font-weight:900;text-decoration:none}.main-nav{display:flex;align-items:center;gap:5px;min-width:0;margin-left:auto}.main-nav a{min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border-radius:8px;color:#405164;font-size:14px;font-weight:900;text-decoration:none;white-space:nowrap}.main-nav a.active{background:#e8f4ef;color:#0d674f}.main-nav a.publish{background:var(--accent);color:#fff}.main-nav a.account{border:1px solid var(--accent);color:var(--accent);background:#fff}.container{max-width:1180px;margin:auto;padding:22px 16px 50px}.intro{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:4px 0 14px}.intro h1{margin:0;font-size:clamp(27px,4vw,42px);line-height:1.15}.intro p{max-width:700px;margin:10px 0 0;color:#50637a;line-height:1.75}.eyebrow{margin:0 0 7px;color:var(--brand);font-weight:950;font-size:12px;letter-spacing:.07em;text-transform:uppercase}.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px}.tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 17px;border-bottom:3px solid transparent;color:#61738b;text-decoration:none;font-weight:900}.tabs a.active{border-color:var(--accent);color:var(--ink)}.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden}.section{margin-top:18px}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:22px}.panel-head p{margin:7px 0 0;color:var(--muted);line-height:1.65}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.button.secondary{background:var(--brand);border-color:var(--brand);color:#fff}.button:disabled{opacity:.55;cursor:not-allowed}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sport-card{position:relative;overflow:hidden;min-height:154px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#132238;text-decoration:none;color:#fff;box-shadow:0 10px 24px rgba(20,36,56,.15)}.sport-card:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(20,36,56,.23)}.sport-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.03)}.sport-card:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,18,31,.92),rgba(9,18,31,.5) 58%,rgba(9,18,31,.1))}.sport-copy{position:relative;z-index:2;display:grid;gap:6px;padding:17px;max-width:76%}.sport-copy strong{font-size:24px;line-height:1.1}.sport-copy span{font-size:12px;font-weight:800;color:rgba(255,255,255,.84)}.sport-copy em{position:absolute;left:17px;top:98px;font-style:normal;font-size:12px;font-weight:900;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.18);white-space:nowrap}.filter-grid{display:grid;grid-template-columns:1.4fr repeat(4,minmax(120px,1fr));gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;min-height:42px;border:1px solid #cbd7e2;border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);font:inherit}textarea{min-height:112px;resize:vertical}.event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.event-card{display:flex;flex-direction:column;gap:10px;min-height:252px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.event-card h3{margin:0;font-size:18px;line-height:1.35}.event-card h3 a{text-decoration:none}.event-card p{margin:0;color:#52657a;font-size:13px;line-height:1.65}.card-meta{display:grid;gap:5px;color:#52657a;font-size:13px}.card-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}.badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 8px;border-radius:999px;background:#edf2f7;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.pending{background:#fff4dd;color:#8a5a00}.badge.closed{background:#f1f3f5;color:#6c7785}.badge.cancelled{background:#fff0f0;color:#a33}.empty,.error-box{padding:24px;color:var(--muted);line-height:1.75}.error-box{color:#9f321e;background:#fff5f2;border:1px solid #f0c6ba;border-radius:8px}.db-toggle{display:flex;gap:7px}.db-toggle a{display:inline-flex;min-height:38px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-size:14px;font-weight:900}.db-toggle a.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.db-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px}.metric{padding:13px;border:1px solid var(--line);border-radius:8px;background:#fff}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:850}.metric strong{display:block;margin-top:6px;font-size:24px}.circle-list{display:grid;gap:0}.circle-row{display:grid;grid-template-columns:1.2fr 1.2fr .8fr .9fr;gap:10px;padding:14px 16px;border-top:1px solid var(--line);font-size:14px}.circle-row strong{display:block}.circle-row small{display:block;margin-top:3px;color:var(--muted)}.notice{margin-top:16px;padding:17px;border:1px solid #d7e7dd;background:#f6fbf8;border-radius:8px;color:#365447;line-height:1.75}.about{margin-top:26px;padding:22px;background:#fff;border-top:1px solid var(--line);color:#53667b;line-height:1.8}.about h2{margin:0 0 9px;color:var(--ink);font-size:20px}.detail{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.detail-main,.detail-side{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px}.detail-main h1{margin:0;font-size:32px;line-height:1.25}.detail-main p{line-height:1.8;color:#405164}.detail-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.detail-meta div{padding:11px;border-radius:8px;background:#f7fafc}.detail-meta span{display:block;color:#64748b;font-size:12px;font-weight:850}.detail-meta strong{display:block;margin-top:4px;line-height:1.55}.detail-side{position:sticky;top:75px;height:max-content}.detail-side h2{margin:0;font-size:18px}.detail-side p{color:#64748b;line-height:1.65}.form-shell{max-width:860px;margin:auto}.stepper{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:16px}.stepper span{padding:9px;border-bottom:3px solid #dbe4ed;color:#76879b;font-size:13px;font-weight:900}.stepper span.active{border-color:var(--accent);color:var(--ink)}.form-section{display:none;padding:20px}.form-section.active{display:block}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:900;color:#405164}.help{color:#64748b;font-size:12px;line-height:1.55}.form-actions{display:flex;justify-content:space-between;gap:10px;padding:16px 20px;border-top:1px solid var(--line);flex-wrap:wrap}.preview{padding:15px;border-radius:8px;background:#f8fbfd;border:1px solid var(--line);line-height:1.7}.mypage-tabs{display:flex;gap:8px;margin-bottom:12px}.mypage-tabs button{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 12px;font:inherit;font-weight:900;cursor:pointer}.mypage-tabs button.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.my-section{display:none}.my-section.active{display:block}.my-card{margin-top:10px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.my-card h3{margin:0 0 6px;font-size:18px}.my-card p{margin:5px 0;color:#607086;font-size:14px;line-height:1.6}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.apps{display:grid;gap:8px;margin-top:12px}.app-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:8px;background:#f8fbfd}.messages{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}.message-log{display:grid;gap:7px;max-height:220px;overflow:auto}.message{padding:8px 10px;border-radius:8px;background:#f4f7fa;font-size:13px;line-height:1.55}.message.mine{background:#e9f6ef}.notification{padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.6}.notification small{display:block;color:#75869b;margin-top:4px}.mobile-apply{display:none}
   @media(max-width:820px){.site-nav{padding:8px 12px;gap:7px}.main-nav{gap:2px}.main-nav a{min-height:36px;padding:7px;font-size:12px}.main-nav a.db-label{display:none}.container{padding:16px 12px 40px}.intro{align-items:start;flex-direction:column}.sport-grid,.event-grid{grid-template-columns:1fr 1fr}.sport-card{min-height:132px}.sport-copy{padding:13px}.sport-copy strong{font-size:18px}.sport-copy em{left:13px;top:84px}.filter-grid{grid-template-columns:1fr 1fr}.event-grid{padding:12px}.detail{grid-template-columns:1fr}.detail-side{position:static}.detail-meta,.field-grid{grid-template-columns:1fr}.circle-row{grid-template-columns:1fr 1fr}.circle-row>div:nth-child(n+3){display:none}.db-summary{grid-template-columns:1fr 1fr}.mobile-apply{display:flex;position:sticky;bottom:8px;z-index:10;margin-top:12px;box-shadow:0 8px 20px rgba(23,33,47,.18)}}
@@ -1066,7 +1067,7 @@ def event_shell(title, body, script=""):
     return with_adsense(page).replace("__SITE_NAME__", SITE_NAME)
 
 
-def selected_home_query(params, tab, **updates):
+def selected_home_query(params, tab, *, path="/", **updates):
     values = {}
     for key in ("sport", "region", "prefecture", "date_from", "date_to", "event_type", "participation", "audience", "q"):
         value = (params.get(key, [""])[0] or "").strip()
@@ -1074,13 +1075,13 @@ def selected_home_query(params, tab, **updates):
             values[key] = value
     values.update({key: value for key, value in updates.items() if value})
     values["tab"] = tab
-    return "/?" + urlencode(values)
+    return path + "?" + urlencode(values)
 
 
 def event_sport_cards(params, tab, audience="university"):
     cards = []
     for name, label, _code, _color, image in POPULAR_SPORTS:
-        href = selected_home_query(params, tab, audience=audience, sport=name)
+        href = selected_home_query(params, tab, path="/events" if tab == "events" else "/", audience=audience, sport=name)
         cards.append(
             f'<a class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{html.escape(image)}?v=20260713v1" alt="{html.escape(name)}"><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>{"募集を見る" if tab == "events" else "団体を探す"}</em></span></a>'
         )
@@ -1142,7 +1143,7 @@ def render_db_rows(circles):
     return "".join(output)
 
 
-def render_public_html(params=None):
+def render_public_html(params=None, event_listing=False):
     """Render the event-first home while keeping all circle data routes intact."""
     params = params or {}
     tab = (params.get("tab", ["events"])[0] or "events").strip()
@@ -1151,7 +1152,8 @@ def render_public_html(params=None):
     audience = audience_scope(params, "university")
     sport = (params.get("sport", [""])[0] or "").strip()
     region = (params.get("region", [""])[0] or "").strip()
-    event_url = selected_home_query(params, "events")
+    event_listing = tab == "events" and (event_listing or bool(sport))
+    event_url = selected_home_query(params, "events", path="/events" if sport or event_listing else "/")
     db_url = selected_home_query(params, "db", audience=audience)
     post_url = "/events/new" + ("?" + urlencode({"sport": sport}) if sport else "")
     tabs = f'<div class="tabs"><a class="{"active" if tab == "events" else ""}" href="{html.escape(event_url, quote=True)}">大会・イベント</a><a class="{"active" if tab == "db" else ""}" href="{html.escape(db_url, quote=True)}">サークルDB</a></div>'
@@ -1169,9 +1171,19 @@ def render_public_html(params=None):
         filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in event_sport_options())
         region_options_html = ''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())
         type_options = ''.join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in EVENT_TYPES)
-        body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>スポーツから探す</h2><p>競技を選ぶと、同じ条件の大会・イベントをすぐに確認できます。</p></div></div><div class="sport-grid">{event_sport_cards(params, "events")}</div></section>
-<section class="section panel" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p>閲覧は登録不要です。申込時にだけログインをお願いします。</p></div><a class="button primary" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
-<form id="eventFilters" class="filter-grid"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{region_options_html}</select><input name="date_from" type="date" aria-label="開催日以降"><select name="event_type"><option value="">全募集種別</option>{type_options}</select><select name="participation"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></form>
+        sport_picker = f'<section class="section panel"><div class="panel-head"><h2>スポーツから探す</h2></div><div class="sport-grid">{event_sport_cards(params, "events")}</div></section>'
+        if event_listing:
+            image_name = next((item[4] for item in POPULAR_SPORTS if item[0] == sport), "other.png")
+            listing_title = f'{html.escape(sport)}<span>大会・イベント</span>' if sport else '大会・イベント一覧'
+            heading = f'<p class="event-breadcrumb"><a href="/">すべての競技</a></p><section class="event-results-intro"><img src="/assets/sports/{image_name}" alt=""><h1>{listing_title}</h1></section>'
+            introduction = tabs + heading
+            if not initial_events and not initial_error:
+                event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
+        else:
+            introduction = shared_head + tabs + sport_picker
+        result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
+        body = introduction + f'''<section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div><a class="button primary" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
+<form id="eventFilters" class="filter-grid"><select name="sport" aria-label="競技"><option value="">全競技</option>{filter_options}</select><select name="region" aria-label="地域"><option value="">全地域</option>{region_options_html}</select><input name="date_from" type="date" aria-label="開催日以降"><select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select><select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></form>
 <div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
     else:
@@ -1191,7 +1203,8 @@ def render_public_html(params=None):
         filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in sport_options(audience))
         body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><div class="sport-grid">{event_sport_cards(params, "db", audience)}</div><form id="dbFilters" class="filter-grid"><input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())}</select><select name="prefecture"><option value="">全都道府県</option>{''.join(f'<option value="{html.escape(p)}">{html.escape(p)}</option>' for p in PREFECTURES)}</select><a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
-    page = event_shell("大会・イベント", body, script)
+    page_title = f"{sport}の大会・イベント" if tab == "events" and sport else "大会・イベント"
+    page = event_shell(page_title, body, script)
     return (page.replace("__EVENT_TAB__", "active" if tab == "events" else "").replace("__DB_TAB__", "active" if tab == "db" else "").replace("__EVENT_TAB_URL__", html.escape(event_url, quote=True)).replace("__DB_TAB_URL__", html.escape(db_url, quote=True)).replace("__POST_URL__", html.escape(post_url, quote=True))).encode("utf-8")
 
 
@@ -1216,7 +1229,7 @@ EVENT_HOME_SCRIPT = r"""
       const raw=link.getAttribute('href');
       if(!raw.startsWith('/'))return;
       const target=new URL(raw,location.origin);
-      if(target.pathname==='/'&&target.searchParams.has('tab')){
+      if(['/','/events'].includes(target.pathname)&&target.searchParams.has('tab')){
         for(const key of keys){if(key==='sport'&&link.classList.contains('sport-card'))continue;const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
       }else if(target.pathname==='/events/new'){
         const sport=current.get('sport');if(sport)target.searchParams.set('sport',sport);else target.searchParams.delete('sport');
@@ -1226,14 +1239,15 @@ EVENT_HOME_SCRIPT = r"""
       link.href=target.pathname+target.search+target.hash;
     });
   }
-  function updateUrl(form){const next=qs();for(const [key,value] of new FormData(form).entries()){if(value)next.set(key,value);else next.delete(key)}next.set('tab',pageTab);if(pageTab==='db')next.set('audience',pageAudience);history.replaceState(null,'','/?'+next.toString());syncLinks()}
+  function updateUrl(form){const next=qs();for(const [key,value] of new FormData(form).entries()){if(value)next.set(key,value);else next.delete(key)}next.set('tab',pageTab);if(pageTab==='db')next.set('audience',pageAudience);history.replaceState(null,'',location.pathname+'?'+next.toString());syncLinks()}
   async function bootEvents(){
     const form=document.getElementById('eventFilters'),list=document.getElementById('eventList');if(!form)return;
     restoreFilters(form);syncLinks();let request=0;
-    function render(items){list.innerHTML=items.length?items.map(eventCard).join(''):'<div class="empty">条件に合う募集中の大会・イベントはありません。条件を変えるか、最初の募集を掲載してください。</div>'}
+    const count=document.getElementById('eventResultCount');
+    function render(items){const sport=form.elements.sport.value;list.innerHTML=items.length?items.map(eventCard).join(''):`<div class="empty">現在、${sport?esc(sport)+'の':''}募集中の大会・イベントはありません。</div>`;count.textContent=items.length+'件を表示'}
     if(initialError)list.innerHTML=`<div class="error-box">${esc(initialError)}</div>`;else render(initialEvents);
-    const sync=async()=>{updateUrl(form);const latest=++request;list.innerHTML='<div class="empty">募集を検索しています。</div>';try{const data=await getJson('/api/events?'+new URLSearchParams(new FormData(form)).toString());if(latest===request)render(data)}catch(e){if(latest===request)list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`}};
-    form.addEventListener('submit',e=>{e.preventDefault();sync()});form.addEventListener('change',sync);
+    const sync=async()=>{updateUrl(form);const latest=++request;count.textContent='検索中';list.innerHTML='<div class="empty">募集を検索しています。</div>';try{const data=await getJson('/api/events?'+qs().toString());if(latest===request)render(data)}catch(e){if(latest===request){count.textContent='取得できませんでした';list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`}}};
+    form.addEventListener('submit',e=>{e.preventDefault();sync()});form.addEventListener('change',e=>{if(e.target.name==='sport'){updateUrl(form);location.assign('/events?'+qs().toString());return}sync()});
     window.addEventListener('popstate',()=>{restoreFilters(form);sync()});
   }
   async function bootDb(){
@@ -3691,8 +3705,8 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/":
                 self.send_html(render_public_html(query))
             elif parsed.path == "/events":
-                redirect_query = urlencode({key: values[0] for key, values in query.items() if values and key in {"sport", "region", "prefecture", "event_type", "participation"}})
-                self.redirect("/?tab=events" + ("&" + redirect_query if redirect_query else ""))
+                query["tab"] = ["events"]
+                self.send_html(render_public_html(query, event_listing=True))
             elif parsed.path == "/events/new":
                 user = current_user(self.cookie_value("cm_session"))
                 if (query.get("event_id") or query.get("copy")) and not user.get("authenticated"):
