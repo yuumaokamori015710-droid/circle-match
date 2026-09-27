@@ -36,6 +36,7 @@ GOOGLE_CLIENT_SECRET = os.environ.get("CIRCLEMATCH_GOOGLE_CLIENT_SECRET", "")
 SUPABASE_URL = os.environ.get("CIRCLEMATCH_SUPABASE_URL", "").rstrip("/")
 SUPABASE_ANON_KEY = os.environ.get("CIRCLEMATCH_SUPABASE_ANON_KEY", "")
 SESSION_SECRET = os.environ.get("CIRCLEMATCH_SESSION_SECRET", ADMIN_PASSWORD or "local-dev-session-secret")
+EMAIL_AUTH_ENABLED = os.environ.get("CIRCLEMATCH_EMAIL_AUTH_ENABLED", "").lower() == "true"
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
 PREFECTURES = [
@@ -255,6 +256,7 @@ SIGNIN_HTML = """<!doctype html>
     header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
     main{max-width:1040px;margin:auto;padding:38px 18px 60px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.hero h1{font-size:36px;line-height:1.15;margin:0}.hero p,.panel p{color:var(--muted);line-height:1.8}.button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--brand);border-color:var(--brand);color:#fff}.button.accent{background:var(--accent);border-color:var(--accent);color:#fff}.google-dot{width:20px;height:20px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0)}
     .note{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:14px;line-height:1.7}.choice{display:none;gap:10px}.choice.active{display:grid}.status{margin-top:12px;padding:12px;border-radius:8px;background:#f9fbfd;color:var(--muted);line-height:1.7;font-size:14px}.status.error{background:#fff1f1;color:#a33}
+    .email-login{display:grid;gap:10px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.email-login label{font-size:14px;font-weight:800}.email-login input{width:100%;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}.email-login p{margin:0;font-size:13px}.button{width:100%}.button:disabled{opacity:.55;cursor:not-allowed}[hidden]{display:none!important}
     @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
@@ -263,13 +265,19 @@ SIGNIN_HTML = """<!doctype html>
   <main>
     <section class="hero"><h1>ログインして、参加・主催を始める。</h1><p>大会・イベントの閲覧はログイン不要です。申込、募集掲載、受付管理を行う時だけログインしてください。同じアカウントで参加と主催の両方ができます。</p></section>
     <section class="panel">
-      <button id="googleButton" class="button" type="button"><span class="google-dot"></span><span>Googleでログイン</span></button>
+      <button id="googleButton" class="button" type="button" disabled><span class="google-dot"></span><span>Googleでログイン</span></button>
+      <form id="emailForm" class="email-login">
+        <label for="loginEmail">メールアドレスでログイン</label>
+        <input id="loginEmail" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required disabled>
+        <button id="emailButton" class="button accent" type="submit" disabled>ログインリンクを受け取る</button>
+        <p id="emailNote">メールログインは現在準備中です。</p>
+      </form>
       <div id="choice" class="choice">
         <a class="button primary" href="/mypage">マイページへ進む</a>
         <a class="button accent" href="/events/new">募集を掲載する</a>
       </div>
-      <p id="oauthNote" class="note">Supabase AuthでGoogle認証し、メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p>
-      <div id="status" class="status">ログイン状態を確認しています。</div>
+      <p id="oauthNote" class="note">認証にはSupabase Authを利用します。メールアドレス、ユーザーID、ログイン日時など必要最小限の情報だけを保存します。</p>
+      <div id="status" class="status" role="status" aria-live="polite">ログイン状態を確認しています。</div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -277,11 +285,21 @@ SIGNIN_HTML = """<!doctype html>
     const supabaseUrl = __SUPABASE_URL__;
     const supabaseAnonKey = __SUPABASE_ANON_KEY__;
     const authReady = __AUTH_READY__;
+    const emailReady = __EMAIL_AUTH_READY__;
     const returnTo = __RETURN_TO__;
     const statusEl = document.getElementById("status");
     const choiceEl = document.getElementById("choice");
     const loginButton = document.getElementById("googleButton");
+    const emailForm = document.getElementById("emailForm");
+    const emailButton = document.getElementById("emailButton");
+    const emailInput = document.getElementById("loginEmail");
+    const redirectTo = `${location.origin}/signin?return_to=${encodeURIComponent(returnTo || "/")}`;
     function setStatus(text, error=false){statusEl.textContent=text; statusEl.className=error?"status error":"status"}
+    function signedIn(user){
+      loginButton.hidden=true; emailForm.hidden=true; choiceEl.classList.add("active");
+      setStatus(`${user?.email || "ログイン済み"} でログインしています。`);
+      if(returnTo && returnTo!=="/") location.replace(returnTo);
+    }
     async function syncSession(client, session){
       if(!session?.access_token) return null;
       const res = await fetch("/api/auth/supabase", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({access_token:session.access_token})});
@@ -290,27 +308,43 @@ SIGNIN_HTML = """<!doctype html>
       return data.user;
     }
     async function boot(){
+      const meResponse=await fetch("/api/me");
+      if(meResponse.ok){const me=await meResponse.json();if(me.authenticated){signedIn(me);return}}
       if(!authReady){
-        loginButton.disabled = true;
-        setStatus("SupabaseのURL/Anon Keyが未設定です。Renderの環境変数を入れると、このボタンから実ログインできます。", true);
+        setStatus("現在ログインをご利用いただけません。時間をおいて再度お試しください。", true);
         return;
       }
       const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-      const { data } = await client.auth.getSession();
+      const { data, error: sessionError } = await client.auth.getSession();
+      if(sessionError) setStatus("認証できませんでした。もう一度ログインしてください。", true);
       if(data.session){
-        const user = await syncSession(client, data.session);
-        loginButton.style.display = "none";
-        choiceEl.classList.add("active");
-        setStatus(`${user?.email || "ログイン済み"} でログインしています。利用方法を選んでください。`);
-        if(returnTo && returnTo !== "/") location.replace(returnTo);
-      }else{
-        setStatus("Googleアカウントでログインしてください。");
+        try{
+          const user = await syncSession(client, data.session);
+          signedIn(user);
+          return;
+        }catch(error){setStatus("ログイン状態を確認できませんでした。もう一度ログインしてください。",true)}
+      }else if(!sessionError){
+        setStatus("ログイン後、元の画面に戻ります。");
       }
+      loginButton.disabled=false;
+      emailButton.disabled=!emailReady; emailInput.disabled=!emailReady;
+      if(emailReady)document.getElementById("emailNote").textContent="パスワードは不要です。届いたリンクからログインしてください。初めての方はアカウントが作成されます。";
+      emailForm.onsubmit=async event=>{
+        event.preventDefault();if(!emailReady||!emailForm.reportValidity())return;
+        emailButton.disabled=true;setStatus("ログインリンクをリクエストしています。");
+        try{
+          const {error}=await client.auth.signInWithOtp({email:emailInput.value.trim(),options:{emailRedirectTo:redirectTo}});
+          if(error)throw error;
+          setStatus("ログインリンクの送信を受け付けました。メールをご確認ください。");
+          setTimeout(()=>{emailButton.disabled=false},60000);
+        }catch(error){setStatus("メールを送信できませんでした。時間をおいて再度お試しください。",true);emailButton.disabled=false}
+      };
       loginButton.onclick = async () => {
-        setStatus("Googleログインへ移動します。");
-        const redirectTo = `${location.origin}/signin?return_to=${encodeURIComponent(returnTo || "/")}`;
-        const { error } = await client.auth.signInWithOAuth({provider:"google", options:{redirectTo, queryParams:{prompt:"select_account"}}});
-        if(error) setStatus(error.message, true);
+        loginButton.disabled=true;setStatus("Googleログインへ移動します。");
+        try{
+          const { error } = await client.auth.signInWithOAuth({provider:"google", options:{redirectTo, queryParams:{prompt:"select_account"}}});
+          if(error)throw error;
+        }catch(error){setStatus("Googleログインを開始できませんでした。時間をおいて再度お試しください。",true);loginButton.disabled=false}
       };
     }
     boot().catch(err=>setStatus(err.message, true));
@@ -1099,9 +1133,13 @@ def format_event_datetime(value):
     return html.escape(str(value).replace("-", "/"))
 
 
+def event_payment_label(value):
+    return {"free": "無料", "on_site": "現地払い", "bank_transfer": "口座振込"}.get(value, "主催者へ確認")
+
+
 def event_fee_text(event):
     if event.get("fee_amount") is None:
-        return "無料" if event.get("payment_method") == "free" else "現地払い（料金は主催者へ確認）"
+        return "無料" if event.get("payment_method") == "free" else event_payment_label(event.get("payment_method")) + "（料金は主催者へ確認）"
     unit = event.get("fee_unit") or "1人"
     return f"{int(event['fee_amount']):,}円 / {unit}"
 
@@ -1216,7 +1254,7 @@ EVENT_HOME_SCRIPT = r"""
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const qs=()=>new URLSearchParams(location.search);
   const formatDate=v=>v?esc(String(v).replaceAll('-','/')):'日時未定';
-  const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':'現地払い（料金は主催者へ確認）'):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
+  const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':`${e.payment_method==='bank_transfer'?'口座振込':'現地払い'}（料金は主催者へ確認）`):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
   const status=e=>({published:['受付中','open'],closed:['受付終了','closed'],cancelled:['開催中止','cancelled'],draft:['下書き','closed']}[e.status]||[e.status,'closed']);
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
   function circleRow(c){const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:'掲載準備中';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div>${profile}</div></div>`}
@@ -1275,7 +1313,7 @@ def event_page(title, body, script="", tab="events", post_url="/events/new"):
     )
 
 
-def render_event_detail_html(event_id):
+def render_event_detail_html(event_id, user=None):
     event = get_event(event_id)
     if not event:
         return None
@@ -1284,13 +1322,16 @@ def render_event_detail_html(event_id):
     apply_label = "参加を申請する" if event.get("acceptance_mode") == "approval" else "参加を申し込む"
     can_apply = event.get("status") == "published" and (not event.get("application_deadline") or event["application_deadline"] >= datetime.now().strftime("%Y-%m-%d %H:%M"))
     application_url = f"/events/{quote(str(event_id))}/apply"
+    if not (user or {}).get("authenticated"):
+        application_url = "/signin?" + urlencode({"return_to": application_url})
+        apply_label = "ログインして" + apply_label
     organizer = html.escape(event.get("organizer_name") or "主催者")
     if event.get("linked_circle_profile_slug"):
         organizer = f'<a href="/circles/{quote(str(event["linked_circle_profile_slug"]))}">{html.escape(event.get("linked_circle_name") or event.get("organizer_name") or "主催団体")}</a>'
     fee = html.escape(event_fee_text(event))
     capacity = "定員なし" if not event.get("capacity") else f"{event.get('confirmed_count', 0)} / {event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
     body = f'''<section class="intro"><div><p class="eyebrow">EVENT DETAIL</p><p><a href="/?tab=events&sport={quote(str(event.get("sport_category") or ""))}">大会・イベント一覧</a> / {html.escape(event.get("sport_category") or "")}</p></div></section>
-<section class="detail"><article class="detail-main"><div><span class="badge {state_class}">{html.escape(state)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div><h1>{html.escape(event.get("title") or "")}</h1><p>{html.escape(event.get("sport_category") or "")}</p><div class="detail-meta"><div><span>開催日時</span><strong>{format_event_datetime(event.get("starts_at"))}{(" 〜 " + format_event_datetime(event.get("ends_at"))) if event.get("ends_at") else ""}</strong></div><div><span>会場</span><strong>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "")}</strong></div><div><span>参加費</span><strong>{fee}</strong></div><div><span>参加単位・定員</span><strong>{html.escape(event_participation_label(event.get("participation_type") or ""))} / {capacity}</strong></div><div><span>受付方式</span><strong>{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</strong></div><div><span>応募締切</span><strong>{format_event_datetime(event.get("application_deadline")) if event.get("application_deadline") else "設定なし"}</strong></div></div><h2>内容</h2><p>{html.escape(event.get("description") or "").replace(chr(10), '<br>')}</p><h2>参加条件</h2><p>{html.escape(event.get("eligibility") or "特に設定されていません").replace(chr(10), '<br>')}</p><h2>キャンセル・中止条件</h2><p>{html.escape(event.get("cancellation_policy") or "主催者へご確認ください").replace(chr(10), '<br>')}</p><h2>主催者</h2><p>{organizer}<br><small>連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。</small></p></article><aside class="detail-side"><h2>参加受付</h2><p>{"この募集は現在受付中です。" if can_apply else "この募集は現在受け付けていません。"}</p>{f'<a class="button primary" href="{application_url}">{apply_label}</a>' if can_apply else f'<span class="badge {state_class}">{html.escape(state)}</span>'}<p class="help">{"先着順は定員内で参加確定します。" if event.get("acceptance_mode") == "first_come" else "主催者承認制です。申請後、主催者の承認で参加確定します。"}</p></aside></section>{f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>' if can_apply else ""}'''
+<section class="detail"><article class="detail-main"><div><span class="badge {state_class}">{html.escape(state)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div><h1>{html.escape(event.get("title") or "")}</h1><p>{html.escape(event.get("sport_category") or "")}</p><div class="detail-meta"><div><span>開催日時</span><strong>{format_event_datetime(event.get("starts_at"))}{(" 〜 " + format_event_datetime(event.get("ends_at"))) if event.get("ends_at") else ""}</strong></div><div><span>会場</span><strong>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "")}</strong></div><div><span>参加費</span><strong>{fee}</strong></div><div><span>支払方法</span><strong>{html.escape(event_payment_label(event.get("payment_method")))}</strong>{'<small>参加確定後、主催者が振込先・期限を案内します。入金確認は主催者が行います。</small>' if event.get("payment_method") == "bank_transfer" else ""}</div><div><span>参加単位・定員</span><strong>{html.escape(event_participation_label(event.get("participation_type") or ""))} / {capacity}</strong></div><div><span>受付方式</span><strong>{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</strong></div><div><span>応募締切</span><strong>{format_event_datetime(event.get("application_deadline")) if event.get("application_deadline") else "設定なし"}</strong></div></div><h2>内容</h2><p>{html.escape(event.get("description") or "").replace(chr(10), '<br>')}</p><h2>参加条件</h2><p>{html.escape(event.get("eligibility") or "特に設定されていません").replace(chr(10), '<br>')}</p><h2>キャンセル・中止条件</h2><p>{html.escape(event.get("cancellation_policy") or "主催者へご確認ください").replace(chr(10), '<br>')}</p><h2>主催者</h2><p>{organizer}<br><small>連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。</small></p></article><aside class="detail-side"><h2>参加受付</h2><p>{"この募集は現在受付中です。" if can_apply else "この募集は現在受け付けていません。"}</p>{f'<a class="button primary" href="{html.escape(application_url, quote=True)}">{apply_label}</a>' if can_apply else f'<span class="badge {state_class}">{html.escape(state)}</span>'}<p class="help">{"先着順は定員内で参加確定します。" if event.get("acceptance_mode") == "first_come" else "主催者承認制です。申請後、主催者の承認で参加確定します。"}</p></aside></section>{f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>' if can_apply else ""}'''
     return event_page(event.get("title") or "大会・イベント詳細", body)
 
 
@@ -1339,7 +1380,7 @@ def render_event_form_html(params, user):
             initial.pop("application_deadline", None)
             initial["title"] = f"{initial.get('title', '')}（複製）".strip()
     sport_choices = ''.join(f'<option value="{html.escape(name)}">{html.escape(name)}</option>' for name in event_sport_options())
-    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>競技</label><select id="sport_category"><option value="">選択してください</option>{sport_choices}</select></div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><div class="field"><label>終了日時（任意）</label><input id="ends_at" type="datetime-local"></div><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"></div><div class="field"><label>定員の単位</label><input id="capacity_unit" maxlength="20" placeholder="人 / チーム"></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field"><label>参加費（任意）</label><input id="fee_amount" type="number" min="0" placeholder="0"></div><div class="field"><label>料金の単位</label><input id="fee_unit" maxlength="40" placeholder="1人 / 1チーム"></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="free">無料</option><option value="on_site">現地払い</option></select><span class="help">オンライン決済にはまだ対応していません。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
+    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>競技</label><select id="sport_category"><option value="">選択してください</option>{sport_choices}</select></div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><input id="ends_at" type="hidden"><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"></div><div class="field"><label>定員の単位</label><input id="capacity_unit" maxlength="20" placeholder="人 / チーム"></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field"><label>参加費（任意）</label><input id="fee_amount" type="number" min="0" placeholder="0"></div><div class="field"><label>料金の単位</label><input id="fee_unit" maxlength="40" placeholder="1人 / 1チーム"></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="free">無料</option><option value="on_site">現地払い</option><option value="bank_transfer">口座振込</option></select><span class="help">口座振込は参加確定後に主催者が振込先・期限を案内し、入金を確認します。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
     script = EVENT_FORM_SCRIPT.replace("__INITIAL_EVENT__", script_json(initial)).replace("__DEFAULT_EMAIL__", script_json(user.get("email") if user.get("authenticated") else "")).replace("__RETURN_TO__", script_json("/events/new" + ("?" + urlencode({"sport": sport}) if sport else "")))
     return event_page("募集を掲載する", body, script, post_url=post_url_from_initial(initial))
 
@@ -1358,7 +1399,7 @@ function toInput(v){return String(v||'').replace(' ','T').slice(0,16)}
 function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??'';if(['starts_at','ends_at','application_deadline'].includes(id))value=toInput(value);$(id).value=value});if(!$('organizer_contact_email').value)$('organizer_contact_email').value=defaultEmail||''}
 function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').style.visibility=step===0?'hidden':'visible';$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
 function payload(status){const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);return obj}
-function preview(){const p=payload('published');$('eventPreview').innerHTML=`<strong>${esc(p.title||'タイトル未入力')}</strong><br>${esc(p.event_type||'')} / ${esc(p.sport_category||'')}<br>${esc(p.starts_at||'日時未入力').replace('T',' ')} / ${esc(p.prefecture||'')} ${esc(p.location||'')}<br>${esc(p.participation_type)} / ${esc(p.acceptance_mode==='approval'?'主催者承認制':'先着順')}`}
+function preview(){const p=payload('published');$('eventPreview').innerHTML=`<strong>${esc(p.title||'タイトル未入力')}</strong><br>${esc(p.event_type||'')} / ${esc(p.sport_category||'')}<br>${esc(p.starts_at||'日時未入力').replace('T',' ')} / ${esc(p.prefecture||'')} ${esc(p.location||'')}<br>${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]||'')} / ${esc(p.acceptance_mode==='approval'?'主催者承認制':'先着順')}<br>支払方法：${esc(({free:'無料',on_site:'現地払い',bank_transfer:'口座振込'})[p.payment_method]||'')}`}
 async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
 async function save(status){const button=status==='published'?$('publishEvent'):$('saveDraft');button.disabled=true;statusBox.hidden=true;try{const r=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(status))});const data=await r.json();if(r.status===401){sessionStorage.setItem('circle-match:event-draft',JSON.stringify(payload(status)));location.assign('/signin?return_to='+encodeURIComponent(returnTo));return}if(!r.ok)throw new Error(data.error||'保存に失敗しました');sessionStorage.removeItem('circle-match:event-draft');location.assign(status==='published'?`/events/${encodeURIComponent(data.event_id)}`:`/events/new?event_id=${encodeURIComponent(data.event_id)}`)}catch(err){statusBox.hidden=false;statusBox.textContent=err.message;button.disabled=false}}
 fill();try{const saved=JSON.parse(sessionStorage.getItem('circle-match:event-draft')||'null');if(saved&&!initialEvent.event_id){Object.assign(initialEvent,saved);fill();sessionStorage.removeItem('circle-match:event-draft')}}catch(_){}loadOrganizations();showStep(0);$('nextStep').onclick=()=>showStep(step+1);$('backStep').onclick=()=>showStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{if(step===2)preview()});
@@ -1550,6 +1591,7 @@ def render_signin_html(return_to="/"):
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
         .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
         .replace("__AUTH_READY__", "true" if supabase_auth_enabled() else "false")
+        .replace("__EMAIL_AUTH_READY__", "true" if supabase_auth_enabled() and EMAIL_AUTH_ENABLED else "false")
         .replace("__RETURN_TO__", script_json(safe_return_path(return_to)))
         .encode("utf-8")
     )
@@ -2547,6 +2589,50 @@ def set_state_value(conn, key, value):
     )
 
 
+def migrate_event_payment_methods(conn):
+    """Expand the legacy CHECK without changing event IDs or dependent rows."""
+    schema = conn.execute("select sql from sqlite_master where type='table' and name='event_posts'").fetchone()[0]
+    old_check = "check(payment_method in ('free','on_site'))"
+    if old_check not in schema:
+        if "'bank_transfer'" not in schema:
+            raise RuntimeError("Unexpected event_posts payment constraint; migration stopped")
+        return
+    if conn.in_transaction:
+        raise RuntimeError("Payment migration must run before startup data changes")
+    backup_path = DB_PATH.with_name(DB_PATH.name + ".pre-bank-transfer-" + datetime.now().strftime("%Y%m%d%H%M%S") + ".sqlite")
+    backup = sqlite3.connect(backup_path)
+    try:
+        conn.backup(backup)
+    finally:
+        backup.close()
+    log(f"event payment migration backup: {backup_path}")
+    conn.execute("pragma foreign_keys=off")
+    try:
+        conn.execute("begin immediate")
+        objects = conn.execute("select sql from sqlite_master where tbl_name='event_posts' and type in ('index','trigger') and sql is not null").fetchall()
+        new_schema = schema.replace(old_check, "check(payment_method in ('free','on_site','bank_transfer'))")
+        new_schema, count = re.subn(r'(?i)^CREATE TABLE\s+"?event_posts"?', "CREATE TABLE event_posts_payment_v2", new_schema, count=1)
+        if count != 1:
+            raise RuntimeError("Unrecognized event_posts schema; migration stopped")
+        conn.execute(new_schema)
+        columns = ",".join('"' + row["name"].replace('"', '""') + '"' for row in conn.execute("pragma table_info(event_posts)"))
+        conn.execute(f"insert into event_posts_payment_v2 ({columns}) select {columns} from event_posts")
+        conn.execute("drop table event_posts")
+        conn.execute("alter table event_posts_payment_v2 rename to event_posts")
+        for obj in objects:
+            conn.execute(obj["sql"])
+        for table in ("event_posts", "event_applications", "event_notifications", "event_messages"):
+            if conn.execute(f"pragma foreign_key_check({table})").fetchone():
+                raise RuntimeError(f"Payment migration foreign key check failed: {table}")
+        conn.commit()
+        log("event payment migration complete")
+    except BaseException:
+        conn.rollback()
+        raise
+    finally:
+        conn.execute("pragma foreign_keys=on")
+
+
 def init_db():
     with connect() as conn:
         conn.executescript("""
@@ -2679,7 +2765,7 @@ def init_db():
           eligibility text,
           fee_amount integer,
           fee_unit text,
-          payment_method text not null default 'free' check(payment_method in ('free','on_site')),
+          payment_method text not null default 'free' check(payment_method in ('free','on_site','bank_transfer')),
           application_deadline text,
           acceptance_mode text not null check(acceptance_mode in ('first_come','approval')),
           cancellation_policy text,
@@ -2803,6 +2889,7 @@ def init_db():
         create index if not exists idx_circle_candidates_university on circle_candidates(university_id);
         create index if not exists idx_circle_candidates_status on circle_candidates(review_status);
         """)
+        migrate_event_payment_methods(conn)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -3730,7 +3817,7 @@ class Handler(BaseHTTPRequestHandler):
                     else:
                         self.send_html(event_page("募集が見つかりません", '<div class="error-box">募集が見つからないか、現在受け付けていません。</div>').encode("utf-8"), 404)
                 elif len(parts) == 2:
-                    page = render_event_detail_html(parts[1])
+                    page = render_event_detail_html(parts[1], current_user(self.cookie_value("cm_session")))
                     if page:
                         self.send_html(page.encode("utf-8"))
                     else:
@@ -4748,8 +4835,8 @@ def event_payload_from_data(conn, data, user, event_id=""):
     if acceptance_mode not in EVENT_ACCEPTANCE_MODES:
         raise ValueError("受付方式が正しくありません")
     payment_method = event_form_value(data, "payment_method", "支払方法", required=True, max_length=30)
-    if payment_method not in {"free", "on_site"}:
-        raise ValueError("オンライン決済にはまだ対応していません。無料または現地払いを選択してください")
+    if payment_method not in {"free", "on_site", "bank_transfer"}:
+        raise ValueError("無料・現地払い・口座振込から選択してください")
     status = str(data.get("status") or "draft").strip()
     if status not in {"draft", "published"}:
         raise ValueError("保存状態が正しくありません")

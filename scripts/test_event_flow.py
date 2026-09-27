@@ -7,11 +7,13 @@ through the HTTP handler without touching the developer or Render database.
 import importlib.util
 import json
 import os
+import sqlite3
 import tempfile
 import threading
 import urllib.error
 import urllib.request
-from urllib.parse import quote
+from contextlib import closing
+from urllib.parse import quote, unquote, parse_qs, urlparse
 from pathlib import Path
 from http.server import ThreadingHTTPServer
 
@@ -27,6 +29,12 @@ def load_app(database_path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     module.init_db()
+    # Reproduce Render's original payment CHECK before populating real relations.
+    with closing(sqlite3.connect(database_path)) as conn, conn:
+        schema = conn.execute("select sql from sqlite_master where name='event_posts'").fetchone()[0]
+        conn.execute("drop table event_posts")
+        conn.execute(schema.replace("'free','on_site','bank_transfer'", "'free','on_site'"))
+        conn.execute("create index idx_event_posts_public on event_posts(status, starts_at, sport_category, prefecture)")
     return module
 
 
@@ -135,6 +143,35 @@ def main():
         messages = app.event_messages_for_user(approval_id, second)
         assert any(message["body"] == "参加確定です" for message in messages)
         with app.connect() as conn:
+            tables = ("event_posts", "event_applications", "event_notifications", "event_messages")
+            before = {table: [tuple(row) for row in conn.execute(f"select * from {table} order by rowid")] for table in tables}
+            app.migrate_event_payment_methods(conn)
+            assert conn.execute("pragma foreign_keys").fetchone()[0] == 1
+            assert not conn.execute("pragma foreign_key_check").fetchall()
+            for table in tables:
+                assert before[table] == [tuple(row) for row in conn.execute(f"select * from {table} order by rowid")]
+            assert conn.execute("select 1 from sqlite_master where name='idx_event_posts_public'").fetchone()
+            app.migrate_event_payment_methods(conn)
+        backups = list(Path(temporary).glob("*.pre-bank-transfer-*.sqlite"))
+        assert len(backups) == 1
+        with closing(sqlite3.connect(backups[0])) as backup:
+            assert backup.execute("select count(*) from event_applications").fetchone()[0] == 2
+        bank = event_payload("口座振込・終了時刻なしの大会")
+        bank.pop("ends_at")
+        bank["payment_method"] = "bank_transfer"
+        with app.connect() as conn:
+            bank_id = app.save_event_post(conn, bank, host)
+        assert app.get_event(bank_id)["ends_at"] is None
+        assert app.get_event(bank_id)["payment_method"] == "bank_transfer"
+        assert app.event_fee_text({"payment_method": "bank_transfer"}).startswith("口座振込")
+        bank["payment_method"] = "credit_card"
+        with app.connect() as conn:
+            try:
+                app.save_event_post(conn, bank, host)
+                raise AssertionError("unsupported payment method was accepted")
+            except ValueError:
+                pass
+        with app.connect() as conn:
             app.cancel_event_application(conn, first_come_id, application["application_id"], first)
             app.set_event_status(conn, approval_id, "cancelled", host)
 
@@ -175,9 +212,27 @@ def main():
             with urllib.request.urlopen(base + "/events/new?sport=%E3%83%94%E3%83%83%E3%82%AF%E3%83%AB%E3%83%9C%E3%83%BC%E3%83%AB", timeout=10) as response:
                 form = response.read().decode("utf-8")
             assert "募集を掲載する" in form and '"sport_category": "ピックルボール"' in form
+            assert 'id="ends_at" type="hidden"' in form and "終了日時（任意）" not in form
+            assert '<option value="bank_transfer">口座振込</option>' in form
+            with urllib.request.urlopen(base + f"/events/{quote(bank_id)}", timeout=10) as response:
+                detail = response.read().decode("utf-8")
+            assert "口座振込" in detail and "ログインして参加を申し込む" in detail
+            with urllib.request.urlopen(base + f"/events/{quote(bank_id)}/apply", timeout=10) as response:
+                redirect = urlparse(response.geturl())
+                assert redirect.path == "/signin"
+                assert unquote(parse_qs(redirect.query)["return_to"][0]) == f"/events/{bank_id}/apply"
+                assert 'id="applicationForm"' not in response.read().decode("utf-8")
+            try:
+                request_json(base + f"/api/events/{quote(bank_id)}/applications", method="POST", data={})
+                raise AssertionError("unauthenticated application was accepted")
+            except urllib.error.HTTPError as exc:
+                assert exc.code == 401
             with app.connect() as conn:
                 session_id = app.create_user_session(conn, host["user_id"])
                 participant_session_id = app.create_user_session(conn, second["user_id"])
+            request = urllib.request.Request(base + f"/events/{quote(bank_id)}/apply", headers={"Cookie": f"cm_session={participant_session_id}"})
+            with urllib.request.urlopen(request, timeout=10) as response:
+                assert 'id="applicationForm"' in response.read().decode("utf-8")
             status, mine = request_json(base + "/api/events/mine", cookie=f"cm_session={session_id}")
             assert status == 200 and any(item["event_id"] == approval_id for item in mine["hosted"])
             status, result = request_json(
