@@ -19,7 +19,7 @@ assert.doesNotMatch(rendered.stdout, /google-dot|conic-gradient/);
 const script = [...rendered.stdout.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('const supabaseUrl'));
 assert.ok(script);
 
-async function scenario({ emailEnabled = true, emailError = null, googleError = null, session = null, authenticated = false, syncFails = false, hash = '' } = {}) {
+async function scenario({ emailEnabled = true, emailError = null, googleError = null, session = null, authenticated = false, syncFails = false, hash = '', returnTo = '/events/test/apply' } = {}) {
   const elements = new Map();
   const get = id => {
     if (!elements.has(id)) elements.set(id, { disabled: true, hidden: false, textContent: '', value: '', classList: { add() {} }, reportValidity: () => true });
@@ -43,7 +43,8 @@ async function scenario({ emailEnabled = true, emailError = null, googleError = 
     URLSearchParams,
     setTimeout() {},
   };
-  vm.runInNewContext(script.replace('const emailReady = true;', `const emailReady = ${emailEnabled};`), context);
+  vm.runInNewContext(script.replace('const emailReady = true;', `const emailReady = ${emailEnabled};`)
+    .replace('const returnTo = "/events/test/apply";', `const returnTo = ${JSON.stringify(returnTo)};`), context);
   await new Promise(resolve => setImmediate(resolve));
   return { get, calls, redirects };
 }
@@ -87,5 +88,15 @@ async function scenario({ emailEnabled = true, emailError = null, googleError = 
   assert.equal(rejected.calls[0][0], 'google');
   const existing = await scenario({ authenticated: true });
   assert.deepEqual(existing.redirects, ['/events/test/apply']);
+  const hostTarget = '/events/new?sport=' + encodeURIComponent('サッカー・フットサル') + '&region=kanto';
+  const hostLogin = await scenario({ returnTo: hostTarget });
+  await hostLogin.get('googleButton').onclick();
+  assert.equal(new URL(hostLogin.calls[0][1].options.redirectTo).searchParams.get('return_to'), hostTarget);
+  const hostEmail = await scenario({ returnTo: hostTarget });
+  hostEmail.get('loginEmail').value = 'host@example.test';
+  await hostEmail.get('emailForm').onsubmit({ preventDefault() {} });
+  assert.equal(new URL(hostEmail.calls[0][1].options.emailRedirectTo).searchParams.get('return_to'), hostTarget);
+  const hostCallback = await scenario({ session: { access_token: 'test-token' }, returnTo: hostTarget });
+  assert.deepEqual(hostCallback.redirects, [hostTarget]);
   console.log('signin flow: ok');
 })().catch(error => { console.error(error); process.exitCode = 1; });

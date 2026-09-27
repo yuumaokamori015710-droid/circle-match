@@ -209,7 +209,13 @@ def main():
                 empty_listing = response.read().decode("utf-8")
             assert "現在、ラグビーの募集中の大会・イベントはありません。" in empty_listing
             assert 'id="eventResultCount" role="status">0件を表示' in empty_listing
-            with urllib.request.urlopen(base + "/events/new?sport=%E3%83%94%E3%83%83%E3%82%AF%E3%83%AB%E3%83%9C%E3%83%BC%E3%83%AB", timeout=10) as response:
+            with app.connect() as conn:
+                form_session = app.create_user_session(conn, host["user_id"])
+            form_request = urllib.request.Request(
+                base + "/events/new?sport=" + quote("ピックルボール"),
+                headers={"Cookie": f"cm_session={form_session}"},
+            )
+            with urllib.request.urlopen(form_request, timeout=10) as response:
                 form = response.read().decode("utf-8")
             assert "募集を掲載する" in form and '"sport_category": "ピックルボール"' in form
             assert 'id="ends_at" type="hidden"' in form and "終了日時（任意）" not in form

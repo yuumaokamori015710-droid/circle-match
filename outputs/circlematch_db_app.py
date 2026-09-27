@@ -284,7 +284,7 @@ SIGNIN_HTML = """<!doctype html>
 <body>
   <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a></nav></div></header>
   <main>
-    <section class="hero"><h1>ログインして、参加・主催を始める。</h1><p>大会・イベントの閲覧はログイン不要です。申込、募集掲載、受付管理を行う時だけログインしてください。同じアカウントで参加と主催の両方ができます。</p></section>
+    <section class="hero"><h1>__SIGNIN_HEADING__</h1><p>__SIGNIN_DESCRIPTION__</p></section>
     <section class="panel">
       <button id="googleButton" class="gsi-material-button" type="button" disabled>
         <span class="gsi-material-button-state" aria-hidden="true"></span>
@@ -1438,13 +1438,14 @@ def event_input_datetime(value):
 
 
 def render_event_form_html(params, user):
+    if not user.get("authenticated"):
+        return None
     sport = (params.get("sport", [""])[0] or "").strip()
     event_id = (params.get("event_id", [""])[0] or "").strip()
     copy_id = (params.get("copy", [""])[0] or "").strip()
     initial = {"sport_category": sport, "event_type": "大会", "participation_type": "individual", "capacity_unit": "人", "fee_unit": "1人", "payment_method": "free", "acceptance_mode": "first_come"}
+    initial.update(organizer_form_defaults(user))
     if event_id or copy_id:
-        if not user.get("authenticated"):
-            return None
         with connect() as conn:
             initial.update(event_copy_for_owner(conn, event_id or copy_id, user))
         if event_id:
@@ -1696,14 +1697,25 @@ def render_social_html():
 
 
 def render_signin_html(return_to="/"):
+    return_to = safe_return_path(return_to)
+    is_hosting = urlparse(return_to).path == "/events/new"
+    heading = "募集掲載の前に、ログイン" if is_hosting else "ログインして、参加・主催を始める。"
+    description = (
+        "ログインすると、基本情報の登録が簡単になります。主催者名・連絡先にはアカウント情報や前回の募集情報を入力済みにします。"
+        "ログイン後は募集の作成画面へ進みます。初めての方も、Googleまたはメールアドレスで登録できます。"
+        if is_hosting else
+        "大会・イベントの閲覧はログイン不要です。申込、募集掲載、受付管理を行う時だけログインしてください。同じアカウントで参加と主催の両方ができます。"
+    )
     return (
         with_adsense(SIGNIN_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SIGNIN_HEADING__", html.escape(heading))
+        .replace("__SIGNIN_DESCRIPTION__", html.escape(description))
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
         .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
         .replace("__AUTH_READY__", "true" if supabase_auth_enabled() else "false")
         .replace("__EMAIL_AUTH_READY__", "true" if supabase_auth_enabled() and EMAIL_AUTH_ENABLED else "false")
-        .replace("__RETURN_TO__", script_json(safe_return_path(return_to)))
+        .replace("__RETURN_TO__", script_json(return_to))
         .encode("utf-8")
     )
 
@@ -3921,7 +3933,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_html(render_public_html(query, event_listing=True))
             elif parsed.path == "/events/new":
                 user = current_user(self.cookie_value("cm_session"))
-                if (query.get("event_id") or query.get("copy")) and not user.get("authenticated"):
+                if not user.get("authenticated"):
                     self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/events/new")}))
                     return
                 page = render_event_form_html(query, user)
@@ -5100,6 +5112,19 @@ def get_event(event_id, include_private=False):
     with connect() as conn:
         row = conn.execute(sql, args).fetchone()
     return dict(row) if row else None
+
+
+def organizer_form_defaults(user):
+    defaults = {"organizer_name": user.get("display_name") or "", "organizer_contact_email": user.get("email") or ""}
+    with connect() as conn:
+        previous = conn.execute(
+            "select organizer_name, organizer_contact_email from event_posts "
+            "where organizer_user_id=? order by updated_at desc, event_id desc limit 1",
+            (user["user_id"],),
+        ).fetchone()
+    if previous:
+        defaults.update({key: previous[key] for key in defaults if previous[key]})
+    return defaults
 
 
 def event_owner(conn, event_id, user_id):

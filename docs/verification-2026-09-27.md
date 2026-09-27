@@ -50,3 +50,20 @@ received/delivered using the configured SMTP/API provider in this task.
 No real production event or application was created for this verification.
 Real organizer onboarding and inbox testing on new devices remain operational
 follow-ups; the draft plan is in `first-organizers.md`.
+
+## Follow-up: sign in before hosting
+
+- Anonymous `/events/new` requests now redirect to a hosting-specific sign-in
+  introduction before the form. The complete return URL retains sport, region,
+  edit and copy parameters. Signed-in users proceed directly to the editor.
+- New forms prefill the current account's name/email or the same organizer's
+  most recently saved name/contact email. No event details or organization
+  authority are inferred. Editing and copying retain the source event values.
+- Navigation tests cover the gate, copy/edit, isolated organizer defaults and
+  external return-URL rejection. Sign-in JS tests cover both providers and the
+  callback preserving the hosting URL. All four automated suites above passed.
+- Local browser verified the hosting introduction and the prefilled name/email
+  in the publication step. No real email, event or application was created.
+- A fresh mobile screenshot could not be verified in this follow-up: the browser
+  retained a 1280px viewport despite a 390px override. The override was reset.
+  Existing responsive CSS was not changed.
