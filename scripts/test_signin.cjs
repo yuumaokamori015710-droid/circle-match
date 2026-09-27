@@ -8,10 +8,18 @@ const rendered = spawnSync('python', ['-c', 'from outputs.circlematch_db_app imp
   encoding: 'utf8',
 });
 assert.equal(rendered.status, 0, rendered.stderr);
+assert.match(rendered.stdout, /id="googleButton" class="gsi-material-button" type="button" disabled/);
+assert.match(rendered.stdout, /class="gsi-material-button-contents">Google でログイン<\/span>/);
+assert.match(rendered.stdout, /viewBox="0 0 48 48"/);
+assert.match(rendered.stdout, /class="gsi-material-button-icon" aria-hidden="true"/);
+for (const color of ['#EA4335', '#4285F4', '#FBBC05', '#34A853']) {
+  assert.ok(rendered.stdout.includes(`fill="${color}"`));
+}
+assert.doesNotMatch(rendered.stdout, /google-dot|conic-gradient/);
 const script = [...rendered.stdout.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('const supabaseUrl'));
 assert.ok(script);
 
-async function scenario({ emailEnabled = true, emailError = null, session = null, authenticated = false, syncFails = false } = {}) {
+async function scenario({ emailEnabled = true, emailError = null, googleError = null, session = null, authenticated = false, syncFails = false } = {}) {
   const elements = new Map();
   const get = id => {
     if (!elements.has(id)) elements.set(id, { disabled: true, hidden: false, textContent: '', value: '', classList: { add() {} }, reportValidity: () => true });
@@ -22,7 +30,7 @@ async function scenario({ emailEnabled = true, emailError = null, session = null
     document: { getElementById: get },
     window: { supabase: { createClient: () => ({ auth: {
       getSession: async () => ({ data: { session } }),
-      signInWithOAuth: async options => { calls.push(['google', options]); return {}; },
+      signInWithOAuth: async options => { calls.push(['google', options]); return { error: googleError }; },
       signInWithOtp: async options => { calls.push(['email', options]); return { error: emailError }; },
     } }) } },
     fetch: async url => url === '/api/me'
@@ -40,6 +48,14 @@ async function scenario({ emailEnabled = true, emailError = null, session = null
   const disabled = await scenario({ emailEnabled: false });
   assert.equal(disabled.get('emailButton').disabled, true);
   assert.equal(disabled.get('loginEmail').disabled, true);
+  await disabled.get('googleButton').onclick();
+  assert.equal(disabled.calls[0][1].provider, 'google');
+  assert.equal(new URL(disabled.calls[0][1].options.redirectTo).searchParams.get('return_to'), '/events/test/apply');
+  assert.equal(disabled.get('googleButton').disabled, true);
+  const googleFailure = await scenario({ googleError: new Error('OAuth unavailable') });
+  await googleFailure.get('googleButton').onclick();
+  assert.match(googleFailure.get('status').textContent, /Googleログインを開始できませんでした/);
+  assert.equal(googleFailure.get('googleButton').disabled, false);
   const login = await scenario();
   assert.equal(login.get('googleButton').disabled, false);
   login.get('loginEmail').value = ' member@example.test ';
