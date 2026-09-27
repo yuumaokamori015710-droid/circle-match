@@ -11,11 +11,13 @@ import secrets
 import sqlite3
 import sys
 import threading
+import time
 from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError
 
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
@@ -37,6 +39,9 @@ SUPABASE_URL = os.environ.get("CIRCLEMATCH_SUPABASE_URL", "").rstrip("/")
 SUPABASE_ANON_KEY = os.environ.get("CIRCLEMATCH_SUPABASE_ANON_KEY", "")
 SESSION_SECRET = os.environ.get("CIRCLEMATCH_SESSION_SECRET", ADMIN_PASSWORD or "local-dev-session-secret")
 EMAIL_AUTH_ENABLED = os.environ.get("CIRCLEMATCH_EMAIL_AUTH_ENABLED", "").lower() == "true"
+RESEND_API_KEY = os.environ.get("CIRCLEMATCH_RESEND_API_KEY", "")
+EMAIL_FROM = os.environ.get("CIRCLEMATCH_EMAIL_FROM", "")
+EMAIL_NOTIFICATIONS_ENABLED = os.environ.get("CIRCLEMATCH_EMAIL_NOTIFICATIONS_ENABLED", "").lower() == "true"
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
 PREFECTURES = [
@@ -335,6 +340,8 @@ SIGNIN_HTML = """<!doctype html>
       return data.user;
     }
     async function boot(){
+      const callbackError = new URLSearchParams(location.hash.slice(1)).get("error")
+        || new URLSearchParams(location.search).get("error");
       const meResponse=await fetch("/api/me");
       if(meResponse.ok){const me=await meResponse.json();if(me.authenticated){signedIn(me);return}}
       if(!authReady){
@@ -343,24 +350,24 @@ SIGNIN_HTML = """<!doctype html>
       }
       const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
       const { data, error: sessionError } = await client.auth.getSession();
-      if(sessionError) setStatus("認証できませんでした。もう一度ログインしてください。", true);
+      if(sessionError || callbackError) setStatus("ログインリンクが無効か、有効期限を過ぎています。もう一度メールを送信してください。", true);
       if(data.session){
         try{
           const user = await syncSession(client, data.session);
           signedIn(user);
           return;
         }catch(error){setStatus("ログイン状態を確認できませんでした。もう一度ログインしてください。",true)}
-      }else if(!sessionError){
+      }else if(!sessionError && !callbackError){
         setStatus("ログイン後、元の画面に戻ります。");
       }
       loginButton.disabled=false;
       emailButton.disabled=!emailReady; emailInput.disabled=!emailReady;
       if(emailReady)document.getElementById("emailNote").textContent="パスワードは不要です。届いたリンクからログインしてください。初めての方はアカウントが作成されます。";
       emailForm.onsubmit=async event=>{
-        event.preventDefault();if(!emailReady||!emailForm.reportValidity())return;
+        event.preventDefault();if(!emailReady||emailButton.disabled||!emailForm.reportValidity())return;
         emailButton.disabled=true;setStatus("ログインリンクをリクエストしています。");
         try{
-          const {error}=await client.auth.signInWithOtp({email:emailInput.value.trim(),options:{emailRedirectTo:redirectTo}});
+          const {error}=await client.auth.signInWithOtp({email:emailInput.value.trim(),options:{emailRedirectTo:redirectTo,shouldCreateUser:true}});
           if(error)throw error;
           setStatus("ログインリンクの送信を受け付けました。メールをご確認ください。");
           setTimeout(()=>{emailButton.disabled=false},60000);
@@ -968,6 +975,8 @@ def upsert_supabase_user(conn, profile):
     email = profile.get("email", "")
     if not subject or not email:
         raise ValueError("Supabase profile missing id or email")
+    if not profile.get("email_confirmed_at"):
+        raise ValueError("メールアドレスの確認が完了していません")
     metadata = profile.get("user_metadata") or {}
     timestamp = now()
     user_id = slug("user", "supabase_" + subject)
@@ -1111,6 +1120,11 @@ def render_legacy_home_html():
 
 EVENT_BASE_CSS = """
   [hidden]{display:none!important}
+  .mypage-tabs{flex-wrap:wrap}.my-card,.app-row>span{min-width:0;overflow-wrap:anywhere}
+  .message-form{display:grid;gap:8px;margin-top:14px}.message p{white-space:pre-wrap;overflow-wrap:anywhere}
+  .app-row .card-actions{flex-shrink:0}
+  @media(max-width:600px){.apps .app-row{align-items:flex-start;flex-direction:column}.panel .mypage-tabs button{font-size:13px}.my-card{margin:10px 0}}
+  @media(max-width:360px){.site-nav .main-nav a{padding:6px}}
   .event-breadcrumb{margin:0 0 12px;font-size:14px}.event-results-intro{position:relative;min-height:164px;display:flex;align-items:center;padding:24px;overflow:hidden;color:#fff;background:#102a43}.event-results-intro img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center}.event-results-intro:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,18,31,.88),rgba(9,18,31,.35) 70%,transparent)}.event-results-intro h1{position:relative;z-index:1;margin:0;max-width:75%;font-size:30px;line-height:1.45;overflow-wrap:anywhere}.event-results-intro h1 span{display:block;font-size:18px}.event-grid>.empty,.event-grid>.error-box{grid-column:1/-1}.event-results .filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.event-results .panel-head{align-items:center}.event-results #eventResultCount{margin:4px 0 0}.event-results .filter-grid>*{min-width:0}@media(max-width:600px){.event-results-intro{min-height:132px;padding:16px}.event-results-intro h1{font-size:24px;max-width:85%}.event-results-intro h1 span{font-size:16px}.event-results .filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px}.event-results .panel-head{padding:12px}.event-results .panel-head h2{font-size:19px}.event-results .empty{padding:12px}.event-results .panel-head>.button{display:none}}
   :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--paper:#fff;--soft:#f4f7fa;--brand:#0f7a62;--accent:#e15b31;--navy:#102a43;--warning:#a54822}
   *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}a{color:inherit}.site-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.site-nav{max-width:1180px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:12px}.brand{flex:0 0 auto;font-weight:900;text-decoration:none}.main-nav{display:flex;align-items:center;gap:5px;min-width:0;margin-left:auto}.main-nav a{min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border-radius:8px;color:#405164;font-size:14px;font-weight:900;text-decoration:none;white-space:nowrap}.main-nav a.active{background:#e8f4ef;color:#0d674f}.main-nav a.publish{background:var(--accent);color:#fff}.main-nav a.account{border:1px solid var(--accent);color:var(--accent);background:#fff}.container{max-width:1180px;margin:auto;padding:22px 16px 50px}.intro{display:flex;align-items:end;justify-content:space-between;gap:18px;padding:4px 0 14px}.intro h1{margin:0;font-size:clamp(27px,4vw,42px);line-height:1.15}.intro p{max-width:700px;margin:10px 0 0;color:#50637a;line-height:1.75}.eyebrow{margin:0 0 7px;color:var(--brand);font-weight:950;font-size:12px;letter-spacing:.07em;text-transform:uppercase}.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px}.tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 17px;border-bottom:3px solid transparent;color:#61738b;text-decoration:none;font-weight:900}.tabs a.active{border-color:var(--accent);color:var(--ink)}.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden}.section{margin-top:18px}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:22px}.panel-head p{margin:7px 0 0;color:var(--muted);line-height:1.65}.button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.button.secondary{background:var(--brand);border-color:var(--brand);color:#fff}.button:disabled{opacity:.55;cursor:not-allowed}.sport-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sport-card{position:relative;overflow:hidden;min-height:154px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#132238;text-decoration:none;color:#fff;box-shadow:0 10px 24px rgba(20,36,56,.15)}.sport-card:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(20,36,56,.23)}.sport-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.03)}.sport-card:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,18,31,.92),rgba(9,18,31,.5) 58%,rgba(9,18,31,.1))}.sport-copy{position:relative;z-index:2;display:grid;gap:6px;padding:17px;max-width:76%}.sport-copy strong{font-size:24px;line-height:1.1}.sport-copy span{font-size:12px;font-weight:800;color:rgba(255,255,255,.84)}.sport-copy em{position:absolute;left:17px;top:98px;font-style:normal;font-size:12px;font-weight:900;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.18);white-space:nowrap}.filter-grid{display:grid;grid-template-columns:1.4fr repeat(4,minmax(120px,1fr));gap:9px;padding:14px;background:#f9fbfd;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;min-height:42px;border:1px solid #cbd7e2;border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);font:inherit}textarea{min-height:112px;resize:vertical}.event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px}.event-card{display:flex;flex-direction:column;gap:10px;min-height:252px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.event-card h3{margin:0;font-size:18px;line-height:1.35}.event-card h3 a{text-decoration:none}.event-card p{margin:0;color:#52657a;font-size:13px;line-height:1.65}.card-meta{display:grid;gap:5px;color:#52657a;font-size:13px}.card-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}.badge{display:inline-flex;align-items:center;min-height:24px;padding:3px 8px;border-radius:999px;background:#edf2f7;color:#405164;font-size:12px;font-weight:900}.badge.open{background:#e2f5ed;color:#0d674f}.badge.pending{background:#fff4dd;color:#8a5a00}.badge.closed{background:#f1f3f5;color:#6c7785}.badge.cancelled{background:#fff0f0;color:#a33}.empty,.error-box{padding:24px;color:var(--muted);line-height:1.75}.error-box{color:#9f321e;background:#fff5f2;border:1px solid #f0c6ba;border-radius:8px}.db-toggle{display:flex;gap:7px}.db-toggle a{display:inline-flex;min-height:38px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-size:14px;font-weight:900}.db-toggle a.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.db-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px}.metric{padding:13px;border:1px solid var(--line);border-radius:8px;background:#fff}.metric span{display:block;color:var(--muted);font-size:12px;font-weight:850}.metric strong{display:block;margin-top:6px;font-size:24px}.circle-list{display:grid;gap:0}.circle-row{display:grid;grid-template-columns:1.2fr 1.2fr .8fr .9fr;gap:10px;padding:14px 16px;border-top:1px solid var(--line);font-size:14px}.circle-row strong{display:block}.circle-row small{display:block;margin-top:3px;color:var(--muted)}.notice{margin-top:16px;padding:17px;border:1px solid #d7e7dd;background:#f6fbf8;border-radius:8px;color:#365447;line-height:1.75}.about{margin-top:26px;padding:22px;background:#fff;border-top:1px solid var(--line);color:#53667b;line-height:1.8}.about h2{margin:0 0 9px;color:var(--ink);font-size:20px}.detail{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.detail-main,.detail-side{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px}.detail-main h1{margin:0;font-size:32px;line-height:1.25}.detail-main p{line-height:1.8;color:#405164}.detail-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.detail-meta div{padding:11px;border-radius:8px;background:#f7fafc}.detail-meta span{display:block;color:#64748b;font-size:12px;font-weight:850}.detail-meta strong{display:block;margin-top:4px;line-height:1.55}.detail-side{position:sticky;top:75px;height:max-content}.detail-side h2{margin:0;font-size:18px}.detail-side p{color:#64748b;line-height:1.65}.form-shell{max-width:860px;margin:auto}.stepper{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:16px}.stepper span{padding:9px;border-bottom:3px solid #dbe4ed;color:#76879b;font-size:13px;font-weight:900}.stepper span.active{border-color:var(--accent);color:var(--ink)}.form-section{display:none;padding:20px}.form-section.active{display:block}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:900;color:#405164}.help{color:#64748b;font-size:12px;line-height:1.55}.form-actions{display:flex;justify-content:space-between;gap:10px;padding:16px 20px;border-top:1px solid var(--line);flex-wrap:wrap}.preview{padding:15px;border-radius:8px;background:#f8fbfd;border:1px solid var(--line);line-height:1.7}.mypage-tabs{display:flex;gap:8px;margin-bottom:12px}.mypage-tabs button{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 12px;font:inherit;font-weight:900;cursor:pointer}.mypage-tabs button.active{border-color:var(--brand);background:#e8f4ef;color:#0d674f}.my-section{display:none}.my-section.active{display:block}.my-card{margin-top:10px;padding:15px;border:1px solid var(--line);border-radius:8px;background:#fff}.my-card h3{margin:0 0 6px;font-size:18px}.my-card p{margin:5px 0;color:#607086;font-size:14px;line-height:1.6}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.apps{display:grid;gap:8px;margin-top:12px}.app-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:8px;background:#f8fbfd}.messages{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}.message-log{display:grid;gap:7px;max-height:220px;overflow:auto}.message{padding:8px 10px;border-radius:8px;background:#f4f7fa;font-size:13px;line-height:1.55}.message.mine{background:#e9f6ef}.notification{padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.6}.notification small{display:block;color:#75869b;margin-top:4px}.mobile-apply{display:none}
@@ -1407,7 +1421,7 @@ def render_event_form_html(params, user):
             initial.pop("application_deadline", None)
             initial["title"] = f"{initial.get('title', '')}（複製）".strip()
     sport_choices = ''.join(f'<option value="{html.escape(name)}">{html.escape(name)}</option>' for name in event_sport_options())
-    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>競技</label><select id="sport_category"><option value="">選択してください</option>{sport_choices}</select></div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><input id="ends_at" type="hidden"><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"></div><div class="field"><label>定員の単位</label><input id="capacity_unit" maxlength="20" placeholder="人 / チーム"></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field"><label>参加費（任意）</label><input id="fee_amount" type="number" min="0" placeholder="0"></div><div class="field"><label>料金の単位</label><input id="fee_unit" maxlength="40" placeholder="1人 / 1チーム"></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="free">無料</option><option value="on_site">現地払い</option><option value="bank_transfer">口座振込</option></select><span class="help">口座振込は参加確定後に主催者が振込先・期限を案内し、入金を確認します。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
+    body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>競技</label><select id="sport_category"><option value="">選択してください</option>{sport_choices}</select></div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><input id="ends_at" type="hidden"><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"></div><div class="field"><label>定員の単位</label><select id="capacity_unit"><option value="人">人</option><option value="チーム">チーム</option></select></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field"><label>参加費（任意）</label><input id="fee_amount" type="number" min="0" placeholder="0"></div><div class="field"><label>料金の単位</label><input id="fee_unit" maxlength="40" placeholder="1人 / 1チーム"></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="free">無料</option><option value="on_site">現地払い</option><option value="bank_transfer">口座振込</option></select><span class="help">口座振込は参加確定後に主催者が振込先・期限を案内し、入金を確認します。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
     script = EVENT_FORM_SCRIPT.replace("__INITIAL_EVENT__", script_json(initial)).replace("__DEFAULT_EMAIL__", script_json(user.get("email") if user.get("authenticated") else "")).replace("__RETURN_TO__", script_json("/events/new" + ("?" + urlencode({"sport": sport}) if sport else "")))
     return event_page("募集を掲載する", body, script, post_url=post_url_from_initial(initial))
 
@@ -1423,13 +1437,18 @@ const initialEvent=__INITIAL_EVENT__, defaultEmail=__DEFAULT_EMAIL__, returnTo=_
 let step=0; const ids=['event_type','sport_category','title','starts_at','ends_at','prefecture','location','description','participation_type','capacity','capacity_unit','eligibility','fee_amount','fee_unit','payment_method','application_deadline','acceptance_mode','organizer_name','organizer_contact_email','linked_circle_id','cancellation_policy'];
 const $=id=>document.getElementById(id);const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 function toInput(v){return String(v||'').replace(' ','T').slice(0,16)}
+function syncCapacityUnit(reset=false){
+  const team=$('participation_type').value==='team';
+  $('capacity_unit').querySelector('option[value="チーム"]').disabled=!team;
+  if(reset||!team||!['人','チーム'].includes($('capacity_unit').value))$('capacity_unit').value=team?'チーム':'人';
+}
 function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??'';if(['starts_at','ends_at','application_deadline'].includes(id))value=toInput(value);$(id).value=value});if(!$('organizer_contact_email').value)$('organizer_contact_email').value=defaultEmail||''}
 function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').style.visibility=step===0?'hidden':'visible';$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
 function payload(status){const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);return obj}
 function preview(){const p=payload('published');$('eventPreview').innerHTML=`<strong>${esc(p.title||'タイトル未入力')}</strong><br>${esc(p.event_type||'')} / ${esc(p.sport_category||'')}<br>${esc(p.starts_at||'日時未入力').replace('T',' ')} / ${esc(p.prefecture||'')} ${esc(p.location||'')}<br>${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]||'')} / ${esc(p.acceptance_mode==='approval'?'主催者承認制':'先着順')}<br>支払方法：${esc(({free:'無料',on_site:'現地払い',bank_transfer:'口座振込'})[p.payment_method]||'')}`}
 async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
 async function save(status){const button=status==='published'?$('publishEvent'):$('saveDraft');button.disabled=true;statusBox.hidden=true;try{const r=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(status))});const data=await r.json();if(r.status===401){sessionStorage.setItem('circle-match:event-draft',JSON.stringify(payload(status)));location.assign('/signin?return_to='+encodeURIComponent(returnTo));return}if(!r.ok)throw new Error(data.error||'保存に失敗しました');sessionStorage.removeItem('circle-match:event-draft');location.assign(status==='published'?`/events/${encodeURIComponent(data.event_id)}`:`/events/new?event_id=${encodeURIComponent(data.event_id)}`)}catch(err){statusBox.hidden=false;statusBox.textContent=err.message;button.disabled=false}}
-fill();try{const saved=JSON.parse(sessionStorage.getItem('circle-match:event-draft')||'null');if(saved&&!initialEvent.event_id){Object.assign(initialEvent,saved);fill();sessionStorage.removeItem('circle-match:event-draft')}}catch(_){}loadOrganizations();showStep(0);$('nextStep').onclick=()=>showStep(step+1);$('backStep').onclick=()=>showStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{if(step===2)preview()});
+fill();try{const saved=JSON.parse(sessionStorage.getItem('circle-match:event-draft')||'null');if(saved&&!initialEvent.event_id){Object.assign(initialEvent,saved);fill();sessionStorage.removeItem('circle-match:event-draft')}}catch(_){}syncCapacityUnit();$('participation_type').addEventListener('change',()=>syncCapacityUnit(true));loadOrganizations();showStep(0);$('nextStep').onclick=()=>showStep(step+1);$('backStep').onclick=()=>showStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{if(step===2)preview()});
 </script>
 """
 
@@ -1440,13 +1459,13 @@ def render_mypage_html(user):
     data = event_my_page(user)
     hosted = []
     for event in data["hosted"]:
-        hosted.append(f'''<article class="my-card"><span class="badge {"open" if event.get("status") == "published" else "closed"}">{html.escape(event_status_label(event.get("status")))}</span><h3>{html.escape(event.get("title") or "")}</h3><p>{format_event_datetime(event.get("starts_at"))} / 申込 {event.get("application_count", 0)}件・確定 {event.get("confirmed_count", 0)}{html.escape(event.get("capacity_unit") or "人")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(event["event_id"]))}">公開ページ</a><a class="button" href="/events/new?event_id={quote(str(event["event_id"]))}">編集</a><a class="button" href="/events/new?copy={quote(str(event["event_id"]))}">複製</a><button class="button" data-manage="{html.escape(event["event_id"], quote=True)}">申込者を管理</button><button class="button" data-event-status="closed" data-event="{html.escape(event["event_id"], quote=True)}">締切</button><button class="button" data-event-status="cancelled" data-event="{html.escape(event["event_id"], quote=True)}">中止</button></div><div id="apps-{html.escape(event["event_id"], quote=True)}" class="apps" hidden></div></article>''')
+        hosted.append(f'''<article class="my-card"><span class="badge {"open" if event.get("status") == "published" else "closed"}">{html.escape(event_status_label(event.get("status")))}</span><h3>{html.escape(event.get("title") or "")}</h3><p>{format_event_datetime(event.get("starts_at"))} / 申込 {event.get("application_count", 0)}件・確定 {event.get("confirmed_count", 0)}{html.escape(event.get("capacity_unit") or "人")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(event["event_id"]))}">公開ページ</a><a class="button" href="/events/new?event_id={quote(str(event["event_id"]))}">編集</a><a class="button" href="/events/new?copy={quote(str(event["event_id"]))}">複製</a><button class="button" data-manage="{html.escape(event["event_id"], quote=True)}">申込者を管理</button><button class="button" data-event-status="closed" data-event="{html.escape(event["event_id"], quote=True)}">締切</button><button class="button" data-event-status="cancelled" data-event="{html.escape(event["event_id"], quote=True)}">中止</button></div><div id="apps-{html.escape(event["event_id"], quote=True)}" class="apps" hidden></div><div id="messages-{html.escape(event["event_id"], quote=True)}" class="messages" hidden></div></article>''')
     attending = []
     for app in data["attending"]:
-        attending.append(f'''<article class="my-card"><span class="badge {"open" if app.get("application_status") == "confirmed" else "pending"}">{html.escape(application_status_label(app.get("application_status")))}</span><h3>{html.escape(app.get("title") or "")}</h3><p>{format_event_datetime(app.get("starts_at"))} / {html.escape(app.get("location") or "")} / {html.escape(app.get("participation_type") or "")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(app["event_id"]))}">詳細</a><button class="button" data-cancel-app="{html.escape(app["application_id"], quote=True)}" data-event="{html.escape(app["event_id"], quote=True)}">申込を取り消す</button><button class="button" data-message-event="{html.escape(app["event_id"], quote=True)}">主催者に連絡</button></div><div id="messages-{html.escape(app["event_id"], quote=True)}" class="messages" hidden></div></article>''')
+        attending.append(f'''<article class="my-card"><span class="badge {"open" if app.get("application_status") == "confirmed" else "pending"}">{html.escape(application_status_label(app.get("application_status")))}</span><h3>{html.escape(app.get("title") or "")}</h3><p>{format_event_datetime(app.get("starts_at"))} / {html.escape(app.get("location") or "")} / {html.escape(app.get("participation_type") or "")}</p><div class="card-actions"><a class="button" href="/events/{quote(str(app["event_id"]))}">詳細</a><button {"disabled" if app.get("application_status") not in {"pending", "confirmed"} else ""} class="button" data-cancel-app="{html.escape(app["application_id"], quote=True)}" data-event="{html.escape(app["event_id"], quote=True)}">申込を取り消す</button><button {"disabled" if app.get("application_status") not in {"pending", "confirmed"} else ""} class="button" data-message-event="{html.escape(app["event_id"], quote=True)}">主催者に連絡</button></div><div id="messages-{html.escape(app["event_id"], quote=True)}" class="messages" hidden></div></article>''')
     notices = []
     for note in data["notifications"]:
-        notices.append(f'<div class="notification"><strong>{html.escape(note.get("title") or "")}</strong><br>{html.escape(note.get("body") or "")}<small>{format_event_datetime(note.get("created_at"))} / メール通知: {"未設定（アプリ内通知のみ）" if note.get("email_status") == "not_configured" else html.escape(note.get("email_status") or "")}</small></div>')
+        notices.append(f'<div class="notification"><strong>{html.escape(note.get("title") or "")}</strong><br>{html.escape(note.get("body") or "")}<small>{format_event_datetime(note.get("created_at"))} / メール通知: {html.escape(email_delivery_label(note.get("email_status")))}</small></div>')
     body = f'''<section class="intro"><div><p class="eyebrow">MY PAGE</p><h1>マイページ</h1><p>{html.escape(user.get("display_name") or user.get("email") or "")}</p></div></section><section class="panel"><div class="panel-head"><div><h2>大会・イベント</h2><p>参加状況、主催する募集、アプリ内通知を確認できます。</p></div><a class="button primary" href="/events/new">募集を掲載する</a></div><div class="mypage-tabs"><button class="active" data-my-tab="attending">参加するイベント</button><button data-my-tab="hosted">主催するイベント</button><button data-my-tab="notifications">通知</button></div><div id="my-attending" class="my-section active">{"".join(attending) or '<div class="empty">参加を申し込んだイベントはありません。</div>'}</div><div id="my-hosted" class="my-section">{"".join(hosted) or '<div class="empty">主催している募集はありません。</div>'}</div><div id="my-notifications" class="my-section">{"".join(notices) or '<div class="empty">通知はありません。</div>'}</div></section>'''
     return event_page("マイページ", body, MYPAGE_SCRIPT)
 
@@ -1455,12 +1474,43 @@ MYPAGE_SCRIPT = r"""
 <script>
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 async function request(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})});const d=await r.json();if(!r.ok)throw new Error(d.error||'操作に失敗しました');return d}
-document.querySelectorAll('[data-my-tab]').forEach(button=>button.onclick=()=>{document.querySelectorAll('[data-my-tab]').forEach(b=>b.classList.toggle('active',b===button));document.querySelectorAll('.my-section').forEach(section=>section.classList.toggle('active',section.id==='my-'+button.dataset.myTab))});
+function selectTab(tab){
+  if(!['attending','hosted','notifications'].includes(tab))tab='attending';
+  document.querySelectorAll('[data-my-tab]').forEach(b=>b.classList.toggle('active',b.dataset.myTab===tab));
+  document.querySelectorAll('.my-section').forEach(s=>s.classList.toggle('active',s.id==='my-'+tab));
+}
+document.querySelectorAll('[data-my-tab]').forEach(button=>button.onclick=()=>{
+  selectTab(button.dataset.myTab);history.replaceState(null,'','/mypage?tab='+button.dataset.myTab);
+});
+selectTab(new URLSearchParams(location.search).get('tab'));
 document.querySelectorAll('[data-event-status]').forEach(button=>button.onclick=async()=>{if(!confirm(button.dataset.eventStatus==='cancelled'?'この募集を中止しますか？':'この募集を締め切りますか？'))return;try{await request(`/api/events/${encodeURIComponent(button.dataset.event)}/status`,{status:button.dataset.eventStatus});location.reload()}catch(e){alert(e.message)}});
 document.querySelectorAll('[data-cancel-app]').forEach(button=>button.onclick=async()=>{if(!confirm('申込を取り消しますか？'))return;try{await request(`/api/events/${encodeURIComponent(button.dataset.event)}/applications/${encodeURIComponent(button.dataset.cancelApp)}/cancel`);location.reload()}catch(e){alert(e.message)}});
-async function loadMessages(eventId,recipient){const pane=document.getElementById('messages-'+eventId);const peer=recipient?`?peer_user_id=${encodeURIComponent(recipient)}`:'';try{const r=await fetch(`/api/events/${encodeURIComponent(eventId)}/messages${peer}`);const messages=await r.json();if(!r.ok)throw new Error(messages.error||'メッセージを取得できません');pane.hidden=false;pane.innerHTML=`<div class="message-log">${messages.map(m=>`<div class="message">${esc(m.sender_name||'利用者')}: ${esc(m.body)}</div>`).join('')||'<div class="empty">まだメッセージはありません。</div>'}</div><div class="card-actions"><input id="message-input-${eventId}" placeholder="メッセージを入力"><button class="button" data-send-message="${eventId}" data-recipient="${recipient||''}">送信</button></div>`;pane.querySelector('[data-send-message]').onclick=async b=>{const text=pane.querySelector('#message-input-'+eventId).value;try{await request(`/api/events/${encodeURIComponent(eventId)}/messages`,{body:text,recipient_user_id:recipient||''});await loadMessages(eventId,recipient)}catch(e){alert(e.message)}}}catch(e){alert(e.message)}}
+async function loadMessages(eventId,recipient,recipientName='主催者'){
+  const pane=document.getElementById('messages-'+eventId), requestId=Symbol();
+  if(!pane)return;
+  pane.messageRequest=requestId;pane.hidden=false;pane.textContent='連絡を読み込んでいます。';
+  const peer=recipient?'?peer_user_id='+encodeURIComponent(recipient):'';
+  try{
+    const r=await fetch('/api/events/'+encodeURIComponent(eventId)+'/messages'+peer), messages=await r.json();
+    if(pane.messageRequest!==requestId)return;
+    if(!r.ok)throw new Error(messages.error||'メッセージを取得できません');
+    pane.innerHTML='<h4>'+esc(recipientName)+'への連絡</h4><div class="message-log">'+
+      (messages.map(m=>'<div class="message"><strong>'+esc(m.sender_name||'利用者')+'</strong><p>'+esc(m.body)+'</p></div>').join('')||'<div class="empty">まだメッセージはありません。</div>')+
+      '</div><form class="message-form"><label for="message-input-'+esc(eventId)+'">メッセージ</label><textarea id="message-input-'+esc(eventId)+'" maxlength="2000" required></textarea><div class="card-actions"><button class="button primary" type="submit">送信</button><span role="status" data-message-status></span></div></form>';
+    pane.querySelector('form').onsubmit=async e=>{
+      e.preventDefault();
+      const input=pane.querySelector('textarea'), button=pane.querySelector('button'), status=pane.querySelector('[data-message-status]');
+      if(button.disabled||!input.value.trim())return;
+      button.disabled=true;status.textContent='送信中…';
+      try{
+        await request('/api/events/'+encodeURIComponent(eventId)+'/messages',{body:input.value,recipient_user_id:recipient||''});
+        if(pane.messageRequest===requestId)await loadMessages(eventId,recipient,recipientName);
+      }catch(error){if(pane.messageRequest===requestId){status.textContent=error.message;button.disabled=false}}
+    };
+  }catch(error){if(pane.messageRequest===requestId)pane.textContent=error.message}
+}
 document.querySelectorAll('[data-message-event]').forEach(button=>button.onclick=()=>loadMessages(button.dataset.messageEvent,''));
-document.querySelectorAll('[data-manage]').forEach(button=>button.onclick=async()=>{const pane=document.getElementById('apps-'+button.dataset.manage);try{const r=await fetch(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications`);const apps=await r.json();if(!r.ok)throw new Error(apps.error||'申込者を取得できません');pane.hidden=false;pane.innerHTML=apps.length?apps.map(a=>`<div class="app-row"><span><strong>${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}</strong><br><small>${esc(a.participant_count)}名 / ${esc(({pending:'承認待ち',confirmed:'参加確定',declined:'見送り',cancelled:'取消済み'})[a.status]||a.status)}</small></span><span class="card-actions">${a.status==='pending'?`<button class="button" data-app-action="confirm" data-app="${esc(a.application_id)}">承認</button><button class="button" data-app-action="decline" data-app="${esc(a.application_id)}">見送り</button>`:''}<button class="button" data-app-message="${esc(a.applicant_user_id)}">連絡</button></span></div>`).join(''):'<div class="empty">申込はまだありません。</div>';pane.querySelectorAll('[data-app-action]').forEach(action=>action.onclick=async()=>{try{await request(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications/${encodeURIComponent(action.dataset.app)}/status`,{action:action.dataset.appAction});button.click()}catch(e){alert(e.message)}});pane.querySelectorAll('[data-app-message]').forEach(action=>action.onclick=()=>loadMessages(button.dataset.manage,action.dataset.appMessage))}catch(e){alert(e.message)}});
+document.querySelectorAll('[data-manage]').forEach(button=>button.onclick=async()=>{const pane=document.getElementById('apps-'+button.dataset.manage);try{const r=await fetch(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications`);const apps=await r.json();if(!r.ok)throw new Error(apps.error||'申込者を取得できません');pane.hidden=false;pane.innerHTML=apps.length?apps.map(a=>`<div class="app-row"><span><strong>${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}</strong><br><small>${esc(a.participant_count)}名 / ${esc(({pending:'承認待ち',confirmed:'参加確定',declined:'見送り',cancelled:'取消済み'})[a.status]||a.status)}</small></span><span class="card-actions">${a.status==='pending'?`<button class="button" data-app-action="confirm" data-app="${esc(a.application_id)}">承認</button><button class="button" data-app-action="decline" data-app="${esc(a.application_id)}">見送り</button>`:''}${['pending','confirmed'].includes(a.status)?'':'<span>連絡終了</span>'}<button ${['pending','confirmed'].includes(a.status)?'':'hidden'} class="button" data-recipient-name="${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}" data-app-message="${esc(a.applicant_user_id)}">連絡</button></span></div>`).join(''):'<div class="empty">申込はまだありません。</div>';pane.querySelectorAll('[data-app-action]').forEach(action=>action.onclick=async()=>{try{await request(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications/${encodeURIComponent(action.dataset.app)}/status`,{action:action.dataset.appAction});location.reload()}catch(e){alert(e.message)}});pane.querySelectorAll('[data-app-message]').forEach(action=>action.onclick=()=>loadMessages(button.dataset.manage,action.dataset.appMessage,action.dataset.recipientName))}catch(e){alert(e.message)}});
 </script>
 """
 
@@ -2839,6 +2889,19 @@ def init_db():
           read_at text,
           created_at text not null
         );
+        create table if not exists event_email_outbox (
+          notification_id text primary key references event_notifications(notification_id) on delete cascade,
+          payload_json text not null,
+          status text not null default 'queued' check(status in ('queued','sending','retry','sent','failed')),
+          attempts integer not null default 0,
+          next_attempt_at integer not null default 0,
+          first_attempt_at integer,
+          lease_until integer,
+          provider_id text,
+          last_error text,
+          sent_at text
+        );
+        create index if not exists idx_event_email_outbox_due on event_email_outbox(status,next_attempt_at);
         create table if not exists data_sources (
           source_id text primary key,
           entity_type text not null,
@@ -4858,6 +4921,9 @@ def event_payload_from_data(conn, data, user, event_id=""):
     participation_type = event_form_value(data, "participation_type", "参加単位", required=True, max_length=20)
     if participation_type not in EVENT_PARTICIPATION_TYPES:
         raise ValueError("参加単位が正しくありません")
+    capacity_unit = event_form_value(data, "capacity_unit", "定員の単位", max_length=20) or ("チーム" if participation_type == "team" else "人")
+    if capacity_unit not in {"人", "チーム"} or (capacity_unit == "チーム" and participation_type != "team"):
+        raise ValueError("定員は個人・混合募集では人数、チーム募集ではチーム数または人数で指定してください")
     acceptance_mode = event_form_value(data, "acceptance_mode", "受付方式", required=True, max_length=30)
     if acceptance_mode not in EVENT_ACCEPTANCE_MODES:
         raise ValueError("受付方式が正しくありません")
@@ -4891,7 +4957,7 @@ def event_payload_from_data(conn, data, user, event_id=""):
         "description": event_form_value(data, "description", "説明", required=True, max_length=5000),
         "participation_type": participation_type,
         "capacity": event_capacity_value(data),
-        "capacity_unit": event_form_value(data, "capacity_unit", "定員の単位", max_length=20) or ("チーム" if participation_type == "team" else "人"),
+        "capacity_unit": capacity_unit,
         "eligibility": event_form_value(data, "eligibility", "参加条件", max_length=1200),
         "fee_amount": event_fee_value(data),
         "fee_unit": event_form_value(data, "fee_unit", "料金の単位", max_length=40) or ("1チーム" if participation_type == "team" else "1人"),
@@ -4914,7 +4980,9 @@ def event_public_select(where="", params=()):
           e.fee_unit, e.payment_method, e.application_deadline, e.acceptance_mode,
           e.cancellation_policy, e.status, e.published_at, e.created_at, e.updated_at,
           c.circle_name as linked_circle_name, cp.profile_slug as linked_circle_profile_slug,
-          coalesce(sum(case when a.status='confirmed' then a.participant_count else 0 end), 0) as confirmed_count,
+          coalesce(sum(case when a.status='confirmed' then
+            case when e.participation_type='team' and e.capacity_unit='チーム' then 1 else a.participant_count end
+            else 0 end), 0) as confirmed_count,
           coalesce(sum(case when a.status in ('pending','confirmed') then 1 else 0 end), 0) as application_count
         from event_posts e
         left join circles c on c.circle_id=e.linked_circle_id
@@ -4992,7 +5060,7 @@ def event_owner(conn, event_id, user_id):
 
 
 def add_event_notification(conn, recipient_user_id, event_id, notification_type, title, body):
-    """Email has no configured provider yet; never claim that an email was sent."""
+    """The notification and its email job commit with the application change."""
     notification_id = slug("notification", f"{recipient_user_id}:{event_id}:{notification_type}:{now()}:{secrets.token_hex(4)}")
     conn.execute(
         """
@@ -5002,12 +5070,130 @@ def add_event_notification(conn, recipient_user_id, event_id, notification_type,
         """,
         (notification_id, recipient_user_id, event_id, notification_type, title, body, now()),
     )
+    if email_notifications_ready():
+        account = conn.execute("select email from user_accounts where user_id=?", (recipient_user_id,)).fetchone()
+        email = (account["email"] or "").strip() if account else ""
+        if not re.fullmatch(r"[^@\s\r\n]+@[^@\s\r\n]+\.[^@\s\r\n]+", email):
+            conn.execute("update event_notifications set email_status='failed',email_error='invalid_recipient' where notification_id=?", (notification_id,))
+        else:
+            # Freeze the exact payload so retries use Resend's same idempotency key.
+            payload = {
+                "from": EMAIL_FROM, "to": [email], "subject": f"Circle Match | {title}",
+                "text": f"{title}\n\n{body}\n\n詳細・連絡はマイページでご確認ください。\n"
+                        f"{SITE_BASE_URL.rstrip('/')}/mypage?tab=notifications\n\n"
+                        "Circle Matchからの自動通知です。このメールには返信できません。",
+            }
+            conn.execute("insert into event_email_outbox(notification_id,payload_json) values(?,?)",
+                         (notification_id, json.dumps(payload, ensure_ascii=False)))
     return notification_id
+
+
+def email_notifications_ready():
+    return bool(EMAIL_NOTIFICATIONS_ENABLED and RESEND_API_KEY and EMAIL_FROM
+                and urlparse(SITE_BASE_URL).scheme == "https" and urlparse(SITE_BASE_URL).netloc)
+
+
+def email_delivery_label(status):
+    return {
+        "not_configured": "未設定（アプリ内通知のみ）", "queued": "送信待ち",
+        "sending": "送信処理中", "retry": "再送待ち", "sent": "送信サービス受付済み",
+        "failed": "送信失敗（アプリ内通知をご確認ください）",
+    }.get(status, "未送信")
+
+
+def send_notification_email(notification_id, payload_json):
+    request = Request(
+        "https://api.resend.com/emails", data=payload_json.encode("utf-8"),
+        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json",
+                 "Idempotency-Key": "circlematch-notification/" + hashlib.sha256(notification_id.encode("utf-8")).hexdigest()},
+        method="POST",
+    )
+    with urlopen(request, timeout=15) as response:
+        data = json.loads(response.read(65536).decode("utf-8"))
+    if not isinstance(data, dict) or not data.get("id"):
+        raise ValueError("missing_provider_id")
+    return str(data["id"])
+
+
+def process_event_email():
+    """Claim one persisted job, release SQLite before doing any network I/O."""
+    if not email_notifications_ready():
+        return False
+    timestamp = int(time.time())
+    with connect() as conn:
+        conn.execute("begin immediate")
+        job = conn.execute(
+            """select * from event_email_outbox
+            where (status in ('queued','retry') and next_attempt_at<=?)
+               or (status='sending' and lease_until<=?)
+            order by next_attempt_at, notification_id limit 1""", (timestamp, timestamp),
+        ).fetchone()
+        if not job:
+            return False
+        job = dict(job)
+        # Provider idempotency lasts 24 hours. Do not blindly resend an uncertain
+        # result after that window, or after the bounded retry budget is exhausted.
+        if job["attempts"] >= 5 or (job["first_attempt_at"] is not None and timestamp - job["first_attempt_at"] >= 23 * 3600):
+            conn.execute("update event_email_outbox set status='failed',last_error='retry_window_exhausted',lease_until=null where notification_id=?", (job["notification_id"],))
+            conn.execute("update event_notifications set email_status='failed',email_error='retry_window_exhausted' where notification_id=?", (job["notification_id"],))
+            return True
+        conn.execute(
+            """update event_email_outbox set status='sending',attempts=attempts+1,
+               first_attempt_at=coalesce(first_attempt_at,?),lease_until=? where notification_id=?""",
+            (timestamp, timestamp + 120, job["notification_id"]),
+        )
+    try:
+        provider_id = send_notification_email(job["notification_id"], job["payload_json"])
+    except Exception as exc:
+        code = exc.code if isinstance(exc, HTTPError) else None
+        retryable = code is None or code in (408, 409, 429) or code >= 500
+        state = "retry" if retryable and job["attempts"] + 1 < 5 else "failed"
+        # Provider errors can contain email addresses or credentials. Store only
+        # a diagnostic class/status code, never the response body or request.
+        error = f"HTTP_{code}" if code else type(exc).__name__
+        with connect() as conn:
+            conn.execute(
+                """update event_email_outbox set status=?,next_attempt_at=?,lease_until=null,last_error=?
+                   where notification_id=? and status='sending'""",
+                (state, timestamp + min(3600, 60 * 2 ** job["attempts"]), error, job["notification_id"]),
+            )
+            conn.execute("update event_notifications set email_status='failed',email_error=? where notification_id=?", (error, job["notification_id"]))
+        log(f"event email {job['notification_id']} {state}: {error}")
+    else:
+        with connect() as conn:
+            conn.execute(
+                """update event_email_outbox set status='sent',provider_id=?,sent_at=?,lease_until=null,last_error=null
+                   where notification_id=? and status='sending'""", (provider_id, now(), job["notification_id"]),
+            )
+            conn.execute("update event_notifications set email_status='sent',email_error=null where notification_id=?", (job["notification_id"],))
+    return True
+
+
+def start_event_email_worker():
+    stop = threading.Event()
+    if not email_notifications_ready():
+        log("event email notifications disabled or incomplete configuration; in-app notifications remain active")
+        return stop, None
+
+    def run():
+        while not stop.is_set():
+            try:
+                processed = process_event_email()
+            except Exception as exc:
+                log(f"event email worker failed: {type(exc).__name__}")
+                processed = False
+            stop.wait(1 if processed else 5)
+
+    thread = threading.Thread(target=run, name="event-email-outbox", daemon=True)
+    thread.start()
+    return stop, thread
 
 
 def save_event_post(conn, data, user):
     if not user.get("authenticated"):
         raise PermissionError("ログインが必要です")
+    if not conn.in_transaction:
+        conn.execute("begin immediate")
     event_id = event_form_value(data, "event_id", "募集ID", max_length=120)
     payload = event_payload_from_data(conn, data, user, event_id)
     timestamp = now()
@@ -5017,12 +5203,22 @@ def save_event_post(conn, data, user):
         payload["ends_at"], payload["prefecture"], payload["location"], payload["description"],
         payload["participation_type"], payload["capacity"], payload["capacity_unit"], payload["eligibility"],
         payload["fee_amount"], payload["fee_unit"], payload["payment_method"], payload["application_deadline"],
-        payload["acceptance_mode"], payload["cancellation_policy"], payload["status"], timestamp,
+        payload["acceptance_mode"], payload["cancellation_policy"], payload["status"],
     )
     if event_id:
         existing = event_owner(conn, event_id, user["user_id"])
         if existing["status"] == "cancelled":
             raise ValueError("中止した募集は再公開できません。複製して新しい募集を作成してください")
+        has_applications = conn.execute(
+            "select 1 from event_applications where event_id=? and status in ('pending','confirmed') limit 1", (event_id,)
+        ).fetchone()
+        if has_applications:
+            if any(payload[key] != existing[key] for key in ("participation_type", "capacity_unit", "acceptance_mode")):
+                raise ValueError("申込受付後は参加単位・定員の単位・受付方式を変更できません")
+            if payload["status"] == "draft":
+                raise ValueError("申込受付後は下書きに戻せません。締切または中止を選択してください")
+        if payload["capacity"] and payload["capacity"] < active_confirmed_capacity(conn, event_id):
+            raise ValueError("参加確定済みの枠数より定員を少なくできません")
         conn.execute(
             """
             update event_posts set linked_circle_id=?, organizer_name=?, organizer_contact_email=?, event_type=?,
@@ -5034,6 +5230,12 @@ def save_event_post(conn, data, user):
             """,
             values + (payload["status"], timestamp, timestamp, event_id),
         )
+        if existing["status"] != "draft" and any(payload[key] != existing[key] for key in payload):
+            for recipient in conn.execute(
+                "select applicant_user_id from event_applications where event_id=? and status in ('pending','confirmed')", (event_id,)
+            ).fetchall():
+                add_event_notification(conn, recipient["applicant_user_id"], event_id, "event_updated",
+                                       "開催内容が変更されました", f"{payload['title']} の最新の開催内容・参加条件をご確認ください。")
     else:
         event_id = slug("event", f"{user['user_id']}:{payload['title']}:{payload['starts_at']}:{timestamp}")
         conn.execute(
@@ -5062,10 +5264,17 @@ def event_is_open_for_application(event):
 
 def active_confirmed_capacity(conn, event_id):
     value = conn.execute(
-        "select coalesce(sum(participant_count), 0) from event_applications where event_id=? and status='confirmed'",
+        """select coalesce(sum(case when e.participation_type='team' and e.capacity_unit='チーム'
+          then 1 else a.participant_count end), 0)
+          from event_applications a join event_posts e on e.event_id=a.event_id
+          where a.event_id=? and a.status='confirmed'""",
         (event_id,),
     ).fetchone()[0]
     return int(value or 0)
+
+
+def application_capacity_cost(event, participant_count):
+    return 1 if event["participation_type"] == "team" and event["capacity_unit"] == "チーム" else participant_count
 
 
 def submit_event_application(conn, event_id, data, user):
@@ -5098,8 +5307,10 @@ def submit_event_application(conn, event_id, data, user):
         raise ValueError("参加予定人数は整数で入力してください") from exc
     if participant_count < 1 or participant_count > 100000:
         raise ValueError("参加予定人数は1から100000の範囲で入力してください")
+    if participation_type == "individual" and participant_count != 1:
+        raise ValueError("個人参加は1名ずつ申し込んでください")
     if event["capacity"] and event["acceptance_mode"] == "first_come":
-        if active_confirmed_capacity(conn, event_id) + participant_count > int(event["capacity"]):
+        if active_confirmed_capacity(conn, event_id) + application_capacity_cost(event, participant_count) > int(event["capacity"]):
             raise ValueError("定員に達しているため申し込めません")
     status = "confirmed" if event["acceptance_mode"] == "first_come" else "pending"
     application_id = slug("application", f"{event_id}:{user['user_id']}:{now()}:{secrets.token_hex(4)}")
@@ -5120,7 +5331,7 @@ def submit_event_application(conn, event_id, data, user):
     )
     add_event_notification(
         conn, event["organizer_user_id"], event_id, "new_application", "新しい参加申込があります",
-        f"{event['title']} に{participant_count}{event['capacity_unit'] or '人'}分の申込がありました。",
+        f"{event['title']} に" + (f"1チーム（{participant_count}名）" if participation_type == "team" else "1名") + "の申込がありました。",
     )
     add_event_notification(
         conn, user["user_id"], event_id, "application_received",
@@ -5149,7 +5360,7 @@ def set_event_application_status(conn, event_id, application_id, action, user, o
     next_status = "confirmed" if action == "confirm" else "declined"
     if next_status == "confirmed":
         event_is_open_for_application(event)
-        if event["capacity"] and active_confirmed_capacity(conn, event_id) + int(application["participant_count"] or 0) > int(event["capacity"]):
+        if event["capacity"] and active_confirmed_capacity(conn, event_id) + application_capacity_cost(event, int(application["participant_count"] or 0)) > int(event["capacity"]):
             raise ValueError("定員を超えるため参加確定にできません")
     conn.execute(
         "update event_applications set status=?, organizer_note=?, updated_at=? where application_id=?",
@@ -5167,6 +5378,8 @@ def set_event_application_status(conn, event_id, application_id, action, user, o
 def cancel_event_application(conn, event_id, application_id, user):
     if not user.get("authenticated"):
         raise PermissionError("ログインが必要です")
+    if not conn.in_transaction:
+        conn.execute("begin immediate")
     application = conn.execute(
         "select * from event_applications where application_id=? and event_id=? and applicant_user_id=?",
         (application_id, event_id, user["user_id"]),
@@ -5181,13 +5394,21 @@ def cancel_event_application(conn, event_id, application_id, user):
         conn, event["organizer_user_id"], event_id, "application_cancelled", "参加申込が取り消されました",
         f"{event['title']} の申込が参加者により取り消されました。",
     )
+    add_event_notification(conn, user["user_id"], event_id, "cancellation_received",
+                           "申込の取り消しを受け付けました", f"{event['title']} の受付状況は「取消済み」です。")
     audit(conn, "event_application_cancel", "event_application", application_id, {"event_id": event_id})
 
 
 def set_event_status(conn, event_id, status, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    if not conn.in_transaction:
+        conn.execute("begin immediate")
     if status not in {"closed", "cancelled", "published"}:
         raise ValueError("募集状態が正しくありません")
     event = event_owner(conn, event_id, user["user_id"])
+    if event["status"] == status:
+        return
     if event["status"] == "cancelled" and status != "cancelled":
         raise ValueError("中止した募集は再公開できません。複製して作り直してください")
     conn.execute("update event_posts set status=?, updated_at=? where event_id=?", (status, now(), event_id))
@@ -5225,7 +5446,9 @@ def event_my_page(user):
     with connect() as conn:
         hosted = conn.execute(
             """
-            select e.*, coalesce(sum(case when a.status='confirmed' then a.participant_count else 0 end),0) as confirmed_count,
+            select e.*, coalesce(sum(case when a.status='confirmed' then
+              case when e.participation_type='team' and e.capacity_unit='チーム' then 1 else a.participant_count end
+              else 0 end),0) as confirmed_count,
               count(a.application_id) as application_count
             from event_posts e left join event_applications a on a.event_id=e.event_id
             where e.organizer_user_id=? group by e.event_id order by e.updated_at desc
@@ -5243,8 +5466,10 @@ def event_my_page(user):
         ).fetchall()
         notifications = conn.execute(
             """
-            select n.*, e.title as event_title from event_notifications n
+            select n.notification_id, n.event_id, n.title, n.body, n.created_at, n.read_at,
+              coalesce(o.status, n.email_status) as email_status, e.title as event_title from event_notifications n
             left join event_posts e on e.event_id=n.event_id
+            left join event_email_outbox o on o.notification_id=n.notification_id
             where n.recipient_user_id=? order by n.created_at desc limit 50
             """,
             (user["user_id"],),
@@ -5627,7 +5852,14 @@ def main():
             print(f"SQLite DB: {DB_PATH}")
         except Exception:
             pass
-        server.serve_forever()
+        email_stop, email_thread = start_event_email_worker()
+        try:
+            server.serve_forever()
+        finally:
+            email_stop.set()
+            if email_thread:
+                email_thread.join(timeout=20)
+            server.server_close()
     except Exception as exc:
         log(f"failed {type(exc).__name__}: {exc}")
         raise

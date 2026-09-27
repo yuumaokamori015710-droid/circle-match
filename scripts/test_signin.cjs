@@ -19,7 +19,7 @@ assert.doesNotMatch(rendered.stdout, /google-dot|conic-gradient/);
 const script = [...rendered.stdout.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('const supabaseUrl'));
 assert.ok(script);
 
-async function scenario({ emailEnabled = true, emailError = null, googleError = null, session = null, authenticated = false, syncFails = false } = {}) {
+async function scenario({ emailEnabled = true, emailError = null, googleError = null, session = null, authenticated = false, syncFails = false, hash = '' } = {}) {
   const elements = new Map();
   const get = id => {
     if (!elements.has(id)) elements.set(id, { disabled: true, hidden: false, textContent: '', value: '', classList: { add() {} }, reportValidity: () => true });
@@ -36,7 +36,8 @@ async function scenario({ emailEnabled = true, emailError = null, googleError = 
     fetch: async url => url === '/api/me'
       ? { ok: true, json: async () => ({ authenticated }) }
       : { ok: !syncFails, json: async () => syncFails ? { error: 'session rejected' } : { user: { email: 'member@example.test' } } },
-    location: { origin: 'https://circle-match.jp', replace: value => redirects.push(value) },
+    location: { origin: 'https://circle-match.jp', search: '', hash, replace: value => redirects.push(value) },
+    URLSearchParams,
     setTimeout() {},
   };
   vm.runInNewContext(script.replace('const emailReady = true;', `const emailReady = ${emailEnabled};`), context);
@@ -62,8 +63,14 @@ async function scenario({ emailEnabled = true, emailError = null, googleError = 
   await login.get('emailForm').onsubmit({ preventDefault() {} });
   assert.equal(login.calls[0][0], 'email');
   assert.equal(login.calls[0][1].email, 'member@example.test');
+  assert.equal(login.calls[0][1].options.shouldCreateUser, true);
   assert.equal(new URL(login.calls[0][1].options.emailRedirectTo).searchParams.get('return_to'), '/events/test/apply');
   assert.match(login.get('status').textContent, /送信を受け付けました/);
+  await login.get('emailForm').onsubmit({ preventDefault() {} });
+  assert.equal(login.calls.length, 1, 'duplicate send must wait for cooldown');
+  const expired = await scenario({ hash: '#error=access_denied&error_code=otp_expired' });
+  assert.match(expired.get('status').textContent, /有効期限/);
+  assert.equal(expired.get('emailButton').disabled, false);
   const failure = await scenario({ emailError: new Error('SMTP unavailable') });
   await failure.get('emailForm').onsubmit({ preventDefault() {} });
   assert.match(failure.get('status').textContent, /送信できませんでした/);
