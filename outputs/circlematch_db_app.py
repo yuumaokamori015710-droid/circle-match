@@ -155,6 +155,9 @@ BRAND_LOGO_STYLE = """
     a.brand .brand-word-circle{color:#102A43}
     a.brand .brand-word-match{color:#F15A2A}
     @media(max-width:620px){a.brand{font-size:18px}a.brand::before{flex-basis:34px;width:34px;height:34px}}
+    .account-logout{display:inline-flex;margin:0}.account-logout button{min-height:38px;border:0;background:transparent;color:#405164;padding:8px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+    nav a.cm-account{display:inline-flex;align-items:center;min-height:38px;padding:8px 10px;border:1px solid #e15b31;border-radius:8px;color:#e15b31;background:#fff;text-decoration:none;white-space:nowrap;font-size:14px;font-weight:800}
+    @media(max-width:620px){.site-nav a.brand .brand-wordmark{display:none}.site-nav .main-nav a,.site-nav .account-logout button{padding:7px;font-size:12px}.site-nav a.brand{gap:0}.site-nav .main-nav{flex-wrap:wrap;justify-content:flex-end}}
   </style>
 """
 
@@ -348,7 +351,8 @@ SIGNIN_HTML = """<!doctype html>
         setStatus("現在ログインをご利用いただけません。時間をおいて再度お試しください。", true);
         return;
       }
-      const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+      // The HttpOnly application cookie owns the session after this one-time exchange.
+      const client = window.supabase.createClient(supabaseUrl, supabaseAnonKey,{auth:{persistSession:false,autoRefreshToken:false}});
       const { data, error: sessionError } = await client.auth.getSession();
       if(sessionError || callbackError) setStatus("ログインリンクが無効か、有効期限を過ぎています。もう一度メールを送信してください。", true);
       if(data.session){
@@ -1015,6 +1019,37 @@ def create_user_session(conn, user_id):
     return session_id
 
 
+def logout_token(session_id):
+    return hmac.new(SESSION_SECRET.encode(), ("logout:" + session_id).encode(), hashlib.sha256).hexdigest()
+
+
+def account_navigation(session_id, return_to="/mypage"):
+    if not current_user(session_id).get("authenticated"):
+        target = safe_return_path(return_to, "/mypage")
+        if urlparse(target).path in {"/signin", "/logout"}:
+            target = "/mypage"
+        href = html.escape("/signin?" + urlencode({"return_to": target}), quote=True)
+        return f'<a id="accountLink" class="account cm-account" href="{href}">ログイン</a>'
+    return ('<a id="accountLink" class="account cm-account" href="/mypage">マイページ</a>'
+            '<form class="account-logout" action="/logout" method="post">'
+            f'<input type="hidden" name="csrf_token" value="{logout_token(session_id)}">'
+            '<button type="submit">ログアウト</button></form>')
+
+
+def personalize_navigation(body, session_id, return_to):
+    # Work only on the first public header, never on user content or page scripts.
+    page = body.decode("utf-8")
+    before, separator, after = page.partition("</header>")
+    if not separator or 'class="brand"' not in before or "</nav>" not in before:
+        return body
+    old = '<a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a>'
+    navigation = account_navigation(session_id, return_to)
+    before = before.replace(old, navigation, 1) if old in before else before.replace("</nav>", navigation + "</nav>", 1)
+    before = before.replace('class="brand"', 'class="brand" aria-label="Circle Match"', 1)
+    after = after.replace('</body>', '<script>window.addEventListener("pageshow",event=>{if(event.persisted)location.reload()});</script></body>', 1)
+    return (before + separator + after).encode("utf-8")
+
+
 def script_json(value):
     """Serialize server data safely for an inline script without exposing secrets."""
     return json.dumps(value, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
@@ -1300,7 +1335,6 @@ EVENT_HOME_SCRIPT = r"""
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
   function circleRow(c){const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:'掲載準備中';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div>${profile}</div></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
-  async function account(){try{const me=await getJson('/api/me');const link=document.getElementById('accountLink');if(me.authenticated){link.textContent='マイページ';link.href='/mypage'} }catch(_){}}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
   function syncLinks(){
     const current=qs(),keys=['sport','region','prefecture','date_from','date_to','event_type','participation','q'];
@@ -1338,7 +1372,7 @@ EVENT_HOME_SCRIPT = r"""
     form.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(sync,220)});form.addEventListener('change',sync);form.addEventListener('submit',e=>{e.preventDefault();sync()});
     window.addEventListener('popstate',()=>{restoreFilters(form);sync()});
   }
-  account();if(pageTab==='events')bootEvents();else bootDb();
+  if(pageTab==='events')bootEvents();else bootDb();
 </script>
 """
 
@@ -3802,6 +3836,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def send_html(self, body, status=200):
+        body = personalize_navigation(body, self.cookie_value("cm_session"), self.path)
         self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Cache-Control", "no-store, max-age=0, must-revalidate")
@@ -3923,9 +3958,12 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/signin":
                 self.send_html(render_signin_html(safe_return_path(query.get("return_to", ["/"])[0])))
             elif parsed.path == "/logout":
-                self.redirect(safe_return_path(query.get("return_to", ["/"])[0], "/"), [
-                    f"cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"
-                ])
+                session_id = self.cookie_value("cm_session")
+                body = ('<h1>ログアウト</h1><p>この端末のCircle Matchからログアウトします。</p>'
+                        '<form method="post" action="/logout">'
+                        f'<input type="hidden" name="csrf_token" value="{logout_token(session_id)}">'
+                        '<button class="button" type="submit">ログアウトする</button></form>')
+                self.send_html(event_page("ログアウト", body).encode("utf-8"))
             elif parsed.path == "/auth/google":
                 self.redirect("/signin?" + urlencode({"return_to": safe_return_path(query.get("return_to", ["/"])[0])}))
             elif parsed.path == "/auth/google/callback":
@@ -4104,6 +4142,21 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/logout":
+                session_id = self.cookie_value("cm_session")
+                length = int(self.headers.get("Content-Length", "0"))
+                if length < 0 or length > 2048:
+                    self.send_json({"error": "invalid request"}, 400)
+                    return
+                form = parse_qs(self.rfile.read(length).decode("utf-8"))
+                token = form.get("csrf_token", [""])[0]
+                if not hmac.compare_digest(token, logout_token(session_id)):
+                    self.send_json({"error": "ページを再読み込みしてからログアウトしてください"}, 403)
+                    return
+                with connect() as conn:
+                    conn.execute("update user_sessions set expires_at=datetime('now') where session_id=?", (session_id,))
+                self.redirect("/", [f"cm_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"])
+                return
             if parsed.path == "/api/auth/supabase":
                 if not supabase_auth_enabled():
                     self.send_json({"error": "Supabase Auth is not configured"}, 503)

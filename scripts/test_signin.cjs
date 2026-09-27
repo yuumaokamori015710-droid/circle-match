@@ -28,11 +28,14 @@ async function scenario({ emailEnabled = true, emailError = null, googleError = 
   const calls = [], redirects = [];
   const context = {
     document: { getElementById: get },
-    window: { supabase: { createClient: () => ({ auth: {
+    window: { supabase: { createClient: (_url, _key, options) => {
+      assert.equal(options.auth.persistSession, false, 'server logout must not resurrect a stored Supabase session');
+      assert.equal(options.auth.autoRefreshToken, false);
+      return { auth: {
       getSession: async () => ({ data: { session } }),
       signInWithOAuth: async options => { calls.push(['google', options]); return { error: googleError }; },
       signInWithOtp: async options => { calls.push(['email', options]); return { error: emailError }; },
-    } }) } },
+    } }; } } },
     fetch: async url => url === '/api/me'
       ? { ok: true, json: async () => ({ authenticated }) }
       : { ok: !syncFails, json: async () => syncFails ? { error: 'session rejected' } : { user: { email: 'member@example.test' } } },

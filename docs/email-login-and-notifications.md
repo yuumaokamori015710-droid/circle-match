@@ -8,6 +8,21 @@ application or event editor. Supabase validates the access token through its
 user endpoint; the app requires email_confirmed_at before creating a session.
 Google login remains enabled. Service-role and mail keys must stay server-only.
 
+The Supabase browser client uses persistSession=false and autoRefreshToken=false:
+only the HttpOnly application cookie persists after token exchange. A local
+Supabase session must not silently sign a user back in after logout. Public
+headers are personalized at response time (Cache-Control: no-store), including
+legacy DB pages. POST /logout validates a session-bound HMAC token, expires that
+server session, and clears the cookie. GET /logout only shows confirmation;
+other devices remain signed in. Restoring a page from bfcache reloads its header.
+
+Japanese authentication templates are in outputs/email-templates/. In the
+dedicated project pxlcrikgkluzmdhuwgds, set Magic link or OTP subject to
+"Circle Matchへのログイン" and Confirm sign up to "Circle Matchへの登録確認".
+Keep {{ .ConfirmationURL }} unchanged. Both were saved and preview-verified on
+2026-09-27. These files are the versioned source; Git deployment does not update
+Supabase templates automatically. Do not change another project's templates.
+
 Keep CIRCLEMATCH_EMAIL_AUTH_ENABLED=false until custom SMTP is configured and a
 real login email has been received and redeemed.
 
@@ -94,6 +109,7 @@ the additive table in place; do not overwrite newer data with an old snapshot.
 
 ```text
 node scripts/test_signin.cjs
+python scripts/test_account_navigation.py
 python scripts/test_event_flow.py
 python scripts/test_event_capacity_email.py
 ```
