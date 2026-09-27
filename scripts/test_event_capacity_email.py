@@ -160,6 +160,8 @@ class EventRegressionTests(unittest.TestCase):
             conn.execute("update event_email_outbox set next_attempt_at=0")
         def accepted(request, timeout):
             self.assertEqual(timeout, 15)
+            self.assertEqual(request.get_header("User-agent"), "CircleMatch/1.0 (+https://circle-match.jp)")
+            self.assertEqual(request.get_header("Accept"), "application/json")
             self.assertEqual(request.get_header("Idempotency-key"), "circlematch-notification/" + hashlib.sha256(notification_id.encode()).hexdigest())
             payload = json.loads(request.data)
             self.assertEqual(payload["to"], ["p0@example.test"])

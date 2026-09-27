@@ -5105,6 +5105,7 @@ def send_notification_email(notification_id, payload_json):
     request = Request(
         "https://api.resend.com/emails", data=payload_json.encode("utf-8"),
         headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json",
+                 "Accept": "application/json", "User-Agent": "CircleMatch/1.0 (+https://circle-match.jp)",
                  "Idempotency-Key": "circlematch-notification/" + hashlib.sha256(notification_id.encode("utf-8")).hexdigest()},
         method="POST",
     )
