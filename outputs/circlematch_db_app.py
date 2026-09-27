@@ -157,6 +157,7 @@ BRAND_LOGO_STYLE = """
     @media(max-width:620px){a.brand{font-size:18px}a.brand::before{flex-basis:34px;width:34px;height:34px}}
     .account-logout{display:inline-flex;margin:0}.account-logout button{min-height:38px;border:0;background:transparent;color:#405164;padding:8px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
     nav a.cm-account{display:inline-flex;align-items:center;min-height:38px;padding:8px 10px;border:1px solid #e15b31;border-radius:8px;color:#e15b31;background:#fff;text-decoration:none;white-space:nowrap;font-size:14px;font-weight:800}
+    header .top>.nav{align-items:center}header .top>.nav>a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;line-height:1.4}
     @media(max-width:620px){.site-nav a.brand .brand-wordmark{display:none}.site-nav .main-nav a,.site-nav .account-logout button{padding:7px;font-size:12px}.site-nav a.brand{gap:0}.site-nav .main-nav{flex-wrap:wrap;justify-content:flex-end}}
   </style>
 """
@@ -262,7 +263,7 @@ SIGNIN_HTML = """<!doctype html>
   <style>
     :root{--ink:#17212f;--muted:#64748b;--line:#dbe4ed;--brand:#0f7a62;--accent:#e15b31}
     *{box-sizing:border-box}body{margin:0;background:#f4f7fa;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
-    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;text-decoration:none}.nav{display:flex;gap:12px;flex-wrap:wrap}.nav a{color:#31506b;text-decoration:none;font-weight:850}
+    header{background:#fff;border-bottom:1px solid var(--line)}.top{max-width:1040px;margin:auto;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}.header-start{display:flex;align-items:center;gap:12px;min-width:0}.brand{font-weight:900;text-decoration:none}.nav{display:flex;align-items:center;gap:12px;flex:0 0 auto}.nav a{padding:10px 12px;border-radius:8px;color:#31506b;text-decoration:none;font-size:14px;font-weight:850;white-space:nowrap}.back-link{display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:#fff;text-decoration:none;font-size:24px;line-height:1}.back-link:hover,.nav a:hover{background:#f4f7fa}.back-link:focus-visible,.nav a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     main{max-width:1040px;margin:auto;padding:38px 18px 60px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.hero h1{font-size:36px;line-height:1.15;margin:0}.hero p,.panel p{color:var(--muted);line-height:1.8}.button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:8px;padding:12px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:900;text-decoration:none;cursor:pointer}.button.primary{background:var(--brand);border-color:var(--brand);color:#fff}.button.accent{background:var(--accent);border-color:var(--accent);color:#fff}
     /* Google's official HTML button: https://developers.google.com/identity/branding-guidelines */
     .gsi-material-button{user-select:none;-webkit-appearance:none;appearance:none;background-color:#fff;background-image:none;border:1px solid #747775;border-radius:4px;box-sizing:border-box;color:#1f1f1f;cursor:pointer;font-family:Roboto,Arial,sans-serif;font-size:14px;height:40px;letter-spacing:0;outline:none;overflow:hidden;padding:0 12px;position:relative;text-align:center;transition:background-color .218s,border-color .218s,box-shadow .218s;vertical-align:middle;white-space:nowrap;width:100%;max-width:400px;min-width:min-content;display:block;margin-inline:auto}
@@ -278,11 +279,12 @@ SIGNIN_HTML = """<!doctype html>
     .gsi-material-button:focus-visible{outline:2px solid #1a73e8;outline-offset:2px}
     .note{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:14px;line-height:1.7}.choice{display:none;gap:10px}.choice.active{display:grid}.status{margin-top:12px;padding:12px;border-radius:8px;background:#f9fbfd;color:var(--muted);line-height:1.7;font-size:14px}.status.error{background:#fff1f1;color:#a33}
     .email-login{display:grid;gap:10px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.email-login label{font-size:14px;font-weight:800}.email-login input{width:100%;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}.email-login p{margin:0;font-size:13px}.button{width:100%}.button:disabled{opacity:.55;cursor:not-allowed}[hidden]{display:none!important}
-    @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{align-items:flex-start;flex-direction:column}}
+    @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{padding:10px 12px;gap:8px}.header-start{gap:8px}}
+    @media(max-width:400px){.header-start a.brand .brand-wordmark{display:none}.header-start a.brand{gap:0}}
   </style>
 </head>
 <body>
-  <header><div class="top"><a class="brand" href="/">__SITE_NAME__</a><nav class="nav"><a href="/">募集を探す</a></nav></div></header>
+  <header data-account-navigation="hidden"><div class="top"><div class="header-start"><a class="back-link" href="__SIGNIN_BACK_URL__" aria-label="戻る" title="戻る"><span aria-hidden="true">&larr;</span></a><a class="brand" href="/">__SITE_NAME__</a></div><nav class="nav" aria-label="サイトナビゲーション"><a href="__SIGNIN_FIND_URL__">募集を探す</a></nav></div></header>
   <main>
     <section class="hero"><h1>__SIGNIN_HEADING__</h1><p>__SIGNIN_DESCRIPTION__</p></section>
     <section class="panel">
@@ -1043,8 +1045,9 @@ def personalize_navigation(body, session_id, return_to):
     if not separator or 'class="brand"' not in before or "</nav>" not in before:
         return body
     old = '<a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a>'
-    navigation = account_navigation(session_id, return_to)
-    before = before.replace(old, navigation, 1) if old in before else before.replace("</nav>", navigation + "</nav>", 1)
+    if 'data-account-navigation="hidden"' not in before:
+        navigation = account_navigation(session_id, return_to)
+        before = before.replace(old, navigation, 1) if old in before else before.replace("</nav>", navigation + "</nav>", 1)
     before = before.replace('class="brand"', 'class="brand" aria-label="Circle Match"', 1)
     after = after.replace('</body>', '<script>window.addEventListener("pageshow",event=>{if(event.persisted)location.reload()});</script></body>', 1)
     return (before + separator + after).encode("utf-8")
@@ -1698,7 +1701,19 @@ def render_social_html():
 
 def render_signin_html(return_to="/"):
     return_to = safe_return_path(return_to)
-    is_hosting = urlparse(return_to).path == "/events/new"
+    destination = urlparse(return_to)
+    is_hosting = destination.path == "/events/new"
+    filters = {key: values[0] for key, values in parse_qs(destination.query).items()
+               if key in {"sport", "region", "prefecture", "event_type", "participation", "date_from", "date_to", "q"}}
+    find_url = "/events" + ("?" + urlencode(filters) if filters else "")
+    # Back must stay on a public page, not repeat the login gate or OAuth flow.
+    back_url = "/"
+    if is_hosting:
+        back_url = find_url
+    elif re.fullmatch(r"/events/[^/]+/apply", destination.path):
+        back_url = destination.path.removesuffix("/apply")
+    elif destination.path in {"/", "/events", "/circles", "/social", "/social/circles", "/sports", "/regions"}:
+        back_url = return_to
     heading = "募集掲載の前に、ログイン" if is_hosting else "ログインして、参加・主催を始める。"
     description = (
         "ログインすると、基本情報の登録が簡単になります。主催者名・連絡先にはアカウント情報や前回の募集情報を入力済みにします。"
@@ -1711,6 +1726,8 @@ def render_signin_html(return_to="/"):
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SIGNIN_HEADING__", html.escape(heading))
         .replace("__SIGNIN_DESCRIPTION__", html.escape(description))
+        .replace("__SIGNIN_BACK_URL__", html.escape(back_url, quote=True))
+        .replace("__SIGNIN_FIND_URL__", html.escape(find_url, quote=True))
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
         .replace("__SUPABASE_ANON_KEY__", json.dumps(SUPABASE_ANON_KEY))
         .replace("__AUTH_READY__", "true" if supabase_auth_enabled() else "false")

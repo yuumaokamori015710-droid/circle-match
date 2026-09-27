@@ -1,4 +1,5 @@
 """Account navigation and logout against isolated SQLite and a real HTTP server."""
+import html
 import json
 import re
 import tempfile
@@ -19,6 +20,41 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 
 class AccountNavigationTest(unittest.TestCase):
+    def test_signin_header_and_public_back_destinations(self):
+        with tempfile.TemporaryDirectory() as folder:
+            app = load_app(Path(folder) / 'signin.sqlite')
+            owner = user('host', 'host@example.test', '主催者')
+            create_account(app, owner)
+            with app.connect() as conn:
+                session = app.create_user_session(conn, owner['user_id'])
+            filters = urlencode({'sport': 'サッカー・フットサル', 'region': 'kanto'})
+            cases = (
+                ('/events/new?' + filters, '/events?' + filters),
+                ('/events/new?copy=private-id&' + filters, '/events?' + filters),
+                ('/events/event-123/apply', '/events/event-123'),
+                ('/circles?' + filters, '/circles?' + filters),
+                ('/mypage', '/'),
+                ('/signin', '/'),
+                ('//evil.example/path', '/'),
+            )
+            for return_to, expected_back in cases:
+                for session_id in ('', session):
+                    with self.subTest(return_to=return_to, authenticated=bool(session_id)):
+                        body = app.render_signin_html(return_to)
+                        page = app.personalize_navigation(body, session_id, '/signin').decode()
+                        header = page.split('<header', 1)[1].split('</header>', 1)[0]
+                        self.assertNotIn('id="accountLink"', header)
+                        self.assertNotIn('>ログイン</a>', header)
+                        self.assertNotIn('action="/logout"', header)
+                        self.assertIn('aria-label="Circle Match"', header)
+                        back = re.search(r'<a class="back-link" href="([^"]+)"', header)
+                        self.assertIsNotNone(back)
+                        self.assertEqual(html.unescape(back[1]), expected_back)
+                        self.assertIn('aria-label="戻る"', header)
+                        self.assertIn('>募集を探す</a>', header)
+                        self.assertIn('Google でログイン', page)
+                        self.assertIn('メールアドレスでログイン', page)
+
     def test_hosting_login_gate_and_saved_basics(self):
         with tempfile.TemporaryDirectory() as folder:
             app = load_app(Path(folder) / 'hosting.sqlite')
