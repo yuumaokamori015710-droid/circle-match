@@ -57,10 +57,33 @@ class EventUXTests(unittest.TestCase):
                 self.assertNotIn(">すべての競技</a>", page)
                 self.assertIn('aria-label="現在位置"', page)
                 self.assertIn("link.classList.contains('home-link')", page)
-                self.assertIn('/events/new?sport=', page)
                 if tab == "events":
+                    self.assertIn('/events/new?sport=', page)
                     self.assertEqual(len(parsed.labels), 5)
                     self.assertIn('class="button primary publish-cta"', page)
+
+    def test_publish_action_is_between_sport_image_and_results_not_in_header(self):
+        from urllib.parse import parse_qs, urlparse
+        import html
+        for sport in self.app.event_sport_options():
+            page = self.app.render_public_html({"sport": [sport], "region": ["kanto"]}).decode()
+            header = page.split("</header>", 1)[0]
+            self.assertNotIn(">募集を掲載する</a>", header)
+            self.assertEqual(page.count(">募集を掲載する</a>"), 1)
+            image = page.index('class="event-results-intro"')
+            action = page.index('class="event-publish"')
+            results = page.index('id="events"')
+            self.assertLess(image, action)
+            self.assertLess(action, results)
+            target = re.search(r'class="button primary publish-cta" href="([^"]+)"', page)[1]
+            url = urlparse(html.unescape(target))
+            self.assertEqual(url.path, "/events/new")
+            self.assertEqual(parse_qs(url.query), {"sport": [sport], "region": ["kanto"]})
+        for page in (self.app.render_public_html().decode(),
+                     self.app.render_public_html({"tab": ["db"]}).decode(),
+                     self.app.render_event_form_html({}, self.host),
+                     self.app.render_mypage_html(self.host)):
+            self.assertNotIn(">募集を掲載する</a>", page.split("</header>", 1)[0])
 
     def test_form_back_button_does_not_reserve_empty_mobile_row(self):
         page = self.app.render_event_form_html({}, self.host)
@@ -175,7 +198,7 @@ class EventUXTests(unittest.TestCase):
     def test_search_context_pagination_and_source_fallback(self):
         params = {"tab": ["db"], "audience": ["university"], "sport": ["野球"], "region": ["kanto"], "page": ["2"]}
         page = self.app.render_public_html(params).decode("utf-8")
-        self.assertIn("/events/new?sport=", page)
+        self.assertIn("/events?sport=", page)
         self.assertIn("region=kanto", page)
         self.assertIn('id="dbPager"', page)
         self.assertIn("前へ", page)

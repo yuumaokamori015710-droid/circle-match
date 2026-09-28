@@ -54,6 +54,12 @@ class AccountNavigationTest(unittest.TestCase):
                         self.assertIn('>募集を探す</a>', header)
                         self.assertIn('Google でログイン', page)
                         self.assertIn('メールアドレスでログイン', page)
+                        if urlparse(return_to).path == '/events/new':
+                            self.assertIn('<h1>募集掲載の前に</h1>', page)
+                            self.assertIn('<p class="signin-lead">ログインすると、基本情報の登録が簡単になります。</p>', page)
+                            self.assertIn('class="hero hosting-intro"', page)
+                        else:
+                            self.assertNotIn('class="signin-lead"', page)
 
     def test_hosting_login_gate_and_saved_basics(self):
         with tempfile.TemporaryDirectory() as folder:

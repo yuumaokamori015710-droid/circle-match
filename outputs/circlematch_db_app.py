@@ -281,12 +281,16 @@ SIGNIN_HTML = """<!doctype html>
     .email-login{display:grid;gap:10px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.email-login label{font-size:14px;font-weight:800}.email-login input{width:100%;min-height:46px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}.email-login p{margin:0;font-size:13px}.button{width:100%}.button:disabled{opacity:.55;cursor:not-allowed}[hidden]{display:none!important}
     @media(max-width:760px){main{grid-template-columns:1fr}.hero h1{font-size:30px}.top{padding:10px 12px;gap:8px}.header-start{gap:8px}}
     @media(max-width:400px){.header-start a.brand .brand-wordmark{display:none}.header-start a.brand{gap:0}}
+    .hero.hosting-intro h1{font-size:24px;line-height:1.5}
+    .hero.hosting-intro .signin-lead{font-size:20px;font-weight:800;color:var(--ink);line-height:1.6;margin:12px 0;text-wrap:balance}
+    .hero.hosting-intro .signin-detail{font-size:14px}
+    @media(max-width:760px){.hero.hosting-intro h1{font-size:22px}.hero.hosting-intro .signin-lead{font-size:18px}}
   </style>
 </head>
 <body>
   <header data-account-navigation="hidden"><div class="top"><div class="header-start"><a class="back-link" href="__SIGNIN_BACK_URL__" aria-label="戻る" title="戻る"><span aria-hidden="true">&larr;</span></a><a class="brand" href="/">__SITE_NAME__</a></div><nav class="nav" aria-label="サイトナビゲーション"><a href="__SIGNIN_FIND_URL__">募集を探す</a></nav></div></header>
   <main>
-    <section class="hero"><h1>__SIGNIN_HEADING__</h1><p>__SIGNIN_DESCRIPTION__</p></section>
+    <section class="hero __SIGNIN_INTRO_CLASS__"><h1>__SIGNIN_HEADING__</h1>__SIGNIN_LEAD__<p class="signin-detail">__SIGNIN_DESCRIPTION__</p></section>
     <section class="panel">
       <button id="googleButton" class="gsi-material-button" type="button" disabled>
         <span class="gsi-material-button-state" aria-hidden="true"></span>
@@ -1175,7 +1179,7 @@ def event_shell(title, body, script=""):
     page = f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} | __SITE_NAME__</title><style>{EVENT_BASE_CSS}{EVENT_UX_CSS}</style></head><body>
-<header class="site-header"><div class="site-nav"><a class="brand" href="/">__SITE_NAME__</a><nav class="main-nav"><a class="tab-link __EVENT_TAB__" href="__EVENT_TAB_URL__">大会・イベント</a><a class="tab-link db-label __DB_TAB__" href="__DB_TAB_URL__">サークルDB</a><a class="publish" href="__POST_URL__">募集を掲載する</a><a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a></nav></div></header>
+<header class="site-header"><div class="site-nav"><a class="brand" href="/">__SITE_NAME__</a><nav class="main-nav"><a class="tab-link __EVENT_TAB__" href="__EVENT_TAB_URL__">大会・イベント</a><a class="tab-link db-label __DB_TAB__" href="__DB_TAB_URL__">サークルDB</a><a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a></nav></div></header>
 <main class="container">{body}</main>{script}</body></html>"""
     return with_adsense(page).replace("__SITE_NAME__", SITE_NAME)
 
@@ -1197,8 +1201,9 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 #events,#dbList{scroll-margin-top:85px}
 @media(max-width:820px){.circle-row>div:nth-child(n+3){display:block}.circle-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.circle-row>*{overflow-wrap:anywhere}}
 @media(max-width:460px){.intro h1{font-size:25px}.intro p{font-size:14px}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.sport-card{min-height:112px}.sport-copy{max-width:100%;padding:10px}.sport-copy strong{font-size:17px;line-height:1.3;overflow-wrap:anywhere}.sport-copy span{display:none}.sport-copy em{position:static;padding:0;margin-top:12px;background:none;font-size:12px}.event-grid{grid-template-columns:1fr}.panel-head h2{font-size:19px}.form-section{padding:14px}.form-actions{padding:12px}.form-actions .card-actions{margin:0;width:100%}.application-recap dl,#reviewAnswers,.preview dl{grid-template-columns:1fr;gap:3px}.application-recap dd,#reviewAnswers dd,.preview dd{margin-bottom:10px}.mypage-tabs{gap:4px}.mypage-tabs button{font-size:13px;min-height:44px;padding:8px}.app-row .card-actions{width:100%}}
-.site-nav .main-nav a.publish,.publish-cta{min-height:52px;min-width:168px;padding:12px 22px;font-size:16px;line-height:1.4}
-.site-nav .main-nav a.publish{flex-shrink:0}
+.publish-cta{min-height:52px;min-width:240px;max-width:100%;padding:12px 22px;font-size:16px;line-height:1.4}
+.event-publish{display:flex;justify-content:flex-end;margin:16px 0 0}
+.event-publish+.event-results{margin-top:16px}
 .event-breadcrumb{display:flex;align-items:center;gap:12px;margin:0 0 12px;min-width:0}
 .home-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#243c50;font-size:15px;font-weight:800;text-decoration:none;flex-shrink:0}
 .home-link:hover{background:#edf4f7}.home-link svg{width:20px;height:20px;flex-shrink:0}
@@ -1212,17 +1217,10 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 input[type=date],input[type=datetime-local]{display:block;min-width:0;max-width:100%;box-sizing:border-box}
 input::-webkit-date-and-time-value{min-width:0;text-align:left}
 .form-actions .card-actions{margin:0 0 0 auto;min-width:0}.form-actions .button{min-height:48px}
-@media(max-width:820px){.site-nav .main-nav a.publish{padding:12px 18px}.field-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:820px){.field-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:620px){
- .site-nav:has(.main-nav .publish){display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 8px;padding:6px 12px 10px}
- .site-nav:has(.publish) .brand{grid-column:1;grid-row:1;min-width:0}
- .site-nav:has(.publish) .brand .brand-wordmark{display:inline-flex;font-size:17px}
- .site-nav:has(.publish) .main-nav{display:contents}
- .site-nav:has(.publish) .main-nav .tab-link{display:none}
- .site-nav .main-nav a.publish{grid-column:1/-1;grid-row:2;min-height:48px;padding:12px 18px;font-size:16px;margin:0}
- .site-nav:has(.publish) .main-nav a.account{grid-column:2;grid-row:1;min-height:44px;padding:8px;font-size:13px}
- .site-nav:has(.publish) .account-logout{grid-column:3;grid-row:1}
- .site-nav:has(.publish) .account-logout button{min-height:44px;padding:6px;font-size:12px}
+ .event-publish .publish-cta{width:100%;min-width:0;min-height:48px}
+ .site-nav .main-nav a.account,.site-nav .account-logout button{min-height:44px}
  .event-results .filter-grid{grid-template-columns:minmax(0,1fr);gap:12px;padding:14px}
  .event-results .panel-head{align-items:flex-start}.event-results .panel-head>div{min-width:0}
  .event-results-intro h1{max-width:100%;font-size:23px}.event-breadcrumb{gap:8px}
@@ -1231,9 +1229,8 @@ input::-webkit-date-and-time-value{min-width:0;text-align:left}
  .form-actions #backStep{justify-self:start;min-width:80px;grid-row:2}
  .form-actions .card-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
  .form-actions .button{min-width:0;padding:10px 8px;font-size:15px}
- #events,#dbList,.form-shell .panel,.field input,.field select,.field textarea{scroll-margin-top:130px}
+ #events,#dbList,.form-shell .panel,.field input,.field select,.field textarea{scroll-margin-top:80px}
 }
-@media(max-width:380px){.site-nav:has(.publish) .brand .brand-wordmark{display:none}}
 """
 
 
@@ -1387,7 +1384,7 @@ def render_public_html(params=None, event_listing=False):
         else:
             introduction = shared_head + tabs + sport_picker
         result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
-        body = introduction + f'''<section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
+        body = introduction + f'''<div class="event-publish"><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div><section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div></div>
 <form id="eventFilters" class="filter-grid"><label class="event-filter">競技<select name="sport" aria-label="競技"><option value="">全競技</option>{filter_options}</select></label><label class="event-filter">地域<select name="region" aria-label="地域"><option value="">全地域</option>{region_options_html}</select></label><label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
 <div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
@@ -1908,9 +1905,10 @@ def render_signin_html(return_to="/"):
         back_url = destination.path.removesuffix("/apply")
     elif destination.path in {"/", "/events", "/circles", "/social", "/social/circles", "/sports", "/regions"}:
         back_url = return_to
-    heading = "募集掲載の前に、ログイン" if is_hosting else "ログインして、参加・主催を始める。"
+    heading = "募集掲載の前に" if is_hosting else "ログインして、参加・主催を始める。"
+    lead = "ログインすると、基本情報の登録が簡単になります。" if is_hosting else ""
     description = (
-        "ログインすると、基本情報の登録が簡単になります。主催者名・連絡先にはアカウント情報や前回の募集情報を入力済みにします。"
+        "主催者名・連絡先にはアカウント情報や前回の募集情報を入力済みにします。"
         "ログイン後は募集の作成画面へ進みます。初めての方も、Googleまたはメールアドレスで登録できます。"
         if is_hosting else
         "大会・イベントの閲覧はログイン不要です。申込、募集掲載、受付管理を行う時だけログインしてください。同じアカウントで参加と主催の両方ができます。"
@@ -1918,6 +1916,8 @@ def render_signin_html(return_to="/"):
     return (
         with_adsense(SIGNIN_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
+        .replace("__SIGNIN_INTRO_CLASS__", "hosting-intro" if is_hosting else "")
+        .replace("__SIGNIN_LEAD__", f'<p class="signin-lead">{html.escape(lead)}</p>' if lead else "")
         .replace("__SIGNIN_HEADING__", html.escape(heading))
         .replace("__SIGNIN_DESCRIPTION__", html.escape(description))
         .replace("__SIGNIN_BACK_URL__", html.escape(back_url, quote=True))
