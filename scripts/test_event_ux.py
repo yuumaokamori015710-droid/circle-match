@@ -33,6 +33,40 @@ class EventUXTests(unittest.TestCase):
         with self.app.connect() as conn:
             return self.app.save_event_post(conn, event_payload(self.id(), mode, "individual", capacity), self.host)
 
+    def test_competition_home_navigation_and_filter_labels(self):
+        from html.parser import HTMLParser
+        class Links(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.home = []
+                self.labels = []
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == "a" and attrs.get("class") == "home-link":
+                    self.home.append(attrs["href"])
+                if tag == "label" and attrs.get("class") == "event-filter":
+                    self.labels.append(attrs)
+        for audience in ("university", "social"):
+            for tab in ("events", "db"):
+                params = {"tab": [tab], "audience": [audience], "sport": ["サッカー・フットサル"], "region": ["kanto"]}
+                page = self.app.render_public_html(params).decode()
+                parsed = Links()
+                parsed.feed(page)
+                expected = "/" if tab == "events" else "/?tab=db&audience=" + audience
+                self.assertEqual(parsed.home, [expected])
+                self.assertNotIn(">すべての競技</a>", page)
+                self.assertIn('aria-label="現在位置"', page)
+                self.assertIn("link.classList.contains('home-link')", page)
+                self.assertIn('/events/new?sport=', page)
+                if tab == "events":
+                    self.assertEqual(len(parsed.labels), 5)
+                    self.assertIn('class="button primary publish-cta"', page)
+
+    def test_form_back_button_does_not_reserve_empty_mobile_row(self):
+        page = self.app.render_event_form_html({}, self.host)
+        self.assertIn("$('backStep').hidden=step===0", page)
+        self.assertNotIn("$('backStep').style.visibility", page)
+
     def apply(self, eid, person=None):
         with self.app.connect() as conn:
             return self.app.submit_event_application(conn, eid, {

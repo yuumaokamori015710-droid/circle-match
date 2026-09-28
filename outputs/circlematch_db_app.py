@@ -1197,7 +1197,54 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 #events,#dbList{scroll-margin-top:85px}
 @media(max-width:820px){.circle-row>div:nth-child(n+3){display:block}.circle-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.circle-row>*{overflow-wrap:anywhere}}
 @media(max-width:460px){.intro h1{font-size:25px}.intro p{font-size:14px}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.sport-card{min-height:112px}.sport-copy{max-width:100%;padding:10px}.sport-copy strong{font-size:17px;line-height:1.3;overflow-wrap:anywhere}.sport-copy span{display:none}.sport-copy em{position:static;padding:0;margin-top:12px;background:none;font-size:12px}.event-grid{grid-template-columns:1fr}.panel-head h2{font-size:19px}.form-section{padding:14px}.form-actions{padding:12px}.form-actions .card-actions{margin:0;width:100%}.application-recap dl,#reviewAnswers,.preview dl{grid-template-columns:1fr;gap:3px}.application-recap dd,#reviewAnswers dd,.preview dd{margin-bottom:10px}.mypage-tabs{gap:4px}.mypage-tabs button{font-size:13px;min-height:44px;padding:8px}.app-row .card-actions{width:100%}}
+.site-nav .main-nav a.publish,.publish-cta{min-height:52px;min-width:168px;padding:12px 22px;font-size:16px;line-height:1.4}
+.site-nav .main-nav a.publish{flex-shrink:0}
+.event-breadcrumb{display:flex;align-items:center;gap:12px;margin:0 0 12px;min-width:0}
+.home-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#243c50;font-size:15px;font-weight:800;text-decoration:none;flex-shrink:0}
+.home-link:hover{background:#edf4f7}.home-link svg{width:20px;height:20px;flex-shrink:0}
+.home-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.breadcrumb-current{font-size:14px;color:#526577;overflow-wrap:anywhere;min-width:0}
+.event-results .filter-grid{align-items:end}.event-filter{display:grid;gap:6px;min-width:0;font-size:13px;font-weight:700;color:#405164}
+.event-filter input,.event-filter select{width:100%;min-width:0;max-width:100%;min-height:46px;font-size:16px;font-weight:400;color:var(--ink)}
+.form-shell,.form-shell .panel,.form-section,.field-grid,.field-grid>*{min-width:0;max-width:100%}
+.form-shell .panel,.field input,.field select,.field textarea{scroll-margin-top:100px}
+.field input,.field select,.field textarea{max-width:100%;font-size:16px;min-height:46px}
+input[type=date],input[type=datetime-local]{display:block;min-width:0;max-width:100%;box-sizing:border-box}
+input::-webkit-date-and-time-value{min-width:0;text-align:left}
+.form-actions .card-actions{margin:0 0 0 auto;min-width:0}.form-actions .button{min-height:48px}
+@media(max-width:820px){.site-nav .main-nav a.publish{padding:12px 18px}.field-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:620px){
+ .site-nav:has(.main-nav .publish){display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 8px;padding:6px 12px 10px}
+ .site-nav:has(.publish) .brand{grid-column:1;grid-row:1;min-width:0}
+ .site-nav:has(.publish) .brand .brand-wordmark{display:inline-flex;font-size:17px}
+ .site-nav:has(.publish) .main-nav{display:contents}
+ .site-nav:has(.publish) .main-nav .tab-link{display:none}
+ .site-nav .main-nav a.publish{grid-column:1/-1;grid-row:2;min-height:48px;padding:12px 18px;font-size:16px;margin:0}
+ .site-nav:has(.publish) .main-nav a.account{grid-column:2;grid-row:1;min-height:44px;padding:8px;font-size:13px}
+ .site-nav:has(.publish) .account-logout{grid-column:3;grid-row:1}
+ .site-nav:has(.publish) .account-logout button{min-height:44px;padding:6px;font-size:12px}
+ .event-results .filter-grid{grid-template-columns:minmax(0,1fr);gap:12px;padding:14px}
+ .event-results .panel-head{align-items:flex-start}.event-results .panel-head>div{min-width:0}
+ .event-results-intro h1{max-width:100%;font-size:23px}.event-breadcrumb{gap:8px}
+ .stepper span{min-width:0;padding:10px 4px;font-size:12px;line-height:1.5}
+ .form-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+ .form-actions #backStep{justify-self:start;min-width:80px;grid-row:2}
+ .form-actions .card-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .form-actions .button{min-width:0;padding:10px 8px;font-size:15px}
+ #events,#dbList,.form-shell .panel,.field input,.field select,.field textarea{scroll-margin-top:130px}
+}
+@media(max-width:380px){.site-nav:has(.publish) .brand .brand-wordmark{display:none}}
 """
+
+
+# Lucide house icon, ISC license (see docs/licenses/lucide.txt).
+HOME_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>'
+
+
+def event_home_navigation(current, href="/"):
+    return (f'<nav class="event-breadcrumb" aria-label="現在位置"><a class="home-link" '
+            f'href="{html.escape(href, quote=True)}">{HOME_ICON}ホーム</a>'
+            f'<span aria-hidden="true">/</span><span class="breadcrumb-current" aria-current="page">{html.escape(current)}</span></nav>')
 
 
 def selected_home_query(params, tab, *, path="/", **updates):
@@ -1333,15 +1380,15 @@ def render_public_html(params=None, event_listing=False):
         if event_listing:
             image_name = next((item[4] for item in POPULAR_SPORTS if item[0] == sport), "other.png")
             listing_title = f'{html.escape(sport)}<span>大会・イベント</span>' if sport else '大会・イベント一覧'
-            heading = f'<p class="event-breadcrumb"><a href="/">すべての競技</a></p><section class="event-results-intro"><img src="/assets/sports/{image_name}" alt=""><h1>{listing_title}</h1></section>'
-            introduction = tabs + heading
+            heading = f'<section class="event-results-intro"><img src="/assets/sports/{image_name}" alt=""><h1>{listing_title}</h1></section>'
+            introduction = event_home_navigation(sport or "大会・イベント一覧") + tabs + heading
             if not initial_events and not initial_error:
                 event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
         else:
             introduction = shared_head + tabs + sport_picker
         result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
-        body = introduction + f'''<section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div><a class="button primary" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
-<form id="eventFilters" class="filter-grid"><select name="sport" aria-label="競技"><option value="">全競技</option>{filter_options}</select><select name="region" aria-label="地域"><option value="">全地域</option>{region_options_html}</select><input name="date_from" type="date" aria-label="開催日以降"><select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select><select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></form>
+        body = introduction + f'''<section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div>
+<form id="eventFilters" class="filter-grid"><label class="event-filter">競技<select name="sport" aria-label="競技"><option value="">全競技</option>{filter_options}</select></label><label class="event-filter">地域<select name="region" aria-label="地域"><option value="">全地域</option>{region_options_html}</select></label><label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
 <div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
     else:
@@ -1365,6 +1412,8 @@ def render_public_html(params=None, event_listing=False):
         audience_toggle = f'<div class="db-toggle"><a class="{"active" if audience == "university" else ""}" href="{html.escape(selected_home_query(params, "db", audience="university"), quote=True)}">大学</a><a class="{"active" if audience == "social" else ""}" href="{html.escape(selected_home_query(params, "db", audience="social"), quote=True)}">社会人</a></div>'
         filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in sport_options(audience))
         body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><div class="sport-grid">{event_sport_cards(params, "db", audience)}</div><form id="dbFilters" class="filter-grid"><input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())}</select><select name="prefecture"><option value="">全都道府県</option>{''.join(f'<option value="{html.escape(p)}">{html.escape(p)}</option>' for p in PREFECTURES)}</select><a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
+        if sport:
+            body = event_home_navigation(sport, "/?" + urlencode({"tab": "db", "audience": audience})) + body
         pager = render_db_pager(params, db_page if not db_error else 1, db_stats["circles"] if not db_error else 0)
         body = body.replace('<div id="dbList"', '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
@@ -1391,7 +1440,7 @@ EVENT_HOME_SCRIPT = r"""
     const current=qs(),keys=['sport','region','prefecture','date_from','date_to','event_type','participation','q'];
     document.querySelectorAll('a[href]').forEach(link=>{
       const raw=link.getAttribute('href');
-      if(!raw.startsWith('/'))return;
+      if(!raw.startsWith('/')||link.classList.contains('home-link'))return;
       const target=new URL(raw,location.origin);
       if(['/','/events'].includes(target.pathname)&&target.searchParams.has('tab')){
         for(const key of keys){if(key==='sport'&&link.classList.contains('sport-card'))continue;const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
@@ -1582,7 +1631,7 @@ function syncCapacityUnit(reset=false){
   if(reset||!team||!['人','チーム'].includes($('capacity_unit').value))$('capacity_unit').value=team?'チーム':'人';
 }
 function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??'';if(['starts_at','ends_at','application_deadline'].includes(id))value=toInput(value);$(id).value=value});if(!$('organizer_contact_email').value)$('organizer_contact_email').value=defaultEmail||''}
-function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').style.visibility=step===0?'hidden':'visible';$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
+function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').hidden=step===0;$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
 function payload(status){const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);return obj}
 function preview(){const p=payload('published');const fields=[['募集種別・競技',p.event_type+' / '+p.sport_category],['開催日時',p.starts_at.replace('T',' ')],['会場',p.prefecture+' / '+p.location],['参加単位',({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]],['定員',p.capacity?p.capacity+p.capacity_unit:'定員なし'],['参加費',p.payment_method==='free'?'無料':p.fee_amount+'円 / '+p.fee_unit],['支払方法',({free:'無料',on_site:'現地払い',bank_transfer:'口座振込'})[p.payment_method]],['受付方式',p.acceptance_mode==='approval'?'主催者承認制':'先着順'],['応募締切',p.application_deadline.replace('T',' ')||'開催日時まで'],['主催者',p.organizer_name],['内容',p.description],['参加条件',p.eligibility||'特に設定されていません'],['キャンセル・中止条件',p.cancellation_policy]];$('eventPreview').innerHTML=`<h3>${esc(p.title||'タイトル未入力')}</h3><dl>${fields.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v||'未入力')}</dd>`).join('')}</dl>`}
 async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
@@ -1600,8 +1649,9 @@ async function save(status){if(status==='published'){for(const section of form.q
 fill();try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){Object.assign(initialEvent,saved);fill()}}catch(_){}
 syncCapacityUnit();syncPayment();$('payment_method').addEventListener('change',syncPayment);$('participation_type').addEventListener('change',()=>{syncCapacityUnit(true);$('fee_unit').value=$('participation_type').value==='team'?'1チーム':'1人';remember()});loadOrganizations();showStep(0);
 if(new URLSearchParams(location.search).get('saved')==='1'){const saved=document.createElement('p');saved.className='notice';saved.textContent='下書きを保存しました。マイページから再開できます。';form.before(saved)}
-$('nextStep').onclick=()=>{if(validate(form.querySelector('[data-step="'+step+'"]'))){showStep(step+1);const active=form.querySelector('.form-section.active');active.tabIndex=-1;active.focus()}};
-$('backStep').onclick=()=>showStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{remember();if(step===2)preview()});form.addEventListener('change',()=>{remember();if(step===2)preview()});form.onsubmit=e=>{e.preventDefault();if(step<2)$('nextStep').click();else save('published')};
+function moveStep(next){showStep(next);const active=form.querySelector('.form-section.active');active.tabIndex=-1;active.focus({preventScroll:true});form.closest('.panel').scrollIntoView({block:'start'})}
+$('nextStep').onclick=()=>{if(validate(form.querySelector('[data-step="'+step+'"]')))moveStep(step+1)};
+$('backStep').onclick=()=>moveStep(step-1);$('saveDraft').onclick=()=>save('draft');$('publishEvent').onclick=()=>save('published');form.addEventListener('input',()=>{remember();if(step===2)preview()});form.addEventListener('change',()=>{remember();if(step===2)preview()});form.onsubmit=e=>{e.preventDefault();if(step<2)$('nextStep').click();else save('published')};
 </script>
 """
 
