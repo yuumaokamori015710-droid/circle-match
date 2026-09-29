@@ -90,6 +90,11 @@ class EventUXTests(unittest.TestCase):
         self.assertIn("$('backStep').hidden=step===0", page)
         self.assertNotIn("$('backStep').style.visibility", page)
 
+    def test_publish_action_is_centered_with_full_width_mobile_button(self):
+        page = self.app.render_public_html({"sport": ["サッカー・フットサル"]}).decode()
+        self.assertIn(".event-publish{display:flex;justify-content:center;", page)
+        self.assertIn(".event-publish .publish-cta{width:100%;min-width:0;min-height:48px}", page)
+
     def apply(self, eid, person=None):
         with self.app.connect() as conn:
             return self.app.submit_event_application(conn, eid, {

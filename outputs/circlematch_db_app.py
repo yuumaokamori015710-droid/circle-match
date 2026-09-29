@@ -1202,7 +1202,7 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 @media(max-width:820px){.circle-row>div:nth-child(n+3){display:block}.circle-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.circle-row>*{overflow-wrap:anywhere}}
 @media(max-width:460px){.intro h1{font-size:25px}.intro p{font-size:14px}.sport-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.sport-card{min-height:112px}.sport-copy{max-width:100%;padding:10px}.sport-copy strong{font-size:17px;line-height:1.3;overflow-wrap:anywhere}.sport-copy span{display:none}.sport-copy em{position:static;padding:0;margin-top:12px;background:none;font-size:12px}.event-grid{grid-template-columns:1fr}.panel-head h2{font-size:19px}.form-section{padding:14px}.form-actions{padding:12px}.form-actions .card-actions{margin:0;width:100%}.application-recap dl,#reviewAnswers,.preview dl{grid-template-columns:1fr;gap:3px}.application-recap dd,#reviewAnswers dd,.preview dd{margin-bottom:10px}.mypage-tabs{gap:4px}.mypage-tabs button{font-size:13px;min-height:44px;padding:8px}.app-row .card-actions{width:100%}}
 .publish-cta{min-height:52px;min-width:240px;max-width:100%;padding:12px 22px;font-size:16px;line-height:1.4}
-.event-publish{display:flex;justify-content:flex-end;margin:16px 0 0}
+.event-publish{display:flex;justify-content:center;margin:16px 0 0}
 .event-publish+.event-results{margin-top:16px}
 .event-breadcrumb{display:flex;align-items:center;gap:12px;margin:0 0 12px;min-width:0}
 .home-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#243c50;font-size:15px;font-weight:800;text-decoration:none;flex-shrink:0}
