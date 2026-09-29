@@ -165,7 +165,7 @@ class EventRegressionTests(unittest.TestCase):
             self.assertEqual(request.get_header("Idempotency-key"), "circlematch-notification/" + hashlib.sha256(notification_id.encode()).hexdigest())
             payload = json.loads(request.data)
             self.assertEqual(payload["to"], ["p0@example.test"])
-            self.assertIn("/mypage?tab=notifications", payload["text"])
+            self.assertIn("/notifications", payload["text"])
             # Network calls must not hold the SQLite write lock.
             with self.app.connect() as conn:
                 conn.execute("begin immediate")

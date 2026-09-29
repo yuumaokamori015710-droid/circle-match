@@ -229,7 +229,8 @@ class EventUXTests(unittest.TestCase):
         eid = self.event()
         pages = [self.app.render_public_html(), self.app.render_public_html({"tab": ["db"]}),
                  self.app.render_event_form_html({"sport": ["野球"], "region": ["kanto"]}, self.host),
-                 self.app.render_event_apply_html(eid, self.person), self.app.render_mypage_html(self.host)]
+                 self.app.render_event_apply_html(eid, self.person), self.app.render_mypage_html(self.host),
+                 self.app.render_notifications_html(self.host), self.app.NOTIFICATION_BADGE_SCRIPT]
         pages = [page.decode("utf-8") if isinstance(page, bytes) else page for page in pages]
         scripts = [script for page in pages for script in re.findall(r'<script>(.*?)</script>', page, re.S) if script.strip()]
         command = "const vm=require('node:vm');const s=JSON.parse(require('node:fs').readFileSync(0,'utf8'));s.forEach(x=>new vm.Script(x));console.log(s.length+' scripts parsed');"
