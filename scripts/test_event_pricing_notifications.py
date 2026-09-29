@@ -116,17 +116,19 @@ class PricingNotificationTests(unittest.TestCase):
     def test_fee_input_and_unit_sync_javascript(self):
         source = self.app.EVENT_FORM_SCRIPT
         unit = source[source.index("function syncCapacityUnit(){"):source.index("function fill(){")]
-        payment = re.search(r"function syncPayment\(\)\{[^\n]+", source)[0]
+        payment = re.search(r"function normalizeFee\(value\)\{[^\n]+", source)[0] + "\n" + re.search(r"function syncPayment\(\)\{[^\n]+", source)[0]
         command = r'''
 const assert=require('node:assert/strict'),vm=require('node:vm');
 const code=JSON.parse(require('node:fs').readFileSync(0,'utf8'));
-const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','fee_amount','payment_method'].map(id=>[id,{value:'',labels:[{textContent:''}]}]));
+const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','fee_amount','payment_method','paymentHelp'].map(id=>[id,{value:'',labels:[{textContent:''}]}]));
 const context=vm.createContext({$:id=>fields[id],persistedUnits:null});vm.runInContext(code,context);
 for(const type of ['individual','team','both']){
 fields.participation_type.value=type;fields.payment_method.value='free';vm.runInContext('syncCapacityUnit();syncPayment()',context);
 assert.equal(fields.capacity_unit.value,type==='team'?'チーム':'人');assert.equal(fields.fee_unit.value,type==='team'?'1チーム':'1人');assert.equal(fields.fee_amount.disabled,false);assert.equal(fields.fee_amount.required,true);
 }
 context.persistedUnits={participation:'team',capacity:'人',fee:'1人'};fields.participation_type.value='team';vm.runInContext('syncCapacityUnit()',context);assert.equal(fields.capacity_unit.value,'人');assert.equal(fields.fee_unit.value,'1人');
+fields.fee_amount.value='０';fields.payment_method.value='bank_transfer';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,true);assert.equal(fields.payment_method.value,'free');
+fields.fee_amount.value='１，５００';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,false);assert.equal(vm.runInContext('normalizeFee($("fee_amount").value)',context),'1500');
 '''
         result = subprocess.run(["node", "-e", command], input=json.dumps(unit + payment), text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)

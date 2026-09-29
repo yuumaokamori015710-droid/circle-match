@@ -104,8 +104,8 @@ class EventRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "変更できません"), self.app.connect() as conn:
             self.app.save_event_post(conn, edit, self.host)
         individual = self.make_event(participation="individual")
-        with self.assertRaisesRegex(ValueError, "1名"):
-            self.apply(individual, count=2, participation="individual")
+        self.apply(individual, count=2, participation="individual")
+        self.assertEqual(self.app.get_event(individual)["confirmed_count"], 2)
 
     def test_host_pane_messages_and_access(self):
         event_id = self.make_event()
