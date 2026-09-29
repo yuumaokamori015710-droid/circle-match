@@ -79,7 +79,10 @@ class SharingGroupTests(unittest.TestCase):
         self.assertEqual(cards.count('class="sport-card'), 15)
         body = self.app.personalize_navigation(self.app.render_public_html(), self.session, "/").decode()
         header = body.split("<header", 1)[1].split("</header>", 1)[0]
-        self.assertLess(header.index('class="cm-home"'), header.index('class="tab-link'))
+        self.assertNotIn('class="tab-link', header)
+        self.assertNotIn('>サークルDB<', header)
+        self.assertLess(header.index('action="/logout"'), header.index('class="cm-home"'))
+        self.assertLess(header.index('class="cm-home"'), header.index('id="notificationBell"'))
         self.assertLess(header.index('action="/logout"'), header.index('id="notificationBell"'))
         self.assertLess(header.index('id="notificationBell"'), header.index('</nav>'))
 
@@ -146,8 +149,13 @@ class SharingGroupTests(unittest.TestCase):
         eid = self.event(target_total_amount=987654321)
         event = self.app.get_event(eid)
         markup, script = self.app.event_share_dialog(event, True)
-        for name in ("LINE", "X", "Insta", "TikTok", "リンク"):
-            self.assertIn(">" + name + "<", markup)
+        for name in ("LINE", "X", "Instagram", "TikTok"):
+            self.assertIn('aria-label="' + name + 'で共有"', markup)
+        self.assertIn('id="shareMore"', markup)
+        self.assertIn('href="https://www.instagram.com/"', markup)
+        self.assertIn('href="https://www.tiktok.com/"', markup)
+        for field in ("開催日時", "会場", "定員", "締切", "内容", "参加条件"):
+            self.assertIn(field, script)
         for secret in ("host@example.test", "target_total_amount", "987654321"):
             self.assertNotIn(secret, markup + script)
         owner = self.app.render_event_detail_html(eid, self.host)

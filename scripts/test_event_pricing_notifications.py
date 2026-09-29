@@ -73,7 +73,7 @@ class PricingNotificationTests(unittest.TestCase):
         for page in (self.app.render_event_detail_html(eid), self.app.render_event_detail_html(eid, self.person),
                      self.app.render_event_apply_html(eid, self.other), self.app.render_mypage_html(self.person)):
             self.assertNotIn("987654321", page)
-            self.assertNotIn("目標総額", page)
+            self.assertNotIn("損益分岐点", page)
         owner = self.app.render_event_form_html({"event_id": [eid]}, self.host)
         self.assertIn('"target_total_amount": 987654321', owner)
         self.assertIn("987,654,321円", self.app.render_mypage_html(self.host))
@@ -120,17 +120,17 @@ class PricingNotificationTests(unittest.TestCase):
         command = r'''
 const assert=require('node:assert/strict'),vm=require('node:vm');
 const code=JSON.parse(require('node:fs').readFileSync(0,'utf8'));
-const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','fee_amount','payment_method','paymentHelp'].map(id=>[id,{value:'',labels:[{textContent:''}]}]));
+const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','minimum_participants','fee_amount','payment_method','paymentHelp'].map(id=>[id,{value:'',labels:[{textContent:''}]}]));
 const context=vm.createContext({$:id=>fields[id],persistedUnits:null});vm.runInContext(code,context);
 for(const type of ['individual','team','both']){
 fields.participation_type.value=type;fields.payment_method.value='free';vm.runInContext('syncCapacityUnit();syncPayment()',context);
 assert.equal(fields.capacity_unit.value,type==='team'?'チーム':'人');assert.equal(fields.fee_unit.value,type==='team'?'1チーム':'1人');assert.equal(fields.fee_amount.disabled,false);assert.equal(fields.fee_amount.required,true);
 }
 context.persistedUnits={participation:'team',capacity:'人',fee:'1人'};fields.participation_type.value='team';vm.runInContext('syncCapacityUnit()',context);assert.equal(fields.capacity_unit.value,'人');assert.equal(fields.fee_unit.value,'1人');
-fields.fee_amount.value='０';fields.payment_method.value='bank_transfer';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,true);assert.equal(fields.payment_method.value,'free');
+fields.fee_amount.value='０';fields.payment_method.value='bank_transfer';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,true);assert.equal(fields.payment_method.value,'bank_transfer');assert.equal(fields.paymentHelp.hidden,true);
 fields.fee_amount.value='１，５００';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,false);assert.equal(vm.runInContext('normalizeFee($("fee_amount").value)',context),'1500');
 '''
-        result = subprocess.run(["node", "-e", command], input=json.dumps(unit + payment), text=True, capture_output=True)
+        result = subprocess.run(["node", "-e", command], input=json.dumps(unit + payment), encoding="utf-8", capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_bell_inbox_scope_count_pagination_and_old_links(self):

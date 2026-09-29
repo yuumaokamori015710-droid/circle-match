@@ -1,0 +1,5 @@
+LINE, X, Instagram and TikTok icons: Simple Icons v15.0.0
+Source: https://github.com/simple-icons/simple-icons/tree/15.0.0
+License: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Brand marks remain the property of their respective owners.
