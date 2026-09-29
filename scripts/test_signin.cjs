@@ -16,6 +16,11 @@ for (const color of ['#EA4335', '#4285F4', '#FBBC05', '#34A853']) {
   assert.ok(rendered.stdout.includes(`fill="${color}"`));
 }
 assert.doesNotMatch(rendered.stdout, /google-dot|conic-gradient/);
+assert.match(rendered.stdout, /<main class="signin-main">/);
+assert.match(rendered.stdout, /\.signin-main\{[^}]*max-width:640px;[^}]*grid-template-columns:minmax\(0,1fr\)/);
+assert.match(rendered.stdout, /\.gsi-material-button\{[^}]*height:52px;[^}]*width:100%/);
+assert.match(rendered.stdout, /<\/section>\s*<section class="panel" aria-label="ログイン方法">\s*<button id="googleButton"/);
+assert.doesNotMatch(rendered.stdout, /grid-template-columns:1fr 1fr/);
 const script = [...rendered.stdout.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('const supabaseUrl'));
 assert.ok(script);
 
