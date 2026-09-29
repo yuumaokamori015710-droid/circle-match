@@ -73,14 +73,32 @@ class SharingGroupTests(unittest.TestCase):
         cards = self.app.event_sport_cards({"region": ["kanto"]}, "events")
         self.assertIn("karaoke.png", cards)
         self.assertIn("events.png", cards)
+        self.assertIn("board-games.png", cards)
         self.assertNotIn("other.png", cards)
         self.assertIn("custom=1", cards)
-        self.assertEqual(cards.count('class="sport-card'), 14)
+        self.assertEqual(cards.count('class="sport-card'), 15)
         body = self.app.personalize_navigation(self.app.render_public_html(), self.session, "/").decode()
         header = body.split("<header", 1)[1].split("</header>", 1)[0]
         self.assertLess(header.index('class="cm-home"'), header.index('class="tab-link'))
         self.assertLess(header.index('action="/logout"'), header.index('id="notificationBell"'))
         self.assertLess(header.index('id="notificationBell"'), header.index('</nav>'))
+
+    def test_board_games_preset_listing_and_creation(self):
+        category = "ボードゲーム"
+        self.assertIn(category, self.app.event_sport_options())
+        self.assertTrue((Path(self.app.__file__).parent / "sports" / "board-games.png").is_file())
+        for audience in ("university", "social"):
+            cards = self.app.event_sport_cards({}, "db", audience)
+            self.assertIn("board-games.png", cards)
+            self.assertIn(category, cards)
+        page = self.app.render_public_html({"sport": [category], "region": ["kanto"]}).decode()
+        self.assertIn('/assets/sports/board-games.png', page)
+        self.assertIn(f'<option value="{category}" selected>', page)
+        form = self.app.render_event_form_html({"sport": [category]}, self.host)
+        self.assertIn('<select id="sport_category">', form)
+        self.assertIn(f'<option value="{category}">', form)
+        eid = self.event(sport_category=category)
+        self.assertTrue(any(e["event_id"] == eid for e in self.app.search_events({"sport": [category]})))
 
     def test_group_count_cancellation_privacy_and_duplicate(self):
         eid = self.event()

@@ -123,6 +123,7 @@ POPULAR_SPORTS = [
     ("ラグビー", "Rugby", "RG", "#7a4b2b", "rugby.png"),
     ("カラオケ", "Karaoke", "KA", "#42526b", "karaoke.png"),
     ("イベント", "Events", "EV", "#356c64", "events.png"),
+    ("ボードゲーム", "Board Games", "BG", "#356c64", "board-games.png"),
 ]
 KANTO_PREFECTURES = ["東京都", "神奈川県", "埼玉県", "千葉県", "茨城県", "栃木県", "群馬県"]
 REGION_GROUPS = {
