@@ -131,10 +131,9 @@ class EventUXTests(unittest.TestCase):
         with self.app.connect() as conn:
             self.app.send_event_message(conn, eid, {"body": "取消後の相談"}, self.person)
         self.assertEqual(self.app.event_messages_for_user(eid, self.host, self.person["user_id"])[0]["body"], "取消後の相談")
+        self.assertEqual(self.app.event_messages_for_user(eid, self.other), [])
         with self.assertRaises(PermissionError):
-            self.app.event_messages_for_user(eid, self.other)
-        with self.assertRaises(PermissionError), self.app.connect() as conn:
-            self.app.send_event_message(conn, eid, {"body": "無権限"}, self.other)
+            self.app.event_messages_for_user(eid, self.other, self.person["user_id"])
         again = self.apply(eid)
         self.assertEqual(again["application_id"], application["application_id"])
         with self.app.connect() as conn:

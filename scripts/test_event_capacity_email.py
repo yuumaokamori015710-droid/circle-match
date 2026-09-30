@@ -114,12 +114,13 @@ class EventRegressionTests(unittest.TestCase):
             self.app.send_event_message(conn, event_id, {"recipient_user_id": "p0", "body": "集合場所のお知らせ"}, self.host)
         self.assertEqual(self.app.event_messages_for_user(event_id, self.people[0])[0]["body"], "集合場所のお知らせ")
         self.assertIn(f'id="messages-{event_id}"', self.app.render_mypage_html(self.host))
-        with self.assertRaises(PermissionError):
-            self.app.event_messages_for_user(event_id, self.people[1])
-        with self.assertRaises(PermissionError), self.app.connect() as conn:
-            self.app.send_event_message(conn, event_id, {"body": "部外者"}, self.people[1])
+        self.assertEqual(self.app.event_messages_for_user(event_id, self.people[1]), [])
         with self.assertRaises(PermissionError):
             self.app.event_messages_for_user(event_id, self.host, "p1")
+        with self.app.connect() as conn:
+            self.app.send_event_message(conn, event_id, {"body": "申込前の質問"}, self.people[1])
+        self.assertEqual(len(self.app.event_messages_for_user(event_id, self.people[1])), 1)
+        self.assertEqual(self.app.event_messages_for_user(event_id, self.people[0])[0]["body"], "集合場所のお知らせ")
 
     def configure_email(self):
         self.app.EMAIL_NOTIFICATIONS_ENABLED = True

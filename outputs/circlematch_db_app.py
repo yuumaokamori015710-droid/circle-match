@@ -1664,6 +1664,11 @@ def render_event_detail_html(event_id, user=None):
         body = body.replace("先着順は定員内で参加確定します。", "先着順は定員内で受付確定となります。開催決定後に最終参加確認が必要です。")
         body = body.replace("主催者承認制です。申請後、主催者の承認で参加確定します。", "主催者承認後に受付確定となります。開催決定後に最終参加確認が必要です。")
         body += '<section class="application-recap"><h2>開催状況</h2><p>' + html.escape(event_formation_label(event)) + f' / 最低開催数：{event["minimum_participants"]}{html.escape(event["capacity_unit"])}</p></section>'
+    contact_url = "/events/" + quote(event_id) + "/contact"
+    if not (user or {}).get("authenticated"):
+        contact_url = "/signin?" + urlencode({"return_to": contact_url})
+    body += f'<div class="card-actions"><a class="button" href="{html.escape(contact_url, quote=True)}">{"質問・連絡を確認" if is_host else "主催者に質問する"}</a></div>'
+    body = body.replace("連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。", "申込前の質問も、非公開のアプリ内メッセージで受け付けます。")
     share_markup, share_script = event_share_dialog(event, auto_after_publish=is_host and event["status"] == "published")
     body += '<div class="card-actions">' + event_share_button() + '</div>' + share_markup
     return event_page(event.get("title") or "大会・イベント詳細", body, share_script)
@@ -1845,6 +1850,8 @@ def render_event_organize_html(event_id, user):
         return f'<div class="field full"><label for="{key}">{label}</label>{control}</div>'
     fields = field("starts_at", "開催日時", "datetime-local") + field("location", "会場")
     fields += field("announcement_details", "開催案内・集合場所・持ち物など", "textarea", 5000)
+    fields += field("attendance_deadline", "最終参加確認の期限", "datetime-local")
+    fields += '<p class="help">期限前24時間以内に一度リマインドし、期限切れは主催者と申込者へ通知します。自動取消はしません。</p>'
     if event["payment_method"] == "bank_transfer" and event["fee_amount"]:
         fields += field("bank_transfer_details", "振込先口座（最終参加確認済みの参加者のみ）", "textarea", 1200, bool(event["announcement_version"]))
         fields += field("payment_deadline", "振込期限", "datetime-local")
@@ -1872,11 +1879,14 @@ def render_event_attendance_html(event_id, user):
     confirmed = active and application["attendance_version"] == event["announcement_version"]
     if active:
         body += '<h2>主催者からの開催案内</h2><p style="white-space:pre-wrap">' + html.escape(event["announcement_details"]) + '</p>'
-        if not confirmed and event["starts_at"] > event_local_now():
+        if event["attendance_deadline"]:
+            body += '<p>最終参加確認の期限：' + format_event_datetime(event["attendance_deadline"]) + '</p>'
+        expired = bool(event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now())
+        if not confirmed and event["starts_at"] > event_local_now() and not expired:
             body += f'<form id="formationForm"><p>この確認は申込全員（{application["participant_count"]}名）に適用されます。</p><label><input type="checkbox" required> 最新の開催内容・料金・キャンセル条件を確認し、参加します。</label><p><button type="submit" class="button primary">最終参加を確認する</button></p></form><p id="formationError" class="error-box" role="alert" hidden></p>'
             script = formation_form_script(event, "attendance", "/events/" + quote(event_id) + "/attendance")
         elif not confirmed:
-            body += '<p>開催日時を過ぎています。主催者へお問い合わせください。</p>'
+            body += f'<p>確認期限または開催日時を過ぎています。<a href="/events/{quote(event_id)}/contact">主催者へお問い合わせください。</a></p>'
         if confirmed and event["payment_method"] == "bank_transfer" and event["fee_amount"]:
             total = event["fee_amount"] * (1 if event["fee_unit"] == "1チーム" else application["participant_count"])
             body += (f'<section class="application-recap"><h2>振込案内</h2><p>お支払額：{total:,}円</p><p>振込期限：{format_event_datetime(event["payment_deadline"])}</p>'
@@ -1903,10 +1913,16 @@ def render_notifications_html(user, page=0):
     rendered = []
     for note in notes:
         link = f'<a href="/events/{quote(note["event_id"])}">募集詳細を確認する</a>' if note.get("event_id") else ''
-        if note.get("event_id") and note.get("notification_type") in {"event_announced", "attendance_recorded"}:
+        if note.get("event_id") and note.get("notification_type") in {"event_announced", "attendance_recorded", "attendance_reminder", "attendance_expired"}:
             link = f'<a href="/events/{quote(note["event_id"])}/attendance">開催案内・参加確認へ</a>'
         elif note.get("event_id") and note.get("notification_type") == "event_provisional":
             link = f'<a href="/events/{quote(note["event_id"])}/organize">開催を決定する</a>'
+        elif note.get("event_id") and note.get("notification_type") in {"attendance_expired_host", "count_requested"}:
+            link = f'<a href="/events/{quote(note["event_id"])}/applications">受付・入金管理へ</a>'
+        elif note.get("event_id") and note.get("notification_type") == "new_message":
+            link = f'<a href="/events/{quote(note["event_id"])}/contact">質問・連絡を開く</a>'
+        elif note.get("event_id") and note.get("notification_type") in {"count_changed", "payment_updated", "application_released"}:
+            link = '<a href="/mypage">マイページで申込状況を確認する</a>'
         unread = not note.get("read_at")
         rendered.append(f'<article class="notification {"unread" if unread else ""}" data-notification="{html.escape(note["notification_id"], quote=True)}"><strong>{html.escape(note.get("title") or "")}</strong><p>{html.escape(note.get("body") or "")}</p><small>{format_event_datetime(note.get("created_at"))} / メール通知: {html.escape(email_delivery_label(note.get("email_status")))}</small>{link}</article>')
     previous = f'<a class="button" href="/notifications?page={page-1}">前へ</a>' if page else ''
@@ -1939,7 +1955,8 @@ def render_mypage_html(user):
         actions = []
         if status != "draft":
             actions.append(f'<a class="button" href="/events/{url_id}">公開ページ</a>')
-            actions.append(f'<button class="button" data-manage="{eid}">申込一覧</button>')
+            actions.append(f'<a class="button" href="/events/{url_id}/applications">受付・入金管理</a>')
+            actions.append(f'<a class="button" href="/events/{url_id}/contact">質問・連絡</a>')
         if status != "cancelled":
             actions.append(f'<a class="button" href="/events/new?event_id={url_id}">{"下書きを再開" if status == "draft" else "募集内容を編集"}</a>')
         actions.append(f'<a class="button" href="/events/new?copy={url_id}">複製</a>')
@@ -1965,8 +1982,18 @@ def render_mypage_html(user):
         reapply = f'<a class="button" href="/events/{quote(app["event_id"])}/apply">再度申し込む</a>' if not cancelled and app["application_status"] == "cancelled" and event_availability(app)[1] else ''
         if not cancelled and app["application_status"] == "confirmed" and app.get("announcement_version"):
             reapply += f'<a class="button primary" href="/events/{quote(app["event_id"])}/attendance">開催案内・参加確認</a>'
+        reapply += f'<a class="button" href="/events/{quote(app["event_id"])}/applications/{quote(app["application_id"])}">申込内容・人数変更</a>'
         attending.append(f'''<article class="my-card"><span class="badge {badge}">{html.escape(label)}</span><h3>{html.escape(app.get("title") or "")}</h3><p>{format_event_datetime(app.get("starts_at"))} / {html.escape(app.get("location") or "")} / {html.escape(event_participation_label(app.get("participation_type") or ""))}</p><p>{html.escape(app.get("team_name") or app.get("applicant_name") or "")} / {app.get("participant_count", 1)}名</p><div class="card-actions"><a class="button" href="/events/{quote(str(app["event_id"]))}">詳細</a>{cancel_button}{reapply}<button class="button" data-message-event="{eid}">主催者に連絡</button></div><div id="messages-{eid}" class="messages" hidden></div></article>''')
     body = f'''<section class="intro"><div><p class="eyebrow">MY PAGE</p><h1>マイページ</h1><p>{html.escape(user.get("display_name") or user.get("email") or "")}</p></div></section><section class="panel"><div class="panel-head"><div><h2>大会・イベント</h2><p>参加状況と主催する募集を確認できます。</p></div><a class="button primary" href="/events/new">募集を掲載する</a></div><div class="mypage-tabs"><button class="active" data-my-tab="attending">参加するイベント</button><button data-my-tab="hosted">主催するイベント</button></div><div id="my-attending" class="my-section active">{"".join(attending) or '<div class="empty">参加を申し込んだイベントはありません。</div>'}</div><div id="my-hosted" class="my-section">{"".join(hosted) or '<div class="empty">主催している募集はありません。</div>'}</div></section>'''
+    with connect() as conn:
+        inquiries = conn.execute("""select e.event_id,e.title,max(m.created_at) as latest from event_messages m
+                     join event_posts e on e.event_id=m.event_id
+                     where e.organizer_user_id!=? and (m.sender_user_id=? or m.recipient_user_id=?)
+                     and not exists(select 1 from event_applications a where a.event_id=e.event_id and a.applicant_user_id=?)
+                     group by e.event_id order by latest desc limit 100""", (user["user_id"], user["user_id"], user["user_id"], user["user_id"])).fetchall()
+    if inquiries:
+        inquiry_html = '<h2>申込前の質問・連絡</h2>' + ''.join(f'<article class="app-row"><span>{html.escape(row["title"])}</span><a class="button" href="/events/{quote(row["event_id"])}/contact">連絡を開く</a></article>' for row in inquiries)
+        body = body.replace('</div><div id="my-hosted"', inquiry_html + '</div><div id="my-hosted"')
     body += '<div id="myError" class="error-box" role="alert" tabindex="-1" hidden></div><dialog id="actionDialog" class="ux-dialog" aria-labelledby="actionTitle"><h2 id="actionTitle">操作の確認</h2><p id="actionText"></p><form method="dialog" class="card-actions"><button class="button" value="cancel" autofocus>戻る</button><button class="button primary" value="confirm">実行する</button></form></dialog>'
     return event_page("マイページ", body, MYPAGE_SCRIPT)
 
@@ -2016,6 +2043,130 @@ document.querySelectorAll('[data-message-event]').forEach(button=>button.onclick
 document.querySelectorAll('[data-manage]').forEach(button=>button.onclick=async()=>{const pane=document.getElementById('apps-'+button.dataset.manage);try{const r=await fetch(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications`);const apps=await r.json();if(!r.ok)throw new Error(apps.error||'申込者を取得できません');const card=button.closest('article');card.querySelector('[data-application-count]').textContent=apps.length;card.querySelector('[data-confirmed-count]').textContent=apps.filter(a=>a.status==='confirmed').reduce((n,a)=>n+(card.dataset.capacityUnit==='チーム'?1:Number(a.participant_count)),0);pane.hidden=false;pane.innerHTML=apps.length?apps.map(a=>`<div class="app-row"><div><strong>${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}</strong><p>${a.representative_name?'代表者：'+esc(a.representative_name)+' / ':''}${esc(a.participant_count)}名 / ${esc(a.display_status||({pending:'承認待ち',confirmed:'参加確定',declined:'見送り',cancelled:'取消済み'})[a.status]||a.status)}</p><p class="app-message">申込時の連絡：${esc(a.applicant_message||'なし')}</p></div><div class="card-actions">${a.status==='pending'&&a.can_review?`<button class="button" data-app-action="confirm" data-app="${esc(a.application_id)}">承認</button><button class="button" data-app-action="decline" data-app="${esc(a.application_id)}">見送り</button>`:''}<button class="button" data-recipient-name="${esc(a.team_name||a.applicant_name||a.account_name||'参加者')}" data-app-message="${esc(a.applicant_user_id)}">連絡</button></div></div>`).join(''):'<div class="empty">申込はまだありません。</div>';pane.querySelectorAll('[data-app-action]').forEach(action=>action.onclick=async()=>{if(!await confirmAction(action.dataset.appAction==='confirm'?'この申込を承認して受付を確定しますか？':'この申込を見送りますか？参加者へ通知されます。'))return;action.disabled=true;try{await request(`/api/events/${encodeURIComponent(button.dataset.manage)}/applications/${encodeURIComponent(action.dataset.app)}/status`,{action:action.dataset.appAction});location.reload()}catch(e){showError(e.message);action.disabled=false}});pane.querySelectorAll('[data-app-message]').forEach(action=>action.onclick=()=>loadMessages(button.dataset.manage,action.dataset.appMessage,action.dataset.recipientName))}catch(e){showError(e.message)}});
 </script>
 """
+
+
+EVENT_OPERATIONS_SCRIPT = r'''<script>
+document.querySelectorAll('form[data-operation]').forEach(form=>form.onsubmit=async e=>{
+  e.preventDefault();if(!form.reportValidity()||form.dataset.busy)return;
+  const error=form.querySelector('[role=alert]'),buttons=[...form.querySelectorAll('button')];
+  const payload=Object.fromEntries(new FormData(form));
+  if(e.submitter?.name)payload[e.submitter.name]=e.submitter.value;
+  form.dataset.busy='1';buttons.forEach(b=>b.disabled=true);error.hidden=true;
+  try{const r=await fetch(form.dataset.operation,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const result=await r.json();if(!r.ok)throw Error(result.error||'保存できませんでした');location.reload();
+  }catch(err){error.textContent=err.message;error.hidden=false;delete form.dataset.busy;buttons.forEach(b=>b.disabled=false)}
+});</script>'''
+
+
+def operation_form(endpoint, contents, revision=None):
+    hidden = f'<input type="hidden" name="revision" value="{int(revision)}">' if revision is not None else ''
+    return f'<form data-operation="{html.escape(endpoint, quote=True)}">{hidden}{contents}<p class="error-box" role="alert" hidden></p></form>'
+
+
+def render_event_application_operations(event_id, user, application_id=""):
+    with connect() as conn:
+        event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+        if not event or not user.get("authenticated"):
+            raise PermissionError("この募集を管理する権限がありません")
+        event = dict(event)
+        owner = event["organizer_user_id"] == user["user_id"]
+        if not application_id:
+            event_owner(conn, event_id, user["user_id"])
+            applications = event_applications_for_owner(event_id, user)
+        else:
+            app = conn.execute("select * from event_applications where event_id=? and application_id=?", (event_id, application_id)).fetchone()
+            if not app or (not owner and app["applicant_user_id"] != user["user_id"]):
+                raise PermissionError("この申込を閲覧する権限がありません")
+            app = dict(app)
+    prefix = "/events/" + quote(event_id)
+    back = prefix + "/applications" if owner and application_id else "/mypage?tab=" + ("hosted" if owner else "attending")
+    title = "受付・入金管理" if owner else "申込内容・人数変更"
+    body = event_home_navigation(title) + f'<section class="form-shell"><h1>{title}</h1><h2>{html.escape(event["title"])}</h2><p><a href="{back}">戻る</a> / <a href="{prefix}/contact">質問・連絡</a></p>'
+    if event.get("attendance_deadline"):
+        body += '<p>最終参加確認の期限：' + format_event_datetime(event["attendance_deadline"]) + '</p>'
+    if not application_id:
+        if event["fee_amount"]:
+            totals = {key: sum(1 for row in applications if row["payment_status"] == key) for key in PAYMENT_STATUSES}
+            body += '<p>' + ' / '.join(f'{label} {totals[key]}件' for key, label in PAYMENT_STATUSES.items()) + '</p>'
+        body += '<div class="notification-list">'
+        for row in applications:
+            label = html.escape(row["team_name"] or row["applicant_name"] or row["account_name"] or "参加者")
+            status = html.escape(row["display_status"])
+            payment = PAYMENT_STATUSES.get(row["payment_status"], "未入金") if event["fee_amount"] else "無料"
+            extra = f'<p>人数変更の申請：{row["requested_participant_count"]}名</p>' if row["requested_participant_count"] else ''
+            if row["can_release"]:
+                extra += '<p class="error-box">確認期限切れ・最終参加未確認</p>'
+            body += f'<article class="app-row"><div><h3>{label}</h3><p>{row["participant_count"]}名 / {status} / {payment}</p>{extra}</div><a class="button" href="{prefix}/applications/{quote(row["application_id"])}">申込を確認・管理</a></article>'
+        body += ('' if applications else '<p class="empty">申込はまだありません。</p>') + '</div></section>'
+        return event_page(title, body)
+    endpoint = "/api" + prefix + "/applications/" + quote(application_id)
+    body += f'<h3>{html.escape(app["team_name"] or app["applicant_name"] or "参加者")}</h3><p>{html.escape(event_admission_label(event, app))} / {app["participant_count"]}名</p>'
+    if app["applicant_message"]:
+        body += '<p>申込時の連絡：' + html.escape(app["applicant_message"]) + '</p>'
+    if event["fee_amount"]:
+        total = event["fee_amount"] * (1 if event["fee_unit"] == "1チーム" else app["participant_count"])
+        body += f'<p>参加費合計：{total:,}円 / {PAYMENT_STATUSES.get(app["payment_status"], "未入金")}</p><p class="help">入金状態は主催者による手動記録です。送金・返金の自動処理はありません。</p>'
+    if owner:
+        body += f'<p><a class="button" href="{prefix}/contact?{urlencode({"peer_user_id": app["applicant_user_id"]})}">この申込者に連絡</a></p>'
+        if app["status"] == "pending" and event["status"] in {"published", "closed"} and event["starts_at"] > event_local_now():
+            body += '<h2>参加申請</h2>' + operation_form(endpoint + "/status", '<div class="card-actions"><button class="button primary" name="action" value="confirm">受付を承認する</button><button class="button" name="action" value="decline">見送る</button></div>')
+        if app["requested_participant_count"]:
+            body += f'<h2>人数変更の申請</h2><p>{app["participant_count"]}名 → {app["requested_participant_count"]}名</p>'
+            body += operation_form(endpoint + "/count-review", '<div class="card-actions"><button class="button primary" name="decision" value="approve">人数変更を承認</button><button class="button" name="decision" value="decline">元の人数を維持</button></div>', app["operation_revision"])
+        if event["fee_amount"] and app["status"] in {"confirmed", "cancelled"}:
+            options = ''.join(f'<option value="{key}"{" selected" if key == app["payment_status"] else ""}>{label}</option>' for key, label in PAYMENT_STATUSES.items())
+            fields = '<div class="field"><label for="payment_status">入金・精算状態</label><select id="payment_status" name="payment_status">' + options + '</select></div>'
+            fields += '<div class="field"><label for="payment_note">主催者用メモ（任意・非公開）</label><textarea id="payment_note" name="payment_note" maxlength="500">' + html.escape(app["payment_note"]) + '</textarea></div>'
+            fields += '<p><label><input type="checkbox" required> 実際の入金・精算状況を確認しました。</label></p><button class="button primary">状態を保存する</button>'
+            body += '<h2>入金・返金管理</h2>' + operation_form(endpoint + "/payment", fields, app["operation_revision"])
+        if can_release_unconfirmed(event, app):
+            fields = '<p>期限を過ぎた未確認の受付を取り消します。先に申込者へ連絡し、状況を確認してください。</p><div class="field"><label for="reason">取消理由</label><textarea id="reason" name="reason" maxlength="500" required></textarea></div><p><label><input type="checkbox" required> 申込者へ取消理由を通知し、受付枠を解放します。</label></p><button class="button">この受付を取り消す</button>'
+            body += '<h2>期限切れの受付</h2>' + operation_form(endpoint + "/release", fields, app["operation_revision"])
+    elif app["status"] in {"pending", "confirmed"} and event["status"] in {"published", "closed"} and event["starts_at"] > event_local_now():
+        body += '<h2>参加人数を変更</h2>'
+        if app["payment_status"] != "unpaid":
+            body += '<p>入金・精算の記録があるため、主催者へ人数変更をご相談ください。</p>'
+        elif event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
+            body += '<p>確認期限を過ぎています。主催者へご相談ください。</p>'
+        else:
+            requested = app["requested_participant_count"]
+            if requested:
+                body += f'<p role="status">{requested}名への変更を申請中です。承認までは{app["participant_count"]}名の枠を維持します。</p>'
+            fields = f'<div class="field"><label for="participant_count">本人・友達を含む参加人数 [人]</label><input id="participant_count" name="participant_count" type="number" min="1" max="100000" required value="{requested or app["participant_count"]}"></div>'
+            fields += '<p>承認制の受付確定後に人数を増やす場合は、再承認が必要です。変更後は最終参加確認をやり直してください。全員の取消はマイページから行えます。</p><button class="button primary">人数変更を送信する</button>'
+            body += operation_form(endpoint + "/count", fields, app["operation_revision"])
+    body += '</section>'
+    return event_page(title, body, EVENT_OPERATIONS_SCRIPT)
+
+
+def render_event_contact_html(event_id, user, peer_user_id=""):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    with connect() as conn:
+        event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+        if not event:
+            raise ValueError("募集が見つかりません")
+        owner = event["organizer_user_id"] == user["user_id"]
+        prefix = "/events/" + quote(event_id)
+        body = event_home_navigation("質問・連絡") + '<section class="form-shell"><h1>質問・連絡</h1><h2>' + html.escape(event["title"]) + f'</h2><p><a href="{prefix}">募集詳細へ戻る</a> / <a href="/mypage">マイページ</a></p>'
+        if owner and not peer_user_id:
+            peers = conn.execute("""select u.user_id,u.display_name,max(m.created_at) as last_message,
+                       sum(case when m.recipient_user_id=? and m.read_at is null then 1 else 0 end) as unread
+                  from event_messages m join user_accounts u on u.user_id=case when m.sender_user_id=? then m.recipient_user_id else m.sender_user_id end
+                  where m.event_id=? and (m.sender_user_id=? or m.recipient_user_id=?)
+                  group by u.user_id order by last_message desc limit 200""", (user["user_id"], user["user_id"], event_id, user["user_id"], user["user_id"])).fetchall()
+            body += '<p>質問・連絡は、主催者と送信者本人だけに表示されます。</p>'
+            for peer in peers:
+                body += f'<article class="app-row"><span>{html.escape(peer["display_name"] or "利用者")} / 未読 {peer["unread"]}件</span><a class="button" href="{prefix}/contact?{urlencode({"peer_user_id": peer["user_id"]})}">連絡を開く</a></article>'
+            return event_page("質問・連絡", body + ('' if peers else '<p class="empty">質問・連絡はまだありません。</p>') + '</section>')
+    messages = event_messages_for_user(event_id, user, peer_user_id)
+    body += '<p>このやり取りは一般公開されません。質問の送信だけでは参加申込にはなりません。</p><div class="message-log">'
+    for message in messages:
+        body += '<div class="message"><strong>' + html.escape(message["sender_name"] or "利用者") + '</strong><small> ' + format_event_datetime(message["created_at"]) + '</small><p style="white-space:pre-wrap">' + html.escape(message["body"]) + '</p></div>'
+    body += ('' if messages else '<p>まだメッセージはありません。</p>') + '</div>'
+    fields = f'<input type="hidden" name="recipient_user_id" value="{html.escape(peer_user_id, quote=True) if owner else ""}"><div class="field"><label for="body">メッセージ</label><textarea id="body" name="body" maxlength="2000" required></textarea></div><button class="button primary">送信する</button>'
+    body += operation_form('/api' + prefix + '/messages', fields) + '</section>'
+    return event_page("質問・連絡", body, EVENT_OPERATIONS_SCRIPT)
 
 
 def render_circles_html():
@@ -3298,6 +3449,44 @@ def migrate_event_formation(conn):
         raise
 
 
+def migrate_event_operations(conn):
+    additions = {
+        "event_posts": {"attendance_deadline": "text"},
+        "event_applications": {
+            "payment_status": "text not null default 'unpaid'",
+            "payment_note": "text not null default ''",
+            "payment_updated_at": "text",
+            "operation_revision": "integer not null default 0",
+            "requested_participant_count": "integer",
+        },
+    }
+    missing = [(table, name, definition) for table, fields in additions.items()
+               for name, definition in fields.items()
+               if name not in {row["name"] for row in conn.execute(f"pragma table_info({table})")}]
+    if missing:
+        if conn.in_transaction:
+            raise RuntimeError("Operations migration must precede startup data changes")
+        path = DB_PATH.with_name(DB_PATH.name + ".pre-operations-" + datetime.now().strftime("%Y%m%d%H%M%S%f") + ".sqlite")
+        with sqlite3.connect(path) as backup:
+            conn.backup(backup)
+        backup.close()
+        log(f"event operations migration backup: {path}")
+    conn.execute("begin immediate")
+    try:
+        for table, name, definition in missing:
+            conn.execute(f"alter table {table} add column {name} {definition}")
+        conn.execute("""create table if not exists event_reminder_deliveries (
+            application_id text not null references event_applications(application_id),
+            announcement_version integer not null, kind text not null, created_at text not null,
+            primary key(application_id, announcement_version, kind))""")
+        conn.execute("create index if not exists idx_event_attendance_deadline on event_posts(attendance_deadline, status)")
+        conn.execute("create index if not exists idx_event_messages_sender_time on event_messages(sender_user_id, created_at)")
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+
+
 def init_db():
     with connect() as conn:
         conn.executescript("""
@@ -3583,6 +3772,7 @@ def init_db():
         migrate_event_payment_methods(conn)
         migrate_event_target_total(conn)
         migrate_event_formation(conn)
+        migrate_event_operations(conn)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -4458,7 +4648,18 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def read_json(self):
+        event_request = urlparse(self.path).path.startswith('/api/events')
+        if event_request:
+            origin = self.headers.get('Origin', '')
+            host = self.headers.get('Host', '')
+            if (self.headers.get('Sec-Fetch-Site') == 'cross-site' or
+                    (origin and origin not in {f'https://{host}', f'http://{host}'})):
+                raise PermissionError('別サイトからの操作は受け付けられません')
+            if self.headers.get('Content-Type', '').split(';')[0].strip().lower() != 'application/json':
+                raise ValueError('JSON形式で送信してください')
         length = int(self.headers.get("Content-Length", "0"))
+        if length < 0 or (event_request and length > 65536):
+            raise ValueError('送信内容が大きすぎます')
         if not length:
             return {}
         return json.loads(self.rfile.read(length).decode("utf-8"))
@@ -4510,7 +4711,19 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_html(event_page("ログインが必要です", '<div class="error-box">編集するにはログインしてください。</div>').encode("utf-8"), 401)
             elif parsed.path.startswith("/events/"):
                 parts = [unquote(part) for part in parsed.path.strip("/").split("/")]
-                if len(parts) == 3 and parts[2] in {"organize", "attendance"}:
+                if len(parts) in {3, 4} and parts[2] in {"applications", "contact"}:
+                    user = current_user(self.cookie_value("cm_session"))
+                    if not user.get("authenticated"):
+                        self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
+                        return
+                    if parts[2] == "contact" and len(parts) == 3:
+                        page = render_event_contact_html(parts[1], user, query.get("peer_user_id", [""])[0])
+                    elif parts[2] == "applications":
+                        page = render_event_application_operations(parts[1], user, parts[3] if len(parts) == 4 else "")
+                    else:
+                        raise ValueError("ページが見つかりません")
+                    self.send_html(page.encode("utf-8"))
+                elif len(parts) == 3 and parts[2] in {"organize", "attendance"}:
                     user = current_user(self.cookie_value("cm_session"))
                     if not user.get("authenticated"):
                         self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
@@ -4838,6 +5051,22 @@ class Handler(BaseHTTPRequestHandler):
                         cancel_event_application(conn, parts[2], parts[4], user)
                         conn.commit()
                     self.send_json({"ok": True})
+                    return
+                if len(parts) == 6 and parts[3] == "applications" and parts[5] in {"count", "count-review", "payment", "release"}:
+                    with connect() as conn:
+                        if parts[5] == "count":
+                            result = change_application_count(conn, parts[2], parts[4], data, user)
+                        elif parts[5] == "count-review":
+                            decision = data.get("decision")
+                            if decision not in {"approve", "decline"}:
+                                raise ValueError("人数変更の処理を選んでください")
+                            result = change_application_count(conn, parts[2], parts[4], data, user, decision)
+                        elif parts[5] == "payment":
+                            result = set_application_payment(conn, parts[2], parts[4], data, user)
+                        else:
+                            result = release_unconfirmed_application(conn, parts[2], parts[4], data, user)
+                        conn.commit()
+                    self.send_json({"ok": True, "result": result})
                     return
                 if len(parts) == 4 and parts[3] == "status":
                     with connect() as conn:
@@ -5663,20 +5892,24 @@ def announce_event(conn, event_id, data, user):
     deadline = event_datetime(data.get("payment_deadline"), "振込期限", required=bank) if bank else ""
     if bank and (deadline <= event_local_now() or deadline > starts_at):
         raise ValueError("振込期限は現在より後、開催日時以前にしてください")
+    attendance_deadline = event_datetime(data.get("attendance_deadline") or deadline or starts_at, "最終参加確認の期限")
+    if attendance_deadline <= event_local_now() or attendance_deadline > starts_at or (bank and attendance_deadline > deadline):
+        raise ValueError("最終参加確認の期限は現在より後、開催日時・振込期限以前にしてください")
     if event["announcement_version"] and bank_details != event["bank_transfer_details"]:
         raise ValueError("案内済みの振込先は変更できません。必要な変更は参加者へ個別に連絡してください")
     fields = {"starts_at": starts_at, "location": location, "announcement_details": details,
-              "bank_transfer_details": bank_details, "payment_deadline": deadline or None}
+              "bank_transfer_details": bank_details, "payment_deadline": deadline or None,
+              "attendance_deadline": attendance_deadline}
     if event["announcement_version"] and all(event[key] == value for key, value in fields.items()):
         return event["announcement_version"]
     version = event["announcement_version"] + 1
     conn.execute("""update event_posts set starts_at=?,ends_at=null,location=?,announcement_details=?,
-                 bank_transfer_details=?,payment_deadline=?,announcement_version=?,announced_at=?,updated_at=? where event_id=?""",
-                 (starts_at, location, details, bank_details, deadline or None, version, now(), now(), event_id))
+                 bank_transfer_details=?,payment_deadline=?,attendance_deadline=?,announcement_version=?,announced_at=?,updated_at=? where event_id=?""",
+                 (starts_at, location, details, bank_details, deadline or None, attendance_deadline, version, now(), now(), event_id))
     for application in conn.execute("select applicant_user_id from event_applications where event_id=? and status='confirmed'", (event_id,)):
         add_event_notification(conn, application["applicant_user_id"], event_id, "event_announced",
                                "開催が決定しました・最終参加確認のお願い" if version == 1 else "開催案内が変更されました・再確認のお願い",
-                               f"{event['title']}\n開催日時: {starts_at}\n会場: {event['prefecture']} / {location}\n{details}\n\nマイページから開催内容・キャンセル条件を確認し、参加する旨をお知らせください。振込先は最終参加確認後にアプリ内で表示されます。すでに支払い済みの場合、再度振り込まないでください。")
+                               f"{event['title']}\n開催日時: {starts_at}\n会場: {event['prefecture']} / {location}\n{details}\n最終参加確認の期限: {attendance_deadline}\n\nマイページから開催内容・キャンセル条件を確認し、参加する旨をお知らせください。振込先は最終参加確認後にアプリ内で表示されます。すでに支払い済みの場合、再度振り込まないでください。")
     audit(conn, "event_announce", "event_post", event_id, {"version": version})
     return version
 
@@ -5697,9 +5930,11 @@ def confirm_event_attendance(conn, event_id, data, user):
         raise ValueError("最新の開催案内を再読み込みして確認してください")
     if event["payment_method"] == "bank_transfer" and event["payment_deadline"] <= event_local_now():
         raise ValueError("振込期限を過ぎています。主催者へ連絡してください")
+    if event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
+        raise ValueError("最終参加確認の期限を過ぎています。主催者へ連絡してください")
     if application["attendance_version"] == version:
         return
-    conn.execute("update event_applications set attendance_version=?,attendance_confirmed_at=?,updated_at=? where application_id=?",
+    conn.execute("update event_applications set attendance_version=?,attendance_confirmed_at=?,updated_at=?,operation_revision=operation_revision+1 where application_id=?",
                  (version, now(), now(), application["application_id"]))
     add_event_notification(conn, event["organizer_user_id"], event_id, "attendance_confirmed", "最終参加確認が届きました",
                            f"{event['title']} に{application['participant_count']}名の最終参加確認が届きました。入金確認とは異なります。")
@@ -5835,7 +6070,7 @@ def event_public_select(where="", params=()):
           e.participation_type, e.capacity, e.capacity_unit, e.eligibility, e.fee_amount,
           e.fee_unit, e.payment_method, e.application_deadline, e.acceptance_mode,
           e.cancellation_policy, e.status, e.published_at, e.created_at, e.updated_at,
-          e.minimum_participants, e.announcement_version, e.announcement_details, e.announced_at, e.payment_deadline,
+          e.minimum_participants, e.announcement_version, e.announcement_details, e.announced_at, e.payment_deadline, e.attendance_deadline,
           c.circle_name as linked_circle_name, cp.profile_slug as linked_circle_profile_slug,
           coalesce(sum(case when a.status='confirmed' then
             case when e.participation_type='team' and e.capacity_unit='チーム' then 1 else a.participant_count end
@@ -6045,13 +6280,14 @@ def process_event_email():
 
 def start_event_email_worker():
     stop = threading.Event()
-    if not email_notifications_ready():
-        log("event email notifications disabled or incomplete configuration; in-app notifications remain active")
-        return stop, None
 
     def run():
+        next_reminder_check = 0
         while not stop.is_set():
             try:
+                if time.monotonic() >= next_reminder_check:
+                    process_attendance_reminders()
+                    next_reminder_check = time.monotonic() + 60
                 processed = process_event_email()
             except Exception as exc:
                 log(f"event email worker failed: {type(exc).__name__}")
@@ -6081,6 +6317,9 @@ def save_event_post(conn, data, user):
     )
     if event_id:
         existing = event_owner(conn, event_id, user["user_id"])
+        has_payment = conn.execute("select 1 from event_applications where event_id=? and payment_status!='unpaid' limit 1", (event_id,)).fetchone()
+        if has_payment and any(payload[key] != existing[key] for key in ("fee_amount", "fee_unit", "payment_method", "cancellation_policy")):
+            raise ValueError("入金・精算の記録があるため料金・支払方法・キャンセル条件は変更できません")
         if existing["status"] == "cancelled":
             raise ValueError("中止した募集は再公開できません。複製して新しい募集を作成してください")
         if existing["announcement_version"] and any(payload[key] != existing[key] for key in (
@@ -6145,6 +6384,8 @@ def event_is_open_for_application(event):
         raise ValueError("開催日時を過ぎています")
     if event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
         raise ValueError("振込期限を過ぎているため申し込めません。主催者へお問い合わせください")
+    if event["announcement_version"] and event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
+        raise ValueError("最終参加確認の期限を過ぎているため申し込めません")
 
 
 def event_local_now():
@@ -6164,6 +6405,8 @@ def event_availability(event):
         return "応募締切", False
     if event.get("announcement_version") and event.get("payment_deadline") and event["payment_deadline"] <= current:
         return "振込期限終了", False
+    if event.get("announcement_version") and event.get("attendance_deadline") and event["attendance_deadline"] <= current:
+        return "参加確認期限終了", False
     if event.get("capacity") and int(event.get("confirmed_count", 0)) >= int(event["capacity"]):
         return "満員", False
     return "受付中", True
@@ -6209,6 +6452,8 @@ def submit_event_application(conn, event_id, data, user):
     ).fetchone()
     if existing and existing["status"] != "cancelled":
         raise ValueError("この募集にはすでに申し込み済みです")
+    if existing and existing["payment_status"] in {"paid", "refund_pending"}:
+        raise ValueError("前回の申込の精算を主催者へ確認してから、再度お申し込みください")
     participation_type = event_form_value(data, "participation_type", "参加単位", required=True, max_length=20)
     allowed = {"individual", "team"} if event["participation_type"] == "both" else {event["participation_type"]}
     if participation_type not in allowed:
@@ -6249,7 +6494,9 @@ def submit_event_application(conn, event_id, data, user):
           participant_count=excluded.participant_count, answers_json=excluded.answers_json,
           applicant_message=excluded.applicant_message, status=excluded.status, organizer_note=null,
           created_at=excluded.created_at, updated_at=excluded.updated_at,
-          attendance_version=0, attendance_confirmed_at=null
+          attendance_version=0, attendance_confirmed_at=null,
+          payment_status='unpaid',payment_note='',payment_updated_at=null,
+          requested_participant_count=null,operation_revision=event_applications.operation_revision+1
         """,
         (
             application_id, event_id, user["user_id"], participation_type, applicant_name or None,
@@ -6292,12 +6539,14 @@ def set_event_application_status(conn, event_id, application_id, action, user, o
     if next_status == "confirmed":
         if event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
             raise ValueError("振込期限を過ぎています。開催案内の期限をご確認ください")
+        if event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
+            raise ValueError("最終参加確認の期限を過ぎています。開催案内の期限をご確認ください")
         if event["status"] not in {"published", "closed"} or event["starts_at"] <= event_local_now():
             raise ValueError("中止済み・開催済みの募集は参加確定にできません")
         if event["capacity"] and active_confirmed_capacity(conn, event_id) + application_capacity_cost(event, int(application["participant_count"] or 0)) > int(event["capacity"]):
             raise ValueError("定員を超えるため参加確定にできません")
     conn.execute(
-        "update event_applications set status=?, organizer_note=?, updated_at=? where application_id=?",
+        "update event_applications set status=?, organizer_note=?, updated_at=?,operation_revision=operation_revision+1 where application_id=?",
         (next_status, str(organizer_note or "").strip()[:1200] or None, now(), application_id),
     )
     add_event_notification(
@@ -6324,7 +6573,9 @@ def cancel_event_application(conn, event_id, application_id, user):
     if application["status"] not in {"pending", "confirmed"}:
         raise ValueError("この申込は取り消せません")
     event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
-    conn.execute("update event_applications set status='cancelled', updated_at=? where application_id=?", (now(), application_id))
+    conn.execute("""update event_applications set status='cancelled', updated_at=?,
+                 payment_status=case when payment_status='paid' then 'refund_pending' else payment_status end,
+                 requested_participant_count=null,operation_revision=operation_revision+1 where application_id=?""", (now(), application_id))
     update_event_formation(conn, event_id)
     add_event_notification(
         conn, event["organizer_user_id"], event_id, "application_cancelled", "参加申込が取り消されました",
@@ -6350,6 +6601,9 @@ def set_event_status(conn, event_id, status, user):
     if event["status"] == "cancelled" and status != "cancelled":
         raise ValueError("中止した募集は再公開できません。複製して作り直してください")
     conn.execute("update event_posts set status=?, updated_at=? where event_id=?", (status, now(), event_id))
+    if status == "cancelled":
+        conn.execute("""update event_applications set payment_status=case when payment_status='paid' then 'refund_pending' else payment_status end,
+                     requested_participant_count=null,operation_revision=operation_revision+1 where event_id=?""", (event_id,))
     recipients = conn.execute(
         "select distinct applicant_user_id from event_applications where event_id=? and status in ('pending','confirmed')",
         (event_id,),
@@ -6369,7 +6623,8 @@ def event_applications_for_owner(event_id, user):
             """
             select a.application_id, a.applicant_user_id, a.participation_type, a.applicant_name, a.team_name, a.representative_name,
               a.participant_count, a.applicant_message, a.status, a.created_at, a.updated_at,
-              a.attendance_version, a.attendance_confirmed_at,
+              a.attendance_version, a.attendance_confirmed_at, a.payment_status, a.payment_note,
+              a.payment_updated_at, a.operation_revision, a.requested_participant_count,
               u.display_name as account_name
             from event_applications a join user_accounts u on u.user_id=a.applicant_user_id
             where a.event_id=? order by a.created_at desc
@@ -6377,7 +6632,7 @@ def event_applications_for_owner(event_id, user):
             (event_id,),
         ).fetchall()
     can_review = event["status"] in {"published", "closed"} and event["starts_at"] > event_local_now()
-    return [dict(row, can_review=can_review, display_status=event_admission_label(event, row)) for row in rows_data]
+    return [dict(row, can_review=can_review, can_release=can_release_unconfirmed(event, row), display_status=event_admission_label(event, row)) for row in rows_data]
 
 
 def unread_notification_count(user):
@@ -6393,7 +6648,7 @@ def notifications_for_user(user, offset=0):
         raise PermissionError("ログインが必要です")
     with connect() as conn:
         notes = conn.execute("""
-            select n.notification_id, n.event_id, n.title, n.body, n.created_at, n.read_at,
+            select n.notification_id, n.event_id, n.notification_type, n.title, n.body, n.created_at, n.read_at,
               coalesce(o.status, n.email_status) as email_status, e.title as event_title
             from event_notifications n left join event_posts e on e.event_id=n.event_id
             left join event_email_outbox o on o.notification_id=n.notification_id
@@ -6424,7 +6679,8 @@ def event_my_page(user):
             select a.application_id, a.status as application_status, a.participation_type, a.team_name, a.applicant_name,
               a.participant_count, a.created_at as application_created_at, e.event_id, e.title,
               e.starts_at, e.location, e.status, e.capacity, e.capacity_unit, e.application_deadline,
-              e.minimum_participants, e.announcement_version, e.payment_deadline, a.attendance_version,
+              e.minimum_participants, e.announcement_version, e.payment_deadline, e.attendance_deadline, a.attendance_version,
+              e.fee_amount, a.payment_status, a.requested_participant_count,
               (select coalesce(sum(case when e.participation_type='team' and e.capacity_unit='チーム'
                 then 1 else confirmed.participant_count end),0)
                from event_applications confirmed where confirmed.event_id=e.event_id
@@ -6441,14 +6697,14 @@ def event_messages_for_user(event_id, user, peer_user_id=""):
     if not user.get("authenticated"):
         raise PermissionError("ログインが必要です")
     with connect() as conn:
-        event = conn.execute("select organizer_user_id from event_posts where event_id=?", (event_id,)).fetchone()
+        event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
         if not event:
             raise ValueError("募集が見つかりません")
         application = conn.execute(
             "select 1 from event_applications where event_id=? and applicant_user_id=?",
             (event_id, user["user_id"]),
         ).fetchone()
-        if user["user_id"] != event["organizer_user_id"] and not application:
+        if user["user_id"] != event["organizer_user_id"] and not application and not message_peer_eligible(conn, event, user["user_id"], allow_new=True):
             raise PermissionError("この募集の連絡を閲覧する権限がありません")
         peer_user_id = (peer_user_id or "").strip()
         if peer_user_id and user["user_id"] == event["organizer_user_id"]:
@@ -6456,7 +6712,7 @@ def event_messages_for_user(event_id, user, peer_user_id=""):
                 "select 1 from event_applications where event_id=? and applicant_user_id=?",
                 (event_id, peer_user_id),
             ).fetchone()
-            if not eligible:
+            if not eligible and not message_peer_eligible(conn, event, peer_user_id):
                 raise PermissionError("この参加者との連絡を閲覧する権限がありません")
         elif peer_user_id and peer_user_id != event["organizer_user_id"]:
             raise PermissionError("この連絡先は選択できません")
@@ -6475,16 +6731,17 @@ def event_messages_for_user(event_id, user, peer_user_id=""):
             message_sql,
             message_args,
         ).fetchall()
-        conn.execute(
-            "update event_messages set read_at=? where event_id=? and recipient_user_id=? and read_at is null",
-            (now(), event_id, user["user_id"]),
-        )
+        conn.execute("""update event_messages set read_at=? where event_id=? and recipient_user_id=?
+                     and read_at is null and (?='' or sender_user_id=?)""",
+                     (now(), event_id, user["user_id"], other_user_id, other_user_id))
     return [dict(row) for row in data]
 
 
 def send_event_message(conn, event_id, data, user):
     if not user.get("authenticated"):
         raise PermissionError("ログインが必要です")
+    if not conn.in_transaction:
+        conn.execute("begin immediate")
     event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
     if not event:
         raise ValueError("募集が見つかりません")
@@ -6496,7 +6753,7 @@ def send_event_message(conn, event_id, data, user):
             "select 1 from event_applications where event_id=? and applicant_user_id=?",
             (event_id, applicant_user_id),
         ).fetchone()
-        if not eligible:
+        if not eligible and not message_peer_eligible(conn, event, applicant_user_id):
             raise PermissionError("この参加者には連絡できません")
         recipient = applicant_user_id
     else:
@@ -6504,9 +6761,14 @@ def send_event_message(conn, event_id, data, user):
             "select 1 from event_applications where event_id=? and applicant_user_id=?",
             (event_id, sender),
         ).fetchone()
-        if not eligible:
+        if not eligible and not message_peer_eligible(conn, event, sender, allow_new=True):
             raise PermissionError("この募集の主催者へ連絡する権限がありません")
     body = event_form_value(data, "body", "メッセージ", required=True, max_length=2000)
+    recent = conn.execute("""select count(*) as hour_count,
+              sum(case when julianday(created_at)>=julianday('now','-1 minute') then 1 else 0 end) as minute_count
+              from event_messages where sender_user_id=? and julianday(created_at)>=julianday('now','-1 hour')""", (sender,)).fetchone()
+    if recent["hour_count"] >= 60 or (recent["minute_count"] or 0) >= 10:
+        raise ValueError("送信が続いています。少し時間を空けてからお試しください")
     message_id = slug("message", f"{event_id}:{sender}:{recipient}:{now()}:{secrets.token_hex(4)}")
     conn.execute(
         "insert into event_messages(message_id,event_id,sender_user_id,recipient_user_id,body,created_at) values(?,?,?,?,?,?)",
@@ -6516,11 +6778,169 @@ def send_event_message(conn, event_id, data, user):
     return message_id
 
 
+def message_peer_eligible(conn, event, user_id, allow_new=False):
+    existing = conn.execute("""select 1 from event_messages where event_id=? and
+                  ((sender_user_id=? and recipient_user_id=?) or (sender_user_id=? and recipient_user_id=?)) limit 1""",
+                  (event["event_id"], user_id, event["organizer_user_id"], event["organizer_user_id"], user_id)).fetchone()
+    return bool(existing or (allow_new and event["status"] == "published" and event["starts_at"] > event_local_now()))
+
+
+PAYMENT_STATUSES = {"unpaid": "未入金", "paid": "入金確認済み", "refund_pending": "精算・返金確認中", "refunded": "返金済み"}
+
+
+def application_operation_revision(application, data):
+    try:
+        revision = int(data.get("revision", -1))
+    except (TypeError, ValueError):
+        revision = -1
+    if revision != application["operation_revision"]:
+        raise ValueError("申込情報が更新されています。再読み込みして確認してください")
+
+
+def change_application_count(conn, event_id, application_id, data, user, decision=""):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    conn.execute("begin immediate")
+    event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+    application = conn.execute("select * from event_applications where event_id=? and application_id=?", (event_id, application_id)).fetchone()
+    if not event or not application:
+        raise PermissionError("この申込を変更する権限がありません")
+    if decision:
+        event_owner(conn, event_id, user["user_id"])
+    elif application["applicant_user_id"] != user["user_id"]:
+        raise PermissionError("この申込を変更する権限がありません")
+    application_operation_revision(application, data)
+    if application["status"] not in {"pending", "confirmed"} or event["status"] not in {"published", "closed"} or event["starts_at"] <= event_local_now():
+        raise ValueError("中止済み・開催済み・取消済みの申込は変更できません")
+    if application["payment_status"] != "unpaid":
+        raise ValueError("入金・精算の記録があります。人数変更は主催者へご相談ください")
+    if decision not in {"", "approve", "decline"}:
+        raise ValueError("処理が正しくありません")
+    raw_count = application["requested_participant_count"] if decision else data.get("participant_count")
+    if decision and raw_count is None:
+        raise ValueError("人数変更の申請はありません")
+    if decision == "decline":
+        conn.execute("update event_applications set requested_participant_count=null,operation_revision=operation_revision+1,updated_at=? where application_id=?", (now(), application_id))
+        add_event_notification(conn, application["applicant_user_id"], event_id, "count_changed", "人数変更の申請が見送られました", f"{event['title']} は元の{application['participant_count']}名の申込を維持しています。")
+        return "declined"
+    if not re.fullmatch(r"[0-9]+", str(raw_count or "")) or not 1 <= int(raw_count) <= 100000:
+        raise ValueError("参加人数は1から100000の整数で入力してください")
+    count, previous = int(raw_count), application["participant_count"]
+    if count == previous:
+        conn.execute("update event_applications set requested_participant_count=null,operation_revision=operation_revision+1 where application_id=?", (application_id,))
+        return "unchanged"
+    if event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
+        raise ValueError("最終参加確認の期限を過ぎています。主催者へ連絡してください")
+    if count > previous:
+        event_is_open_for_application(event)
+    new_cost = application_capacity_cost(event, count)
+    if event["capacity"]:
+        used = active_confirmed_capacity(conn, event_id)
+        if application["status"] == "confirmed":
+            used -= application_capacity_cost(event, previous)
+        if new_cost > event["capacity"] or (application["status"] == "confirmed" and used + new_cost > event["capacity"]):
+            raise ValueError("定員を超えるため人数を変更できません。元の申込は維持されます")
+    if not decision and event["acceptance_mode"] == "approval" and application["status"] == "confirmed" and count > previous:
+        if application["requested_participant_count"] == count:
+            return "pending"
+        conn.execute("update event_applications set requested_participant_count=?,operation_revision=operation_revision+1,updated_at=? where application_id=?", (count, now(), application_id))
+        add_event_notification(conn, event["organizer_user_id"], event_id, "count_requested", "人数変更の申請があります", f"{event['title']} の申込人数：{previous}名 → {count}名。承認するまでは元の人数を維持します。")
+        return "pending"
+    conn.execute("insert into event_application_history(application_id,snapshot_json,archived_at) values(?,?,?)", (application_id, json.dumps(dict(application), ensure_ascii=False), now()))
+    conn.execute("""update event_applications set participant_count=?,requested_participant_count=null,
+                 attendance_version=0,attendance_confirmed_at=null,operation_revision=operation_revision+1,updated_at=? where application_id=?""", (count, now(), application_id))
+    update_event_formation(conn, event_id)
+    for recipient in {application["applicant_user_id"], event["organizer_user_id"]}:
+        add_event_notification(conn, recipient, event_id, "count_changed", "申込人数が変更されました", f"{event['title']}：{previous}名 → {count}名。開催決定済みの場合は、申込代表者が最新人数で最終参加確認を行ってください。")
+    audit(conn, "event_count_change", "event_application", application_id, {"from": previous, "to": count, "actor": user["user_id"]})
+    return "updated"
+
+
+def set_application_payment(conn, event_id, application_id, data, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    conn.execute("begin immediate")
+    event = event_owner(conn, event_id, user["user_id"])
+    application = conn.execute("select * from event_applications where event_id=? and application_id=?", (event_id, application_id)).fetchone()
+    if not application:
+        raise PermissionError("この申込は管理できません")
+    application_operation_revision(application, data)
+    status = data.get("payment_status")
+    if status not in PAYMENT_STATUSES or not event["fee_amount"]:
+        raise ValueError("入金状態を確認してください。無料の募集は入金管理の対象外です")
+    if application["status"] == "pending" or application["status"] == "declined":
+        raise ValueError("受付確定前の入金は記録できません")
+    if status == "paid" and event["minimum_participants"] and (not event["announcement_version"] or application["attendance_version"] != event["announcement_version"]):
+        raise ValueError("最終参加確認後に入金を記録してください")
+    if status in {"refund_pending", "refunded"} and application["payment_status"] == "unpaid":
+        raise ValueError("入金確認の記録がありません")
+    note = event_form_value(data, "payment_note", "主催者用メモ", max_length=500)
+    if status == application["payment_status"] and note == application["payment_note"]:
+        return
+    conn.execute("""update event_applications set payment_status=?,payment_note=?,payment_updated_at=?,
+                 operation_revision=operation_revision+1,updated_at=? where application_id=?""", (status, note, now(), now(), application_id))
+    if status != application["payment_status"]:
+        add_event_notification(conn, application["applicant_user_id"], event_id, "payment_updated", "主催者が入金・精算状態を更新しました", f"{event['title']}：{PAYMENT_STATUSES[status]}。主催者による手動記録です。この操作で送金・返金は行われません。ご不明点は主催者へご連絡ください。")
+    audit(conn, "event_payment_update", "event_application", application_id, {"from": application["payment_status"], "to": status, "actor": user["user_id"]})
+
+
+def release_unconfirmed_application(conn, event_id, application_id, data, user):
+    if not user.get("authenticated"):
+        raise PermissionError("ログインが必要です")
+    conn.execute("begin immediate")
+    event = event_owner(conn, event_id, user["user_id"])
+    application = conn.execute("select * from event_applications where event_id=? and application_id=?", (event_id, application_id)).fetchone()
+    if not application:
+        raise PermissionError("この申込は管理できません")
+    application_operation_revision(application, data)
+    if not can_release_unconfirmed(event, application):
+        raise ValueError("期限切れ・最終参加未確認・未入金の受付のみ取り消せます")
+    reason = event_form_value(data, "reason", "取消理由", required=True, max_length=500)
+    conn.execute("""update event_applications set status='cancelled',requested_participant_count=null,
+                 organizer_note=?,operation_revision=operation_revision+1,updated_at=? where application_id=?""", (reason, now(), application_id))
+    update_event_formation(conn, event_id)
+    add_event_notification(conn, application["applicant_user_id"], event_id, "application_released", "主催者が受付を取り消しました", f"{event['title']}\n理由：{reason}\nご不明点は主催者へご連絡ください。")
+    audit(conn, "event_application_release", "event_application", application_id, {"actor": user["user_id"]})
+
+
+def can_release_unconfirmed(event, application):
+    return bool(event["status"] in {"published", "closed"} and event["starts_at"] > event_local_now()
+                and event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now()
+                and event["announcement_version"] and application["status"] == "confirmed"
+                and application["attendance_version"] != event["announcement_version"] and application["payment_status"] == "unpaid")
+
+
+def process_attendance_reminders():
+    # Persist the deduplication key and notification together; restarts cannot duplicate them.
+    current = event_local_now()
+    upcoming = (datetime.strptime(current, "%Y-%m-%d %H:%M") + timedelta(hours=24)).strftime("%Y-%m-%d %H:%M")
+    with connect() as conn:
+        conn.execute("begin immediate")
+        due = conn.execute("""select a.application_id,a.applicant_user_id,e.event_id,e.title,e.organizer_user_id,
+                 e.announcement_version,e.attendance_deadline,
+                 case when e.attendance_deadline<=? then 'expired' else 'reminder' end as kind
+            from event_posts e join event_applications a on a.event_id=e.event_id
+            where e.status in ('published','closed') and e.starts_at>? and e.announcement_version>0
+              and e.attendance_deadline<=? and a.status='confirmed' and a.attendance_version!=e.announcement_version
+              and not exists(select 1 from event_reminder_deliveries r where r.application_id=a.application_id
+                and r.announcement_version=e.announcement_version
+                and r.kind=case when e.attendance_deadline<=? then 'expired' else 'reminder' end)
+            order by e.attendance_deadline limit 100""", (current, current, upcoming, current)).fetchall()
+        for row in due:
+            conn.execute("insert into event_reminder_deliveries values(?,?,?,?)", (row["application_id"], row["announcement_version"], row["kind"], now()))
+            if row["kind"] == "reminder":
+                add_event_notification(conn, row["applicant_user_id"], row["event_id"], "attendance_reminder", "最終参加確認の期限が近づいています", f"{row['title']}\n確認期限：{row['attendance_deadline']}\n開催案内を確認して最終参加確認をお願いします。")
+            else:
+                add_event_notification(conn, row["organizer_user_id"], row["event_id"], "attendance_expired_host", "最終参加未確認の申込があります", f"{row['title']} の確認期限を過ぎました。申込管理から連絡・期限の見直し・個別の受付取消を行ってください。自動取消はしていません。")
+                add_event_notification(conn, row["applicant_user_id"], row["event_id"], "attendance_expired", "最終参加確認の期限を過ぎました", f"{row['title']} の確認期限を過ぎています。主催者へ連絡してください。現在は自動取消されていません。")
+        return len(due)
+
+
 def event_copy_for_owner(conn, event_id, user):
     event = event_owner(conn, event_id, user["user_id"])
     data = dict(event)
     for key in ("event_id", "organizer_user_id", "status", "published_at", "created_at", "updated_at",
-                "bank_transfer_details", "payment_deadline", "announcement_version", "announcement_details", "announced_at", "minimum_notice_sent"):
+                "bank_transfer_details", "payment_deadline", "attendance_deadline", "announcement_version", "announcement_details", "announced_at", "minimum_notice_sent"):
         data.pop(key, None)
     return data
 
