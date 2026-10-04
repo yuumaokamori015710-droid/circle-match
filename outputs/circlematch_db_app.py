@@ -4691,6 +4691,10 @@ class Handler(BaseHTTPRequestHandler):
         ])
 
     def do_GET(self):
+        if self.path.startswith("/_tweet-bot/"):
+            from chatgpt_bridge import handle_http
+            handle_http(self)
+            return
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
         try:
@@ -4958,6 +4962,10 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json({"error": "server error"}, 500)
 
     def do_POST(self):
+        if self.path.startswith("/_tweet-bot/"):
+            from chatgpt_bridge import handle_http
+            handle_http(self)
+            return
         parsed = urlparse(self.path)
         try:
             if parsed.path == "/logout":

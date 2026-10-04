@@ -1,3 +1,5 @@
-# The current prototype uses only Python standard library modules.
-# Keep this file so hosting providers can run Python setup consistently.
-
+# Circle Match uses the standard library. These power the optional, private
+# tweet-bot generation bridge; no X or paid AI API credentials are used here.
+requests>=2.32,<3
+openai>=2.0,<3
+PyJWT[crypto]>=2.10,<3
