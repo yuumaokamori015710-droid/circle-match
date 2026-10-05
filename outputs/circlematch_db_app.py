@@ -7242,9 +7242,14 @@ def main():
         except Exception:
             pass
         email_stop, email_thread = start_event_email_worker()
+        from tweetbot_scheduler import start_worker as start_tweetbot_scheduler
+        tweetbot_stop, tweetbot_thread = start_tweetbot_scheduler()
         try:
             server.serve_forever()
         finally:
+            tweetbot_stop.set()
+            if tweetbot_thread:
+                tweetbot_thread.join(timeout=25)
             email_stop.set()
             if email_thread:
                 email_thread.join(timeout=20)

@@ -41,6 +41,11 @@ def atomic_json(path, data):
 
 
 def operate(action, payload, root=ROOT):
+    if action in {"scheduler_status", "scheduler_probe"}:
+        from tweetbot_scheduler import Scheduler
+        scheduler = Scheduler(root / "scheduler")
+        now = datetime.now(JST)
+        return scheduler.status(now) if action == "scheduler_status" else scheduler.probe(now)
     store = plan.Store(root / "auth")
     if action == "bootstrap":
         # The local OAuth client has already validated the identity. Transfer only
