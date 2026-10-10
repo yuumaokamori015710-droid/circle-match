@@ -18,8 +18,12 @@ from pathlib import Path
 from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+import circlematch_seo as seo
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
@@ -1504,6 +1508,7 @@ def render_public_html(params=None, event_listing=False):
     sport = (params.get("sport", [""])[0] or "").strip()
     region = (params.get("region", [""])[0] or "").strip()
     event_listing = tab == "events" and (event_listing or bool(sport))
+    area_label = (params.get("prefecture", [""])[0] or REGION_GROUPS.get(region, {}).get("label", "")).strip()
     event_url = selected_home_query(params, "events", path="/events" if sport or event_listing else "/")
     db_url = selected_home_query(params, "db", audience=audience)
     post_context = {key: params[key][0] for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0]}
@@ -1526,7 +1531,7 @@ def render_public_html(params=None, event_listing=False):
         sport_picker = f'<section class="section panel"><div class="panel-head"><h2>スポーツから探す</h2><a class="button" href="#events">募集一覧へ</a></div><div class="sport-grid">{event_sport_cards(params, "events")}</div></section>'
         if event_listing:
             image_name = next((item[4] for item in POPULAR_SPORTS if item[0] == sport), "other.png")
-            listing_title = f'{html.escape(sport)}<span>大会・イベント</span>' if sport else '大会・イベント一覧'
+            listing_title = html.escape((area_label + "の" if area_label else "") + sport) + '<span>大会・イベント</span>' if sport or area_label else '大会・イベント一覧'
             heading = f'<section class="event-results-intro"><img src="/assets/sports/{image_name}" alt=""><h1>{listing_title}</h1></section>'
             introduction = event_home_navigation(sport or "大会・イベント一覧") + tabs + heading
             if not initial_events and not initial_error:
@@ -1540,6 +1545,8 @@ def render_public_html(params=None, event_listing=False):
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
     else:
         shared_head = '<section class="intro"><div><h1>活動するサークルを探す。</h1><p>大学・社会人の団体情報を、競技や地域から調べられます。出典掲載と、団体の代表権限の確認は別です。</p><a class="button" href="#dbList">団体一覧へ</a></div></section>'
+        db_heading = (area_label + "の" if area_label else "") + (sport + "の" if sport else "") + ("社会人" if audience == "social" else "大学") + "サークルDB"
+        shared_head = shared_head.replace('活動するサークルを探す。', html.escape(db_heading))
         try:
             scoped = dict(params)
             scoped["audience"] = [audience]
@@ -2570,34 +2577,35 @@ def robots_txt():
         "Disallow: /admin",
         "Disallow: /api/",
     ]
-    if base_url():
-        lines.append(f"Sitemap: {base_url()}/sitemap.xml")
+    lines.append(f"Sitemap: {seo.public_origin(base_url())}/sitemap.xml")
     return ("\n".join(lines) + "\n").encode("utf-8")
 
 
 def sitemap_xml():
-    root = base_url() or "http://127.0.0.1:8787"
-    paths = ["/", "/representative", "/circles", "/social", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
+    root = seo.public_origin(base_url())
+    paths = ["/", "/events", "/?tab=db&audience=university", "/?tab=db&audience=social", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
-    paths.extend(["/sports?" + urlencode({"sport": name}) for name, _, _, _, _ in POPULAR_SPORTS])
-    paths.extend(["/regions?" + urlencode({"region": key}) for key in REGION_GROUPS.keys()])
+    # Legacy sport/region screens are client-filtered; index the SSR portal instead.
     try:
         with connect() as conn:
+            columns = {row['name'] for row in conn.execute('pragma table_info(event_posts)')}
+            visibility = " and visibility='public'" if 'visibility' in columns else ''
             event_ids = conn.execute(
-                "select event_id from event_posts where status='published' and starts_at>=datetime('now','localtime') order by starts_at limit 5000"
+                "select event_id, sport_category from event_posts where status='published' and starts_at>=?" + visibility + " order by starts_at limit 5000", (event_local_now(),)
             ).fetchall()
+            profiles = conn.execute("select profile_slug from circle_public_profiles where is_published=1 and profile_slug<>'' limit 10000").fetchall()
         paths.extend([f"/events/{quote(str(row['event_id']))}" for row in event_ids])
+        paths.extend(['/events?' + urlencode({'sport':sport}) for sport in sorted({row['sport_category'] for row in event_ids if row['sport_category'] in {item[0] for item in POPULAR_SPORTS}})])
+        paths.extend([f"/circles/{quote(str(row['profile_slug']), safe='')}" for row in profiles])
     except Exception as exc:
         log(f"event sitemap query failed: {type(exc).__name__}: {exc}")
-    urls = "\n".join(
-        f"  <url><loc>{root}{path}</loc></url>"
-        for path in paths
-    )
-    return f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{urls}
-</urlset>
-""".encode("utf-8")
+    namespace = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+    ElementTree.register_namespace('', namespace)
+    urlset = ElementTree.Element(f'{{{namespace}}}urlset')
+    for path in dict.fromkeys(paths):
+        entry = ElementTree.SubElement(urlset, f'{{{namespace}}}url')
+        ElementTree.SubElement(entry, f'{{{namespace}}}loc').text = root + path
+    return ElementTree.tostring(urlset, encoding='utf-8', xml_declaration=True)
 
 
 _CIRCLE_SCHEMA_LOCK = threading.Lock()
@@ -4622,6 +4630,12 @@ class Handler(BaseHTTPRequestHandler):
 
     def send_html(self, body, status=200):
         body = personalize_navigation(body, self.cookie_value("cm_session"), self.path)
+        event = None
+        event_path = urlparse(self.path).path
+        if status == 200 and re.fullmatch(r'/events/[^/]+', event_path) and event_path != '/events/new':
+            event = get_event(unquote(event_path.removeprefix('/events/')))
+        body = seo.apply_metadata(body, self.path, SITE_BASE_URL,
+                                  {item[0]: item[4] for item in POPULAR_SPORTS}, REGION_GROUPS, status, event)
         self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Cache-Control", "no-store, max-age=0, must-revalidate")
