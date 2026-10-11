@@ -2,11 +2,14 @@
 
 (() => {
   const directory = document.querySelector(".venue-directory");
-  if (!directory) return;
+  if (!directory || !directory.querySelector("#venue-court-filters")) return;
   const $ = selector => directory.querySelector(selector);
   const list = value => Array.isArray(value) ? value : [];
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const PAGE_SIZE = 50;
+  const browser = typeof window === "undefined" ? null : window;
+  const URL_FILTER_NAMES = ["q","municipality","area","operator_type","facility_kind","price_max","sort","night_lighting","indoor","show_suspended"];
+  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL"],sort:["name","price"]};
   const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
   let loadingRequest = null;
   let searchTimer;
@@ -83,6 +86,46 @@
     const rawPrice = fields.price_max.value;
     return {q:fields.q.value,municipality:fields.municipality.value,area:fields.area.value,operator_type:fields.operator_type.value,facility_kind:fields.facility_kind.value,price_max:rawPrice === "" ? null : numberOrNull(Number(rawPrice)),sort:fields.sort.value,night_lighting:fields.night_lighting.checked,indoor:fields.indoor.checked,show_suspended:fields.show_suspended.checked};
   }
+  function currentUrl() {
+    try { return browser ? new URL(browser.location.href) : null; }
+    catch { return null; }
+  }
+  function restoreUrlFilters() {
+    const url = currentUrl();
+    if (!url) return;
+    const fields = $("#venue-court-filters").elements;
+    $("#venue-court-filters").reset();
+    fields.q.value = (url.searchParams.get("v_q") || "").slice(0,200);
+    for (const [name,allowed] of Object.entries(SELECT_VALUES)) {
+      const value = url.searchParams.get(`v_${name}`) || (name === "sort" ? "name" : "");
+      fields[name].value = allowed.includes(value) ? value : name === "sort" ? "name" : "";
+    }
+    const municipality = url.searchParams.get("v_municipality") || "";
+    const municipalities = [...list(state.meta.municipalities),...state.courts.map(court => court.municipality)];
+    fields.municipality.value = municipalities.includes(municipality) ? municipality : "";
+    const rawPrice = url.searchParams.get("v_price_max");
+    const price = rawPrice && rawPrice.trim() ? numberOrNull(Number(rawPrice)) : null;
+    fields.price_max.value = price === null ? "" : String(price);
+    for (const name of ["night_lighting","indoor","show_suspended"]) {
+      fields[name].checked = ["1","true"].includes(url.searchParams.get(`v_${name}`));
+    }
+  }
+  function persistUrlFilters(filters) {
+    const url = currentUrl();
+    if (!url || !browser.history) return;
+    for (const name of URL_FILTER_NAMES) {
+      const key = `v_${name}`, value = filters[name];
+      url.searchParams.delete(key);
+      if (typeof value === "boolean") {
+        if (value) url.searchParams.set(key,"1");
+      } else if (value !== null && value !== "" && value !== undefined && !(name === "sort" && value === "name")) {
+        url.searchParams.set(key,String(value));
+      }
+    }
+    if (url.href !== browser.location.href) {
+      browser.history.replaceState(browser.history.state,"",url.pathname + url.search + url.hash);
+    }
+  }
   function renderResults() {
     const count = state.matches.length;
     const visible = state.matches.slice(0,state.visibleCount);
@@ -93,9 +136,10 @@
     $("#venue-pagination").hidden = visible.length >= count;
     $("#venue-show-more").textContent = `さらに${Math.min(PAGE_SIZE,count-visible.length)}件表示`;
   }
-  function applyFilters() {
+  function applyFilters(updateUrl = true) {
     if (!state.loaded) return;
     const filters = readFilters();
+    if (updateUrl) persistUrlFilters(filters);
     state.matches = sortCourts(filterCourts(state.courts,filters),filters.sort);
     state.visibleCount = PAGE_SIZE;
     renderResults();
@@ -132,8 +176,9 @@
         state.meta = data.meta && typeof data.meta === "object" ? data.meta : {};
         state.loaded = true;
         renderMetadata();
+        restoreUrlFilters();
         $("#venue-filter-fields").disabled = false;
-        applyFilters();
+        applyFilters(false);
       } catch {
         $("#venue-error-state").hidden = false;
         $("#venue-catalog-total").textContent = "掲載情報を取得できませんでした";
@@ -150,6 +195,7 @@
   $("#venue-court-filters").addEventListener("submit",event => {event.preventDefault();clearTimeout(searchTimer);applyFilters();});
   $("#venue-court-filters").addEventListener("input",event => {
     clearTimeout(searchTimer);
+    if (state.loaded) persistUrlFilters(readFilters());
     if (event.target.name === "q") searchTimer = setTimeout(applyFilters,150);
     else applyFilters();
   });
@@ -159,5 +205,10 @@
   $("#venue-retry-load").addEventListener("click",loadCourts);
   $("#venue-show-more").addEventListener("click",() => {state.visibleCount += PAGE_SIZE;renderResults();});
   $("#venue-show-all").addEventListener("click",() => {state.visibleCount = state.matches.length;renderResults();});
+  if (browser) browser.addEventListener("popstate",() => {
+    clearTimeout(searchTimer);
+    restoreUrlFilters();
+    applyFilters(false);
+  });
   loadCourts();
 })();

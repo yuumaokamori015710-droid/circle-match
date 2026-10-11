@@ -52,17 +52,16 @@ class EventUXTests(unittest.TestCase):
                 page = self.app.render_public_html(params).decode()
                 parsed = Links()
                 parsed.feed(page)
-                expected = "/" if tab == "events" else "/?tab=db&audience=" + audience
-                self.assertEqual(parsed.home, [expected])
+                self.assertEqual(parsed.home, ["/"])
                 self.assertNotIn(">すべての競技</a>", page)
                 self.assertIn('aria-label="現在位置"', page)
                 self.assertIn("link.classList.contains('home-link')", page)
                 if tab == "events":
                     self.assertIn('/events/new?sport=', page)
-                    self.assertEqual(len(parsed.labels), 5)
+                    self.assertEqual(len(parsed.labels), 3)
                     self.assertIn('class="button primary publish-cta"', page)
 
-    def test_publish_action_is_between_sport_image_and_results_not_in_header(self):
+    def test_publish_action_is_between_shared_context_and_results_not_in_header(self):
         from urllib.parse import parse_qs, urlparse
         import html
         for sport in self.app.event_sport_options():
@@ -70,10 +69,10 @@ class EventUXTests(unittest.TestCase):
             header = page.split("</header>", 1)[0]
             self.assertNotIn(">募集を掲載する</a>", header)
             self.assertEqual(page.count(">募集を掲載する</a>"), 1)
-            image = page.index('class="event-results-intro"')
+            context = page.index('id="directoryContext"')
             action = page.index('class="event-publish"')
             results = page.index('id="events"')
-            self.assertLess(image, action)
+            self.assertLess(context, action)
             self.assertLess(action, results)
             target = re.search(r'class="button primary publish-cta" href="([^"]+)"', page)[1]
             url = urlparse(html.unescape(target))

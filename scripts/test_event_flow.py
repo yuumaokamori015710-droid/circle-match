@@ -193,18 +193,19 @@ def main():
         thread.start()
         base = f"http://127.0.0.1:{server.server_address[1]}"
         try:
-            with urllib.request.urlopen(base + "/", timeout=10) as response:
+            with urllib.request.urlopen(base + "/events", timeout=10) as response:
                 home = response.read().decode("utf-8")
             assert "大会・イベント" in home and "ピックルボール" in home and "先着順テスト大会" in home
             football_query = "sport=" + quote("サッカー・フットサル") + "&region=kanto&date_from=2030-05-01"
             with urllib.request.urlopen(base + "/events?" + football_query, timeout=10) as response:
                 assert response.geturl() == base + "/events?" + football_query
                 listing = response.read().decode("utf-8")
-            assert "サッカー・フットサル<span>大会・イベント</span>" in listing
+            assert "<h1>サッカー・フットサル</h1>" in listing
+            assert 'aria-current="page">大会・イベント</a>' in listing
             assert "サッカー募集の遷移確認大会" in listing and "先着順テスト大会" not in listing
             assert 'class="sport-grid"' not in listing and '/assets/sports/soccer.png' in listing
             assert 'id="eventResultCount" role="status">1件を表示' in listing
-            assert "date_from=2030-05-01" in listing
+            assert 'name="date_from" value="2030-05-01"' in listing
             with urllib.request.urlopen(base + "/events?sport=" + quote("ラグビー"), timeout=10) as response:
                 empty_listing = response.read().decode("utf-8")
             assert "現在、ラグビーの募集中の大会・イベントはありません。" in empty_listing

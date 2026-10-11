@@ -106,6 +106,7 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
     listing = path in {'/', '/events'}
     if listing:
         db = path == '/' and value('tab') == 'db'
+        home = path == '/' and not value('tab') and not value('sport')
         audience = 'social' if value('audience') == 'social' else 'university'
         sport = value('sport')
         region = regions.get(value('region'), {}).get('label', '')
@@ -114,6 +115,9 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         category = ('社会人サークルDB' if audience == 'social' else '大学サークルDB') if db else '大会・イベント'
         title = f'{area + "の" if area else ""}{sport + "の" if sport else ""}{category}を探す | Circle Match'
         description = f'{area or "全国"}の{sport or "スポーツ"}の{category}を掲載。' + ('団体名・活動地域・競技・出典を確認して、活動仲間や交流相手を探せます。' if db else '開催日時・会場・参加費・参加条件を確認して、募集詳細から参加を申し込めます。')
+        if home:
+            title = f'{area + "の" if area else ""}スポーツの大会・サークル・会場を探す | Circle Match'
+            description = f'{area or "全国"}のスポーツ情報を競技から探すCircle Match。大会・イベントへの参加、大学・社会人サークルの検索、会場の場所・料金・予約方法の確認へ進めます。'
         if db:
             canonical_params.update(tab='db', audience=audience)
         for key in ('sport', 'region', 'prefecture', 'page'):
@@ -135,11 +139,29 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         if sport in sports:
             image = origin + '/assets/sports/' + sports[sport]
     elif path == '/venues':
-        title = '会場予約・東京都のテニスコートを探す | Circle Match'
-        description = '東京都のテニスコートを場所・料金・予約方法から検索。公営・民営施設の所在地、利用条件、公式予約サイトを確認できます。'
-        image = origin + '/assets/sports/tennis.png'
-        # Filters run in the browser; only the unfiltered directory is indexed.
-        if params:
+        sport, prefecture, region_key = value('sport'), value('prefecture'), value('region')
+        area = prefecture or regions.get(region_key, {}).get('label', '')
+        supported = sport in {'', 'テニス'} and prefecture in {'', '東京都'} and region_key in {'', 'kanto'}
+        if supported:
+            title = ('関東のテニス会場・東京都のコート情報 | Circle Match' if area and area != '東京都'
+                     else '会場予約・東京都のテニスコートを探す | Circle Match')
+            description = (f'{area}の会場探しに。' if area and area != '東京都' else '') + '現在は東京都のテニスコートを掲載。場所・料金・予約方法から検索し、公営・民営施設の所在地、利用条件、公式予約サイトを確認できます。'
+            image = origin + '/assets/sports/tennis.png'
+        else:
+            selection = f'{area + "の" if area else ""}{sport + "の" if sport else ""}'
+            title = f'{selection}会場情報は掲載準備中 | Circle Match'
+            description = f'{selection}会場情報は掲載準備中です。競技・地域の条件を変更して、公開済みの会場情報をお探しください。'
+            public = False
+            if sport in sports:
+                image = origin + '/assets/sports/' + sports[sport]
+        for key in ('sport', 'region', 'prefecture'):
+            if value(key):
+                canonical_params[key] = value(key)
+        # Shared selections describe this page; local browser filters are not indexed.
+        venue_params = parse_qs(parsed.query, keep_blank_values=True)
+        if any(key not in {'sport', 'region', 'prefecture'} for key in venue_params):
+            public = False
+        if any(len(values) != 1 for values in venue_params.values()):
             public = False
     elif path in {'/circles', '/social/circles', '/social'}:
         audience = '社会人' if path.startswith('/social') else '大学'
@@ -153,7 +175,7 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         public = False
     elif params:
         public = False
-    if listing and path == '/' and value('tab') != 'db' and value('sport'):
+    if listing and path == '/' and value('tab') != 'db' and (value('sport') or value('tab') == 'events'):
         path = '/events'
     descriptions = {
         '/guides':'サークル活動や大会・イベントへの参加、練習試合の準備に役立つガイドを掲載しています。',

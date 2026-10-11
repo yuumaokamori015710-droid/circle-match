@@ -58,7 +58,8 @@ class PublicPage(HTMLParser):
             self._in_tabs = False
 
 
-class VenueIntegrationTests(unittest.TestCase):
+class IsolatedAppHttpCase(unittest.TestCase):
+    """Shared disposable app fixture; imports never start background workers."""
     @classmethod
     def setUpClass(cls):
         scratch = Path(__file__).resolve().parents[1] / 'work'
@@ -122,6 +123,8 @@ class VenueIntegrationTests(unittest.TestCase):
         with response:
             return response.status, response.read(), response.headers
 
+
+class VenueIntegrationTests(IsolatedAppHttpCase):
     def catalog(self):
         status, body, headers = self.request('/api/tennis-courts')
         self.assertEqual(status, 200)
@@ -158,8 +161,8 @@ class VenueIntegrationTests(unittest.TestCase):
         self.assertNotIn('<iframe', page.lower())
         self.assertNotIn('circlematch-acquisition.onrender.com', page)
         self.assertNotIn('予約管理を開く', page)
-        self.assertIn('href="/assets/venues/tennis.css"', page)
-        self.assertIn('src="/assets/venues/tennis.js"', page)
+        self.assertRegex(page, r'href="/assets/venues/tennis\.css\?v=[0-9a-f]{12}"')
+        self.assertRegex(page, r'src="/assets/venues/tennis\.js\?v=[0-9a-f]{12}"')
 
     def test_public_catalog_keeps_all_curated_facilities_and_evidence(self):
         data = self.catalog()
@@ -244,7 +247,7 @@ class VenueIntegrationTests(unittest.TestCase):
             connect.assert_not_called()
 
     def test_existing_event_and_circle_pages_expose_three_body_tabs(self):
-        for path, current in (('/', '大会・イベント'), ('/events', '大会・イベント'),
+        for path, current in (('/?tab=events', '大会・イベント'), ('/events', '大会・イベント'),
                               ('/?tab=db&audience=university', 'サークルDB'),
                               ('/?tab=db&audience=social', 'サークルDB'), ('/venues', '会場予約')):
             with self.subTest(path=path):

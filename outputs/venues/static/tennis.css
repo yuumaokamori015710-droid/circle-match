@@ -16,7 +16,7 @@
 .venue-directory .venue-skip-link:focus{top:10px}
 .venue-directory .venue-intro{margin-bottom:20px}
 .venue-directory .venue-eyebrow{margin:0 0 9px;font-size:10px;font-weight:700;letter-spacing:2.2px;color:var(--green)}
-.venue-directory h1{font-size:34px;line-height:1.4;letter-spacing:-1px;margin:0 0 10px}
+.venue-directory .venue-intro h2{font-size:24px;line-height:1.4;letter-spacing:-.5px;margin:0 0 10px}
 .venue-directory .venue-intro-copy{font-size:14px;color:var(--muted);margin:0 0 12px}
 .venue-directory .venue-catalog-meta{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:11px;color:#52667a}
 .venue-directory .venue-catalog-meta span+span{padding-left:18px;border-left:1px solid #cbd5df}
@@ -101,7 +101,7 @@
 .venue-directory .venue-search-field{grid-column:span 2}
 }
 @media(max-width:640px){
-.venue-directory h1{font-size:28px;letter-spacing:-.8px}
+.venue-directory .venue-intro h2{font-size:22px;letter-spacing:-.5px}
 .venue-directory .venue-intro-copy{font-size:12px}
 .venue-directory .venue-intro{margin-bottom:22px}
 .venue-directory .venue-catalog-meta{font-size:10px;gap:10px}

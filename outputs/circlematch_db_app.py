@@ -1228,6 +1228,8 @@ def event_shell(title, body, script=""):
 
 
 EVENT_UX_CSS = """
+.directory-context{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 0 24px;flex-wrap:wrap}.directory-title{display:flex;align-items:center;gap:16px;min-width:0}.directory-title h1{font-size:30px;line-height:1.25;margin:0;overflow-wrap:anywhere}.directory-title .eyebrow{margin:0 0 5px}.directory-sport-image{width:76px;height:76px;border-radius:12px;object-fit:cover}#directoryContext{display:flex;align-items:end;gap:12px;flex-wrap:wrap}#directoryContext label{display:grid;gap:6px;color:#50637a;font-size:13px;font-weight:800;min-width:160px}#directoryContext select{min-height:46px;max-width:280px;font-weight:700;color:var(--ink)}.sports-home-intro{padding:24px 0}.sports-home-intro h1{font-size:clamp(30px,4vw,46px);line-height:1.35}.sports-home .panel-head{padding:0 0 18px;border:0}.home-shortcuts{margin:38px 0 0}.home-shortcuts h2{font-size:20px;margin:0 0 12px}.home-shortcuts .tabs{border:1px solid var(--line);background:#fff;border-radius:8px;margin:0}.home-shortcuts .tabs a{flex:1;min-height:58px}#eventFilters{grid-template-columns:repeat(3,minmax(0,1fr))}#dbFilters{grid-template-columns:minmax(0,1fr) auto;align-items:end}.db-search{display:grid;gap:6px;font-size:13px;font-weight:700;color:#50637a}
+@media(max-width:699px){.directory-context{gap:16px;padding:8px 0 20px}.directory-title h1{font-size:25px}.directory-sport-image{width:56px;height:56px}#directoryContext{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#directoryContext label{min-width:0}#directoryContext select{max-width:100%;font-size:14px}.sports-home-intro{padding:10px 0}.home-shortcuts{margin-top:28px}#eventFilters{grid-template-columns:1fr}#dbFilters{grid-template-columns:1fr}.home-shortcuts .tabs a{font-size:13px;padding:10px 4px}}
 [hidden]{display:none!important}.intro h1{font-size:32px;letter-spacing:0}.eyebrow{letter-spacing:0}
 .tabs a{white-space:nowrap}.tabs a:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 @media(max-width:460px){.tabs{gap:0}.tabs a{flex:1;padding:10px 6px;font-size:14px}}
@@ -1501,40 +1503,101 @@ def render_db_pager(params, page, total):
     return ''.join(links)
 
 
-def render_directory_tabs(tab, event_url="/?tab=events", db_url="/?tab=db&audience=university"):
-    links = (("events", "大会・イベント", event_url), ("db", "サークルDB", db_url), ("venues", "会場予約", "/venues"))
+def directory_url(params, tab, **updates):
+    """Only the shared sport and area cross feature boundaries."""
+    values = {key: params[key][0].strip() for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0].strip()}
+    values.update({key: value for key, value in updates.items() if value})
+    path = {"events": "/events", "db": "/", "venues": "/venues"}[tab]
+    if tab == "db":
+        values.update(tab="db", audience=updates.get("audience") or audience_scope(params, "university"))
+    return path + ("?" + urlencode(values) if values else "")
+
+
+def directory_hidden_context(params):
+    return ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params.get(key, [""])[0], quote=True)}">' for key in ("sport", "region", "prefecture"))
+
+
+def render_directory_tabs(tab, params=None):
+    params = params or {}
+    links = tuple((key, label, directory_url(params if key != "db" or tab == "db" else {k: v for k, v in params.items() if k != "audience"}, key)) for key, label in (("events", "大会・イベント"), ("db", "サークルDB"), ("venues", "会場予約")))
     return '<nav class="tabs" aria-label="主要機能">' + ''.join(
-        f'<a class="{"active" if key == tab else ""}" href="{html.escape(url, quote=True)}"'
+        f'<a data-directory-link class="{"active" if key == tab else ""}" href="{html.escape(url, quote=True)}"'
         + (' aria-current="page"' if key == tab else '') + f'>{label}</a>'
         for key, label, url in links
     ) + '</nav>'
 
 
-def render_venues_html():
-    body = render_directory_tabs("venues") + venues.render_venue_body()
-    page = event_page("会場予約・東京都のテニスコート", body, tab="venues")
-    return page.replace("</head>", venues.render_venue_head() + "</head>", 1).encode("utf-8")
+def render_directory_context(params, tab):
+    sport = params.get("sport", [""])[0].strip()
+    region = params.get("region", [""])[0].strip()
+    prefecture = params.get("prefecture", [""])[0].strip()
+    area = "prefecture:" + prefecture if prefecture else ("region:" + region if region else "")
+    names = list(dict.fromkeys((event_sport_options() if tab == "events" else [item[0] for item in POPULAR_SPORTS] + SPORTS) + ([sport] if sport else [])))
+    option = lambda value, label, selected: f'<option value="{html.escape(value, quote=True)}"{" selected" if selected else ""}>{html.escape(label)}</option>'
+    sport_options_html = option("", "すべての競技", not sport) + ''.join(option(name, name, sport == name) for name in names)
+    area_options = option("", "全国", not area) + '<optgroup label="地方">' + ''.join(option("region:" + key, data["label"], area == "region:" + key) for key, data in REGION_GROUPS.items()) + '</optgroup><optgroup label="都道府県">' + ''.join(option("prefecture:" + name, name, area == "prefecture:" + name) for name in PREFECTURES) + '</optgroup>'
+    if area and not (prefecture in PREFECTURES if prefecture else region in REGION_GROUPS):
+        area_options += option(area, prefecture or region, True)
+    purpose = {"events": "大会・イベント", "db": "サークルDB", "venues": "会場予約"}[tab]
+    image = next((item[4] for item in POPULAR_SPORTS if item[0] == sport), "")
+    thumbnail = f'<img class="directory-sport-image" src="/assets/sports/{image}" alt="">' if image else ""
+    audience = audience_scope(params, "university")
+    action = "/" if tab == "db" else "/" + tab
+    hidden = f'<input type="hidden" name="tab" value="db"><input type="hidden" name="audience" value="{audience}">' if tab == "db" else ""
+    local_keys = ("q", "sort") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else ("v_q", "v_municipality", "v_area", "v_operator_type", "v_facility_kind", "v_price_max", "v_sort", "v_night_lighting", "v_indoor", "v_show_suspended"))
+    hidden += ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params[key][0], quote=True)}">' for key in local_keys if params.get(key))
+    return event_home_navigation(sport or purpose) + f'''<section class="directory-context"><div class="directory-title">{thumbnail}<div><p class="eyebrow">SPORTS DIRECTORY</p><h1>{html.escape(sport or "すべての競技")}</h1></div></div><form id="directoryContext" action="{action}" method="get" aria-label="競技・地域を選ぶ" data-tab="{tab}">{hidden}<label>競技<select name="sport">{sport_options_html}</select></label><label>地域<select name="area">{area_options}</select></label><noscript><button class="button" type="submit">条件を変更する</button></noscript></form></section>'''
+
+
+DIRECTORY_CONTEXT_SCRIPT = r'''<script>
+(()=>{const form=document.getElementById('directoryContext');if(!form)return;
+ const navigate=e=>{e.preventDefault();const target=new URL(location.href), tab=form.dataset.tab;
+ target.pathname=form.getAttribute('action');target.hash='';
+ for(const key of ['sport','region','prefecture','area','page','offset','tab','audience'])target.searchParams.delete(key);
+ const sport=form.elements.sport.value,area=form.elements.area.value;if(sport)target.searchParams.set('sport',sport);
+ if(area.startsWith('prefecture:'))target.searchParams.set('prefecture',area.slice(11));else if(area.startsWith('region:'))target.searchParams.set('region',area.slice(7));
+ if(tab==='db'){target.searchParams.set('tab','db');target.searchParams.set('audience',form.elements.audience.value)}
+ location.assign(target.pathname+target.search);
+ };form.addEventListener('change',navigate);form.addEventListener('submit',navigate);
+})();</script>'''
+
+
+def render_sports_home_html(params):
+    cards = []
+    for name, label, _code, _color, image in POPULAR_SPORTS:
+        href = directory_url(params, "events", sport=name)
+        cards.append(f'<a data-directory-link class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{image}?v=20260713v1" alt=""><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>探す →</em></span></a>')
+    body = '<section class="intro sports-home-intro"><div><p class="eyebrow">FIND YOUR SPORT</p><h1>好きなスポーツから、<br>次の活動を見つけよう。</h1><p>大会・イベント、サークル、会場をひとつの入口から。</p></div></section>'
+    body += '<section class="section sports-home"><div class="panel-head"><h2>スポーツから探す</h2></div><div class="sport-grid">' + ''.join(cards) + '</div></section>'
+    body += '<section class="home-shortcuts"><h2>目的から探す</h2>' + render_directory_tabs("", params) + '</section>'
+    body += '<section class="about"><h2>活動をひろげる</h2><p>大会・イベントや交流の募集を掲載できます。</p><a class="button" href="/events/new?custom=1">募集を掲載する</a></section>'
+    return event_page("スポーツから探す", body, tab="home").encode("utf-8")
+
+
+def render_venues_html(params=None):
+    params = params or {}
+    body = render_directory_context(params, "venues") + render_directory_tabs("venues", params) + venues.render_venue_body(params)
+    page = event_page("会場予約", body, DIRECTORY_CONTEXT_SCRIPT, tab="venues")
+    return page.replace("</head>", venues.render_venue_head(params) + "</head>", 1).encode("utf-8")
 
 
 def render_public_html(params=None, event_listing=False):
-    """Render the event-first home while keeping all circle data routes intact."""
+    """Sports home and scoped purpose pages share only sport and area."""
     params = params or {}
+    if not event_listing and not params.get("tab") and not params.get("sport", [""])[0].strip():
+        return render_sports_home_html(params)
     tab = (params.get("tab", ["events"])[0] or "events").strip()
     if tab == "venues":
-        return render_venues_html()
+        return render_venues_html(params)
     if tab not in {"events", "db"}:
         tab = "events"
     audience = audience_scope(params, "university")
     sport = (params.get("sport", [""])[0] or "").strip()
-    region = (params.get("region", [""])[0] or "").strip()
-    event_listing = tab == "events" and (event_listing or bool(sport))
-    area_label = (params.get("prefecture", [""])[0] or REGION_GROUPS.get(region, {}).get("label", "")).strip()
-    event_url = selected_home_query(params, "events", path="/events" if sport or event_listing else "/")
-    db_url = selected_home_query(params, "db", audience=audience)
+    event_url = directory_url(params, "events")
+    db_url = directory_url(params, "db", audience=audience)
     post_context = {key: params[key][0] for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0]}
     post_url = "/events/new" + ("?" + urlencode(post_context) if post_context else "")
-    tabs = render_directory_tabs(tab, event_url, db_url)
-    shared_head = '<section class="intro"><div><p class="eyebrow">SPORTS EVENT DIRECTORY</p><h1>スポーツの大会・イベントを、見つけて参加する。</h1><p>大会、交流イベント、練習試合、合同練習を競技・地域から探せます。サークルDBは、主催団体や活動仲間を調べるための情報基盤として残しています。</p></div></section>'
+    tabs = render_directory_tabs(tab, params)
     if tab == "events":
         try:
             initial_events = search_events(params, limit=30)
@@ -1545,28 +1608,17 @@ def render_public_html(params=None, event_listing=False):
             initial_events = []
             event_markup = '<div class="error-box">募集データを取得できませんでした。時間をおいて再度お試しください。</div>'
             initial_error = "イベントデータを取得できませんでした"
-        filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in event_sport_options())
-        region_options_html = ''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())
         type_options = ''.join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in EVENT_TYPES)
-        sport_picker = f'<section class="section panel"><div class="panel-head"><h2>スポーツから探す</h2><a class="button" href="#events">募集一覧へ</a></div><div class="sport-grid">{event_sport_cards(params, "events")}</div></section>'
-        if event_listing:
-            image_name = next((item[4] for item in POPULAR_SPORTS if item[0] == sport), "other.png")
-            listing_title = html.escape((area_label + "の" if area_label else "") + sport) + '<span>大会・イベント</span>' if sport or area_label else '大会・イベント一覧'
-            heading = f'<section class="event-results-intro"><img src="/assets/sports/{image_name}" alt=""><h1>{listing_title}</h1></section>'
-            introduction = event_home_navigation(sport or "大会・イベント一覧") + tabs + heading
-            if not initial_events and not initial_error:
-                event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
-        else:
-            introduction = shared_head + tabs + sport_picker
+        introduction = render_directory_context(params, tab) + tabs
+        if not initial_events and not initial_error:
+            event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
         result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
         body = introduction + f'''<div class="event-publish"><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div><section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div></div>
-<form id="eventFilters" class="filter-grid"><label class="event-filter">競技<select name="sport" aria-label="競技"><option value="">全競技</option>{filter_options}</select></label><label class="event-filter">地域<select name="region" aria-label="地域"><option value="">全地域</option>{region_options_html}</select></label><label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
+<form id="eventFilters" class="filter-grid">{directory_hidden_context(params)}<label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
 <div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
     else:
-        shared_head = '<section class="intro"><div><h1>活動するサークルを探す。</h1><p>大学・社会人の団体情報を、競技や地域から調べられます。出典掲載と、団体の代表権限の確認は別です。</p><a class="button" href="#dbList">団体一覧へ</a></div></section>'
-        db_heading = (area_label + "の" if area_label else "") + (sport + "の" if sport else "") + ("社会人" if audience == "social" else "大学") + "サークルDB"
-        shared_head = shared_head.replace('活動するサークルを探す。', html.escape(db_heading))
+        shared_head = render_directory_context(params, tab)
         try:
             scoped = dict(params)
             scoped["audience"] = [audience]
@@ -1584,15 +1636,12 @@ def render_public_html(params=None, event_listing=False):
             db_markup = '<div class="error-box">団体データを取得できませんでした。時間をおいて再度お試しください。</div>'
             db_error = "団体データを取得できませんでした"
         audience_toggle = f'<div class="db-toggle"><a class="{"active" if audience == "university" else ""}" href="{html.escape(selected_home_query(params, "db", audience="university"), quote=True)}">大学</a><a class="{"active" if audience == "social" else ""}" href="{html.escape(selected_home_query(params, "db", audience="social"), quote=True)}">社会人</a></div>'
-        filter_options = ''.join(f'<option value="{html.escape(value)}"{" selected" if sport == value else ""}>{html.escape(value)}</option>' for value in sport_options(audience))
-        body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><div class="sport-grid">{event_sport_cards(params, "db", audience)}</div><form id="dbFilters" class="filter-grid"><input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"><select name="sport"><option value="">全競技</option>{filter_options}</select><select name="region"><option value="">全地域</option>{''.join(f'<option value="{key}"{" selected" if region == key else ""}>{html.escape(data["label"])}</option>' for key, data in REGION_GROUPS.items())}</select><select name="prefecture"><option value="">全都道府県</option>{''.join(f'<option value="{html.escape(p)}">{html.escape(p)}</option>' for p in PREFECTURES)}</select><a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
-        if sport:
-            body = event_home_navigation(sport, "/?" + urlencode({"tab": "db", "audience": audience})) + body
+        body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><form id="dbFilters" class="filter-grid"><label class="db-search">団体名・大学名で検索<input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"></label>{directory_hidden_context(params)}<a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
         pager = render_db_pager(params, db_page if not db_error else 1, db_stats["circles"] if not db_error else 0)
         body = body.replace('<div id="dbList"', '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
-    page_title = f"{sport}の大会・イベント" if tab == "events" and sport else "大会・イベント"
-    page = event_shell(page_title, body, script)
+    page_title = (sport + "の" if sport else "") + ("大会・イベント" if tab == "events" else "サークルDB")
+    page = event_shell(page_title, body, DIRECTORY_CONTEXT_SCRIPT + script)
     return (page.replace("__EVENT_TAB__", "active" if tab == "events" else "").replace("__DB_TAB__", "active" if tab == "db" else "").replace("__EVENT_TAB_URL__", html.escape(event_url, quote=True)).replace("__DB_TAB_URL__", html.escape(db_url, quote=True)).replace("__POST_URL__", html.escape(post_url, quote=True))).encode("utf-8")
 
 
@@ -1614,7 +1663,7 @@ EVENT_HOME_SCRIPT = r"""
     const current=qs(),keys=['sport','region','prefecture','date_from','date_to','event_type','participation','q'];
     document.querySelectorAll('a[href]').forEach(link=>{
       const raw=link.getAttribute('href');
-      if(!raw.startsWith('/')||link.classList.contains('home-link')||link.classList.contains('cm-home'))return;
+      if(!raw.startsWith('/')||link.hasAttribute('data-directory-link')||link.classList.contains('home-link')||link.classList.contains('cm-home'))return;
       const target=new URL(raw,location.origin);
       if(['/','/events'].includes(target.pathname)&&target.searchParams.has('tab')){
         for(const key of keys){if(key==='sport'&&link.classList.contains('sport-card'))continue;const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
@@ -4748,15 +4797,28 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
         try:
+            if parsed.path in {"/", "/events", "/venues"} and "area" in query:
+                area = query.pop("area")[0]
+                query.pop("region", None)
+                query.pop("prefecture", None)
+                if area.startswith("prefecture:"):
+                    query["prefecture"] = [area[11:]]
+                elif area.startswith("region:"):
+                    query["region"] = [area[7:]]
+                query.pop("page", None)
+                self.redirect(parsed.path + ("?" + urlencode(query, doseq=True) if query else ""))
+                return
             if parsed.path == "/":
                 if query.get("tab", [""])[0] == "venues":
-                    self.redirect("/venues")
+                    query.pop("tab", None)
+                    self.redirect("/venues" + ("?" + urlencode(query, doseq=True) if query else ""))
                 else:
                     self.send_html(render_public_html(query))
             elif parsed.path == "/venues":
-                self.send_html(render_venues_html())
+                self.send_html(render_venues_html(query))
             elif parsed.path in {"/venues/", "/tennis"}:
-                self.redirect("/venues")
+                query.pop("tab", None)
+                self.redirect("/venues" + ("?" + urlencode(query, doseq=True) if query else ""))
             elif parsed.path == "/api/tennis-courts":
                 self.send_json(venues.get_catalog())
             elif parsed.path in venues.ASSET_PATHS:
