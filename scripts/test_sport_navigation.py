@@ -160,6 +160,37 @@ class SportNavigationTests(IsolatedAppHttpCase):
         self.assertEqual(empty.count('href="#sports-list"'), 2)
         self.assertIn('href="/events/new?custom=1"', empty)
 
+    def test_home_compact_flows_keep_numbered_bold_steps_without_extra_actions(self):
+        text, _ = self.page('/')
+        flows = [
+            ('home-journey-host-heading', '募集の流れ',
+             ['競技を選ぶ', '会場を予約する', '募集を作る', '募集を広める'], ['①', '②', '③', '④']),
+            ('home-journey-join-heading', '参加先を探す流れ',
+             ['競技を選ぶ', '地域を絞る', '自分に合う参加先を選ぶ'], ['①', '②', '③']),
+        ]
+        for heading, label, expected, numbers in flows:
+            with self.subTest(flow=label):
+                article = re.search(r'<article\b[^>]*aria-labelledby="' + heading + r'"[^>]*>(.*?)</article>', text, re.S)
+                self.assertIsNotNone(article)
+                summaries = re.findall(r'<ol\b([^>]*class="home-journey-summary"[^>]*)>(.*?)</ol>', article.group(1), re.S)
+                self.assertEqual(len(summaries), 1)
+                attributes, summary = summaries[0]
+                self.assertIn('aria-label="' + label + '"', attributes)
+                items = re.findall(r'<li\b[^>]*>(.*?)</li>', summary, re.S)
+                self.assertEqual(len(items), len(expected))
+                self.assertEqual(re.findall(r'<strong>(.*?)</strong>', summary, re.S), expected)
+                self.assertEqual(re.findall(r'<span\b(?=[^>]*class="home-summary-number")(?=[^>]*aria-hidden="true")[^>]*>(.*?)</span>', summary, re.S), numbers)
+                self.assertEqual(set(re.findall(r'<([a-z]+)\b', summary)), {'li', 'span', 'strong'})
+                self.assertNotRegex(summary, r'\b(?:href|tabindex|onclick)=')
+                details = re.search(r'<ol\b[^>]*class="home-journey-steps"[^>]*>(.*?)</ol>', article.group(1), re.S)
+                self.assertIsNotNone(details)
+                self.assertEqual(re.findall(r'<strong>(.*?)</strong>', details.group(1), re.S), expected)
+                self.assertLess(article.group(1).index('class="home-journey-steps"'), article.group(1).index('class="home-journey-summary"'))
+                self.assertLess(article.group(1).index('class="home-journey-summary"'), article.group(1).index('class="home-journey-actions"'))
+                if heading == 'home-journey-host-heading':
+                    self.assertIn('>募集を作る</a>', article.group(1))
+                    self.assertNotIn('募集をつくる', article.group(1))
+
     def test_home_cards_choose_sport_once_and_preserve_only_shared_area(self):
         context = {'region': 'kanto', 'prefecture': '東京都'}
         _, page = self.page('/?' + urlencode(dict(context, q='not-for-cards', v_q='not-for-cards')))

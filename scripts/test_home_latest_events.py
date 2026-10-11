@@ -120,9 +120,11 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         self.assertNotIn('取得できませんでした', page)
         self.assertIn('スポーツから探す', page)
         self.assertIn('目的から探す', page)
-        self.assertIn('href="/events/new?custom=1">募集を掲載する', page)
+        self.assertIn('href="/events/new?custom=1">募集を作る', page)
         self.assertIn('href="/events">現在募集中のイベントを見る', page)
-        self.assertEqual(page.count('募集を掲載する</a>'), 1)
+        latest_section = re.search(r'<section\b[^>]*aria-labelledby="home-latest-heading"[^>]*>(.*?)</section>', page, re.S)
+        self.assertIsNotNone(latest_section)
+        self.assertEqual(latest_section.group(1).count('募集を作る</a>'), 1)
 
     def test_failed_query_preserves_home_without_false_empty_or_private_error(self):
         with patch.object(self.app, 'connect', side_effect=RuntimeError('private-db-error')) as connection:
@@ -134,7 +136,7 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         self.assertNotIn('private-db-error', page)
         self.assertIn('スポーツから探す', page)
         self.assertIn('目的から探す', page)
-        self.assertIn('募集を掲載する', page)
+        self.assertIn('募集を作る', page)
 
 
 if __name__ == '__main__':
