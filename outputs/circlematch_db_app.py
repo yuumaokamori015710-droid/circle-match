@@ -25,6 +25,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 import circlematch_seo as seo
 import circlematch_venues as venues
+import circlematch_invitations as invitations
+import circlematch_invitation_ui as invitation_ui
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
@@ -1228,6 +1230,7 @@ def event_shell(title, body, script=""):
 
 
 EVENT_UX_CSS = """
+.db-row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.db-row-actions .button{font-size:13px;white-space:nowrap}
 .directory-context{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 0 24px;flex-wrap:wrap}.directory-title{display:flex;align-items:center;gap:16px;min-width:0}.directory-title h1{font-size:30px;line-height:1.25;margin:0;overflow-wrap:anywhere}.directory-title .eyebrow{margin:0 0 5px}.directory-sport-image{width:76px;height:76px;border-radius:12px;object-fit:cover}#directoryContext{display:flex;align-items:end;gap:12px;flex-wrap:wrap}#directoryContext label{display:grid;gap:6px;color:#50637a;font-size:13px;font-weight:800;min-width:160px}#directoryContext select{min-height:46px;max-width:280px;font-weight:700;color:var(--ink)}.sports-home-intro{padding:24px 0}.sports-home-intro h1{font-size:clamp(30px,4vw,46px);line-height:1.35}.sports-home .panel-head{padding:0 0 18px;border:0}.home-shortcuts{margin:38px 0 0}.home-shortcuts h2{font-size:20px;margin:0 0 12px}.home-shortcuts .tabs{border:1px solid var(--line);background:#fff;border-radius:8px;margin:0}.home-shortcuts .tabs a{flex:1;min-height:58px}#eventFilters{grid-template-columns:repeat(3,minmax(0,1fr))}#dbFilters{grid-template-columns:minmax(0,1fr) auto;align-items:end}.db-search{display:grid;gap:6px;font-size:13px;font-weight:700;color:#50637a}
 @media(max-width:699px){.directory-context{gap:16px;padding:8px 0 20px}.directory-title h1{font-size:25px}.directory-sport-image{width:56px;height:56px}#directoryContext{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#directoryContext label{min-width:0}#directoryContext select{max-width:100%;font-size:14px}.sports-home-intro{padding:10px 0}.home-shortcuts{margin-top:28px}#eventFilters{grid-template-columns:1fr}#dbFilters{grid-template-columns:1fr}.home-shortcuts .tabs a{font-size:13px;padding:10px 4px}}
 [hidden]{display:none!important}.intro h1{font-size:32px;letter-spacing:0}.eyebrow{letter-spacing:0}
@@ -1260,6 +1263,7 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 .home-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#243c50;font-size:15px;font-weight:800;text-decoration:none;flex-shrink:0}
 .home-link:hover{background:#edf4f7}.home-link svg{width:20px;height:20px;flex-shrink:0}
 .home-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.home-latest-events{margin-top:26px}.home-latest-events .panel-head{align-items:center}.home-latest-actions{display:flex;gap:8px;flex-wrap:wrap}.home-latest-events .event-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:899px){.home-latest-events .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.home-latest-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.home-latest-actions .button{padding:9px 6px;font-size:13px;min-width:0}.home-latest-events .event-grid{grid-template-columns:minmax(0,1fr)}}
 .breadcrumb-current{font-size:14px;color:#526577;overflow-wrap:anywhere;min-width:0}
 .event-results .filter-grid{align-items:end}.event-filter{display:grid;gap:6px;min-width:0;font-size:13px;font-weight:700;color:#405164}
 .event-filter input,.event-filter select{width:100%;min-width:0;max-width:100%;min-height:46px;font-size:16px;font-weight:400;color:var(--ink)}
@@ -1474,11 +1478,13 @@ def render_db_rows(circles):
     output = []
     for circle in circles:
         link = f'<a href="{html.escape(circle["profile_url"], quote=True)}">紹介ページ</a>' if circle.get("profile_url") else (f'<a href="{html.escape(circle["source_url"], quote=True)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>' if safe_public_source(circle.get("source_url")) else '<a href="/contact">情報を問い合わせる</a>')
+        if circle.get("circle_id"):
+            link += f'<a class="button" href="/invitations/new?circle_id={quote(str(circle["circle_id"]), safe="")}">交流に招待</a>'
         output.append(
             '<div class="circle-row">'
             f'<div><strong>{html.escape(circle.get("university_name") or "活動地域")}</strong><small>{html.escape(circle.get("prefecture") or "")}{(" / " + html.escape(circle.get("city") or "")) if circle.get("city") else ""}</small></div>'
             f'<div><strong>{html.escape(circle.get("circle_name") or "")}</strong><small>{html.escape(circle.get("organization_type") or "不明")}</small></div>'
-            f'<div>{html.escape(circle.get("sport_category") or "その他")}</div><div>{link}</div></div>'
+            f'<div>{html.escape(circle.get("sport_category") or "その他")}</div><div class="db-row-actions">{link}</div></div>'
         )
     return "".join(output)
 
@@ -1562,15 +1568,43 @@ DIRECTORY_CONTEXT_SCRIPT = r'''<script>
 })();</script>'''
 
 
+def latest_home_events():
+    """Read at most six public, open events across all sports and regions."""
+    current = event_local_now()
+    where = ["e.status='published'", "e.starts_at>?",
+             "(coalesce(e.application_deadline,'')='' or e.application_deadline>=?)",
+             "(coalesce(e.announcement_version,0)=0 or coalesce(e.payment_deadline,'')='' or e.payment_deadline>?)",
+             "(coalesce(e.announcement_version,0)=0 or coalesce(e.attendance_deadline,'')='' or e.attendance_deadline>?)"]
+    with connect() as conn:
+        columns = {row['name'] for row in conn.execute('pragma table_info(event_posts)')}
+        if 'visibility' in columns:
+            where.append("e.visibility='public'")
+        sql, args = event_public_select(' and '.join(where), [current] * 4)
+        sql += (" having (e.capacity is null or e.capacity=0 or confirmed_count<e.capacity)"
+                " order by julianday(coalesce(nullif(e.published_at,''),e.created_at)) desc,"
+                " e.created_at desc, e.event_id desc limit 6")
+        events = [dict(row) for row in conn.execute(sql, args).fetchall()]
+    return [event for event in events if event_availability(event)[1]]
+
+
 def render_sports_home_html(params):
     cards = []
     for name, label, _code, _color, image in POPULAR_SPORTS:
         href = directory_url(params, "events", sport=name)
         cards.append(f'<a data-directory-link class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{image}?v=20260713v1" alt=""><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>探す →</em></span></a>')
     body = '<section class="intro sports-home-intro"><div><p class="eyebrow">FIND YOUR SPORT</p><h1>好きなスポーツから、<br>次の活動を見つけよう。</h1><p>大会・イベント、サークル、会場をひとつの入口から。</p></div></section>'
+    try:
+        latest = latest_home_events()
+        latest_markup = render_event_cards(latest) if latest else '<div class="empty">現在、募集中の大会・イベントはありません。募集を掲載して参加者を集めましょう。</div>'
+    except Exception as exc:
+        log(f"sports home latest events failed: {type(exc).__name__}")
+        latest_markup = '<div class="error-box" role="status">最新の募集を取得できませんでした。時間をおいて再度ご確認ください。</div>'
+    body += ('<section class="section panel home-latest-events" aria-labelledby="home-latest-heading">'
+             '<div class="panel-head"><div><h2 id="home-latest-heading">最新の募集</h2><p>すべての競技・地域から、募集中の大会・イベントを新着順で掲載しています。</p></div>'
+             '<div class="home-latest-actions"><a class="button primary" href="/events/new?custom=1">募集を掲載する</a><a class="button" href="/events">募集をすべて見る</a></div></div>'
+             '<div id="homeLatestEvents" class="event-grid">' + latest_markup + '</div></section>')
     body += '<section class="section sports-home"><div class="panel-head"><h2>スポーツから探す</h2></div><div class="sport-grid">' + ''.join(cards) + '</div></section>'
     body += '<section class="home-shortcuts"><h2>目的から探す</h2>' + render_directory_tabs("", params) + '</section>'
-    body += '<section class="about"><h2>活動をひろげる</h2><p>大会・イベントや交流の募集を掲載できます。</p><a class="button" href="/events/new?custom=1">募集を掲載する</a></section>'
     return event_page("スポーツから探す", body, tab="home").encode("utf-8")
 
 
@@ -1640,6 +1674,8 @@ def render_public_html(params=None, event_listing=False):
         pager = render_db_pager(params, db_page if not db_error else 1, db_stats["circles"] if not db_error else 0)
         body = body.replace('<div id="dbList"', '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
+    if tab == "db":
+        body = body.replace('<div class="db-summary">', '<p class="context-notice">交流したい団体に、イベントへの招待や練習試合の相談を渡せます。<a href="/invitations">自分の交流招待を確認する</a></p><div class="db-summary">', 1)
     page_title = (sport + "の" if sport else "") + ("大会・イベント" if tab == "events" else "サークルDB")
     page = event_shell(page_title, body, DIRECTORY_CONTEXT_SCRIPT + script)
     return (page.replace("__EVENT_TAB__", "active" if tab == "events" else "").replace("__DB_TAB__", "active" if tab == "db" else "").replace("__EVENT_TAB_URL__", html.escape(event_url, quote=True)).replace("__DB_TAB_URL__", html.escape(db_url, quote=True)).replace("__POST_URL__", html.escape(post_url, quote=True))).encode("utf-8")
@@ -1656,7 +1692,7 @@ EVENT_HOME_SCRIPT = r"""
   const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':`${e.payment_method==='bank_transfer'?'口座振込':'現地払い'}（料金は主催者へ確認）`):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
   const status=e=>[e.availability_label||'受付終了',e.can_apply?'open':(e.status==='cancelled'?'cancelled':'closed')];
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
-  function circleRow(c){let source=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div>${profile}</div></div>`}
+  function circleRow(c){let source=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}</div></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
   function syncLinks(){
@@ -1710,6 +1746,46 @@ def event_page(title, body, script="", tab="events", post_url="/events/new"):
         .replace("__DB_TAB_URL__", "/?tab=db&audience=university")
         .replace("__POST_URL__", html.escape(post_url, quote=True))
     )
+
+
+def invitation_event(conn, event_id, user_id=None):
+    """Reuse public admission rules; never pass organizer or payment secrets to invitations."""
+    where, args = "e.event_id=? and e.status='published'", [event_id]
+    if user_id:
+        where += " and e.organizer_user_id=?"
+        args.append(user_id)
+    columns = {row[1] for row in conn.execute("pragma table_info(event_posts)")}
+    if "visibility" in columns:
+        where += " and e.visibility='public'"
+    sql, args = event_public_select(where, args)
+    row = conn.execute(sql, args).fetchone()
+    if not row or not event_availability(dict(row))[1]:
+        return None
+    return {key: row[key] for key in ("event_id", "title", "starts_at")}
+
+
+def render_invitation_html(path, params, user):
+    with connect() as conn:
+        if path == "/invitations/new":
+            target = invitations.target(conn, params.get("circle_id", [""])[0], public_circle_clause())
+            owned = conn.execute("select event_id from event_posts where organizer_user_id=? and status='published' order by published_at desc limit 100", (user["user_id"],)).fetchall()
+            events = [event for row in owned if (event := invitation_event(conn, row[0], user["user_id"]))]
+            body, script = invitation_ui.compose(target, events, user)
+            title = "交流に招待"
+        elif path == "/invitations":
+            body, script = invitation_ui.listing(invitations.listing(conn, user, invitation_event))
+            title = "交流招待"
+        else:
+            invitation_id = path.removeprefix("/invitations/")
+            data = invitations.detail(conn, invitation_id, user, invitation_event)
+            data["share_url"] = seo.public_origin(base_url()) + "/invitations/" + quote(invitation_id, safe="")
+            body, script = invitation_ui.detail(data, user, seo.public_origin(base_url()))
+            title = "交流招待"
+    # Link-scoped introductions do not load advertising or leak their URL as a referrer.
+    page = event_page(title, body, script, tab="db")
+    if ADSENSE_HEAD:
+        page = page.replace(ADSENSE_HEAD, "")
+    return page.replace("</head>", '<meta name="referrer" content="no-referrer"></head>', 1).encode("utf-8")
 
 
 def render_event_detail_html(event_id, user=None):
@@ -2015,6 +2091,8 @@ def render_notifications_html(user, page=0):
             link = f'<a href="/events/{quote(note["event_id"])}/contact">質問・連絡を開く</a>'
         elif note.get("event_id") and note.get("notification_type") in {"count_changed", "payment_updated", "application_released"}:
             link = '<a href="/mypage">マイページで申込状況を確認する</a>'
+        if note.get("notification_type") == "circle_invitation":
+            link = '<a href="/invitations">交流招待を確認する</a>'
         unread = not note.get("read_at")
         rendered.append(f'<article class="notification {"unread" if unread else ""}" data-notification="{html.escape(note["notification_id"], quote=True)}"><strong>{html.escape(note.get("title") or "")}</strong><p>{html.escape(note.get("body") or "")}</p><small>{format_event_datetime(note.get("created_at"))} / メール通知: {html.escape(email_delivery_label(note.get("email_status")))}</small>{link}</article>')
     previous = f'<a class="button" href="/notifications?page={page-1}">前へ</a>' if page else ''
@@ -2087,6 +2165,7 @@ def render_mypage_html(user):
         inquiry_html = '<h2>申込前の質問・連絡</h2>' + ''.join(f'<article class="app-row"><span>{html.escape(row["title"])}</span><a class="button" href="/events/{quote(row["event_id"])}/contact">連絡を開く</a></article>' for row in inquiries)
         body = body.replace('</div><div id="my-hosted"', inquiry_html + '</div><div id="my-hosted"')
     body += '<div id="myError" class="error-box" role="alert" tabindex="-1" hidden></div><dialog id="actionDialog" class="ux-dialog" aria-labelledby="actionTitle"><h2 id="actionTitle">操作の確認</h2><p id="actionText"></p><form method="dialog" class="card-actions"><button class="button" value="cancel" autofocus>戻る</button><button class="button primary" value="confirm">実行する</button></form></dialog>'
+    body += '<section class="panel"><div class="panel-head"><div><h2>交流招待</h2><p>作成した招待と、受け取って回答した相談を確認できます。</p></div><a class="button" href="/invitations">交流招待を開く</a></div></section>'
     return event_page("マイページ", body, MYPAGE_SCRIPT)
 
 
@@ -2599,7 +2678,9 @@ def render_circle_profile_html(profile_slug):
         representative_status_badge = '<span class="badge">代表申請受付</span>'
     else:
         representative_status_badge = '<span class="badge">未確認</span>'
-    contact_section = hosted_events_section + contact_section
+    contact_section = ('<section class="panel"><h2>交流に招待する</h2><p>大会・イベントへの招待や、練習試合・合同練習の相談を作成して渡せます。</p><div class="actions"><a class="button primary" href="/invitations/new?circle_id='
+                       + html.escape(quote(str(data.get("circle_id") or ""), safe=""), quote=True)
+                       + '">交流に招待</a></div></section>' + hosted_events_section + contact_section)
     page = (
         with_adsense(CIRCLE_PROFILE_HTML)
         .replace("__SITE_NAME__", html.escape(SITE_NAME))
@@ -3866,6 +3947,7 @@ def init_db():
         migrate_event_target_total(conn)
         migrate_event_formation(conn)
         migrate_event_operations(conn)
+        invitations.init_schema(conn)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -4747,7 +4829,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def read_json(self):
-        event_request = urlparse(self.path).path.startswith('/api/events')
+        event_request = urlparse(self.path).path.startswith(('/api/events', '/api/invitations'))
         if event_request:
             origin = self.headers.get('Origin', '')
             host = self.headers.get('Host', '')
@@ -4827,6 +4909,15 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/events":
                 query["tab"] = ["events"]
                 self.send_html(render_public_html(query, event_listing=True))
+            elif parsed.path == "/invitations" or parsed.path.startswith("/invitations/"):
+                user = current_user(self.cookie_value("cm_session"))
+                if parsed.path in {"/invitations", "/invitations/new"} and not user.get("authenticated"):
+                    self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/invitations")}))
+                    return
+                if parsed.path not in {"/invitations", "/invitations/new"} and not re.fullmatch(r"/invitations/[A-Za-z0-9_-]{32}", parsed.path):
+                    self.send_html(event_page("招待が見つかりません", '<p class="empty">招待が見つかりません。</p>').encode("utf-8"), 404)
+                    return
+                self.send_html(render_invitation_html(parsed.path, query, user))
             elif parsed.path == "/events/new":
                 user = current_user(self.cookie_value("cm_session"))
                 if not user.get("authenticated"):
@@ -5144,6 +5235,32 @@ class Handler(BaseHTTPRequestHandler):
                     conn.executemany("update event_notifications set read_at=? where notification_id=? and recipient_user_id=? and read_at is null",
                                      [(now(), value, user["user_id"]) for value in ids])
                 self.send_json({"ok": True, "unread_count": unread_notification_count(user)})
+                return
+            if parsed.path == "/api/invitations" or parsed.path.startswith("/api/invitations/"):
+                data = self.read_json()
+                if not isinstance(data, dict):
+                    raise ValueError("入力形式が正しくありません")
+                user = current_user(self.cookie_value("cm_session"))
+                if not user.get("authenticated"):
+                    self.send_json({"error": "login required"}, 401)
+                    return
+                parts = parsed.path.strip("/").split("/")
+                with connect() as conn:
+                    if len(parts) == 2:
+                        invitation_id = invitations.create(conn, data, user, public_circle_clause(), invitation_event)
+                        conn.commit()
+                        self.send_json({"ok": True, "invitation_id": invitation_id})
+                    elif len(parts) == 4 and re.fullmatch(r"[A-Za-z0-9_-]{32}", parts[2]) and parts[3] in {"respond", "message", "withdraw"}:
+                        if parts[3] == "respond":
+                            invitations.respond(conn, parts[2], data, user)
+                        elif parts[3] == "message":
+                            invitations.message(conn, parts[2], data, user)
+                        else:
+                            invitations.withdraw(conn, parts[2], user)
+                        conn.commit()
+                        self.send_json({"ok": True})
+                    else:
+                        self.send_json({"error": "not found"}, 404)
                 return
             if parsed.path == "/api/events":
                 data = self.read_json()

@@ -116,13 +116,13 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 expected.update(tab='db', audience=audience)
             self.assertEqual(parse_qs(parts.query), {key: [value] for key, value in expected.items()})
 
-    def test_home_is_static_sports_first_without_active_purpose_or_results(self):
-        with patch.object(self.app, 'connect', side_effect=AssertionError('Sports home must not open SQLite')) as connect:
-            text, page = self.page('/')
-            connect.assert_not_called()
+    def test_home_is_sports_first_with_latest_events_and_without_active_purpose(self):
+        text, page = self.page('/')
         self.assert_shared_tabs(page, None, {})
         self.assertIn('スポーツ', page.visible)
         self.assertGreaterEqual(len(page.cards), len(self.app.POPULAR_SPORTS))
+        self.assertIn('homeLatestEvents', page.ids)
+        self.assertIn('最新の募集', page.visible)
         self.assertNotIn('eventList', page.ids)
         self.assertNotIn('dbList', page.ids)
         self.assertNotIn('venue-court-list', page.ids)
