@@ -71,6 +71,37 @@ class ContactResearchTests(unittest.TestCase):
         self.assertEqual(summary["statuses"]["no_email"], 1)
         self.assertEqual(research.query_results(self.conn, status="unresearched")["results"][0]["circle_id"], "club-c")
 
+    def test_trusted_public_scope_matches_summary_listing_and_export_without_changing_imports(self):
+        self.conn.execute("alter table circles add column public_status text not null default 'published'")
+        self.conn.execute("create table circle_listing_reviews(circle_id text,review_status text)")
+        self.conn.execute("update circles set public_status='demo' where circle_id='club-c'")
+        self.conn.execute("insert into circles values('club-review','Pending club','','published')")
+        self.conn.execute("insert into circle_listing_reviews values('club-review','pending')")
+        clause = """(coalesce(c.public_status,'published')<>'demo' and not exists
+            (select 1 from circle_listing_reviews lr where lr.circle_id=c.circle_id and lr.review_status='pending'))"""
+        self.import_one()
+        research.import_results(self.conn, [self.record("club-b", status="no_email", contacts=[])])
+        # A hidden historical result is retained in the private store; scoping
+        # affects read eligibility only and never rewrites import results.
+        hidden = self.record("club-c")
+        hidden["contacts"][0]["email"] = "hidden-only@clubs.example"
+        research.import_results(self.conn, [hidden])
+        self.assertEqual(research.summary(self.conn)["total"], 4)
+        overview = research.summary(self.conn, circle_clause=clause)
+        self.assertEqual((overview["total"], overview["researched"], overview["remaining"], overview["with_email"]), (2, 2, 0, 1))
+        self.assertEqual((overview["email_records"], overview["distinct_emails"]), (1, 1))
+        data = research.query_results(self.conn, circle_clause=clause, page_size=1, page=2)
+        self.assertEqual((data["total"], data["pages"], len(data["results"])), (2, 2, 1))
+        self.assertEqual(data["results"][0]["circle_id"], "club-b")
+        self.assertEqual(data["summary"], overview)
+        self.assertEqual(research.query_results(self.conn, status="unresearched", circle_clause=clause)["total"], 0)
+        self.assertEqual(research.query_results(self.conn, q="hidden-only", circle_clause=clause)["total"], 0)
+        exported = list(csv.DictReader(StringIO(research.export_csv(self.conn, circle_clause=clause))))
+        self.assertEqual({row["circle_id"] for row in exported}, {"club-a", "club-b"})
+        self.assertEqual(self.count("circle_contact_research"), 3)
+        self.assertEqual(self.count("circle_contact_research_history"), 3)
+        self.assertEqual(research.import_results(self.conn, [hidden])["unchanged"], 1)
+
     def test_bad_record_in_batch_prevents_all_writes(self):
         with self.assertRaises(ValueError):
             research.import_results(self.conn, [self.record(), self.record("club-b", status="invented")])

@@ -5082,10 +5082,10 @@ class Handler(BaseHTTPRequestHandler):
                     return
                 with connect() as conn:
                     if parsed.path.endswith('.csv'):
-                        body = ('\ufeff' + contact_research.export_csv(conn)).encode('utf-8')
+                        body = ('\ufeff' + contact_research.export_csv(conn, circle_clause=public_circle_clause('c'))).encode('utf-8')
                         content_type = 'text/csv; charset=utf-8'
                     else:
-                        data = contact_research.query_results(conn, status=query.get('status', [''])[0], q=query.get('q', [''])[0], page=int(query.get('page', ['1'])[0]))
+                        data = contact_research.query_results(conn, status=query.get('status', [''])[0], q=query.get('q', [''])[0], page=int(query.get('page', ['1'])[0]), circle_clause=public_circle_clause('c'))
                         if parsed.path.startswith('/api/'):
                             body = json.dumps(data, ensure_ascii=False).encode('utf-8')
                             content_type = 'application/json; charset=utf-8'
@@ -5439,7 +5439,7 @@ class Handler(BaseHTTPRequestHandler):
                 if parsed.path == "/api/admin/contact-research/import":
                     imported = contact_research.import_results(conn, data)
                     conn.commit()
-                    self.send_json({"ok": True, "imported": imported, "summary": contact_research.summary(conn)})
+                    self.send_json({"ok": True, "imported": imported, "summary": contact_research.summary(conn, circle_clause=public_circle_clause('c'))})
                 elif parsed.path == "/api/universities":
                     entity_id = upsert_university(conn, data)
                     conn.commit()

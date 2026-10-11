@@ -265,15 +265,25 @@ def import_results(conn, payload):
     return {"job_id": job_id, "received": len(records), "updated": updated, "unchanged": unchanged}
 
 
-def summary(conn):
-    total = conn.execute("select count(*) from circles").fetchone()[0]
+def _scope_where(circle_clause):
+    # This SQL is an application-generated visibility policy using alias c.
+    # It must never come from a request, an import record, or other user input.
+    if not isinstance(circle_clause, str):
+        raise ValueError("団体の表示範囲が正しくありません")
+    return " where (" + circle_clause + ")" if circle_clause else ""
+
+
+def summary(conn, circle_clause=""):
+    """Count circles under an optional trusted, server-only SQL policy."""
+    where = _scope_where(circle_clause)
+    total = conn.execute("select count(*) from circles c" + where).fetchone()[0]
     counts = {status: 0 for status in ("unresearched",) + STATUSES}
-    for status, count in conn.execute("select r.status,count(*) from circle_contact_research r join circles c on c.circle_id=r.circle_id group by r.status"):
+    for status, count in conn.execute("select r.status,count(*) from circle_contact_research r join circles c on c.circle_id=r.circle_id" + where + " group by r.status"):
         counts[status] = count
     researched = sum(counts.values())
     counts["unresearched"] = max(0, total - researched)
     emails, distinct_emails = conn.execute("""select count(*),count(distinct lower(e.email)) from circle_contact_research_emails e
-        join circles c on c.circle_id=e.circle_id""").fetchone()
+        join circles c on c.circle_id=e.circle_id""" + where).fetchone()
     return {"total": total, "researched": researched, "remaining": counts["unresearched"],
             "with_email": counts["email_found"], "email_records": emails, "distinct_emails": distinct_emails, "statuses": counts}
 
@@ -283,14 +293,20 @@ def _dict_rows(cursor):
     return [dict(zip(columns, row)) for row in cursor]
 
 
-def query_results(conn, status="", q="", page=1, page_size=50):
+def query_results(conn, status="", q="", page=1, page_size=50, circle_clause=""):
+    """List research under an application-generated circle visibility policy.
+
+    circle_clause is trusted server-only SQL using alias c; never bind it to a
+    query parameter. Request search/filter values remain SQL parameters.
+    """
     status = _text(status, "絞り込み", 30)
     q = _text(q, "検索", 200)
     if status and status not in ("unresearched",) + STATUSES:
         raise ValueError("絞り込みが正しくありません")
     if isinstance(page, bool) or isinstance(page_size, bool) or not isinstance(page, int) or not isinstance(page_size, int) or not 1 <= page <= 100000 or not 1 <= page_size <= 200:
         raise ValueError("ページの指定が正しくありません")
-    conditions, values = [], []
+    _scope_where(circle_clause)
+    conditions, values = (["(" + circle_clause + ")"] if circle_clause else []), []
     if status:
         conditions.append("r.circle_id is null" if status == "unresearched" else "r.status=?")
         if status != "unresearched":
@@ -313,7 +329,7 @@ def query_results(conn, status="", q="", page=1, page_size=50):
     if rows:
         for email in _dict_rows(conn.execute("select circle_id,email,source_url,evidence,attribution from circle_contact_research_emails where circle_id in (" + ",".join("?" for _ in rows) + ") order by email,source_url", list(by_id))):
             by_id[email.pop("circle_id")]["contacts"].append(email)
-    return {"summary": summary(conn), "status": status, "q": q, "page": page, "page_size": page_size,
+    return {"summary": summary(conn, circle_clause=circle_clause), "status": status, "q": q, "page": page, "page_size": page_size,
             "total": total, "pages": max(1, math.ceil(total / page_size)), "results": rows}
 
 
@@ -360,14 +376,17 @@ def _csv_cell(value):
     return "'" + value if value.lstrip().startswith(("=", "+", "-", "@")) or value.startswith(("\t", "\r", "\n")) else value
 
 
-def export_csv(conn):
-    """Export all circles, including unresearched ones, for authenticated admins."""
+def export_csv(conn, circle_clause=""):
+    """Export scoped circles, including unresearched ones, for admins.
+
+    circle_clause is the same trusted server-only SQL policy as query_results.
+    """
     output = StringIO(newline="")
     writer = csv.writer(output)
     writer.writerow(("circle_id", "circle_name", "status", "checked_at", "email", "source_url", "evidence", "attribution", "contact_form_url", "research_note", "job_id"))
     page = 1
     while True:
-        data = query_results(conn, page=page, page_size=200)
+        data = query_results(conn, page=page, page_size=200, circle_clause=circle_clause)
         for row in data["results"]:
             for contact in row["contacts"] or [{}]:
                 writer.writerow([_csv_cell(value) for value in (row["circle_id"], row["circle_name"], row["status"], row["checked_at"],

@@ -14,14 +14,18 @@ import json
 import re
 import socket
 import sqlite3
+import sys
 import threading
 import time
 import unicodedata
 from functools import lru_cache
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib import error, parse, request, robotparser
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'outputs'))
+import circlematch_contact_research as contact_store
 
 try:
     from lxml import html as dom
@@ -45,7 +49,7 @@ def norm(value):
 
 
 def clean(value):
-    return re.sub(r'\s+', ' ', value or '').strip()
+    return re.sub(r'\s+', ' ', re.sub(r'[\x00-\x1f\x7f]', ' ', value or '')).strip()
 
 
 def safe_url(value, resolve=False):
@@ -65,7 +69,9 @@ def safe_url(value, resolve=False):
             addresses = socket.getaddrinfo(host, u.port or (443 if u.scheme == 'https' else 80), type=socket.SOCK_STREAM)
             if not addresses or any(not ipaddress.ip_address(x[4][0]).is_global for x in addresses):
                 return ''
-        return parse.urlunsplit((u.scheme, u.netloc, u.path or '/', u.query, ''))
+        path = parse.quote(u.path or '/', safe="/%:@!$&'()*+,;=-._~")
+        query = parse.quote(u.query, safe="%=&?/:@!$'()*+,;~-._")
+        return parse.urlunsplit((u.scheme, u.netloc, path, query, ''))
     except (ValueError, OSError):
         return ''
 
@@ -386,12 +392,21 @@ def export(directory, circles, results):
     # Recheck persisted rows too, so a resumed research run applies stricter
     # attribution to previously saved results without re-downloading sources.
     for row in ordered:
-        usable = [c for c in row['contacts'] if not re.search(r'学生課|学生支援課|教務課|広報課|入試課|情報システム|学生生活課|サイト管理', c['evidence'])]
+        usable = []
+        for contact in row['contacts']:
+            contact['evidence'] = clean(contact['evidence'])
+            try:
+                contact['email'] = contact_store.contact_email(contact['email'])
+                contact['source_url'] = contact_store.public_url(contact['source_url'], True)
+            except ValueError:
+                continue
+            if not re.search(r'学生課|学生支援課|教務課|広報課|入試課|情報システム|学生生活課|サイト管理', contact['evidence']):
+                usable.append(contact)
         if len(usable) < len(row['contacts']):
             row['contacts'] = usable
             if not usable:
                 row['status'] = 'review_needed'
-                row['note'] = '大学の共通窓口の可能性があるため、団体のメールとして自動採用しません。'
+                row['note'] = '大学の共通窓口、または形式不正の可能性があるため団体メールとして自動採用しません。'
     # A single shared email used by unrelated clubs may be a university office.
     by_mail = defaultdict(list)
     for row in ordered:
@@ -452,6 +467,17 @@ def main():
     for circle in circles:
         peers[circle['university_id']].append(circle['circle_name'])
     todo = [x for x in circles if x['circle_id'] not in results]
+    # Mix source hosts so a long queue for one listing site cannot occupy all
+    # workers while unrelated university pages wait behind it.
+    groups = defaultdict(deque)
+    for circle in todo:
+        groups[parse.urlsplit(circle.get('source_url', '')).netloc].append(circle)
+    todo = []
+    while groups:
+        for host in list(groups):
+            todo.append(groups[host].popleft())
+            if not groups[host]:
+                del groups[host]
     if args.limit:
         todo = todo[:args.limit]
     print(json.dumps({'total': len(circles), 'todo': len(todo), 'unique_source_urls': len({x['source_url'] for x in circles})}), flush=True)
