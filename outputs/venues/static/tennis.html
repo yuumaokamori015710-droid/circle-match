@@ -1,0 +1,43 @@
+<section class="venue-directory" aria-labelledby="venue-page-title">
+  <a class="venue-skip-link" href="#venue-court-results">施設一覧へ移動</a>
+  <section class="venue-intro" aria-labelledby="venue-page-title">
+      <p class="venue-eyebrow">公式情報から探す</p>
+      <h1 id="venue-page-title">会場予約</h1>
+      <p class="venue-intro-copy">現在は東京都のテニスコートを掲載しています。場所・料金・予約方法から探せます。</p>
+      <div class="venue-catalog-meta"><span id="venue-catalog-total">掲載情報を読み込み中</span><span id="venue-catalog-checked"></span></div>
+      <p id="venue-coverage-note" class="venue-coverage-note">掲載範囲を確認しています。</p>
+      <p class="venue-coverage-note">空き状況は各施設の公式予約先でご確認ください。空き照会・自動予約には接続していません。</p>
+    </section>
+
+    <section class="venue-filter-panel" aria-labelledby="venue-filter-heading">
+      <div class="venue-panel-heading"><h2 id="venue-filter-heading">条件から探す</h2><button id="venue-reset-filters" type="button" class="venue-text-button">条件をリセット</button></div>
+      <form id="venue-court-filters" role="search">
+        <fieldset id="venue-filter-fields" disabled>
+          <legend class="venue-visually-hidden">テニスコートの絞り込み条件</legend>
+          <div class="venue-filter-grid">
+            <label class="venue-search-field"><span>キーワード</span><input name="q" type="search" placeholder="施設名、エリア、住所など" autocomplete="off" maxlength="200"></label>
+            <label><span>自治体</span><select name="municipality" id="venue-municipality-filter"><option value="">すべての自治体</option></select></label>
+            <label><span>エリア</span><select name="area"><option value="">都内すべて</option><option value="23区">23区</option><option value="多摩">多摩</option><option value="島しょ">島しょ</option></select></label>
+            <label><span>運営区分</span><select name="operator_type"><option value="">公営・民営すべて</option><option value="PUBLIC">公営</option><option value="PRIVATE">民営</option></select></label>
+            <label><span>料金上限 <small>1面・1時間換算</small></span><div class="venue-price-input"><input name="price_max" type="number" min="0" step="1" inputmode="numeric" placeholder="指定なし" aria-describedby="venue-price-filter-note"><span>円</span></div></label>
+            <label><span>並び順</span><select name="sort"><option value="name">施設名の順</option><option value="price">1面1時間換算の安い順</option></select></label>
+            <label><span>施設の種類</span><select name="facility_kind"><option value="">すべての施設</option><option value="COURT">一般のコート</option><option value="SCHOOL">学校開放</option></select></label>
+          </div>
+          <div class="venue-filter-options"><label class="venue-checkbox-label"><input name="night_lighting" type="checkbox"><span>夜間照明あり</span></label><label class="venue-checkbox-label"><input name="indoor" type="checkbox"><span>屋内コートあり</span></label><label class="venue-checkbox-label"><input name="show_suspended" type="checkbox"><span>休止中の施設も表示</span></label></div>
+        </fieldset>
+      </form>
+      <p id="venue-price-filter-note" class="venue-filter-note">換算料金は比較用の参考値です。料金上限を指定すると、換算料金が未確認の施設は表示しません。</p>
+    </section>
+
+    <section id="venue-court-results" aria-labelledby="venue-result-heading" tabindex="-1">
+      <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite"></span></h2><span id="venue-visible-count" class="venue-visible-count"></span></div>
+      <p class="venue-results-note">料金は元の単位・利用条件とあわせて確認してください。最新の受付条件や予約手続きは、各施設の公式案内へ。</p>
+      <div id="venue-loading-state" class="venue-message-panel" role="status"><span class="venue-spinner" aria-hidden="true"></span><p>施設一覧を読み込んでいます…</p></div>
+      <div id="venue-error-state" class="venue-message-panel" role="alert" hidden><h3>施設一覧を取得できませんでした</h3><p>通信状況を確認して、もう一度お試しください。</p><button id="venue-retry-load" type="button" class="venue-primary-button">もう一度読み込む</button></div>
+      <div id="venue-empty-state" class="venue-message-panel" hidden><h3>条件に合う施設は見つかりませんでした</h3><p>キーワードや料金上限を変えて、お試しください。</p><button id="venue-empty-reset" type="button">条件をリセット</button></div>
+      <div id="venue-court-list" class="venue-court-list" aria-label="条件に合うテニスコート"></div>
+      <div id="venue-pagination" class="venue-pagination" hidden><button id="venue-show-more" type="button" class="venue-primary-button">さらに50件表示</button><button id="venue-show-all" type="button">すべて表示</button></div>
+      <noscript><p class="venue-message-panel">施設一覧の表示には、ブラウザのJavaScriptを有効にしてください。</p></noscript>
+    </section>
+
+</section>

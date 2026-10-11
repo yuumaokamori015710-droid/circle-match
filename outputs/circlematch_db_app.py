@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 import circlematch_seo as seo
+import circlematch_venues as venues
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
@@ -1228,6 +1229,8 @@ def event_shell(title, body, script=""):
 
 EVENT_UX_CSS = """
 [hidden]{display:none!important}.intro h1{font-size:32px;letter-spacing:0}.eyebrow{letter-spacing:0}
+.tabs a{white-space:nowrap}.tabs a:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+@media(max-width:460px){.tabs{gap:0}.tabs a{flex:1;padding:10px 6px;font-size:14px}}
 .field{min-width:0;margin-bottom:12px;align-content:start}.field input,.field select,.field textarea{min-width:0}
 .field input:not([type=hidden]),.field select{height:46px}.field label{line-height:1.5}
 input[type=radio],input[type=checkbox]{width:20px;height:20px;min-height:20px;padding:0;accent-color:#0f7a62}
@@ -1498,10 +1501,27 @@ def render_db_pager(params, page, total):
     return ''.join(links)
 
 
+def render_directory_tabs(tab, event_url="/?tab=events", db_url="/?tab=db&audience=university"):
+    links = (("events", "大会・イベント", event_url), ("db", "サークルDB", db_url), ("venues", "会場予約", "/venues"))
+    return '<nav class="tabs" aria-label="主要機能">' + ''.join(
+        f'<a class="{"active" if key == tab else ""}" href="{html.escape(url, quote=True)}"'
+        + (' aria-current="page"' if key == tab else '') + f'>{label}</a>'
+        for key, label, url in links
+    ) + '</nav>'
+
+
+def render_venues_html():
+    body = render_directory_tabs("venues") + venues.render_venue_body()
+    page = event_page("会場予約・東京都のテニスコート", body, tab="venues")
+    return page.replace("</head>", venues.render_venue_head() + "</head>", 1).encode("utf-8")
+
+
 def render_public_html(params=None, event_listing=False):
     """Render the event-first home while keeping all circle data routes intact."""
     params = params or {}
     tab = (params.get("tab", ["events"])[0] or "events").strip()
+    if tab == "venues":
+        return render_venues_html()
     if tab not in {"events", "db"}:
         tab = "events"
     audience = audience_scope(params, "university")
@@ -1513,7 +1533,7 @@ def render_public_html(params=None, event_listing=False):
     db_url = selected_home_query(params, "db", audience=audience)
     post_context = {key: params[key][0] for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0]}
     post_url = "/events/new" + ("?" + urlencode(post_context) if post_context else "")
-    tabs = f'<div class="tabs"><a class="{"active" if tab == "events" else ""}" href="{html.escape(event_url, quote=True)}">大会・イベント</a><a class="{"active" if tab == "db" else ""}" href="{html.escape(db_url, quote=True)}">サークルDB</a></div>'
+    tabs = render_directory_tabs(tab, event_url, db_url)
     shared_head = '<section class="intro"><div><p class="eyebrow">SPORTS EVENT DIRECTORY</p><h1>スポーツの大会・イベントを、見つけて参加する。</h1><p>大会、交流イベント、練習試合、合同練習を競技・地域から探せます。サークルDBは、主催団体や活動仲間を調べるための情報基盤として残しています。</p></div></section>'
     if tab == "events":
         try:
@@ -2583,7 +2603,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = seo.public_origin(base_url())
-    paths = ["/", "/events", "/?tab=db&audience=university", "/?tab=db&audience=social", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
+    paths = ["/", "/events", "/?tab=db&audience=university", "/?tab=db&audience=social", "/venues", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     # Legacy sport/region screens are client-filtered; index the SSR portal instead.
     try:
@@ -4729,7 +4749,19 @@ class Handler(BaseHTTPRequestHandler):
         query = parse_qs(parsed.query)
         try:
             if parsed.path == "/":
-                self.send_html(render_public_html(query))
+                if query.get("tab", [""])[0] == "venues":
+                    self.redirect("/venues")
+                else:
+                    self.send_html(render_public_html(query))
+            elif parsed.path == "/venues":
+                self.send_html(render_venues_html())
+            elif parsed.path in {"/venues/", "/tennis"}:
+                self.redirect("/venues")
+            elif parsed.path == "/api/tennis-courts":
+                self.send_json(venues.get_catalog())
+            elif parsed.path in venues.ASSET_PATHS:
+                path, content_type = venues.ASSET_PATHS[parsed.path]
+                self.send_file(path, content_type)
             elif parsed.path == "/events":
                 query["tab"] = ["events"]
                 self.send_html(render_public_html(query, event_listing=True))
@@ -4997,6 +5029,12 @@ class Handler(BaseHTTPRequestHandler):
             handle_http(self)
             return
         parsed = urlparse(self.path)
+        if parsed.path in {"/venues", "/venues/", "/tennis", "/api/tennis-courts"} or parsed.path in venues.ASSET_PATHS:
+            self.send_response(405)
+            self.send_header("Allow", "GET")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         try:
             if parsed.path == "/logout":
                 session_id = self.cookie_value("cm_session")

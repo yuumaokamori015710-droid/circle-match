@@ -99,7 +99,7 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
     visible = ''.join(visible_parser.parts)
     title = html.unescape(''.join(parser.title)).strip() or 'Circle Match'
     description = 'Circle Matchでスポーツの大会・イベント、大学・社会人サークルの情報を探せます。開催日時・会場・参加条件を確認して参加できます。'
-    public = path in {'/', '/events', '/circles', '/social', '/social/circles', '/sports', '/social/sports', '/regions', '/guides', '/operator', '/privacy', '/terms', '/about-data', '/contact'}
+    public = path in {'/', '/events', '/venues', '/circles', '/social', '/social/circles', '/sports', '/social/sports', '/regions', '/guides', '/operator', '/privacy', '/terms', '/about-data', '/contact'}
     public = public or bool(re.fullmatch(r'/(events|circles|guides)/[^/]+', path) and path != '/events/new')
     canonical_params = {}
     image = origin + '/assets/hero-court.png'
@@ -134,6 +134,13 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
             public = False
         if sport in sports:
             image = origin + '/assets/sports/' + sports[sport]
+    elif path == '/venues':
+        title = '会場予約・東京都のテニスコートを探す | Circle Match'
+        description = '東京都のテニスコートを場所・料金・予約方法から検索。公営・民営施設の所在地、利用条件、公式予約サイトを確認できます。'
+        image = origin + '/assets/sports/tennis.png'
+        # Filters run in the browser; only the unfiltered directory is indexed.
+        if params:
+            public = False
     elif path in {'/circles', '/social/circles', '/social'}:
         audience = '社会人' if path.startswith('/social') else '大学'
         title = f'{audience}サークルDB・団体一覧 | Circle Match'
