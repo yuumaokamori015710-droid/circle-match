@@ -112,7 +112,9 @@ class IsolatedAppHttpCase(unittest.TestCase):
             headers['Authorization'] = 'Basic ' + base64.b64encode(value).decode('ascii')
         data = None
         if method == 'POST':
-            data = b'{}'
+            # These calls only check method rejection. An unread request body
+            # can race socket close on Windows before the 405 reaches the client.
+            data = b''
             headers['Content-Type'] = 'application/json'
             headers['Origin'] = self.base
         req = Request(self.base + path, data=data, headers=headers, method=method)
