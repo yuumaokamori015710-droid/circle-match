@@ -492,7 +492,12 @@ def inventory(base, directory):
     return rows
 
 
-def export(directory, circles, results):
+def export(directory, circles, results, verified_shared_pairs=None):
+    """Shared-contact exceptions require manually verified, exact club/email pairs.
+
+    The CLI supplies no exceptions; export never infers a shared club contact.
+    """
+    verified_shared_pairs = verified_shared_pairs or set()
     ordered = [results[x['circle_id']] for x in circles if x['circle_id'] in results]
     # Recheck persisted rows too, so a resumed research run applies stricter
     # attribution to previously saved results without re-downloading sources.
@@ -516,12 +521,15 @@ def export(directory, circles, results):
     by_mail = defaultdict(list)
     for row in ordered:
         for item in row['contacts']:
-            by_mail[item['email'].lower()].append(row)
+            by_mail[item['email'].casefold()].append(row)
     shared = {m for m, rows in by_mail.items() if len({r['circle_id'] for r in rows}) > 1}
+    def unverified_shared(row, item):
+        email = item['email'].casefold()
+        return email in shared and (row['circle_id'], email) not in verified_shared_pairs
     for row in ordered:
-        if any(x['email'].lower() in shared for x in row['contacts']):
+        if any(unverified_shared(row, x) for x in row['contacts']):
             row = dict(row)
-            row['contacts'] = [x for x in row['contacts'] if x['email'].lower() not in shared]
+            row['contacts'] = [x for x in row['contacts'] if not unverified_shared(row, x)]
             if not row['contacts']:
                 row['status'] = 'review_needed'
                 row['note'] = '複数団体に同じメールが現れたため窓口共有か要確認。自動採用しません。'

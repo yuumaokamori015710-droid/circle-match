@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import socket
+import tempfile
 import unittest
 from unittest.mock import patch
 from urllib.request import Request
@@ -234,6 +235,59 @@ class CircleContactDiscoveryTests(unittest.TestCase):
             source="https://www.net-menber.com/look/data/2651.html", dedicated=True)
         self.assertNotIn("https://www.net-menber.com/other/help.html", links)
         self.assertEqual(forms, [])
+
+
+class CircleContactExportTests(unittest.TestCase):
+    def fixtures(self, contacts):
+        circles = [{"circle_id": circle_id, "university_name": "University " + circle_id,
+                    "circle_name": "Club " + circle_id, "source_url": "https://clubs.example/" + circle_id}
+                   for circle_id in contacts]
+        results = {circle_id: {"circle_id": circle_id, "status": "email_found", "checked_at": "2026-10-11T00:00:00Z",
+                              "note": "Public club contact checked", "contacts": entries}
+                   for circle_id, entries in contacts.items()}
+        return circles, results
+
+    def contact(self, email="Shared@clubs.example", evidence="Club's official contact", source="https://clubs.example/contact"):
+        return {"email": email, "evidence": evidence, "source_url": source, "attribution": "club_context"}
+
+    def export(self, circles, results, **kwargs):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'work') as path:
+            return crawler.export(Path(path), circles, results, **kwargs)
+
+    def test_cli_default_keeps_shared_contact_guard_without_exceptions(self):
+        circles, results = self.fixtures({"a": [self.contact()], "b": [self.contact()]})
+        stats = self.export(circles, results)
+        self.assertEqual(stats["statuses"], {"review_needed": 2})
+        self.assertEqual([row["contacts"] for row in results.values()], [[], []])
+
+    def test_verified_pair_does_not_allow_another_circle_or_another_email(self):
+        circles, results = self.fixtures({
+            "a": [self.contact(), self.contact("second@clubs.example")],
+            "b": [self.contact(), self.contact("second@clubs.example")],
+            "c": [self.contact()],
+        })
+        stats = self.export(circles, results, verified_shared_pairs={("a", "shared@clubs.example")})
+        self.assertEqual([item["email"].casefold() for item in results["a"]["contacts"]], ["shared@clubs.example"])
+        self.assertEqual(results["a"]["status"], "email_found")
+        self.assertEqual(results["b"]["contacts"], [])
+        self.assertEqual(results["c"]["contacts"], [])
+        self.assertEqual(stats["statuses"], {"email_found": 1, "review_needed": 2})
+
+    def test_verified_pairs_cannot_override_office_email_or_source_validation(self):
+        circles, results = self.fixtures({
+            "a": [self.contact(evidence="学生支援課の共通窓口")],
+            "b": [self.contact("bad@@clubs.example")],
+            "c": [self.contact("private@clubs.example", source="http://127.0.0.1/contact")],
+            "d": [self.contact()],
+        })
+        approved = {(circle_id, item["email"].casefold())
+                    for circle_id, row in results.items() for item in row["contacts"]}
+        stats = self.export(circles, results, verified_shared_pairs=approved)
+        for circle_id in ["a", "b", "c"]:
+            self.assertEqual(results[circle_id]["contacts"], [])
+            self.assertEqual(results[circle_id]["status"], "review_needed")
+        self.assertEqual(len(results["d"]["contacts"]), 1)
+        self.assertEqual(stats["statuses"], {"review_needed": 3, "email_found": 1})
 
 
 class CircleContactUrlBoundaryTests(unittest.TestCase):
