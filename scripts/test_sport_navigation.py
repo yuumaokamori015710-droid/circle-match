@@ -166,7 +166,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
             ('home-journey-host-heading', '募集の流れ',
              ['競技を選ぶ', '会場を予約する', '募集を作る', '募集を広める'], ['①', '②', '③', '④']),
             ('home-journey-join-heading', '参加先を探す流れ',
-             ['競技を選ぶ', '地域を絞る', '自分に合う参加先を選ぶ'], ['①', '②', '③']),
+             ['競技を選ぶ', '地域を絞る', '参加先・サークルを選ぶ'], ['①', '②', '③']),
         ]
         for heading, label, expected, numbers in flows:
             with self.subTest(flow=label):
