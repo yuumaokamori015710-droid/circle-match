@@ -34,6 +34,15 @@ class MetadataTests(unittest.TestCase):
         self.assertIn('/?tab=db&amp;audience=social', result)
         self.assertIn('content="index, follow', result)
 
+    def test_search_console_verification_on_production_home(self):
+        tag = 'name="google-site-verification"'
+        result = self.render()
+        self.assertEqual(result.count(tag), 1)
+        self.assertIn('NsSb1F5VFGCahwyM8eJB4lLyy6geXyv1q3ne-H4xEJE', result.split('</head>')[0])
+        self.assertNotIn(tag, self.render('/signin'))
+        self.assertNotIn(tag, self.render(status=500))
+        self.assertNotIn(tag, seo.apply_metadata(self.body, '/', 'http://localhost:8897', {}, {}).decode())
+
     def test_tracking_removed_and_pagination_preserved(self):
         result = self.render('/?tab=db&audience=university&page=2&utm_source=x')
         self.assertIn('audience=university&amp;page=2', result)

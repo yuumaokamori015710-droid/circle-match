@@ -196,6 +196,8 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
     escape = lambda v: html.escape(str(v), quote=True)
     tags = [f'<title>{escape(title)}</title>', f'<meta name="description" content="{escape(description)}">',
             f'<meta name="robots" content="{robots}">', f'<link rel="canonical" href="{escape(canonical)}">']
+    if path == '/' and origin == 'https://circle-match.jp' and status == 200:
+        tags.append('<meta name="google-site-verification" content="NsSb1F5VFGCahwyM8eJB4lLyy6geXyv1q3ne-H4xEJE">')
     for key, content in {'type':'website', 'site_name':'Circle Match', 'locale':'ja_JP', 'title':title, 'description':description, 'url':canonical, 'image':image}.items():
         tags.append(f'<meta property="og:{key}" content="{escape(content)}">')
     tags.extend([f'<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:title" content="{escape(title)}">', f'<meta name="twitter:description" content="{escape(description)}">', f'<meta name="twitter:image" content="{escape(image)}">'])
