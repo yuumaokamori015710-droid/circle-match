@@ -158,6 +158,14 @@ class CircleContactAttributionTests(unittest.TestCase):
         self.assertEqual(found, [])
         self.assertEqual(uncertain, [])
 
+    def test_html_comments_and_processing_instructions_are_not_contact_candidates(self):
+        found, uncertain = self.contacts("""<html><body><main><h1>Blue Tennis Club</h1>
+            <!-- Blue Tennis Club hidden@clubs.example -->
+            <?legacy Blue Tennis Club instruction@clubs.example ?>
+            <p>活動紹介</p></main></body></html>""")
+        self.assertEqual(found, [])
+        self.assertEqual(uncertain, [])
+
 
 @unittest.skipIf(crawler.dom is None, "lxml is required for the contact research runtime")
 class CircleContactDiscoveryTests(unittest.TestCase):

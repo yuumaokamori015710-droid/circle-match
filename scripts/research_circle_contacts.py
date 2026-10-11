@@ -197,6 +197,9 @@ def parse_page(page):
         links = [(safe_url(parse.urljoin(page['url'], a.get('href', ''))), clean(a.text_content()), a) for a in tree.xpath('//a[@href]')]
         email_nodes = []
         for node in tree.iter():
+            # Comments and processing instructions are not visible contacts.
+            if not isinstance(node.tag, str):
+                continue
             direct = ' '.join([node.text or ''] + [child.tail or '' for child in node])
             if node.tag == 'a' and (node.get('href') or '').lower().startswith('mailto:'):
                 direct += ' ' + parse.unquote(node.get('href')[7:].split('?')[0])
