@@ -27,6 +27,7 @@ import circlematch_seo as seo
 import circlematch_venues as venues
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
+import circlematch_contact_research as contact_research
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
@@ -804,7 +805,7 @@ HTML = """<!doctype html>
   <header><div class="top"><h1>Circle Match DB Admin</h1><nav class="tabs"><button class="tab active" data-view="circles">サークル検索</button><button class="tab" data-view="circle-register">サークル登録</button><button class="tab" data-view="collection">収集状況</button><button class="tab" data-view="candidates">候補レビュー</button><button class="tab" data-view="claims">代表申請</button><button class="tab" data-view="metrics">管理指標</button><button class="tab" data-view="privacy">非公開情報</button><button class="tab" data-view="universities">大学DB</button><button class="tab" data-view="matches">募集DB</button><button class="tab" data-view="imports">CSV取込</button><button class="tab" data-view="logs">更新履歴</button></nav></div></header>
   <main>
     <div class="notice">これはブラウザ保存ではなく、SQLiteファイル <span class="mono">outputs/circlematch.sqlite</span> に保存される実DBです。公開DBと個人情報・内部メモDBを分離し、公開検索APIには個人情報を返しません。</div>
-    <nav class="site-links"><a href="/privacy" target="_blank">プライバシーポリシー</a><a href="/terms" target="_blank">利用規約</a><a href="/about-data" target="_blank">掲載情報・削除訂正</a><a href="/contact" target="_blank">問い合わせ</a></nav>
+    <nav class="site-links"><a href="/admin/contact-research">サークル連絡先の調査</a><a href="/privacy" target="_blank">プライバシーポリシー</a><a href="/terms" target="_blank">利用規約</a><a href="/about-data" target="_blank">掲載情報・削除訂正</a><a href="/contact" target="_blank">問い合わせ</a></nav>
     <section class="summary"><div class="metric"><span>都道府県</span><strong id="prefCount">0</strong></div><div class="metric"><span>大学</span><strong id="uniCount">0</strong></div><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>検証済み/申請済み</span><strong id="verifiedCount">0</strong></div><div class="metric"><span>候補</span><strong id="candidateCount">0</strong></div><div class="metric"><span>募集中</span><strong id="matchCount">0</strong></div></section>
     <section id="circles" class="view active"><div class="panel"><div class="head"><div><h2>全国サークル台帳</h2><p>検索・絞り込み・編集対象の確認</p></div><button id="reloadCircles">再読込</button></div><div class="filters"><input id="q" placeholder="大学名・団体名・競技・地域"><select id="prefFilter"><option value="">全都道府県</option></select><select id="orgTypeFilter"><option value="">全種別</option></select><select id="sportFilter"><option value="">全競技</option></select><select id="statusFilter"><option value="">全ステータス</option></select><select id="adminSortFilter"><option value="university">大学名順</option><option value="circle">団体名順</option><option value="prefecture">都道府県順</option><option value="sport">競技順</option><option value="type">種別順</option><option value="status">検証順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table class="circle-table"><thead><tr><th>大学</th><th>団体名</th><th>種別</th><th>競技</th><th>ソース</th><th>検証</th><th>操作</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section>
     <section id="circle-register" class="view"><div class="panel"><div class="head"><div><h2>サークル登録/更新</h2><p>公開DBに載せる事実情報だけを登録します。代表者連絡先や内部メモは非公開DBで扱います。</p></div><button id="clearCircleForm" type="button">新規入力</button></div><form id="circleForm"><label>大学<select id="circleUniversity" required></select></label><label>団体名<input id="circleName" required></label><div class="row"><label>団体種別<select id="organizationType"></select></label><label>競技<select id="sport"></select></label></div><label>活動地域<input id="activityArea"></label><div class="row"><label>出典種別<select id="sourceType"></select></label><label>検証<select id="verificationStatus"></select></label></div><label>出典URL<input id="sourceUrl" type="url"></label><button class="primary">保存</button></form></div></section>
@@ -1264,6 +1265,7 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 .home-link:hover{background:#edf4f7}.home-link svg{width:20px;height:20px;flex-shrink:0}
 .home-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .compact-sports-home .home-heading{margin:0 0 12px;font-size:24px;line-height:1.35}.compact-sports-home .home-latest-events{margin:0}.home-latest-events .panel-head{padding:10px 12px 6px;border:0}.home-latest-events .panel-head h2{font-size:16px;line-height:1.4}.home-latest-list{list-style:none;padding:0 12px;margin:0}.home-latest-item{margin:0;border-top:1px solid var(--line)}.home-latest-link{display:grid;grid-template-columns:minmax(0,1fr) auto 10px;align-items:center;gap:8px;min-height:44px;padding:6px 0;text-decoration:none}.home-latest-title{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px;font-weight:700;line-height:1.5}.home-latest-date{font-size:12px;color:var(--muted);white-space:nowrap}.home-latest-link:after{content:'›';color:var(--muted);font-size:20px}.home-latest-link:hover .home-latest-title{text-decoration:underline}.home-latest-link:focus-visible{outline:3px solid var(--brand);outline-offset:2px}.home-latest-actions{display:flex;gap:8px;padding:8px 12px 12px}.home-latest-actions .button{min-height:44px;font-size:13px;padding:8px 12px}.home-latest-events .empty,.home-latest-events .error-box{margin:0;padding:10px 12px;font-size:13px}.compact-sports-home .sports-home{margin-top:14px}.compact-sports-home .home-shortcuts{margin-top:24px}@media(max-width:620px){.compact-sports-home .home-heading{font-size:21px;margin-bottom:10px}.home-latest-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px}.home-latest-actions .button{padding:7px 8px;font-size:12px;text-align:center;line-height:1.5}.home-latest-title{font-size:13px}.home-latest-date{font-size:11px}}
+.home-journey-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.home-journey{--journey-accent:#1762a8;--journey-tint:#eef5fc;display:flex;flex-direction:column;min-width:0;padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff}.home-journey-join{--journey-accent:#27735e;--journey-tint:#eff7f3}.home-journey-kicker{display:flex;align-items:center;gap:8px;margin:0 0 10px;color:var(--journey-accent);font-size:12px;font-weight:800;letter-spacing:.04em}.home-journey-kicker svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.home-journey h3{margin:0 0 18px;font-size:21px;line-height:1.5}.home-journey-steps{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:8px}.home-journey-step{display:flex;align-items:center;gap:12px;min-height:58px;padding:7px 10px;border-radius:8px;text-decoration:none}.home-journey-step[href]:hover{background:var(--journey-tint)}.home-journey-step[href]:focus-visible,.home-step-links a:focus-visible,.home-journey-actions a:focus-visible{outline:3px solid var(--journey-accent);outline-offset:3px}.home-step-number{flex:0 0 28px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--journey-tint);color:var(--journey-accent);font-size:13px;font-weight:800}.home-step-copy{min-width:0}.home-step-copy strong{display:block;font-size:14px;line-height:1.5}.home-step-copy small{display:block;margin-top:2px;font-size:12px;color:var(--muted);line-height:1.6}.home-journey-step[href]:after{content:'›';margin-left:auto;padding-left:4px;color:var(--journey-accent);font-size:21px}.home-step-links{display:flex;flex-wrap:wrap;gap:2px 14px}.home-step-links a{display:inline-flex;align-items:center;min-height:32px;font-size:12px;font-weight:700;color:var(--journey-accent);text-underline-offset:3px}.home-journey-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}.home-journey-actions .button{min-height:44px;font-size:13px;padding:9px 14px}.home-journey-join .button.primary{background:var(--journey-accent);border-color:var(--journey-accent)}#sports-list{scroll-margin-top:20px}@media(max-width:699px){.home-journey-grid{grid-template-columns:1fr;gap:12px}.home-journey{padding:18px}.home-journey h3{font-size:19px;margin-bottom:12px}.home-journey-steps{gap:2px;margin-bottom:12px}.home-journey-step{min-height:52px;padding:6px 4px;gap:10px}.home-journey-actions{padding-top:12px}.home-journey-actions .button{padding:8px 10px}}
 .breadcrumb-current{font-size:14px;color:#526577;overflow-wrap:anywhere;min-width:0}
 .event-results .filter-grid{align-items:end}.event-filter{display:grid;gap:6px;min-width:0;font-size:13px;font-weight:700;color:#405164}
 .event-filter input,.event-filter select{width:100%;min-width:0;max-width:100%;min-height:46px;font-size:16px;font-weight:400;color:var(--ink)}
@@ -1587,6 +1589,30 @@ def latest_home_events():
     return [event for event in events if event_availability(event)[1]]
 
 
+def render_home_journeys(params):
+    event_url = html.escape(directory_url(params, "events"), quote=True)
+    db_url = html.escape(directory_url(params, "db"), quote=True)
+    venue_url = html.escape(directory_url(params, "venues"), quote=True)
+    context = {key: params[key][0].strip() for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0].strip()}
+    if not context.get("sport"):
+        context["custom"] = "1"
+    post_url = html.escape("/events/new?" + urlencode(context), quote=True)
+    choose_url = event_url if context.get("sport") else "#sports-list"
+    return f'''<section class="home-shortcuts home-journeys" aria-labelledby="home-journeys-heading"><h2 id="home-journeys-heading">目的から探す</h2><div class="home-journey-grid">
+<article class="home-journey" aria-labelledby="home-journey-host-heading"><p class="home-journey-kicker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11V5h18v6M6 11v9h12v-9M9 3v4m6-4v4M3 11h18m-12 5h6"/></svg>主催・サークル運営</p><h3 id="home-journey-host-heading">募集する・仲間を集める</h3>
+<ol class="home-journey-steps"><li><a class="home-journey-step" href="{choose_url}"><span class="home-step-number" aria-hidden="true">1</span><span class="home-step-copy"><strong>競技を選ぶ</strong><small>上のスポーツカードからスタート</small></span></a></li>
+<li><a data-directory-link class="home-journey-step" href="{venue_url}"><span class="home-step-number" aria-hidden="true">2</span><span class="home-step-copy"><strong>会場を予約する</strong><small>会場が決まっていれば、そのまま募集へ</small></span></a></li>
+<li><a class="home-journey-step" href="{post_url}"><span class="home-step-number" aria-hidden="true">3</span><span class="home-step-copy"><strong>募集をつくる</strong><small>大会・イベントや練習会を掲載</small></span></a></li>
+<li><div class="home-journey-step"><span class="home-step-number" aria-hidden="true">4</span><span class="home-step-copy"><strong>募集を広める</strong><small>募集詳細からSNSへ共有</small><span class="home-step-links"><a href="/mypage?tab=hosted">自分の募集</a><a data-directory-link href="{db_url}">サークルへ招待 →</a></span></span></div></li></ol>
+<div class="home-journey-actions"><a class="button primary" href="{post_url}">募集をつくる</a><a data-directory-link class="button" href="{venue_url}">会場を探す</a></div></article>
+<article class="home-journey home-journey-join" aria-labelledby="home-journey-join-heading"><p class="home-journey-kicker"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m2-15a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5"/></svg>参加・サークル探し</p><h3 id="home-journey-join-heading">参加先・サークルを探す</h3>
+<ol class="home-journey-steps"><li><a class="home-journey-step" href="{choose_url}"><span class="home-step-number" aria-hidden="true">1</span><span class="home-step-copy"><strong>競技を選ぶ</strong><small>気になるスポーツの募集を見る</small></span></a></li>
+<li><a data-directory-link class="home-journey-step" href="{event_url}#directoryContext"><span class="home-step-number" aria-hidden="true">2</span><span class="home-step-copy"><strong>地域を絞る</strong><small>通いやすい地域・都道府県で探す</small></span></a></li>
+<li><div class="home-journey-step"><span class="home-step-number" aria-hidden="true">3</span><span class="home-step-copy"><strong>自分に合う参加先を選ぶ</strong><small>日時や条件を確認して、応募・交流を相談</small><span class="home-step-links"><a data-directory-link href="{event_url}#events">募集に応募 →</a><a data-directory-link href="{db_url}#dbList">サークルを探す →</a></span></span></div></li></ol>
+<div class="home-journey-actions"><a data-directory-link class="button primary" href="{event_url}">募集を探す</a><a data-directory-link class="button" href="{db_url}">サークルを探す</a></div></article>
+</div></section>'''
+
+
 def render_sports_home_html(params):
     cards = []
     for name, label, _code, _color, image in POPULAR_SPORTS:
@@ -1612,8 +1638,8 @@ def render_sports_home_html(params):
     body += ('<section class="section panel home-latest-events" aria-labelledby="home-latest-heading">'
              '<div class="panel-head"><h2 id="home-latest-heading">最新の募集</h2></div>' + latest_markup
              + '<div class="home-latest-actions"><a class="button primary" href="/events/new?custom=1">募集を掲載する</a><a class="button" href="/events">現在募集中のイベントを見る</a></div></section>')
-    body += '<section class="section sports-home" aria-label="スポーツ一覧"><div class="sport-grid">' + ''.join(cards) + '</div></section>'
-    body += '<section class="home-shortcuts"><h2>目的から探す</h2>' + render_directory_tabs("", params) + '</section>'
+    body += '<section id="sports-list" class="section sports-home" aria-label="スポーツ一覧"><div class="sport-grid">' + ''.join(cards) + '</div></section>'
+    body += render_home_journeys(params)
     return event_page("スポーツから探す", body + '</div>', tab="home").encode("utf-8")
 
 
@@ -3957,6 +3983,7 @@ def init_db():
         migrate_event_formation(conn)
         migrate_event_operations(conn)
         invitations.init_schema(conn)
+        contact_research.ensure_tables(conn)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -4839,7 +4866,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def read_json(self):
         event_request = urlparse(self.path).path.startswith(('/api/events', '/api/invitations'))
-        if event_request:
+        contact_request = urlparse(self.path).path == '/api/admin/contact-research/import'
+        if event_request or contact_request:
             origin = self.headers.get('Origin', '')
             host = self.headers.get('Host', '')
             if (self.headers.get('Sec-Fetch-Site') == 'cross-site' or
@@ -4848,7 +4876,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.headers.get('Content-Type', '').split(';')[0].strip().lower() != 'application/json':
                 raise ValueError('JSON形式で送信してください')
         length = int(self.headers.get("Content-Length", "0"))
-        if length < 0 or (event_request and length > 65536):
+        if length < 0 or (event_request and length > 65536) or (contact_request and length > contact_research.MAX_PAYLOAD_BYTES):
             raise ValueError('送信内容が大きすぎます')
         if not length:
             return {}
@@ -5046,6 +5074,35 @@ class Handler(BaseHTTPRequestHandler):
                 if not self.require_admin():
                     return
                 self.send_html(render_admin_html())
+            elif parsed.path in {"/admin/contact-research", "/admin/contact-research.csv", "/api/admin/contact-research"}:
+                if not admin_auth_enabled():
+                    self.send_json({"error": "管理者認証の設定が必要です"}, 503)
+                    return
+                if not self.require_admin():
+                    return
+                with connect() as conn:
+                    if parsed.path.endswith('.csv'):
+                        body = ('\ufeff' + contact_research.export_csv(conn)).encode('utf-8')
+                        content_type = 'text/csv; charset=utf-8'
+                    else:
+                        data = contact_research.query_results(conn, status=query.get('status', [''])[0], q=query.get('q', [''])[0], page=int(query.get('page', ['1'])[0]))
+                        if parsed.path.startswith('/api/'):
+                            body = json.dumps(data, ensure_ascii=False).encode('utf-8')
+                            content_type = 'application/json; charset=utf-8'
+                        else:
+                            body = contact_research.render_admin_html(data).encode('utf-8')
+                            content_type = 'text/html; charset=utf-8'
+                self.send_response(200)
+                self.send_header('Content-Type', content_type)
+                self.send_header('Cache-Control', 'private, no-store')
+                self.send_header('X-Robots-Tag', 'noindex, nofollow')
+                self.send_header('Referrer-Policy', 'no-referrer')
+                self.send_header('X-Content-Type-Options', 'nosniff')
+                if parsed.path.endswith('.csv'):
+                    self.send_header('Content-Disposition', 'attachment; filename="circle-contact-research.csv"')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
             elif parsed.path == "/privacy":
                 self.send_html(privacy_page())
             elif parsed.path == "/terms":
@@ -5372,11 +5429,18 @@ class Handler(BaseHTTPRequestHandler):
                     conn.commit()
                     self.send_json({"ok": True, "match_post_id": match_post_id})
                 return
+            if parsed.path == "/api/admin/contact-research/import" and not admin_auth_enabled():
+                self.send_json({"error": "管理者認証の設定が必要です"}, 503)
+                return
             if not self.require_admin():
                 return
             data = self.read_json()
             with connect() as conn:
-                if parsed.path == "/api/universities":
+                if parsed.path == "/api/admin/contact-research/import":
+                    imported = contact_research.import_results(conn, data)
+                    conn.commit()
+                    self.send_json({"ok": True, "imported": imported, "summary": contact_research.summary(conn)})
+                elif parsed.path == "/api/universities":
                     entity_id = upsert_university(conn, data)
                     conn.commit()
                     self.send_json({"ok": True, "university_id": entity_id})

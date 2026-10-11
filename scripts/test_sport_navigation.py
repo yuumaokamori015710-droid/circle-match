@@ -118,8 +118,14 @@ class SportNavigationTests(IsolatedAppHttpCase):
 
     def test_home_is_sports_first_with_latest_events_and_without_active_purpose(self):
         text, page = self.page('/')
-        self.assert_shared_tabs(page, None, {})
+        self.assertEqual(page.metadata.tabs, [])
         self.assertIn('スポーツ', page.visible)
+        self.assertIn('募集する・仲間を集める', page.visible)
+        self.assertIn('参加先・サークルを探す', page.visible)
+        self.assertIn('home-journeys-heading', page.ids)
+        self.assertIn('sports-list', page.ids)
+        self.assertLess(text.index('id="homeLatestEvents"'), text.index('id="sports-list"'))
+        self.assertLess(text.index('id="sports-list"'), text.index('id="home-journeys-heading"'))
         self.assertGreaterEqual(len(page.cards), len(self.app.POPULAR_SPORTS))
         self.assertIn('homeLatestEvents', page.ids)
         self.assertIn('最新の募集', page.visible)
@@ -129,6 +135,28 @@ class SportNavigationTests(IsolatedAppHttpCase):
         self.assertNotIn('/assets/venues/tennis.js', page.resources)
         self.assertNotIn("fetch('/api/events", text)
         self.assertNotIn('fetch("/api/tennis-courts', text)
+
+    def test_home_journey_links_preserve_only_shared_context_and_use_real_destinations(self):
+        params = {key: [value] for key, value in dict(self.GLOBAL, **self.LOCAL, audience='social').items()}
+        markup = self.app.render_home_journeys(params)
+        hrefs = [unescape(value) for value in re.findall(r'href="([^"]+)"', markup)]
+        for href in hrefs:
+            path = urlsplit(href)
+            self.assertFalse(path.netloc)
+            self.assertIn(path.path, ['/events', '/events/new', '/', '/venues', '/mypage'])
+            query = parse_qs(path.query)
+            if path.path == '/mypage':
+                self.assertEqual(query, {'tab': ['hosted']})
+                continue
+            expected = {key: [value] for key, value in self.GLOBAL.items()}
+            if path.path == '/':
+                expected.update(tab=['db'], audience=['social'])
+            self.assertEqual(query, expected)
+        self.assertIn('会場が決まっていれば、そのまま募集へ', markup)
+        self.assertIn('募集詳細からSNSへ共有', markup)
+        empty = self.app.render_home_journeys({})
+        self.assertEqual(empty.count('href="#sports-list"'), 2)
+        self.assertIn('href="/events/new?custom=1"', empty)
 
     def test_home_cards_choose_sport_once_and_preserve_only_shared_area(self):
         context = {'region': 'kanto', 'prefecture': '東京都'}
