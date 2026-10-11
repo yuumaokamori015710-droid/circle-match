@@ -1263,7 +1263,7 @@ dt{font-weight:700}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.prev
 .home-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#243c50;font-size:15px;font-weight:800;text-decoration:none;flex-shrink:0}
 .home-link:hover{background:#edf4f7}.home-link svg{width:20px;height:20px;flex-shrink:0}
 .home-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.home-latest-events{margin-top:26px}.home-latest-events .panel-head{align-items:center}.home-latest-actions{display:flex;gap:8px;flex-wrap:wrap}.home-latest-events .event-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:899px){.home-latest-events .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.home-latest-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.home-latest-actions .button{padding:9px 6px;font-size:13px;min-width:0}.home-latest-events .event-grid{grid-template-columns:minmax(0,1fr)}}
+.compact-sports-home .home-heading{margin:0 0 12px;font-size:24px;line-height:1.35}.compact-sports-home .home-latest-events{margin:0}.home-latest-events .panel-head{padding:10px 12px 6px;border:0}.home-latest-events .panel-head h2{font-size:16px;line-height:1.4}.home-latest-list{list-style:none;padding:0 12px;margin:0}.home-latest-item{margin:0;border-top:1px solid var(--line)}.home-latest-link{display:grid;grid-template-columns:minmax(0,1fr) auto 10px;align-items:center;gap:8px;min-height:44px;padding:6px 0;text-decoration:none}.home-latest-title{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px;font-weight:700;line-height:1.5}.home-latest-date{font-size:12px;color:var(--muted);white-space:nowrap}.home-latest-link:after{content:'›';color:var(--muted);font-size:20px}.home-latest-link:hover .home-latest-title{text-decoration:underline}.home-latest-link:focus-visible{outline:3px solid var(--brand);outline-offset:2px}.home-latest-actions{display:flex;gap:8px;padding:8px 12px 12px}.home-latest-actions .button{min-height:44px;font-size:13px;padding:8px 12px}.home-latest-events .empty,.home-latest-events .error-box{margin:0;padding:10px 12px;font-size:13px}.compact-sports-home .sports-home{margin-top:14px}.compact-sports-home .home-shortcuts{margin-top:24px}@media(max-width:620px){.compact-sports-home .home-heading{font-size:21px;margin-bottom:10px}.home-latest-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px}.home-latest-actions .button{padding:7px 8px;font-size:12px;text-align:center;line-height:1.5}.home-latest-title{font-size:13px}.home-latest-date{font-size:11px}}
 .breadcrumb-current{font-size:14px;color:#526577;overflow-wrap:anywhere;min-width:0}
 .event-results .filter-grid{align-items:end}.event-filter{display:grid;gap:6px;min-width:0;font-size:13px;font-weight:700;color:#405164}
 .event-filter input,.event-filter select{width:100%;min-width:0;max-width:100%;min-height:46px;font-size:16px;font-weight:400;color:var(--ink)}
@@ -1569,7 +1569,7 @@ DIRECTORY_CONTEXT_SCRIPT = r'''<script>
 
 
 def latest_home_events():
-    """Read at most six public, open events across all sports and regions."""
+    """Read at most three public, open events across all sports and regions."""
     current = event_local_now()
     where = ["e.status='published'", "e.starts_at>?",
              "(coalesce(e.application_deadline,'')='' or e.application_deadline>=?)",
@@ -1582,7 +1582,7 @@ def latest_home_events():
         sql, args = event_public_select(' and '.join(where), [current] * 4)
         sql += (" having (e.capacity is null or e.capacity=0 or confirmed_count<e.capacity)"
                 " order by julianday(coalesce(nullif(e.published_at,''),e.created_at)) desc,"
-                " e.created_at desc, e.event_id desc limit 6")
+                " e.created_at desc, e.event_id desc limit 3")
         events = [dict(row) for row in conn.execute(sql, args).fetchall()]
     return [event for event in events if event_availability(event)[1]]
 
@@ -1592,20 +1592,29 @@ def render_sports_home_html(params):
     for name, label, _code, _color, image in POPULAR_SPORTS:
         href = directory_url(params, "events", sport=name)
         cards.append(f'<a data-directory-link class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{image}?v=20260713v1" alt=""><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>探す →</em></span></a>')
-    body = '<section class="intro sports-home-intro"><div><p class="eyebrow">FIND YOUR SPORT</p><h1>好きなスポーツから、<br>次の活動を見つけよう。</h1><p>大会・イベント、サークル、会場をひとつの入口から。</p></div></section>'
+    body = '<div class="compact-sports-home"><h1 class="home-heading">スポーツから探す</h1>'
     try:
         latest = latest_home_events()
-        latest_markup = render_event_cards(latest) if latest else '<div class="empty">現在、募集中の大会・イベントはありません。募集を掲載して参加者を集めましょう。</div>'
+        rows = []
+        for event in latest:
+            start = event.get("starts_at") or ""
+            date = format_event_datetime(start)
+            date = date[5:10] if len(date) >= 10 else date
+            rows.append('<li class="home-latest-item"><a class="home-latest-link" href="/events/'
+                        + quote(str(event["event_id"]), safe="") + '"><span class="home-latest-title">'
+                        + html.escape(event.get("title") or "募集の詳細") + '</span><time class="home-latest-date" datetime="'
+                        + html.escape(str(start).replace(" ", "T"), quote=True) + '" aria-label="開催日 '
+                        + html.escape(format_event_datetime(start), quote=True) + '">' + html.escape(date) + '</time></a></li>')
+        latest_markup = '<ul id="homeLatestEvents" class="home-latest-list">' + ''.join(rows) + '</ul>' if latest else '<div id="homeLatestEvents" class="empty">現在、募集中の大会・イベントはありません。</div>'
     except Exception as exc:
         log(f"sports home latest events failed: {type(exc).__name__}")
-        latest_markup = '<div class="error-box" role="status">最新の募集を取得できませんでした。時間をおいて再度ご確認ください。</div>'
+        latest_markup = '<div id="homeLatestEvents" class="error-box" role="status">最新の募集を取得できませんでした。</div>'
     body += ('<section class="section panel home-latest-events" aria-labelledby="home-latest-heading">'
-             '<div class="panel-head"><div><h2 id="home-latest-heading">最新の募集</h2><p>すべての競技・地域から、募集中の大会・イベントを新着順で掲載しています。</p></div>'
-             '<div class="home-latest-actions"><a class="button primary" href="/events/new?custom=1">募集を掲載する</a><a class="button" href="/events">募集をすべて見る</a></div></div>'
-             '<div id="homeLatestEvents" class="event-grid">' + latest_markup + '</div></section>')
-    body += '<section class="section sports-home"><div class="panel-head"><h2>スポーツから探す</h2></div><div class="sport-grid">' + ''.join(cards) + '</div></section>'
+             '<div class="panel-head"><h2 id="home-latest-heading">最新の募集</h2></div>' + latest_markup
+             + '<div class="home-latest-actions"><a class="button primary" href="/events/new?custom=1">募集を掲載する</a><a class="button" href="/events">現在募集中のイベントを見る</a></div></section>')
+    body += '<section class="section sports-home" aria-label="スポーツ一覧"><div class="sport-grid">' + ''.join(cards) + '</div></section>'
     body += '<section class="home-shortcuts"><h2>目的から探す</h2>' + render_directory_tabs("", params) + '</section>'
-    return event_page("スポーツから探す", body, tab="home").encode("utf-8")
+    return event_page("スポーツから探す", body + '</div>', tab="home").encode("utf-8")
 
 
 def render_venues_html(params=None):

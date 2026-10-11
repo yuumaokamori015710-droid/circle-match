@@ -49,7 +49,7 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         self.assertEqual(status, 200)
         return body.decode('utf-8')
 
-    def test_newest_six_across_sports_and_regions_use_publication_or_creation(self):
+    def test_newest_three_across_sports_and_regions_use_publication_or_creation(self):
         expected = []
         for index in range(8):
             stamp = f'2028-12-{index + 1:02}T10:00:00+09:00'
@@ -60,13 +60,16 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
                                        updated_at='2035-01-01T00:00:00+09:00' if index == 0 else stamp)
             expected.insert(0, event_id)
         result = self.app.latest_home_events()
-        self.assertEqual([event['event_id'] for event in result], expected[:6])
+        self.assertEqual([event['event_id'] for event in result], expected[:3])
         page = self.home('/?' + urlencode({'region':'kansai', 'prefecture':'大阪府'}))
-        card_ids = [unquote(value) for value in re.findall(r'<h3><a href="/events/([^"]+)">', page)]
-        self.assertEqual(card_ids, expected[:6])
-        self.assertIn('テニス', page)
-        self.assertIn('サッカー・フットサル', page)
-        self.assertEqual(page.count('<article class="event-card">'), 6)
+        rows = re.search(r'<ul[^>]*id="homeLatestEvents"[^>]*>(.*?)</ul>', page, re.S)
+        self.assertIsNotNone(rows)
+        row_ids = [unquote(value) for value in re.findall(r'href="/events/([^"]+)"', rows.group(1))]
+        self.assertEqual(row_ids, expected[:3])
+        self.assertEqual(rows.group(1).count('class="home-latest-item"'), 3)
+        self.assertEqual(rows.group(1).count('class="home-latest-link"'), 3)
+        self.assertEqual(rows.group(1).count('class="home-latest-title"'), 3)
+        self.assertNotIn('<article class="event-card">', page)
 
     def test_draft_private_closed_cancelled_expired_and_full_events_are_excluded(self):
         wanted = self.make_event('募集中の公開イベント', published_at='2028-01-01T10:00:00+09:00')
@@ -116,7 +119,7 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         self.assertIn('スポーツから探す', page)
         self.assertIn('目的から探す', page)
         self.assertIn('href="/events/new?custom=1">募集を掲載する', page)
-        self.assertIn('href="/events">募集をすべて見る', page)
+        self.assertIn('href="/events">現在募集中のイベントを見る', page)
         self.assertEqual(page.count('募集を掲載する</a>'), 1)
 
     def test_failed_query_preserves_home_without_false_empty_or_private_error(self):
