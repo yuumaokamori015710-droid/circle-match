@@ -141,12 +141,12 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
     elif path == '/venues':
         sport, prefecture, region_key = value('sport'), value('prefecture'), value('region')
         area = prefecture or regions.get(region_key, {}).get('label', '')
-        supported = sport in {'', 'テニス'} and prefecture in {'', '東京都'} and region_key in {'', 'kanto'}
+        supported = sport in ('', *sports) and prefecture in {'', '東京都'} and region_key in {'', 'kanto'}
         if supported:
-            title = ('関東のテニス会場・東京都のコート情報 | Circle Match' if area and area != '東京都'
-                     else '会場予約・東京都のテニスコートを探す | Circle Match')
-            description = (f'{area}の会場探しに。' if area and area != '東京都' else '') + '現在は東京都のテニスコートを掲載。場所・料金・予約方法から検索し、公営・民営施設の所在地、利用条件、公式予約サイトを確認できます。'
-            image = origin + '/assets/sports/tennis.png'
+            title = f'東京都の{sport or "スポーツ・交流"}会場予約・施設を探す | Circle Match'
+            description = f'東京都の{sport or "野球・サッカー・テニスなどのスポーツ・交流"}会場を掲載。所在地、利用条件、登録・抽選や予約方法、公式予約先を確認できます。予約手続きは各施設の公式サイト・窓口へ。'
+            if sport in sports:
+                image = origin + '/assets/sports/' + sports[sport]
         else:
             selection = f'{area + "の" if area else ""}{sport + "の" if sport else ""}'
             title = f'{selection}会場情報は掲載準備中 | Circle Match'

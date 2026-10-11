@@ -15,8 +15,8 @@
 .venue-directory .venue-skip-link{position:fixed;z-index:100;left:12px;top:-80px;background:white;border:1px solid var(--border);border-radius:6px;padding:10px 16px}
 .venue-directory .venue-skip-link:focus{top:10px}
 .venue-directory .venue-intro{margin-bottom:20px}
-.venue-directory .venue-eyebrow{margin:0 0 9px;font-size:10px;font-weight:700;letter-spacing:2.2px;color:var(--green)}
-.venue-directory .venue-intro h2{font-size:24px;line-height:1.4;letter-spacing:-.5px;margin:0 0 10px}
+.venue-directory .venue-eyebrow{margin:0 0 9px;font-size:10px;font-weight:700;letter-spacing:0;color:var(--green)}
+.venue-directory .venue-intro h2{font-size:24px;line-height:1.4;letter-spacing:0;margin:0 0 10px}
 .venue-directory .venue-intro-copy{font-size:14px;color:var(--muted);margin:0 0 12px}
 .venue-directory .venue-catalog-meta{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:11px;color:#52667a}
 .venue-directory .venue-catalog-meta span+span{padding-left:18px;border-left:1px solid #cbd5df}
@@ -60,7 +60,7 @@
 .venue-directory .venue-court-features{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:0;gap:5px}
 .venue-directory .venue-court-features li{font-size:9px;border-radius:4px;background:#f2f5f7;color:#647589;padding:2px 6px;overflow-wrap:anywhere}
 .venue-directory .venue-column-label{font-size:10px;font-weight:600;color:var(--muted);margin:1px 0 8px}
-.venue-directory .venue-original-price{font-size:23px;font-weight:750;line-height:1.35;margin:0 0 5px;letter-spacing:-.5px}
+.venue-directory .venue-original-price{font-size:23px;font-weight:750;line-height:1.35;margin:0 0 5px;letter-spacing:0}
 .venue-directory .venue-original-price small{font-size:14px;margin-left:4px;font-weight:500}
 .venue-directory .venue-unconfirmed{font-size:16px;letter-spacing:0;font-weight:650;color:#526479}
 .venue-directory .venue-price-unit{font-size:11px;margin:0 0 9px;color:#526479;overflow-wrap:anywhere}
@@ -101,7 +101,7 @@
 .venue-directory .venue-search-field{grid-column:span 2}
 }
 @media(max-width:640px){
-.venue-directory .venue-intro h2{font-size:22px;letter-spacing:-.5px}
+.venue-directory .venue-intro h2{font-size:22px;letter-spacing:0}
 .venue-directory .venue-intro-copy{font-size:12px}
 .venue-directory .venue-intro{margin-bottom:22px}
 .venue-directory .venue-catalog-meta{font-size:10px;gap:10px}

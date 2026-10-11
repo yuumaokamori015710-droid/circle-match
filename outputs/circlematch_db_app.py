@@ -1961,6 +1961,8 @@ def render_event_form_html(params, user):
     initial = {"sport_category": sport, "event_type": "大会", "participation_type": "individual", "capacity_unit": "人", "fee_unit": "1人", "fee_amount": 0, "payment_method": "on_site", "acceptance_mode": "first_come", "minimum_participants": 1}
     initial.update(organizer_form_defaults(user))
     initial["prefecture"] = (params.get("prefecture", [""])[0] or "").strip()
+    if not event_id and not copy_id and params.get("venue"):
+        initial.update(venues.venue_defaults(params["venue"][0], sport))
     if event_id or copy_id:
         with connect() as conn:
             initial.update(event_copy_for_owner(conn, event_id or copy_id, user))
@@ -2775,6 +2777,7 @@ def robots_txt():
 def sitemap_xml():
     root = seo.public_origin(base_url())
     paths = ["/", "/events", "/?tab=db&audience=university", "/?tab=db&audience=social", "/venues", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
+    paths.extend('/venues?' + urlencode({'sport': sport, 'prefecture': '東京都'}) for sport in venues.SPORTS)
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     # Legacy sport/region screens are client-filtered; index the SSR portal instead.
     try:
@@ -4946,6 +4949,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.redirect("/venues" + ("?" + urlencode(query, doseq=True) if query else ""))
             elif parsed.path == "/api/tennis-courts":
                 self.send_json(venues.get_catalog())
+            elif parsed.path == "/api/venues":
+                self.send_json(venues.get_venue_catalog(query))
             elif parsed.path in venues.ASSET_PATHS:
                 path, content_type = venues.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)
@@ -5254,7 +5259,7 @@ class Handler(BaseHTTPRequestHandler):
             handle_http(self)
             return
         parsed = urlparse(self.path)
-        if parsed.path in {"/venues", "/venues/", "/tennis", "/api/tennis-courts"} or parsed.path in venues.ASSET_PATHS:
+        if parsed.path in {"/venues", "/venues/", "/tennis", "/api/tennis-courts", "/api/venues"} or parsed.path in venues.ASSET_PATHS:
             self.send_response(405)
             self.send_header("Allow", "GET")
             self.send_header("Content-Length", "0")

@@ -11,7 +11,7 @@ import threading
 import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlencode
 from urllib.request import build_opener, HTTPRedirectHandler, Request
 from xml.etree import ElementTree
 
@@ -146,7 +146,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         return parsed
 
     def test_public_page_json_and_assets_work_without_database(self):
-        paths = {'/venues': {'text/html'}, '/api/tennis-courts': {'application/json'},
+        paths = {'/venues': {'text/html'}, '/api/tennis-courts': {'application/json'}, '/api/venues': {'application/json'},
                  '/assets/venues/tennis.css': {'text/css'},
                  '/assets/venues/tennis.js': {'text/javascript', 'application/javascript'}}
         with patch.object(self.app, 'connect', side_effect=AssertionError('Public directory must not open SQLite')) as connect:
@@ -195,6 +195,63 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                     self.assertIsNone(parsed.username)
                     self.assertIsNone(parsed.password)
 
+    def test_all_sports_have_verified_booking_routes_and_legacy_tennis_is_unchanged(self):
+        status, body, _ = self.request('/api/venues')
+        self.assertEqual(status, 200)
+        catalog = json.loads(body)
+        self.assertGreaterEqual(catalog['meta']['sports']['サッカー・フットサル'], 15)
+        self.assertEqual(catalog['meta']['sports']['テニス'], 404)
+        self.assertEqual(set(catalog['meta']['sports']), set(self.app.venues.SPORTS))
+        for sport in self.app.venues.SPORTS:
+            with self.subTest(sport=sport):
+                query = urlencode({'sport': sport, 'prefecture': '東京都'})
+                status, data, _ = self.request('/api/venues?' + query)
+                rows = json.loads(data)['courts']
+                self.assertTrue(rows)
+                self.assertTrue(all(sport in row['sports'] and row['booking_url'] and row['sources'] for row in rows))
+                html = self.request('/venues?' + query)[1].decode()
+                self.assertIn('class="venue-court-card"', html)
+                self.assertIn('この会場で募集を作る', html)
+                self.assertNotIn('__VENUE_', html)
+                self.assertTrue(PublicPage(html).meta['robots'].startswith('index, follow'))
+                self.assertNotIn('JavaScriptを有効', html)
+
+    def test_server_filters_and_escaped_input_keep_booking_links_in_initial_html(self):
+        rows = json.loads(self.request('/api/venues?' + urlencode({'sport': 'サッカー・フットサル'}))[1])['courts']
+        first = rows[0]
+        html = self.request('/venues?' + urlencode({'sport': 'サッカー・フットサル', 'v_q': first['name']}))[1].decode()
+        self.assertIn(first['name'], html)
+        self.assertIn('class="venue-court-card"', html)
+        self.assertIn('method="get"', html)
+        empty = self.request('/venues?' + urlencode({'sport': 'サッカー・フットサル', 'q': '<script>unmatched</script>'}))[1].decode()
+        self.assertNotIn('<script>unmatched</script>', empty)
+        self.assertNotIn('class="venue-court-card"', empty)
+        raw = self.request('/venues?' + urlencode({'sport': 'サッカー・フットサル', 'q': first['name']}))[1].decode()
+        self.assertIn('class="venue-court-card"', raw)
+
+    def test_catalog_failure_is_not_a_false_zero(self):
+        with patch.object(self.app.venues, 'get_venue_catalog', side_effect=OSError('test read error')):
+            status, body, _ = self.request('/venues')
+        self.assertEqual(status, 200)
+        self.assertIn('会場データを取得できませんでした', body.decode())
+        self.assertNotIn('掲載 0', body.decode())
+
+    def test_venue_prefill_requires_a_published_catalog_id_and_survives_login(self):
+        row = json.loads(self.request('/api/venues?' + urlencode({'sport': 'サッカー・フットサル'}))[1])['courts'][0]
+        defaults = self.app.venues.venue_defaults(row['id'], 'サッカー・フットサル')
+        self.assertIn(row['name'], defaults['location'])
+        self.assertEqual(defaults['prefecture'], '東京都')
+        self.assertEqual(defaults['sport_category'], 'サッカー・フットサル')
+        self.assertEqual(self.app.venues.venue_defaults('unlisted-private-venue'), {})
+        path = '/events/new?' + urlencode({'venue': row['id'], 'sport': 'サッカー・フットサル'})
+        status, _, headers = self.request(path)
+        self.assertIn(status, {302, 303})
+        self.assertIn('venue', headers['Location'])
+        account = user('venue-prefill-host', 'prefill@example.test', '会場主催者')
+        create_account(self.app, account)
+        form = self.app.render_event_form_html({'venue': [row['id']], 'sport': ['サッカー・フットサル']}, account)
+        self.assertIn(row['name'], form.decode() if isinstance(form, bytes) else form)
+
     def test_catalog_prices_keep_original_units_free_and_unknown_values(self):
         courts = {court['id']: court for court in self.catalog()['courts']}
         self.assertEqual(courts['metro-hibiya']['price_from'], 1300)
@@ -222,7 +279,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         before = self.database.read_bytes()
         with patch.object(self.app, 'connect', side_effect=AssertionError('Public directory must not write SQLite')) as connect:
             for admin in (False, True):
-                for path in ('/venues', '/api/tennis-courts', '/assets/venues/tennis.js', '/assets/venues/tennis.css'):
+                for path in ('/venues', '/api/tennis-courts', '/api/venues', '/assets/venues/tennis.js', '/assets/venues/tennis.css'):
                     with self.subTest(method='POST', path=path, admin=admin):
                         status, _, headers = self.request(path, method='POST', admin=admin)
                         self.assertEqual(status, 405)

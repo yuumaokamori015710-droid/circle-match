@@ -312,7 +312,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
             connect.assert_not_called()
 
     def test_unavailable_sports_or_areas_do_not_claim_or_fetch_tokyo_tennis(self):
-        cases = [{'sport': 'サッカー・フットサル'}, {'sport': 'テニス', 'prefecture': '大阪府'},
+        cases = [{'sport': '独自競技'}, {'sport': 'テニス', 'prefecture': '大阪府'},
                  {'sport': 'テニス', 'region': 'kansai'}, {'region': 'kansai'},
                  {'sport': 'テニス', 'region': 'kanto', 'prefecture': '神奈川県'}]
         with patch.object(self.app, 'connect', side_effect=AssertionError('Unavailable directory must stay static')) as connect:

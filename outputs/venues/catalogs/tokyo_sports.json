@@ -1,0 +1,1741 @@
+[
+  {
+    "id": "tokyo-sports-001",
+    "name": "高円寺みんなの体育館",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区高円寺南2丁目36番31号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。杉並区公共施設予約システム「さざんかねっと」で予約。一般使用は事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14546.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14546.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バドミントン",
+      "バスケットボール",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-002",
+    "name": "大宮前体育館",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区南荻窪2丁目1番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14549.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14549.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-003",
+    "name": "TAC杉並区永福体育館",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区永福1丁目7番6号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14544.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14544.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バドミントン",
+      "バスケットボール",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-004",
+    "name": "TAC杉並区上井草スポーツセンター",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区上井草3丁目34番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14547.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14547.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-005",
+    "name": "荻窪体育館",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区荻窪3丁目47番2号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14548.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14548.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バドミントン",
+      "卓球",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-006",
+    "name": "TAC杉並区妙正寺体育館",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区清水3丁目20番12号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14545.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14545.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バスケットボール",
+      "サッカー・フットサル",
+      "バレーボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-007",
+    "name": "練馬区立総合体育館",
+    "operator": "練馬区（管理窓口は公式案内を確認）",
+    "municipality": "練馬区",
+    "area": "23区",
+    "address": "東京都練馬区谷原1丁目7番5号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "競技場の夕方以降のバドミントンは当日仮予約ができません。 団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
+    "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
+    "official_url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/sogo.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/sogo.html"
+      },
+      {
+        "title": "2026年7月からの施設予約・登録案内",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バレーボール",
+      "バスケットボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-008",
+    "name": "練馬区立光が丘体育館",
+    "operator": "練馬区（管理窓口は公式案内を確認）",
+    "municipality": "練馬区",
+    "area": "23区",
+    "address": "東京都練馬区光が丘4丁目1番4号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
+    "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
+    "official_url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/hikarigaoka.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/hikarigaoka.html"
+      },
+      {
+        "title": "2026年7月からの施設予約・登録案内",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バレーボール",
+      "バスケットボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-009",
+    "name": "中村南スポーツ交流センター",
+    "operator": "練馬区（管理窓口は公式案内を確認）",
+    "municipality": "練馬区",
+    "area": "23区",
+    "address": "東京都練馬区中村南1丁目2番32号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
+    "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
+    "official_url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/nakamuraminami.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/nakamuraminami.html"
+      },
+      {
+        "title": "2026年7月からの施設予約・登録案内",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バレーボール",
+      "バスケットボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-010",
+    "name": "練馬区立上石神井体育館",
+    "operator": "練馬区（管理窓口は公式案内を確認）",
+    "municipality": "練馬区",
+    "area": "23区",
+    "address": "東京都練馬区上石神井1丁目32番37号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
+    "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
+    "official_url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/kamishakujii.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/taiku/kamishakujii.html"
+      },
+      {
+        "title": "2026年7月からの施設予約・登録案内",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バレーボール",
+      "バスケットボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-011",
+    "name": "フットサルクラブ東京 八幡山コート",
+    "operator": "フットサルクラブ東京 八幡山コート",
+    "municipality": "世田谷区",
+    "area": "23区",
+    "address": "東京都世田谷区八幡山2-18",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "Web予約のみ。チーム登録が必要。4時間以上の予約はキャンセル不可。",
+    "booking_url": "https://labola.jp/reserve/shop/2081/calendar_week",
+    "official_url": "https://www.futsal-tokyo.co.jp/hachimanyama/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.futsal-tokyo.co.jp/hachimanyama/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-012",
+    "name": "フットサルクラブ東京 東陽町コート",
+    "operator": "フットサルクラブ東京 東陽町コート",
+    "municipality": "江東区",
+    "area": "23区",
+    "address": "東京都江東区新砂1-10-5",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "パソコン・スマホからの直接予約。チーム登録とID/パスワードが必要。",
+    "booking_url": "https://labola.jp/reserve/shop/2083/calendar_week",
+    "official_url": "https://www.futsal-tokyo.co.jp/toyocho/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.futsal-tokyo.co.jp/toyocho/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-013",
+    "name": "フットサルクラブ東京 多摩：南豊ヶ丘フィールド",
+    "operator": "フットサルクラブ東京 多摩：南豊ヶ丘フィールド",
+    "municipality": "多摩市",
+    "area": "多摩",
+    "address": "東京都多摩市豊ヶ丘6-4",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式予約カレンダーから予約。会員種別・予約可能時期は施設規約に従う。",
+    "booking_url": "https://labola.jp/reserve/shop/2082/calendar_week",
+    "official_url": "https://www.futsal-tokyo.co.jp/nantoyo/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.futsal-tokyo.co.jp/nantoyo/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-014",
+    "name": "フットサルクラブ東京 八王子：高倉体育館コート",
+    "operator": "フットサルクラブ東京 八王子：高倉体育館コート",
+    "municipality": "八王子市",
+    "area": "多摩",
+    "address": "東京都八王子市高倉町33",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式予約カレンダーから予約。会員登録等の施設規約に従う。",
+    "booking_url": "https://labola.jp/reserve/shop/2085/calendar_week",
+    "official_url": "https://www.futsal-tokyo.co.jp/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.futsal-tokyo.co.jp/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-015",
+    "name": "フットサルクラブ東京 八王子：南大沢コート",
+    "operator": "フットサルクラブ東京 八王子：南大沢コート",
+    "municipality": "八王子市",
+    "area": "多摩",
+    "address": "東京都八王子市南大沢2-28-1 イトーヨーカドー内6階屋上",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式予約カレンダーから予約。会員登録等の施設規約に従う。",
+    "booking_url": "https://labola.jp/r/shop/3263/calendar_week/",
+    "official_url": "https://www.futsal-tokyo.co.jp/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.futsal-tokyo.co.jp/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-016",
+    "name": "フットサルクラブ東京 有明：BUDDYスポーツアリーナ",
+    "operator": "フットサルクラブ東京 有明：BUDDYスポーツアリーナ",
+    "municipality": "江東区",
+    "area": "23区",
+    "address": "東京都江東区有明1-5-22",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式一覧で有明のレンタルコート予約を選択できます。屋内・屋上の区分、登録条件、キャンセル規定を予約先でご確認ください。",
+    "booking_url": "https://labola.jp/r/shop/2127/calendar_week/",
+    "official_url": "https://www.futsal-tokyo.co.jp/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設運営者の公式一覧・有明予約案内",
+        "url": "https://www.futsal-tokyo.co.jp/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-017",
+    "name": "東京体育館フットサルコート",
+    "operator": "渋谷区（管理窓口は公式案内を確認）",
+    "municipality": "渋谷区",
+    "area": "23区",
+    "address": "東京都渋谷区千駄ヶ谷1-17-1 東京体育館多目的コート内",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "レンタルコートは予約制。Web予約ページから申込み。",
+    "booking_url": "https://labola.jp/r/shop/3165/calendar_week/",
+    "official_url": "https://www.totai-futsal.jp/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.totai-futsal.jp/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-018",
+    "name": "新宿中央公園フットサル施設",
+    "operator": "新宿区（管理窓口は公式案内を確認）",
+    "municipality": "新宿区",
+    "area": "23区",
+    "address": "東京都新宿区西新宿2丁目11番",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "団体登録が必要。予約システムで1時間単位、月20時間上限。抽選・空き予約の手順あり。",
+    "booking_url": "https://www.shinjuku.eprs.jp/regasu/web/",
+    "official_url": "https://shinjukuchuo-park.jp/futsal/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://shinjukuchuo-park.jp/futsal/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-019",
+    "name": "Bonfim Football Park 落合南長崎",
+    "operator": "Bonfim Football Park 落合南長崎",
+    "municipality": "豊島区",
+    "area": "23区",
+    "address": "東京都豊島区南長崎4-5-20 iTerrace 5F（受付4F）",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式サイトの「コート予約はこちら」から予約。",
+    "booking_url": "https://labola.jp/r/shop/2013/calendar_week/",
+    "official_url": "https://bonfim.co.jp/ochiai/rental_court/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://bonfim.co.jp/ochiai/rental_court/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-020",
+    "name": "FC東京パーク府中",
+    "operator": "FC東京パーク府中",
+    "municipality": "府中市",
+    "area": "多摩",
+    "address": "東京都府中市宮町1-41-2 ミッテン府中屋上",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約・電話",
+    "booking_note": "レンタルコートは電話または予約専用サイト。個人参加・教室も同様に案内。",
+    "booking_url": "https://labola.jp/r/shop/3143/calendar_week/",
+    "official_url": "https://www.fctokyoparkfuchu.jp/facility/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.fctokyoparkfuchu.jp/facility/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-021",
+    "name": "ジェクサー・フットサルクラブ アトレ大井町店",
+    "operator": "ジェクサー・フットサルクラブ アトレ大井町店",
+    "municipality": "品川区",
+    "area": "23区",
+    "address": "東京都品川区大井1-2-1 アトレ大井町屋上",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "コートレンタル、個人プログラム等は公式予約リンクから予約。",
+    "booking_url": "https://labola.jp/r/shop/3134/calendar_week/",
+    "official_url": "https://www.jexer.jp/futsal/oi/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.jexer.jp/futsal/oi/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-022",
+    "name": "フットサルコート品川",
+    "operator": "フットサルコート品川",
+    "municipality": "品川区",
+    "area": "23区",
+    "address": "東京都品川区八潮5-5-3 パトリア品川屋上",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約・電話・窓口",
+    "booking_note": "ネット予約は登録チーム限定。登録チームは2か月前、未登録チームは1か月前から予約可。",
+    "booking_url": "https://labola.jp/reserve/shop/671/calendar_week",
+    "official_url": "https://www.sports-alpha.com/shinagawa/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.sports-alpha.com/shinagawa/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-023",
+    "name": "JAPAN SPORT COUNCIL 西が丘フットサルコート",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区西が丘3-15-1",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約・電話・窓口",
+    "booking_note": "WEB、クラブハウス受付、電話で申込可。大会はチーム名・代表者・住所・電話番号が必要。",
+    "booking_url": "https://labola.jp/r/shop/3232/calendar_week/",
+    "official_url": "https://www.jpnsport.go.jp/hpsc/facility/futsal/tabid/1440/Default.aspx",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.jpnsport.go.jp/hpsc/facility/futsal/tabid/1440/Default.aspx"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-024",
+    "name": "Pacific PICKLE CLUB",
+    "operator": "Pacific PICKLE CLUB",
+    "municipality": "江東区",
+    "area": "23区",
+    "address": "東京都江東区有明1丁目13-7 livedoor URBAN SPORTS PARK内",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公式Web予約",
+    "booking_note": "公式ページの「コートのご予約」から予約。1コート最大8名、利用時はスポーツシューズへの履き替えが必要。",
+    "booking_url": "https://pacificpickleclub.resv.jp/",
+    "official_url": "https://pacificpickleclub.com/",
+    "checked_at": "2026-10-12",
+    "operator_type": "PRIVATE",
+    "courts_count": 2,
+    "surface": "ハード",
+    "indoor": false,
+    "night_lighting": true,
+    "facility_kind": "COURT",
+    "facility_label": "ピックルボールコート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://pacificpickleclub.com/"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "ピックルボール"
+    ]
+  },
+  {
+    "id": "tokyo-sports-025",
+    "name": "北運動場（ラグビー場）",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区神谷2-47-6",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム・電話・窓口",
+    "booking_note": "事前の団体登録が必要。区内登録団体は利用月2か月前の6～15日に抽選申込、空き枠は施設予約システム・電話・体育系窓口で受付。区外団体は利用月1か月前の12日から。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010432/1010434.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "公式のラグビー場予約・登録案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010432/1010434.html"
+      },
+      {
+        "title": "公式施設総合案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010441.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "ラグビー"
+    ]
+  },
+  {
+    "id": "tokyo-sports-027",
+    "name": "大森スポーツセンター",
+    "operator": "大田区（管理窓口は公式案内を確認）",
+    "municipality": "大田区",
+    "area": "23区",
+    "address": "東京都大田区大森本町二丁目2番5号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "指定管理者の利用案内・予約窓口",
+    "booking_note": "大田区公式は詳細な利用方法を指定管理者ホームページへ案内。アリーナ等の利用は指定管理者の案内を確認。",
+    "booking_url": "https://omori-sc.jp/",
+    "official_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/oomori_s/index.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.ota.tokyo.jp/shisetsu/sports/oomori_s/index.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バレーボール",
+      "バスケットボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-028",
+    "name": "郷土の森総合体育館（府中市立総合体育館）",
+    "operator": "府中市（管理窓口は公式案内を確認）",
+    "municipality": "府中市",
+    "area": "多摩",
+    "address": "東京都府中市矢崎町5丁目5番地",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "公共施設予約システム利用者登録と施設利用団体登録後、システムで使用申請。一般公開利用は登録・予約不要の場合あり。",
+    "booking_url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/yoyaku/toroku.html",
+    "official_url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/sogo/sogo.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/sogo/sogo.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "卓球",
+      "バレーボール",
+      "バドミントン",
+      "バスケットボール"
+    ]
+  },
+  {
+    "id": "tokyo-sports-029",
+    "name": "北区立滝野川体育館",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区西ケ原2丁目1番6号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "団体予約は公共施設予約システム",
+    "booking_note": "個人利用は事前予約不要。団体利用は北区施設予約システム等の屋内施設予約手続を確認。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010416/1010420/1010421.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "体育館",
+    "sources": [
+      {
+        "title": "施設の公式案内・種目・所在地",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010416/1010420/1010421.html"
+      },
+      {
+        "title": "団体利用の予約・登録案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "バスケットボール",
+      "バレーボール",
+      "バドミントン",
+      "卓球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-030",
+    "name": "練馬総合運動場公園 陸上競技場",
+    "operator": "練馬区（管理窓口は公式案内を確認）",
+    "municipality": "練馬区",
+    "area": "23区",
+    "address": "東京都練馬区練馬2丁目29番10号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
+    "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
+    "official_url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/undo/nerima.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "陸上競技場",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.nerima.tokyo.jp/shisetsu/koen/undo/nerima.html"
+      },
+      {
+        "title": "2026年7月からの施設予約・登録案内",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "ランニング"
+    ]
+  },
+  {
+    "id": "tokyo-sports-031",
+    "name": "新河岸陸上競技場・多目的運動場",
+    "operator": "板橋区（管理窓口は公式案内を確認）",
+    "municipality": "板橋区",
+    "area": "23区",
+    "address": "東京都板橋区新河岸3丁目1番3号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム",
+    "booking_note": "貸切利用は板橋区施設利用管理システムで空き照会・予約。利用には団体登録が必要。多目的運動場の種目としてラグビー、グラウンドゴルフ等を明記。",
+    "booking_url": "https://www.city.itabashi.tokyo.jp/bunka/1005245/kashikiri/1005270.html",
+    "official_url": "https://www.city.itabashi.tokyo.jp/bunka/1005245/okugai/1005266.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "陸上競技場",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.itabashi.tokyo.jp/bunka/1005245/okugai/1005266.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "ランニング",
+      "ラグビー"
+    ]
+  },
+  {
+    "id": "tokyo-sports-032",
+    "name": "中央公園野球場",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区十条台1-2-1",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム・電話・窓口",
+    "booking_note": "事前の団体登録が必要。区内登録団体は抽選申込・先行予約、空き枠は施設予約システム・電話・体育系窓口で受付。予約後の支払期限・方法は最新の公式案内をご確認ください。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.tokyo.jp/sports/bunka/sport/shisetsu/yakyu/yoyaku.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.kita.tokyo.jp/sports/bunka/sport/shisetsu/yakyu/yoyaku.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010393/1010396/1010397.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "野球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-033",
+    "name": "府中市中央文化センター",
+    "operator": "府中市（管理窓口は公式案内を確認）",
+    "municipality": "府中市",
+    "area": "多摩",
+    "address": "東京都府中市府中町2丁目25番地",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "公共施設予約システム・窓口",
+    "booking_note": "会議室・ホール等は施設予約情報を確認。ひばりホールは利用日の1か月前までの手続きが必要。",
+    "booking_url": "https://www.city.fuchu.tokyo.jp/benri/shisetuyoyaku.html",
+    "official_url": "https://www.city.fuchu.tokyo.jp/shisetu/komyunite/senta/shisetu/chuo.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "ホール・会議室",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/komyunite/senta/shisetu/chuo.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/komyunite/senta/chuo.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "イベント"
+    ]
+  },
+  {
+    "id": "tokyo-sports-034",
+    "name": "赤羽スポーツの森公園競技場",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区赤羽西5-2-27",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "北区施設予約システム、電話、体育系窓口",
+    "booking_note": "サッカー場・屋外フットサル場は事前の団体登録が必要。区内登録団体は抽選申込ができ、抽選後はシステム・電話・窓口で随時予約。予約後の支払期限・方法は最新の公式案内をご確認ください。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010391.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010391.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010403.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-035",
+    "name": "新荒川大橋サッカー場",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区赤羽北1-22-22先",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "北区施設予約システム、電話、体育系窓口",
+    "booking_note": "サッカー場利用には事前の団体登録が必要。区内登録団体は利用希望月の抽選に申込可能で、抽選後はシステム・電話・窓口で随時予約。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010405.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010405.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010403.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-036",
+    "name": "浮間子どもスポーツ広場サッカー場・フットサル場",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区浮間4-27-1",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "北区施設予約システム、電話、体育系窓口",
+    "booking_note": "サッカー場・屋外フットサル場は団体登録が必要。少年登録団体向けの抽選枠があり、一般登録団体は少年団体の利用がない時間帯に限られ抽選参加不可。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010406.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010406.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010403.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-037",
+    "name": "豊島北スポーツ多目的広場",
+    "operator": "北区（管理窓口は公式案内を確認）",
+    "municipality": "北区",
+    "area": "23区",
+    "address": "東京都北区豊島5-3-13",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "北区施設予約システム、電話、体育系窓口",
+    "booking_note": "利用には団体登録が必要。少年サッカー等の時間枠と一般サッカー枠が設定され、抽選後はシステム・電話・窓口で随時予約。",
+    "booking_url": "https://kita-yoyaku.openreaf02.jp/",
+    "official_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010392.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010392.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010403.html"
+      },
+      {
+        "title": "最新の予約システム・支払手続き",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル",
+      "野球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-038",
+    "name": "江戸川区スポーツランド（フットサルコート）",
+    "operator": "江戸川区（管理窓口は公式案内を確認）",
+    "municipality": "江戸川区",
+    "area": "23区",
+    "address": "東京都江戸川区東篠崎1丁目8番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "江戸川区施設予約システム『えどねっと』",
+    "booking_note": "えどねっとで予約できるのはテニスコートとフットサルコート。利用登録が必要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
+    "official_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/sportsland/index.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/sportsland/index.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e030/kuseijoho/denshi/shisetsuyoyaku/shisetuitiran.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-039",
+    "name": "水辺のスポーツガーデン",
+    "operator": "江戸川区（管理窓口は公式案内を確認）",
+    "municipality": "江戸川区",
+    "area": "23区",
+    "address": "東京都江戸川区東篠崎2丁目3番先（旧江戸川河川敷内）",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "江戸川区施設予約システム『えどねっと』",
+    "booking_note": "施設予約・登録団体（サークル）利用はえどねっと。利用登録が必要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
+    "official_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/mizube/gaiyo.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/mizube/gaiyo.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/futsalcourt.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル",
+      "野球"
+    ]
+  },
+  {
+    "id": "tokyo-sports-040",
+    "name": "臨海球技場",
+    "operator": "江戸川区（管理窓口は公式案内を確認）",
+    "municipality": "江戸川区",
+    "area": "23区",
+    "address": "東京都江戸川区臨海町1丁目1番2号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "江戸川区施設予約システム『えどねっと』",
+    "booking_note": "えどねっとで受け付けるのはフットサルコートの予約のみ。利用登録が必要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
+    "official_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/rinkaikyugijo/index.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/rinkaikyugijo/index.html"
+      },
+      {
+        "title": "対応種目・利用条件の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e030/kuseijoho/denshi/shisetsuyoyaku/shisetuitiran.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-041",
+    "name": "葛西ラグビースポーツパーク",
+    "operator": "江戸川区（管理窓口は公式案内を確認）",
+    "municipality": "江戸川区",
+    "area": "23区",
+    "address": "東京都江戸川区臨海町3丁目地先",
+    "price_from": 1720,
+    "price_unit": "フィールド1時間（一般・高校生以上）",
+    "price_note": "貸切の参考料金です。照明・付帯設備等は別料金。最新条件は公式案内をご確認ください。",
+    "booking_method": "えどねっとによるオンライン予約",
+    "booking_note": "貸切は「えどねっと」で予約。利用登録が必要で、登録区分により抽選参加資格・空き予約の開始日が異なります。営利目的の利用は禁止されています。",
+    "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
+    "official_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/kasairugbysportspark.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/kasairugbysportspark.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "ラグビー",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-042",
+    "name": "下高井戸運動場",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区下高井戸3丁目26番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
+    "booking_note": "利用には事前登録が必要。人工芝グラウンドは成人サッカー1面・少年サッカー2面。野球場と兼用で毎月1～15日はマウンド設置。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14539.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14539.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "野球",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "id": "tokyo-sports-043",
+    "name": "井草森公園運動場",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区井草4丁目12番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
+    "booking_note": "利用には事前登録が必要。天然芝サッカー場は成人1面・少年2面、ラグビー1面。天候・施設状況で使用できない場合がある。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14543.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14543.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "サッカー・フットサル",
+      "ラグビー"
+    ]
+  },
+  {
+    "id": "tokyo-sports-044",
+    "name": "TAC杉並区上井草スポーツセンター（運動場）",
+    "operator": "杉並区（管理窓口は公式案内を確認）",
+    "municipality": "杉並区",
+    "area": "23区",
+    "address": "東京都杉並区上井草3丁目34番1号",
+    "price_from": null,
+    "price_unit": "施設・時間区分による",
+    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
+    "booking_note": "貸切使用は事前予約と事前登録が必要。人工芝グラウンドは成人サッカー1面・少年サッカー2面、テニスコート4面。弓道場の一般使用は予約不要で利用者証が必要。",
+    "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
+    "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14541.html",
+    "checked_at": "2026-10-12",
+    "operator_type": "PUBLIC",
+    "courts_count": null,
+    "surface": null,
+    "indoor": null,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "facility_label": "運動場・コート",
+    "sources": [
+      {
+        "title": "施設の公式案内",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14541.html"
+      }
+    ],
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "sports": [
+      "野球",
+      "サッカー・フットサル"
+    ]
+  },
+  {
+    "price_from": null,
+    "price_unit": "プラン・日時による",
+    "price_note": "最新の料金・追加費用は公式予約先でご確認ください。",
+    "checked_at": "2026-10-12",
+    "courts_count": null,
+    "surface": null,
+    "indoor": false,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "id": "tokyo-wakasu-golf-links",
+    "name": "若洲ゴルフリンクス",
+    "operator": "若洲ゴルフリンクス",
+    "municipality": "江東区",
+    "area": "23区",
+    "address": "東京都江東区若洲3-1-2",
+    "operator_type": "PUBLIC",
+    "sports": [
+      "ゴルフ"
+    ],
+    "facility_label": "ゴルフ場",
+    "booking_method": "公式Web予約（抽選・補充予約）",
+    "booking_note": "通常・コンペ予約は公式の抽選受付、空き枠は補充予約へ進めます。受付期間と同伴者登録期限をご確認ください。",
+    "official_url": "https://wakasu.golftk.com/",
+    "booking_url": "https://www.jgo-os.com/reserve/come.cgi?courseid=13103&userkindid=003",
+    "sources": [
+      {
+        "title": "公式の予約案内",
+        "url": "https://wakasu.golftk.com/"
+      },
+      {
+        "title": "公式の所在地・交通案内",
+        "url": "https://wakasu.golftk.com/access.html"
+      }
+    ]
+  },
+  {
+    "price_from": null,
+    "price_unit": "プラン・日時による",
+    "price_note": "最新の料金・追加費用は公式予約先でご確認ください。",
+    "checked_at": "2026-10-12",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "id": "tokyo-pasela-shinjuku",
+    "name": "カラオケパセラ 新宿本店",
+    "operator": "カラオケパセラ 新宿本店",
+    "municipality": "新宿区",
+    "area": "23区",
+    "address": "東京都新宿区歌舞伎町1-3-16 パセラリゾーツ2・4・5F",
+    "operator_type": "PRIVATE",
+    "sports": [
+      "カラオケ",
+      "イベント"
+    ],
+    "facility_label": "カラオケ・パーティー会場",
+    "booking_method": "公式Web予約",
+    "booking_note": "日時・人数・プランを選んで店舗の予約画面へ。大人数の貸切やイベント利用は、用途・会場・条件を店舗と確認してください。",
+    "official_url": "https://www.pasela.co.jp/shop/shinjuku/",
+    "booking_url": "https://www.tablecheck.com/ja/shops/pasela-shinjyukuhonten/reserve",
+    "sources": [
+      {
+        "title": "店舗の公式案内・予約",
+        "url": "https://www.pasela.co.jp/shop/shinjuku/"
+      }
+    ]
+  },
+  {
+    "price_from": null,
+    "price_unit": "1人・時間帯別パック",
+    "price_note": "最新の料金・追加費用は公式予約先でご確認ください。",
+    "checked_at": "2026-10-12",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "id": "tokyo-jelly-ikebukuro",
+    "name": "JELLY JELLY CAFE 池袋1号店",
+    "operator": "JELLY JELLY CAFE 池袋1号店",
+    "municipality": "豊島区",
+    "area": "23区",
+    "address": "東京都豊島区西池袋3-27-16 広瀬ビル2 4F",
+    "operator_type": "PRIVATE",
+    "sports": [
+      "ボードゲーム"
+    ],
+    "facility_label": "ボードゲームカフェ",
+    "booking_method": "公式Web予約・貸切申込",
+    "booking_note": "貸切は15名から。通常の席予約と貸切申込は異なります。 料金は1人ごとの時間帯別パックです。",
+    "official_url": "https://jellyjellycafe.com/shoplist/ikebukuro",
+    "booking_url": "https://yoyaku.toreta.in/jelly-ikebukuro/",
+    "sources": [
+      {
+        "title": "店舗の公式案内・予約",
+        "url": "https://jellyjellycafe.com/shoplist/ikebukuro"
+      },
+      {
+        "title": "公式の貸切申込案内",
+        "url": "https://jellyjellycafe.com/reserved"
+      }
+    ]
+  },
+  {
+    "price_from": null,
+    "price_unit": "1人・時間帯別パック",
+    "price_note": "最新の料金・追加費用は公式予約先でご確認ください。",
+    "checked_at": "2026-10-12",
+    "courts_count": null,
+    "surface": null,
+    "indoor": true,
+    "night_lighting": null,
+    "facility_kind": "COURT",
+    "availability_status": "UNKNOWN",
+    "availability_note": "",
+    "id": "tokyo-jelly-shibuya",
+    "name": "JELLY JELLY CAFE 渋谷本店",
+    "operator": "JELLY JELLY CAFE 渋谷本店",
+    "municipality": "渋谷区",
+    "area": "23区",
+    "address": "東京都渋谷区宇田川町10-2 新東京ビル202",
+    "operator_type": "PRIVATE",
+    "sports": [
+      "ボードゲーム"
+    ],
+    "facility_label": "ボードゲームカフェ",
+    "booking_method": "公式Web予約・貸切申込",
+    "booking_note": "貸切は20名から。通常の席予約と貸切申込は異なります。 料金は1人ごとの時間帯別パックです。",
+    "official_url": "https://jellyjellycafe.com/shoplist/shibuya",
+    "booking_url": "https://yoyaku.toreta.in/jelly-shibuya/",
+    "sources": [
+      {
+        "title": "店舗の公式案内・予約",
+        "url": "https://jellyjellycafe.com/shoplist/shibuya"
+      },
+      {
+        "title": "公式の貸切申込案内",
+        "url": "https://jellyjellycafe.com/reserved"
+      }
+    ]
+  }
+]

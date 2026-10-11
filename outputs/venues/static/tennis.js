@@ -9,7 +9,7 @@
   const PAGE_SIZE = 50;
   const browser = typeof window === "undefined" ? null : window;
   const URL_FILTER_NAMES = ["q","municipality","area","operator_type","facility_kind","price_max","sort","night_lighting","indoor","show_suspended"];
-  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL"],sort:["name","price"]};
+  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],sort:["name","price"]};
   const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
   let loadingRequest = null;
   let searchTimer;
@@ -73,11 +73,13 @@
     const bookingLink = suspended ? externalLink(court.official_url,"公式の営業案内","venue-secondary-link") || externalLink(court.booking_url,"公式情報を確認","venue-secondary-link") : externalLink(court.booking_url,bookingLabel,"venue-primary-link");
     const officialLink = externalLink(court.official_url,"公式案内","venue-secondary-link");
     const knownEquipment = courtCount !== null || court.surface || typeof court.indoor === "boolean" || typeof court.night_lighting === "boolean";
-    const features = knownEquipment ? [courtCount === null ? "面数は要確認" : `${courtCount}面`, court.surface || "サーフェスは要確認", court.indoor === true ? "屋内あり" : court.indoor === false ? "屋外" : "屋内・屋外は要確認", court.night_lighting === true ? "夜間照明あり" : court.night_lighting === false ? "夜間照明なし" : "夜間照明は要確認"] : ["設備情報は要確認"];
+    const features = [...list(court.sports), ...(court.facility_kind === "VENUE" ? [court.facility_label || ""] : knownEquipment ? [courtCount === null ? "面数は要確認" : `${courtCount}面`, court.surface || "サーフェスは要確認", court.indoor === true ? "屋内あり" : court.indoor === false ? "屋外" : "屋内・屋外は要確認", court.night_lighting === true ? "夜間照明あり" : court.night_lighting === false ? "夜間照明なし" : "夜間照明は要確認"] : ["設備情報は要確認"])].filter(Boolean);
+    const createParams = new URLSearchParams({venue:court.id,sport:state.meta.sport || list(court.sports)[0] || "",prefecture:"東京都"});
+    const createLink = suspended ? "" : `<a class="venue-secondary-link" href="/events/new?${esc(createParams.toString())}">この会場で募集を作る</a>`;
     return `<article class="venue-court-card" aria-labelledby="venue-court-title-${index}">
       <div class="venue-court-main"><div class="venue-court-location"><span class="venue-operator-badge ${court.operator_type === "PRIVATE" ? "venue-private" : ""}">${esc(operatorType)}</span>${suspended ? '<span class="venue-suspended-badge">休止中</span>' : ""}<span>${esc([court.municipality,court.area].filter(Boolean).join(" · "))}</span></div><h3 id="venue-court-title-${index}">${esc(court.name || "施設名は要確認")}</h3>${suspended ? `<p class="venue-availability-note">${esc(court.availability_note || "現在は休止中です。営業再開の案内は公式サイトでご確認ください。")}</p>` : ""}<p class="venue-court-address">${court.address ? externalLink(mapSearchUrl(court),court.address,"venue-map-link") : "住所は要確認"}</p><ul class="venue-court-features">${features.map(feature => `<li>${esc(feature)}</li>`).join("")}</ul></div>
-      <div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">${originalPrice === null ? '<span class="venue-unconfirmed">料金は要確認</span>' : `${yen(originalPrice)}<small>〜</small>`}</p><p class="venue-price-unit">${esc(court.price_unit || "料金の単位は要確認")}</p>${court.price_note ? `<p class="venue-court-note">${esc(court.price_note)}</p>` : ""}<p class="venue-hourly-price">${hourlyPrice === null ? "1面1時間換算: 要確認" : `比較用: ${yen(hourlyPrice)} / 1面・1時間`}</p></div>
-      <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">${esc(court.booking_method || "公式案内で確認してください")}</p>${court.booking_note ? `<p class="venue-court-note">${esc(court.booking_note)}</p>` : ""}<div class="venue-court-links">${bookingLink || '<span class="venue-link-unconfirmed">予約ページは要確認</span>'}${suspended || safeUrl(court.booking_url) === safeUrl(court.official_url) ? "" : officialLink}</div></div>
+      <div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">${originalPrice === null ? '<span class="venue-unconfirmed">料金は要確認</span>' : `${yen(originalPrice)}<small>〜</small>`}</p><p class="venue-price-unit">${esc(court.price_unit || "料金の単位は要確認")}</p>${court.price_note ? `<p class="venue-court-note">${esc(court.price_note)}</p>` : ""}${court.facility_kind === "VENUE" ? "" : `<p class="venue-hourly-price">${hourlyPrice === null ? "1面1時間換算: 要確認" : `比較用: ${yen(hourlyPrice)} / 1面・1時間`}</p>`}</div>
+      <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">${esc(court.booking_method || "公式案内で確認してください")}</p>${court.booking_note ? `<p class="venue-court-note">${esc(court.booking_note)}</p>` : ""}<div class="venue-court-links">${bookingLink || '<span class="venue-link-unconfirmed">予約ページは要確認</span>'}${suspended || safeUrl(court.booking_url) === safeUrl(court.official_url) ? "" : officialLink}${createLink}</div></div>
       <details class="venue-court-details"><summary>施設情報・根拠を確認</summary><div class="venue-detail-content"><dl><dt>運営</dt><dd>${esc(court.operator || "要確認")}</dd><dt>情報確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl><div><p class="venue-column-label">根拠リンク</p>${sources.length ? `<ul class="venue-source-list">${sources.map(source => `<li>${source}</li>`).join("")}</ul>` : officialLink || '<p class="venue-court-note">根拠リンクは要確認です。</p>'}<p class="venue-source-note">料金・登録資格・抽選や先着の条件は変更されることがあります。利用前に公式案内をご確認ください。</p></div></div></details>
     </article>`;
   }
@@ -95,19 +97,20 @@
     if (!url) return;
     const fields = $("#venue-court-filters").elements;
     $("#venue-court-filters").reset();
-    fields.q.value = (url.searchParams.get("v_q") || "").slice(0,200);
+    const read = name => url.searchParams.get(`v_${name}`) ?? url.searchParams.get(name);
+    fields.q.value = (read("q") || "").slice(0,200);
     for (const [name,allowed] of Object.entries(SELECT_VALUES)) {
-      const value = url.searchParams.get(`v_${name}`) || (name === "sort" ? "name" : "");
+      const value = read(name) || (name === "sort" ? "name" : "");
       fields[name].value = allowed.includes(value) ? value : name === "sort" ? "name" : "";
     }
-    const municipality = url.searchParams.get("v_municipality") || "";
+    const municipality = read("municipality") || "";
     const municipalities = [...list(state.meta.municipalities),...state.courts.map(court => court.municipality)];
     fields.municipality.value = municipalities.includes(municipality) ? municipality : "";
-    const rawPrice = url.searchParams.get("v_price_max");
+    const rawPrice = read("price_max");
     const price = rawPrice && rawPrice.trim() ? numberOrNull(Number(rawPrice)) : null;
     fields.price_max.value = price === null ? "" : String(price);
     for (const name of ["night_lighting","indoor","show_suspended"]) {
-      fields[name].checked = ["1","true"].includes(url.searchParams.get(`v_${name}`));
+      fields[name].checked = ["1","true","on"].includes(read(name));
     }
   }
   function persistUrlFilters(filters) {
@@ -116,12 +119,14 @@
     for (const name of URL_FILTER_NAMES) {
       const key = `v_${name}`, value = filters[name];
       url.searchParams.delete(key);
+      url.searchParams.delete(name);
       if (typeof value === "boolean") {
         if (value) url.searchParams.set(key,"1");
       } else if (value !== null && value !== "" && value !== undefined && !(name === "sort" && value === "name")) {
         url.searchParams.set(key,String(value));
       }
     }
+    url.searchParams.delete("v_page");
     if (url.href !== browser.location.href) {
       browser.history.replaceState(browser.history.state,"",url.pathname + url.search + url.hash);
     }
@@ -146,7 +151,11 @@
   }
   function resetFilters() {
     clearTimeout(searchTimer);
-    $("#venue-court-filters").reset();
+    const fields = $("#venue-court-filters").elements;
+    for (const name of URL_FILTER_NAMES) {
+      if (["night_lighting","indoor","show_suspended"].includes(name)) fields[name].checked = false;
+      else fields[name].value = name === "sort" ? "name" : "";
+    }
     applyFilters();
   }
   function renderMetadata() {
@@ -168,7 +177,7 @@
     $("#venue-filter-fields").disabled = true;
     loadingRequest = (async () => {
       try {
-        const response = await fetch("/api/tennis-courts",{credentials:"omit",headers:{Accept:"application/json"}});
+        const response = await fetch(directory.dataset.catalogUrl,{credentials:"omit",headers:{Accept:"application/json"}});
         if (!response.ok) throw new Error("Unable to load courts");
         const data = await response.json();
         if (!data || !Array.isArray(data.courts)) throw new Error("Invalid court listing");
@@ -181,8 +190,8 @@
         applyFilters(false);
       } catch {
         $("#venue-error-state").hidden = false;
-        $("#venue-catalog-total").textContent = "掲載情報を取得できませんでした";
-        $("#venue-coverage-note").textContent = "もう一度読み込んで、掲載範囲をご確認ください。";
+        // Keep server-rendered records and counts readable on network failure.
+        $("#venue-empty-state").hidden = $("#venue-court-list").children.length > 0;
       } finally {
         $("#venue-loading-state").hidden = true;
         $("#venue-retry-load").disabled = false;
