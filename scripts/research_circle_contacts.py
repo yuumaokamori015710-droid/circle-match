@@ -216,6 +216,91 @@ def names_match(name, text):
     return len(n) >= 3 and n in t
 
 
+def heading_section_text(container, node, address=''):
+    """Bound flat editor markup to the email's heading and its subsections.
+
+    CMS pages often put unrelated clubs under sibling headings in one div.
+    Returning a string (including an empty string) marks a boundary that must
+    not be crossed by continuing to a broader ancestor.
+    """
+    children = list(container)
+    headings = [(i, int(child.tag[1])) for i, child in enumerate(children)
+                if isinstance(child.tag, str) and re.fullmatch(r'h[2-6]', child.tag)]
+    if len(headings) < 2:
+        return None
+    positions = [i for i, child in enumerate(children)
+                 if child is node or child in node.iterancestors()]
+    if node is container and address:
+        def has_address(text):
+            text = unicodedata.normalize('NFKC', text or '')
+            text = re.sub(r'(?:\[at\]|\(at\)|【at】)', '@', text, flags=re.I)
+            return address.casefold() in re.sub(r'\s*@\s*', '@', text).casefold()
+        if has_address(container.text):
+            positions = [-1]
+        else:
+            positions = [i + .5 for i, child in enumerate(children) if has_address(child.tail)]
+    if not positions:
+        return ''
+    position = positions[0]
+    preceding = [(i, level) for i, level in headings if i <= position]
+    if not preceding:
+        end = headings[0][0]
+        return clean((container.text or '') + ' ' + ' '.join(
+            (child.text_content() if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
+            for child in children[:end]))
+    start, level = preceding[-1]
+    end = next((i for i, other_level in headings if i > position and other_level <= level), len(children))
+    # Preserve enclosing higher-level heading names, without preceding sibling
+    # sections. For example "Blue Club > Contact" still belongs to Blue Club.
+    lineage = []
+    for i, heading_level in preceding:
+        while lineage and lineage[-1][1] >= heading_level:
+            lineage.pop()
+        lineage.append((i, heading_level))
+    names = ' '.join(children[i].text_content() for i, _ in lineage[:-1])
+    return clean(names + ' ' + ' '.join((child.text_content() if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
+                                      for child in children[start:end]))
+
+
+def dedicated_club_identity(tree, node, name, peer_names):
+    """A short club h1 in the same content region can name its contact section."""
+    ancestors = list(node.iterancestors())
+    if any(parent.tag in {'header', 'footer', 'nav', 'aside'} for parent in ancestors):
+        return ''
+    for heading in tree.xpath('//h1'):
+        title = clean(EMAIL.sub('', heading.text_content()))
+        if not names_match(name, title) or len(norm(title)) > len(norm(name)) + 12:
+            continue
+        if re.search(r'一覧|directory|club\s+list|clubs\s+list', title, re.I):
+            continue
+        if any(norm(other) != norm(name) and len(norm(other)) >= 4 and names_match(other, title)
+               for other in peer_names):
+            continue
+        # An h1 in a site header or sibling profile does not identify this node.
+        regions = [parent for parent in heading.iterancestors()
+                   if parent.tag in {'main', 'article', 'section'}]
+        if not regions:
+            parent = heading.getparent()
+            regions = [parent] if parent is not None and parent.tag == 'div' else []
+        if regions and regions[0] in ancestors:
+            return title
+    # Some dedicated university profiles use h4 for the club name and h5 for
+    # their contact sections. Require the name in the same bounded heading
+    # section, rather than borrowing a sibling club's title from the page.
+    for parent in ancestors:
+        section = heading_section_text(parent, node)
+        if section is None or not names_match(name, EMAIL.sub('', section)):
+            continue
+        if any(norm(other) != norm(name) and len(norm(other)) >= 4 and names_match(other, section)
+               for other in peer_names):
+            continue
+        for heading in parent.xpath('./h2|./h3|./h4|./*/h2|./*/h3|./*/h4'):
+            title = clean(EMAIL.sub('', heading.text_content()))
+            if names_match(name, title) and len(norm(title)) <= len(norm(name)) + 12:
+                return title
+    return ''
+
+
 def extract_contacts(circle, page, parsed, peer_names):
     """Require a bounded DOM context explicitly naming exactly one club.
 
@@ -230,27 +315,44 @@ def extract_contacts(circle, page, parsed, peer_names):
     if parsed['tree'] is not None:
         tree = parsed['tree']
         for node, mails in parsed['email_nodes']:
+            if (parse.urlsplit(page['url']).hostname or '').lower() in {'net-menber.com', 'www.net-menber.com'}:
+                # q_d is a visitor's question; a_d is the club's answer.
+                if any('q_d' in (parent.get('class') or '').split() for parent in [node, *node.iterancestors()]):
+                    continue
+            dedicated = dedicated_club_identity(tree, node, name, peer_names)
             for address in mails:
+                # Social URLs containing /@handle can look like RFC local parts.
+                if '/' in address.partition('@')[0] and not (node.tag == 'a' and (node.get('href') or '').lower().startswith('mailto:')):
+                    continue
                 context_node = node
                 evidence = ''
+                attribution = 'club_context'
                 for _ in range(5):
-                    text = clean(context_node.text_content())
+                    section = heading_section_text(context_node, node, address)
+                    text = clean(section if section is not None else context_node.text_content())
                     if len(text) > 1600:
                         break
                     named_text = EMAIL.sub('', text)
                     if re.search(r'学生課|学生支援課|教務課|広報課|入試課|情報システム|学生生活課|サイト管理', named_text):
                         break
+                    others = [n for n in peer_names if norm(n) != norm(name) and len(norm(n)) >= 4 and names_match(n, named_text)]
                     if names_match(name, named_text):
-                        others = [n for n in peer_names if norm(n) != norm(name) and len(norm(n)) >= 4 and names_match(n, text)]
                         # Broad enclosing containers may mention many clubs; don't guess.
                         if not others:
                             evidence = text[:1600]
                             break
+                    if section is not None:
+                        # Dedicated club pages can use a plain "Contact" heading
+                        # without repeating their club name in every section.
+                        if dedicated and not others and text:
+                            evidence = clean(dedicated + ' / ' + text)[:1600]
+                            attribution = 'club_page'
+                        break
                     context_node = context_node.getparent()
                     if context_node is None or context_node.tag in {'body', 'html', 'footer', 'nav'}:
                         break
                 if evidence:
-                    blocks.append((address, evidence))
+                    blocks.append((address, evidence, attribution))
                 else:
                     candidates.append(address)
     else:
@@ -261,16 +363,16 @@ def extract_contacts(circle, page, parsed, peer_names):
             context = ' '.join(lines[max(0, index - 2):index + 2])
             other = [n for n in peer_names if norm(n) != norm(name) and len(norm(n)) >= 4 and names_match(n, context)]
             if len(context) <= 1600 and names_match(name, EMAIL.sub('', context)) and not other:
-                blocks.extend((m, context) for m in EMAIL.findall(line))
+                blocks.extend((m, context, 'club_context') for m in EMAIL.findall(line))
             else:
                 candidates.extend(EMAIL.findall(line))
-    for address, evidence in blocks:
+    for address, evidence, attribution in blocks:
         address = address.rstrip('.,;:')
         if address.lower().endswith(('.png', '.jpg', '.gif', '.webp')) or address.lower().startswith(('example@', 'test@', 'noreply@', 'no-reply@')):
             continue
         if any(x['email'].lower() == address.lower() for x in found):
             continue
-        found.append({'email': address, 'source_url': page['url'], 'evidence': evidence, 'attribution': 'club_context'})
+        found.append({'email': address, 'source_url': page['url'], 'evidence': evidence, 'attribution': attribution})
     return found, sorted(set(candidates))
 
 
@@ -426,14 +528,14 @@ def export(directory, circles, results):
     (directory / 'results.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
     with (directory / 'contacts.csv').open('w', encoding='utf-8-sig', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['circle_id', 'university', 'circle', 'status', 'email', 'source_url', 'checked_at', 'note'])
+        writer.writerow(['circle_id', 'university', 'circle', 'status', 'email', 'source_url', 'public_evidence', 'checked_at', 'note'])
         for circle in circles:
             row = results.get(circle['circle_id'])
             if not row:
-                writer.writerow([csv_cell(x) for x in [circle['circle_id'], circle['university_name'], circle['circle_name'], 'pending', '', '', '', '']])
+                writer.writerow([csv_cell(x) for x in [circle['circle_id'], circle['university_name'], circle['circle_name'], 'pending', '', '', '', '', '']])
             else:
                 for email in row['contacts'] or [{}]:
-                    writer.writerow([csv_cell(x) for x in [circle['circle_id'], circle['university_name'], circle['circle_name'], row['status'], email.get('email', ''), email.get('source_url', circle.get('source_url', '')), row['checked_at'], row['note']]])
+                    writer.writerow([csv_cell(x) for x in [circle['circle_id'], circle['university_name'], circle['circle_name'], row['status'], email.get('email', ''), email.get('source_url', circle.get('source_url', '')), email.get('evidence', ''), row['checked_at'], row['note']]])
     stats = {'total': len(circles), 'researched': len(ordered), 'pending': len(circles) - len(ordered), 'statuses': dict(Counter(r['status'] for r in ordered)), 'updated_at': now()}
     (directory / 'progress.json').write_text(json.dumps(stats, ensure_ascii=False, indent=2), encoding='utf-8')
     return stats

@@ -71,6 +71,80 @@ class CircleContactAttributionTests(unittest.TestCase):
             peers=["Blue Tennis Club", "Red Football Club"])
         self.assertEqual(found, [])
 
+    def test_unregistered_other_club_in_sibling_heading_cannot_supply_email(self):
+        found, _ = self.contacts("""<html><body><main><h1>大学祭</h1><div class="editor">
+            <h2>白金祭</h2><h4>11月1日</h4><p>運営：白金祭実行委員会</p>
+            <p>お問い合わせ <a href="mailto:white@clubs.example">メール</a></p>
+            <h2>戸塚まつり</h2><h4>5月23日</h4><p>運営：戸塚まつり準備会</p>
+            <p>戸塚まつりに関するお問い合わせ <a href="mailto:totsuka@clubs.example">メール</a></p>
+            </div></main></body></html>""", name="戸塚まつり準備会", peers=["戸塚まつり準備会"])
+        self.assertEqual([item["email"] for item in found], ["totsuka@clubs.example"])
+        self.assertNotIn("白金祭", found[0]["evidence"])
+
+    def test_dedicated_h1_identifies_contact_section_after_long_activity_section(self):
+        content = """<html><body><main><h1>Blue Tennis Club</h1><div>
+            <h2>Activities</h2><p>""" + ("Weekly tennis practice. " * 100) + """</p>
+            <h2>Contact</h2><!-- CMS editor comment --><p>Contact: blue@clubs.example</p>
+            </div></main></body></html>"""
+        found, _ = self.contacts(content)
+        self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
+        self.assertEqual(found[0]["attribution"], "club_page")
+        self.assertNotIn("Weekly tennis practice", found[0]["evidence"])
+
+    def test_dedicated_h1_does_not_override_office_heading_boundary(self):
+        found, _ = self.contacts("""<html><body><main><h1>Blue Tennis Club</h1><div>
+            <h2>Activities</h2><p>Every Saturday.</p>
+            <h2>学生支援課へのお問い合わせ</h2><p>Contact: office@university.example</p>
+            </div></main></body></html>""")
+        self.assertEqual(found, [])
+
+    def test_contact_subheading_inherits_only_its_enclosing_club_heading(self):
+        found, _ = self.contacts("""<html><body><main><div>
+            <h2>Unregistered Red Club</h2><h3>Contact</h3><p>red@clubs.example</p>
+            <h2>Blue Tennis Club</h2><h3>Activities</h3><p>Weekly practice.</p>
+            <h3>Contact</h3><p>blue@clubs.example</p>
+            </div></main></body></html>""")
+        self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
+        self.assertNotIn("Unregistered Red Club", found[0]["evidence"])
+
+    def test_dedicated_h1_identifies_direct_contact_text_before_first_subheading(self):
+        found, _ = self.contacts("""<html><body><main><h1>Blue Tennis Club</h1><div>
+            blue@clubs.example<h2>Activities</h2><p>Weekly practice.</p>
+            <h2>History</h2><p>Founded last year.</p>
+            </div></main></body></html>""")
+        self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
+        self.assertEqual(found[0]["attribution"], "club_page")
+
+    def test_bounded_profile_title_can_identify_nested_lower_level_contact_headings(self):
+        found, _ = self.contacts("""<html><body><main><div>
+            <div><h4>Blue Tennis Club</h4></div><div><h5>Welcome</h5><p>Weekly practice.</p>
+            <h5>Join us</h5><p>お問い合わせ blue@clubs.example</p></div>
+            <h3>Photo album</h3><p>Club photos.</p><h3>Other information</h3>
+            </div></main></body></html>""")
+        self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
+
+    def test_social_url_at_handle_is_not_an_email(self):
+        found, uncertain = self.contacts("""<html><body><main><article>
+            <h2>Blue Tennis Club</h2><p>https://www.tiktok.com/@blue.tennis</p>
+            </article></main></body></html>""")
+        self.assertEqual(found, [])
+        self.assertEqual(uncertain, [])
+
+    def test_visitor_question_email_is_excluded_but_club_answer_email_is_kept(self):
+        page, parsed = page_html("""<html><body><main><dl>
+            <dt>Visitor</dt><dd class="q_d">Please reply to visitor@personal.example</dd>
+            <dt>回答：Blue Tennis Club</dt><dd class="a_d">Our club contact is blue@clubs.example</dd>
+            </dl></main></body></html>""", "https://www.net-menber.com/look/data/123.html")
+        found, uncertain = crawler.extract_contacts(club(), page, parsed, ["Blue Tennis Club"])
+        self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
+        self.assertNotIn("visitor@personal.example", uncertain)
+
+    def test_dedicated_h1_cannot_identify_email_in_a_separate_content_region(self):
+        found, _ = self.contacts("""<html><body><main><article><h1>Blue Tennis Club</h1>
+            <p>Weekly practice.</p></article><article><h2>Other group</h2><p>Other group activity</p>
+            <h2>Contact</h2><p>Contact: other@clubs.example</p></article></main></body></html>""")
+        self.assertEqual(found, [])
+
     def test_visible_obfuscated_email_in_named_card_is_decoded(self):
         found, _ = self.contacts("""<html><body><main><article>
             <h2>Blue Tennis Club</h2><p>団体への連絡： blue [at] clubs.example</p>
