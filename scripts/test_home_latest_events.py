@@ -62,6 +62,8 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         result = self.app.latest_home_events()
         self.assertEqual([event['event_id'] for event in result], expected[:3])
         page = self.home('/?' + urlencode({'region':'kansai', 'prefecture':'大阪府'}))
+        self.assertLess(page.index('id="home-journeys-heading"'), page.index('id="sports-list"'))
+        self.assertLess(page.index('id="sports-list"'), page.index('id="homeLatestEvents"'))
         rows = re.search(r'<ul[^>]*id="homeLatestEvents"[^>]*>(.*?)</ul>', page, re.S)
         self.assertIsNotNone(rows)
         row_ids = [unquote(value) for value in re.findall(r'href="/events/([^"]+)"', rows.group(1))]
