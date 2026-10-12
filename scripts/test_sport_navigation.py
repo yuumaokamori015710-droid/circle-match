@@ -215,7 +215,11 @@ class SportNavigationTests(IsolatedAppHttpCase):
             with self.subTest(path=path):
                 _, parsed = self.page(path)
                 self.assert_shared_tabs(parsed, current, self.GLOBAL, 'social' if current == 'サークルDB' else 'university')
-                self.assert_shared_context(parsed, 'テニス', 'prefecture:東京都')
+                if current == '会場予約':
+                    self.assertEqual(parsed.selected('sport'),['テニス'])
+                    self.assertIn('data-stage="tokyo"', self.page(path)[0])
+                else:
+                    self.assert_shared_context(parsed, 'テニス', 'prefecture:東京都')
 
     def test_selected_sport_db_keeps_audience_and_does_not_repeat_cards(self):
         for audience in ['university', 'social']:

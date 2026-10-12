@@ -364,8 +364,11 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
 
     def test_initial_html_displays_reviewed_ranges_units_sources_free_and_unknown(self):
         html = self.request('/venues?' + urlencode({'q': '高円寺みんなの体育館'}))[1].decode()
-        self.assertIn('>1,500円</span>', html)
-        self.assertIn('<small>〜</small>6,000円</span>', html)
+        self.assertIn('>1,500円</td>', html)
+        self.assertIn('>6,000円</span>', html)
+        self.assertNotIn('<small>〜</small>', html)
+        self.assertIn('条件別料金', html)
+        self.assertIn('半面', html)
         self.assertIn('体育館貸切2時間', html)
         self.assertIn('class="venue-fee-link"', html)
         self.assertNotIn('料金は要確認', html)
@@ -375,7 +378,64 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertIn('>0円</span>', card)
         self.assertNotIn('料金は要確認', card)
         unknown = self.request('/venues?' + urlencode({'q': '千歳テニスクラブ'}))[1].decode()
-        self.assertIn('料金は要確認', unknown)
+        self.assertIn('金額未取得', unknown)
+
+    def test_map_drilldown_is_ssr_and_preserves_conditions(self):
+        from bs4 import BeautifulSoup
+        query = {'sport': 'サッカー・フットサル', 'v_q': '公園', 'v_booking_channel': 'web'}
+        for stage, destination, area in [('japan','関東',''),('kanto','東京都',''),('tokyo','23区','23区'),('wards','新宿区','23区')]:
+            params = {**query,'v_map':stage}
+            if stage == 'wards':
+                params['v_area'] = '23区'
+            page = self.request('/venues?' + urlencode(params))[1].decode()
+            soup = BeautifulSoup(page,'html.parser')
+            panel = soup.select_one('.venue-region-panel')
+            self.assertEqual(panel['data-stage'],stage)
+            self.assertGreater(len(panel.select('svg path')),0)
+            link = next(a for a in panel.select('.venue-map-choice[href]') if a.select_one('span').get_text()==destination)
+            from urllib.parse import parse_qs
+            target = parse_qs(urlsplit(link['href']).query)
+            self.assertEqual(target['sport'],[query['sport']])
+            self.assertEqual(target['v_q'],['公園'])
+            self.assertEqual(target['v_booking_channel'],['web'])
+            if area:
+                self.assertEqual(target['v_area'],[area])
+            if stage == 'wards':
+                self.assertEqual(target['v_municipality'],['新宿区'])
+        self.assertIn('掲載準備中', self.request('/venues?v_map=japan')[1].decode())
+
+    def test_compact_table_and_removed_filters_keep_legacy_urls(self):
+        from bs4 import BeautifulSoup
+        page = BeautifulSoup(self.request('/venues')[1].decode(),'html.parser')
+        self.assertEqual(len(page.select('.venue-filter-grid>label')),4)
+        self.assertEqual(len(page.select('.venue-table>thead th')),6)
+        self.assertEqual(len(page.select('.venue-table>tbody>tr.venue-court-card')),50)
+        for key in ('venue_type','operator_type','open_from','open_until'):
+            self.assertEqual(page.select_one(f'[name="{key}"]')['type'],'hidden')
+        self.assertIsNone(page.select_one('[type="time"]'))
+        old = self.request('/venues?' + urlencode({'venue_type':'gym','operator_type':'PUBLIC','open_from':'20:00','open_until':'21:00'}))[1].decode()
+        self.assertIn('以前のURLの追加条件',old)
+        self.assertIn('class="venue-court-card"',old)
+
+    def test_tariffs_are_explicit_sourced_and_do_not_modify_legacy_records(self):
+        from venues.fees import validate
+        rows = json.loads(self.request('/api/venues')[1])['courts']
+        priced = [r for r in rows if r.get('fee_options')]
+        self.assertGreaterEqual(len(priced),230)
+        for row in priced:
+            validate([{'id':row['id'],'checked_at':row['fee_checked_at'],'fee_options':row['fee_options']}])
+        kita = next(r for r in rows if r['name']=='岸町ふれあい館')
+        self.assertIsNone(kita['price_from'])
+        self.assertEqual(kita['fee_options'][0]['amount'],360)
+        self.assertTrue(any('北区民以外' in p['label'] for p in kita['fee_options']))
+        meguro = next(r for r in rows if r['name']=='上目黒住区センター')
+        self.assertTrue(any('一般団体' in p['label'] for p in meguro['fee_options']))
+        schools = [r for r in rows if r['id'].startswith('school-')]
+        self.assertTrue(all(r['price_from'] is None and not r.get('fee_options') for r in schools))
+        example = {'id':'test','checked_at':'2026-10-12','fee_options':[{'label':'全面','amount':1,'unit':'1時間','conditions':'一般','source_url':'https://example.com/fees'}]}
+        for amount in (True,-1,1.5,'100'):
+            with self.assertRaises(ValueError):
+                validate([{**example,'fee_options':[{**example['fee_options'][0],'amount':amount}]}])
 
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:
@@ -385,6 +445,19 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                     self.assertIn(status, {301, 302, 303, 307, 308})
                     self.assertEqual(headers['Location'], '/venues')
             connect.assert_not_called()
+
+    def test_tariffs_keep_room_person_and_short_slot_units_distinct(self):
+        module = importlib.import_module(self.app.venues.get_venue_catalog.__module__)
+        rows = {r['id']:r for r in module.get_catalog()['courts']}
+        room = next(r for r in rows.values() if r['name']=='カラオケまねきねこ 経堂農大通り店')
+        self.assertTrue(all('1室30分' in p['unit'] for p in room['fee_options']))
+        fuchu = rows['tokyo-sports-020']['fee_options']
+        late = [p for p in fuchu if '21:00–21:45' in p['label']]
+        self.assertEqual({p['amount'] for p in late}, {9900,11550})
+        self.assertTrue(all('45分' in p['unit'] for p in late))
+        for ident in ('tokyo-sports-029','tokyo-gym-a158d5ba41af','tokyo-venue-a231a98caa19'):
+            self.assertTrue(any('アリーナ' in p['label'] and '貸切' in p['unit'] for p in rows[ident]['fee_options']))
+        self.assertEqual(module.get_catalog()['meta']['prices_available'], sum(r['price_from'] is not None or bool(r.get('fee_options')) for r in rows.values()))
 
     def test_public_paths_reject_posts_and_asset_traversal_without_persistence(self):
         before = self.database.read_bytes()

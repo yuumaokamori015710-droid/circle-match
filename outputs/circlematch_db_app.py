@@ -1561,15 +1561,20 @@ def render_directory_context(params, tab):
     audience = audience_scope(params, "university")
     action = "/" if tab == "db" else "/" + tab
     hidden = f'<input type="hidden" name="tab" value="db"><input type="hidden" name="audience" value="{audience}">' if tab == "db" else ""
-    local_keys = ("q", "sort") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else ("v_q", "v_municipality", "v_area", "v_operator_type", "v_facility_kind", "v_price_max", "v_sort", "v_night_lighting", "v_indoor", "v_show_suspended"))
+    venue_keys = ('q','municipality','area','map','operator_type','facility_kind','venue_type','booking_channel','registration','open_from','open_until','price_max','sort','night_lighting','indoor','show_suspended')
+    local_keys = ("q", "sort") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else tuple('v_' + key for key in venue_keys))
     hidden += ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params[key][0], quote=True)}">' for key in local_keys if params.get(key))
-    return event_home_navigation(sport or purpose) + f'''<section class="directory-context"><div class="directory-title">{thumbnail}<div><p class="eyebrow">SPORTS DIRECTORY</p><h1>{html.escape(sport or "すべての競技")}</h1></div></div><form id="directoryContext" action="{action}" method="get" aria-label="競技・地域を選ぶ" data-tab="{tab}">{hidden}<label>競技<select name="sport">{sport_options_html}</select></label><label>地域<select name="area">{area_options}</select></label><noscript><button class="button" type="submit">条件を変更する</button></noscript></form></section>'''
+    region_control = f'<label>地域<select name="area">{area_options}</select></label>'
+    if tab == 'venues' and venues.supports_catalog(params):
+        region_control = ''.join(f'<input type="hidden" name="{key}" value="{html.escape(value, quote=True)}">' for key, value in [('region', region), ('prefecture', prefecture)] if value)
+    return event_home_navigation(sport or purpose) + f'''<section class="directory-context"><div class="directory-title">{thumbnail}<div><p class="eyebrow">SPORTS DIRECTORY</p><h1>{html.escape(sport or "すべての競技")}</h1></div></div><form id="directoryContext" action="{action}" method="get" aria-label="競技・地域を選ぶ" data-tab="{tab}">{hidden}<label>競技<select name="sport">{sport_options_html}</select></label>{region_control}<noscript><button class="button" type="submit">条件を変更する</button></noscript></form></section>'''
 
 
 DIRECTORY_CONTEXT_SCRIPT = r'''<script>
 (()=>{const form=document.getElementById('directoryContext');if(!form)return;
  const navigate=e=>{e.preventDefault();const target=new URL(location.href), tab=form.dataset.tab;
  target.pathname=form.getAttribute('action');target.hash='';
+ if(tab==='venues'&&!form.elements.area){target.searchParams.delete('sport');target.searchParams.delete('v_page');if(form.elements.sport.value)target.searchParams.set('sport',form.elements.sport.value);location.assign(target.pathname+target.search);return;}
  for(const key of ['sport','region','prefecture','area','page','offset','tab','audience'])target.searchParams.delete(key);
  const sport=form.elements.sport.value,area=form.elements.area.value;if(sport)target.searchParams.set('sport',sport);
  if(area.startsWith('prefecture:'))target.searchParams.set('prefecture',area.slice(11));else if(area.startsWith('region:'))target.searchParams.set('region',area.slice(7));

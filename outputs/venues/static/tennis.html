@@ -8,11 +8,10 @@
     <p id="venue-coverage-note" class="venue-coverage-note">__VENUE_COVERAGE__</p>
     <p class="venue-coverage-note">掲載は予約の成立を保証しません。利用登録・抽選・料金・空き状況を公式予約先で確認してください。</p>
   </section>
+  <div id="venue-region-selector">__VENUE_REGION_MAP__</div>
   <section class="venue-filter-panel" aria-labelledby="venue-filter-heading">
     <div class="venue-panel-heading"><h2 id="venue-filter-heading">条件から探す</h2><button id="venue-reset-filters" type="button" class="venue-text-button">条件をリセット</button></div>
     <form id="venue-court-filters" role="search" action="/venues" method="get">__VENUE_FILTERS__</form>
-    <p id="venue-price-filter-note" class="venue-filter-note">料金比較はコート1面・1時間に換算できる施設のみです。料金上限を指定すると、料金未確認・人数単位・会議室単位などの施設は表示しません。</p>
-    <p class="venue-filter-note">利用時間は曜日共通の確認済み時間帯で検索します（この競技で<span id="venue-hours-count">__VENUE_HOURS_COUNT__</span>施設）。時刻を指定すると未確認の施設は除外します。休館日・予約枠・空き状況は公式案内でご確認ください。</p>
     <p id="venue-filter-error" class="venue-filter-error" role="alert" hidden></p>
   </section>
   <section id="venue-court-results" aria-labelledby="venue-result-heading" tabindex="-1">
@@ -21,7 +20,7 @@
     <div id="venue-loading-state" class="venue-message-panel" role="status" hidden><span class="venue-spinner" aria-hidden="true"></span><p>施設一覧を更新しています…</p></div>
     <div id="venue-error-state" class="venue-message-panel" role="alert" hidden><h3>施設一覧を更新できませんでした</h3><p>表示済みの施設は確認できます。通信状況を確認して、もう一度お試しください。</p><button id="venue-retry-load" type="button" class="venue-primary-button">もう一度読み込む</button></div>
     <div id="venue-empty-state" class="venue-message-panel" __VENUE_EMPTY_HIDDEN__><h3>条件に合う施設は見つかりませんでした</h3><p>キーワードや料金上限を変えて、お試しください。</p><button id="venue-empty-reset" type="button">条件をリセット</button></div>
-    <div id="venue-court-list" class="venue-court-list" aria-label="条件に合う会場">__VENUE_CARDS__</div>
+    <table class="venue-table"><caption class="venue-visually-hidden">条件に合う会場の比較一覧</caption><thead><tr><th scope="col">施設名</th><th scope="col">所在地</th><th scope="col">料金・適用区分</th><th scope="col">予約方法</th><th scope="col">事前登録</th><th scope="col">予約・募集</th></tr></thead><tbody id="venue-court-list">__VENUE_CARDS__</tbody></table>
     <div id="venue-pagination" class="venue-pagination" hidden><button id="venue-show-more" type="button" class="venue-primary-button">さらに50件表示</button><button id="venue-show-all" type="button">すべて表示</button></div>
     __VENUE_PAGER__
   </section>

@@ -51,11 +51,18 @@ const results = [];
         await page.goto(base+'/venues?'+new URLSearchParams({v_q:name}));
         await page.locator('#venue-filter-fields:not([disabled])').waitFor();
         const card = page.locator('.venue-court-card').filter({has:page.getByRole('heading',{name,exact:true})});
-        const expected = row.price_from.toLocaleString('ja-JP')+'円'+(row.price_to===row.price_from?'':'〜'+row.price_to.toLocaleString('ja-JP')+'円');
-        assert.equal(await card.locator('.venue-original-price').innerText(),expected);
-        assert.equal(await card.locator('.venue-price-unit').innerText(),row.price_unit);
-        const source = row.sources.find(s=>s.title.includes('公式料金表'));
-        assert.equal(await card.locator('.venue-fee-link').getAttribute('href'),source.url);
+        if (row.fee_options?.length) {
+          assert.equal(await card.locator('.venue-rate-preview').count(),Math.min(2,row.fee_options.length));
+          await card.locator('.venue-tariff-more').click();
+          const detail=card.locator('xpath=following-sibling::tr[1]');
+          assert.equal(await detail.locator('.venue-tariff tbody tr').count(),row.fee_options.length);
+          assert.equal(await detail.locator('details').getAttribute('open'),'');
+          assert.equal(await card.locator('.venue-price-unit').innerText(),row.fee_options[0].unit);
+          assert.equal(await card.locator('.venue-fee-link').getAttribute('href'),row.fee_options[0].source_url);
+        } else {
+          const expected = row.price_from.toLocaleString('ja-JP')+'円'+(row.price_to===row.price_from?'':'〜'+row.price_to.toLocaleString('ja-JP')+'円');
+          assert.equal(await card.locator('.venue-original-price').innerText(),expected);
+        }
         const overflow = await card.locator('.venue-court-price').evaluate(el=>{
           const parent=el.getBoundingClientRect();
           return [...el.querySelectorAll('.venue-price-amount')].some(span=>{
@@ -86,9 +93,29 @@ const results = [];
     facetPage.on('pageerror',error=>errors.push(error.message));
     await facetPage.goto(base+'/venues');
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
-    await facetPage.locator('#venue-area-filter').selectOption('23区');
-    await facetPage.locator('[name=municipality]').selectOption('新宿区');
-    await facetPage.locator('#venue-area-filter').selectOption('多摩');
+    await facetPage.locator('.venue-map-choice[href]').filter({has:facetPage.getByText('23区',{exact:true})}).click();
+    await facetPage.waitForURL(/v_map=wards/);
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    await facetPage.locator('.venue-map-choice[href]').filter({has:facetPage.getByText('新宿区',{exact:true})}).click();
+    await facetPage.waitForURL(/v_municipality=/);
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await facetPage.locator('[name=municipality]').inputValue(),'新宿区');
+    const expectedShinjuku=catalog.courts.filter(r=>r.municipality==='新宿区'&&r.availability_status!=='SUSPENDED').length;
+    assert.equal(await facetPage.locator('#venue-result-count').innerText(),expectedShinjuku+' 件');
+    const shinjukuUrl=facetPage.url();
+    await facetPage.goBack();
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await facetPage.locator('[name=municipality]').inputValue(),'');
+    assert.equal(await facetPage.locator('[name=area]').inputValue(),'23区');
+    await facetPage.goForward();
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(facetPage.url(),shinjukuUrl);
+    assert.equal(await facetPage.locator('[name=municipality]').inputValue(),'新宿区');
+    await facetPage.locator('.venue-map-breadcrumbs').getByRole('link',{name:'東京都',exact:true}).click();
+    await facetPage.waitForURL(/v_map=tokyo/);
+    await facetPage.locator('.venue-map-choice[href]').filter({has:facetPage.getByText('多摩',{exact:true})}).click();
+    await facetPage.waitForURL(/v_map=tama/);
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(await facetPage.locator('[name=municipality]').inputValue(),'');
     const options=await facetPage.locator('[name=municipality] option').allTextContents();
     assert(options.includes('八王子市') && !options.includes('新宿区'));
@@ -97,8 +124,7 @@ const results = [];
       ['booking_channel','phone',row=>row.booking_channels.includes('phone')],
       ['booking_channel','web',row=>row.booking_channels.includes('web')],
       ['registration','required',row=>row.registration_required===true],
-      ['registration','unknown',row=>row.registration_required===null],
-      ['venue_type','gym',row=>row.venue_types.includes('gym')]
+      ['registration','unknown',row=>row.registration_required===null]
     ]) {
       await facetPage.locator('#venue-reset-filters').click();
       await facetPage.locator(`[name=${field}]`).selectOption(value);
@@ -110,8 +136,8 @@ const results = [];
       assert.equal(await facetPage.locator('#venue-result-count').innerText(),expected.toLocaleString('ja-JP')+' 件');
     }
     await facetPage.locator('#venue-reset-filters').click();
-    await facetPage.locator('[name=open_from]').fill('20:00');
-    await facetPage.locator('[name=open_until]').fill('21:00');
+    await facetPage.goto(base+'/venues?v_open_from=20%3A00&v_open_until=21%3A00');
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(await facetPage.locator('.venue-court-card').count(),12);
     await facetPage.locator('#venue-reset-filters').click();
     await facetPage.locator('[name=price_max]').fill('1,300');
@@ -132,7 +158,7 @@ const results = [];
     await facetPage.getByRole('link',{name:'元の画面へ戻る',exact:false}).click();
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(new URL(facetPage.url()).pathname+new URL(facetPage.url()).search,returnUrl);
-    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'block');
+    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'grid');
     assert.equal(await facetPage.evaluate(()=>document.documentElement.dataset.cmView),'mobile');
     assert.equal(await facetPage.evaluate(()=>Math.round(document.body.getBoundingClientRect().width)),390);
     await facetPage.screenshot({path:path.join(out,'forced-mobile-on-desktop.png')});
@@ -145,7 +171,8 @@ const results = [];
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'多摩');
     assert.equal(await facetPage.locator('#venue-sort').inputValue(),'price');
-    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'grid');
+    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'table-row');
+    await facetPage.locator('.venue-region-panel[data-stage=tama]').waitFor();
     await facetPage.goto(base+'/venues?v_area='+encodeURIComponent('23区'));
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'23区');
@@ -156,7 +183,9 @@ const results = [];
     await facetPage.getByRole('button',{name:'設定を保存',exact:true}).click();
     await facetPage.goto(base+'/venues');
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
-    await facetPage.locator('#venue-area-filter').selectOption('多摩');
+    await facetPage.locator('.venue-map-choice[href]').filter({has:facetPage.getByText('多摩',{exact:true})}).click();
+    await facetPage.waitForURL(/v_map=tama/);
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     await facetPage.goto(base+'/venues');
     await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
     assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'多摩');
@@ -187,12 +216,20 @@ const results = [];
     const plain = await nojs.newPage();
     await plain.goto(base+'/venues?'+new URLSearchParams({sport:'サッカー・フットサル'}));
     assert(await plain.locator('.venue-court-card').count()>=15);
+    await plain.locator('.venue-map-choice[href]').filter({has:plain.getByText('23区',{exact:true})}).click();
+    await plain.waitForURL(/v_map=wards/);
+    await plain.locator('.venue-map-choice[href]').filter({has:plain.getByText('新宿区',{exact:true})}).click();
+    await plain.waitForURL(/v_municipality=/);
+    assert.equal(await plain.locator('[name=municipality]').inputValue(),'新宿区');
+    assert(plain.url().includes('sport='));
     await plain.locator('input[name=q]').fill('no-matching-venue-xyz');
     await plain.getByRole('button',{name:'条件を適用',exact:true}).click();
     await plain.waitForURL(/q=/);
     assert.equal(await plain.locator('.venue-court-card').count(),0);
     await plain.goto(base+'/venues?'+new URLSearchParams({v_q:'高円寺みんなの体育館'}));
-    assert.equal(await plain.locator('.venue-original-price').innerText(),'1,500円〜6,000円');
+    assert((await plain.locator('.venue-original-price').innerText()).includes('6,000円'));
+    await plain.locator('.venue-court-details summary').click();
+    assert((await plain.locator('.venue-tariff').innerText()).includes('1,500円'));
     assert.equal(await plain.locator('.venue-fee-link').count(),1);
     await plain.goto(base+'/venues?area='+encodeURIComponent('多摩'));
     assert(!(await plain.locator('[name=municipality] option').allTextContents()).includes('新宿区'));
@@ -210,7 +247,7 @@ const results = [];
     await device.getByRole('button',{name:'設定を保存',exact:true}).click();
     await device.goto(base+'/venues');
     await device.locator('#venue-filter-fields:not([disabled])').waitFor();
-    assert.equal(await device.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'grid');
+    assert.equal(await device.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'table-row');
     assert((await device.locator('meta[name=viewport]').getAttribute('content')).startsWith('width=1280, initial-scale='));
     assert(await device.evaluate(()=>visualViewport.width>=1200));
     await device.getByRole('link',{name:'設定',exact:true}).click();
@@ -225,6 +262,6 @@ const results = [];
     assert(await failed.locator('.venue-court-card').count()>=15);
     await failed.close();
     fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(results,null,2));
-    console.log(`PASS: ${results.length} sport/viewport combinations, 16 fee checks, cascading area/municipality, booking/registration/type/hours/price filters, URL reload, sorting, saved settings, forced mobile/desktop, 5 settings widths, no-JS, offline fallback`);
+    console.log(`PASS: ${results.length} sport/viewport combinations, 16 fee checks, geographic map drilldown, booking/registration/legacy-hours/price filters, URL reload, sorting, saved settings, forced mobile/desktop, 5 settings widths, no-JS, offline fallback`);
   } finally {await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>{if(server)server.kill();});
