@@ -209,12 +209,12 @@
     const knownEquipment = courtCount !== null || court.surface || typeof court.indoor === "boolean" || typeof court.night_lighting === "boolean";
     const features = [...list(court.sports), ...(court.facility_kind === "VENUE" ? [court.facility_label || ""] : knownEquipment ? [courtCount === null ? "面数は要確認" : `${courtCount}面`, court.surface || "サーフェスは要確認", court.indoor === true ? "屋内あり" : court.indoor === false ? "屋外" : "屋内・屋外は要確認", court.night_lighting === true ? "夜間照明あり" : court.night_lighting === false ? "夜間照明なし" : "夜間照明は要確認"] : ["設備情報は要確認"])].filter(Boolean);
     const createParams = new URLSearchParams({venue:court.id,sport:state.meta.sport || list(court.sports)[0] || "",prefecture:"東京都"});
-    const createLink = suspended ? "" : `<a class="venue-secondary-link" href="/events/new?${esc(createParams.toString())}">この会場で募集を作る</a>`;
+    const createLink = suspended ? "" : `<a class="venue-secondary-link" href="/events/new?${esc(createParams.toString())}" aria-label="この会場で募集を作る"><span class="venue-create-prefix">この会場で</span>募集を作る</a>`;
     const channels=list(court.booking_channels).map(c=>({web:'Web',phone:'電話',counter:'窓口'}[c]||c)).join('・')||'公式案内';
     const tariff=plans.length?`<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>${plans.map(p=>`<tr><th scope="row">${esc(p.label)}</th><td class="venue-tariff-amount">${Number(p.amount).toLocaleString('ja-JP')}円</td><td>${esc(p.unit)}</td><td>${esc(p.conditions)}</td></tr>`).join('')}</tbody></table>`:'';
     return `<tr class="venue-court-card" aria-labelledby="venue-court-title-${index}"><th scope="row" class="venue-court-main"><h3 id="venue-court-title-${index}">${esc(court.name)}</h3>${suspended?`<p class="venue-availability-note">休止中：${esc(court.availability_note)}</p>`:''}<p class="venue-court-features">${list(court.sports).map(esc).join(' / ')}</p></th>
       <td class="venue-location-cell" data-label="所在地">${esc(court.municipality)}</td><td class="venue-court-price" data-label="料金"><div class="venue-original-price">${priceLabel(court)}</div>${feeLink}</td><td class="venue-booking-cell" data-label="予約方法">${esc(channels)}</td><td class="venue-registration-cell" data-label="事前登録">${registration}</td><td class="venue-action-cell"><div class="venue-court-links">${bookingLink}${createLink}</div></td></tr>
-      <tr class="venue-details-row"><td colspan="6"><details id="venue-details-${index}" class="venue-court-details"><summary>料金表・施設詳細</summary><div class="venue-detail-content"><div>${tariff}<p class="venue-court-note">${esc(court.price_note)}</p><p class="venue-court-note">${esc(court.fee_note)}</p><p class="venue-opening-hours"><strong>通常利用時間</strong> ${hours}</p></div><div><dl><dt>住所</dt><dd>${externalLink(mapSearchUrl(court),court.address)}</dd><dt>予約方法</dt><dd>${esc(court.booking_method)}</dd><dt>利用条件</dt><dd>${esc(court.booking_note)}</dd><dt>施設</dt><dd>${esc(court.facility_label)}</dd><dt>運営</dt><dd>${esc(court.operator)}（${operatorType}）</dd><dt>確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl>${officialLink}<ul class="venue-source-list">${sources.map(source=>`<li>${source}</li>`).join('')}</ul></div></div></details></td></tr>`;
+      <tr class="venue-details-row"><td colspan="6"><details id="venue-details-${index}" class="venue-court-details"><summary aria-label="料金表・施設詳細"><span class="venue-details-prefix">料金表・施設</span>詳細</summary><div class="venue-detail-content"><div>${tariff}<p class="venue-court-note">${esc(court.price_note)}</p><p class="venue-court-note">${esc(court.fee_note)}</p><p class="venue-opening-hours"><strong>通常利用時間</strong> ${hours}</p></div><div><dl><dt>住所</dt><dd>${externalLink(mapSearchUrl(court),court.address)}</dd><dt>予約方法</dt><dd>${esc(court.booking_method)}</dd><dt>利用条件</dt><dd>${esc(court.booking_note)}</dd><dt>施設</dt><dd>${esc(court.facility_label)}</dd><dt>運営</dt><dd>${esc(court.operator)}（${operatorType}）</dd><dt>確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl>${officialLink}<ul class="venue-source-list">${sources.map(source=>`<li>${source}</li>`).join('')}</ul></div></div></details></td></tr>`;
   }
   function readFilters() {
     const fields = $("#venue-court-filters").elements;
@@ -309,6 +309,7 @@
       const active={name:!!filters.name,location:filters.places.length>0,price:!!filters.price_status||filters.price_max!==null,booking:!!filters.booking_channel,registration:!!filters.registration,checked_asc:filters.show_suspended}[column];
       th.querySelector('summary').classList.toggle('is-filtered',!!active);
     }
+    $('#venue-column-toggle').classList.toggle('is-filtered',!!directory.querySelector('.venue-column-menu>summary.is-filtered'));
   }
   function applyFilters(updateUrl = true, pushUrl = false) {
     if (!state.loaded) return;
@@ -414,6 +415,15 @@
     const height=panel.offsetHeight;
     panel.style.top=Math.max(12,Math.min(rect.bottom+4,innerHeight-height-12))+'px';
   }
+  const columnToggle=$('#venue-column-toggle'), comparisonTable=$('.venue-table');
+  columnToggle.hidden=false;
+  comparisonTable.classList.add('has-column-toggle');
+  columnToggle.addEventListener('click',()=>{
+    const expanded=columnToggle.getAttribute('aria-expanded')!=='true';
+    columnToggle.setAttribute('aria-expanded',String(expanded));
+    comparisonTable.classList.toggle('is-column-controls-open',expanded);
+    if(!expanded)for(const menu of directory.querySelectorAll('.venue-column-menu[open]'))menu.open=false;
+  });
   directory.addEventListener('toggle',event=>{
     const menu=event.target;
     if(!menu.matches('.venue-column-menu')||!menu.open)return;

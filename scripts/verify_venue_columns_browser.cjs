@@ -12,6 +12,7 @@ const ready=page=>page.locator('#venue-loading-state[hidden]').waitFor({state:'a
 const names=page=>page.locator('.venue-court-card h3').allTextContents();
 async function open(page,column,positioned=true){
   const menu=page.locator(`[data-venue-column="${column}"] .venue-column-menu`);
+  if(!await menu.isVisible()) await page.locator('#venue-column-toggle').click();
   await menu.locator('summary').click();
   await menu.locator('.venue-column-options').waitFor();
   // Native details queues its toggle event after becoming visible.
@@ -51,7 +52,7 @@ async function select(page,column,key,value){const menu=await open(page,column);
       await page.locator('.venue-court-card').first().scrollIntoViewIfNeeded();
       const heights=await page.locator('.venue-court-card').evaluateAll(rows=>rows.slice(0,10).map(row=>row.getBoundingClientRect().height+row.nextElementSibling.getBoundingClientRect().height));
       const median=[...heights].sort((a,b)=>a-b)[5];
-      assert(median<(width>900?155:330),`Rows too large: ${width}: ${median}`);
+      assert(median<(width>900?155:width<=640?225:330),`Rows too large: ${width}: ${median}`);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
       await page.screenshot({path:path.join(out,`list-${width}.png`)});
       const feeMenu=await open(page,'price');

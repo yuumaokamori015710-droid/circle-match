@@ -102,3 +102,25 @@ class VenueColumnTests(IsolatedAppHttpCase):
         page = self.page({'v_name':'"><script>alert(1)</script>'})
         self.assertEqual(page.select_one('[name="name"]')['value'],'"><script>alert(1)</script>')
         self.assertFalse(any(s.get_text()=='alert(1)' for s in page.select('script')))
+
+    def test_mobile_controls_preserve_native_column_filters(self):
+        page = self.page()
+        toggle = page.select_one('#venue-column-toggle')
+        self.assertEqual(toggle['aria-expanded'], 'false')
+        self.assertTrue(toggle.has_attr('hidden'))
+        self.assertEqual(len(page.select('#' + toggle['aria-controls'] + ' .venue-column-menu')), 6)
+        self.assertIsNotNone(page.select_one('.venue-mobile-coverage summary'))
+        self.assertIn('予約の成立を保証しません', page.select_one('.venue-mobile-coverage').get_text())
+        link = page.select_one('.venue-court-links a[href^="/events/new"]')
+        self.assertEqual(link.get_text(), 'この会場で募集を作る')
+        self.assertEqual(link['aria-label'], link.get_text())
+
+    def test_price_filter_has_single_line_label_and_accessible_unit_help(self):
+        page = self.page()
+        price = page.select_one('[name="price_max"]')
+        label = price.find_parent('label')
+        self.assertEqual(label.select_one('span').get_text(), '料金上限')
+        self.assertIsNone(label.select_one('small'))
+        help_text = page.select_one('#' + price['aria-describedby'])
+        self.assertIsNotNone(help_text.find_parent('details'))
+        self.assertIn('コート1面・1時間', help_text.get_text())

@@ -90,6 +90,7 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-results-heading h2{font-size:18px;margin:0;display:flex;align-items:center;gap:10px}
 .venue-directory #venue-result-count{font-size:12px;font-weight:500;background:#e7f0ec;color:var(--green);padding:3px 8px;border-radius:5px}
 .venue-directory .venue-results-controls{display:flex;align-items:center;gap:16px;min-width:0}
+.venue-directory #venue-column-toggle,.venue-directory .venue-mobile-coverage{display:none}
 .venue-directory .venue-visible-count{font-size:12px;color:var(--muted)}
 .venue-directory .venue-sort{display:flex;align-items:center;gap:8px;font-size:13px;min-width:0}
 .venue-directory .venue-sort>span{white-space:nowrap}
@@ -179,6 +180,10 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:640px){
+ .venue-directory .venue-intro{margin:8px 0 16px}
+ .venue-directory .venue-intro .venue-coverage-note,.venue-directory .venue-results-note{display:none}
+ .venue-directory .venue-catalog-meta{gap:4px 12px;font-size:11px}
+ .venue-directory .venue-filter-panel{margin-bottom:20px}
  .venue-directory .venue-region-dialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);padding:14px}
  .venue-directory .venue-dialog-footer{bottom:-14px;gap:10px;padding-top:12px}
  .venue-directory .venue-dialog-footer p{font-size:12px}
@@ -192,17 +197,53 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
  .venue-directory .venue-filter-grid input,.venue-directory .venue-filter-grid select{font-size:16px;padding:9px 6px}
  .venue-directory .venue-filter-grid label>span,.venue-directory .venue-region-field>label{font-size:12px}
- .venue-directory .venue-filter-grid label small{display:block}
- .venue-directory .venue-results-heading{align-items:flex-start;flex-direction:column;gap:10px}
- .venue-directory .venue-results-controls{justify-content:space-between;width:100%;gap:8px}
- .venue-directory .venue-sort{gap:5px;font-size:12px}
- .venue-directory .venue-sort select{width:180px;font-size:12px}
- .venue-directory .venue-visible-count{font-size:11px}
+ .venue-directory .venue-results-heading{gap:8px;margin-bottom:10px}
+ .venue-directory .venue-results-heading h2{font-size:16px;gap:6px;flex-shrink:0}
+ .venue-directory #venue-result-count{padding:2px 5px;font-size:11px}
+ .venue-directory .venue-results-controls{justify-content:flex-end;gap:6px}
+ .venue-directory .venue-sort>span,.venue-directory .venue-visible-count{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .venue-directory .venue-sort select{width:124px;font-size:12px;padding-inline:6px}
+ .venue-directory #venue-column-toggle{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;padding:0;position:relative}
+ .venue-directory #venue-column-toggle[aria-expanded=true]{background:#fff2eb;border-color:#c9613f;color:#994526}
+ .venue-directory #venue-column-toggle.is-filtered:after{content:'';position:absolute;right:7px;top:7px;width:6px;height:6px;border-radius:50%;background:#c9613f}
+ .venue-directory .venue-table.has-column-toggle:not(.is-column-controls-open)>thead{display:none}
+ .venue-directory .venue-table>thead .venue-column-menu{position:static}
+ .venue-directory .venue-court-card{grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);grid-template-areas:'main main' 'location price' 'booking price' 'registration price' 'action action';gap:2px 8px;padding:12px 10px 0;align-items:start}
+ .venue-directory .venue-court-main{grid-area:main;margin-bottom:4px}
+ .venue-directory .venue-court-card h3{font-size:15px;margin-bottom:2px}
+ .venue-directory .venue-court-features{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:11px;line-height:1.5}
+ .venue-directory .venue-location-cell{grid-area:location}
+ .venue-directory .venue-booking-cell{grid-area:booking}
+ .venue-directory .venue-registration-cell{grid-area:registration}
+ .venue-directory .venue-court-card .venue-location-cell,.venue-directory .venue-court-card .venue-booking-cell,.venue-directory .venue-court-card .venue-registration-cell{font-size:12px;line-height:1.6}
+ .venue-directory .venue-booking-cell:before,.venue-directory .venue-registration-cell:before{font-size:11px}
+ .venue-directory .venue-court-price{grid-area:price;padding:0!important}
+ .venue-directory .venue-price-amount{font-size:15px}
+ .venue-directory .venue-price-unit{font-size:11px;margin-bottom:0}
+ .venue-directory .venue-unconfirmed{font-size:13px}
+ .venue-directory .venue-fee-link{min-height:44px;font-size:11px}
+ .venue-directory .venue-action-cell{grid-area:action}
+ /* The native detail toggle occupies the reserved third action slot. */
+ .venue-directory .venue-court-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:6px;margin-right:72px}
+ .venue-directory .venue-court-links>a{min-height:44px;justify-content:center;padding:8px 4px;line-height:1.4}
+ .venue-directory .venue-court-links .venue-secondary-link{border:1px solid var(--border);border-radius:6px;text-decoration:none;font-size:12px}
+ .venue-directory .venue-create-prefix,.venue-directory .venue-details-prefix{display:none}
+ .venue-directory .venue-details-row>td{padding:0 10px 10px}
+ .venue-directory .venue-court-details{position:relative}
+ .venue-directory .venue-court-details>summary{position:absolute;right:0;top:-44px;width:64px;height:44px;justify-content:center;padding:0;border:1px solid var(--border);border-radius:6px;color:var(--green);font-size:12px}
+ .venue-directory .venue-mobile-coverage{display:block;margin-top:16px}
+ .venue-directory .venue-mobile-coverage>summary{min-height:44px;padding:10px 0;color:var(--muted);font-size:12px;cursor:pointer}
  .venue-directory .venue-tariff,.venue-directory .venue-tariff tbody{display:block}
  .venue-directory .venue-tariff caption{display:block;width:100%}
  .venue-directory .venue-tariff thead{display:none}
  .venue-directory .venue-tariff tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;border-bottom:1px solid var(--border);padding:8px 0}
  .venue-directory .venue-tariff th,.venue-directory .venue-tariff td{border:0;padding:0}
  .venue-directory .venue-tariff td:nth-child(3),.venue-directory .venue-tariff td:nth-child(4){grid-column:1/-1;color:var(--muted)}
+}
+@media(max-width:360px){
+ .venue-directory .venue-sort select{width:110px}
+ .venue-directory .venue-court-card{padding-inline:8px;column-gap:6px;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}
+ .venue-directory .venue-details-row>td{padding-inline:8px}
+ .venue-directory .venue-price-amount{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){.venue-directory .venue-spinner{animation:none}}
