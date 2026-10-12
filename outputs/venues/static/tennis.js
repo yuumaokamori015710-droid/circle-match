@@ -8,24 +8,80 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const PAGE_SIZE = 50;
   const browser = typeof window === "undefined" ? null : window;
-  const URL_FILTER_NAMES = ["q","municipality","area","map","operator_type","facility_kind","venue_type","booking_channel","registration","open_from","open_until","price_max","sort","night_lighting","indoor","show_suspended"];
-  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],sort:["name","price"]};
+  const URL_FILTER_NAMES = ["q","places","map","operator_type","facility_kind","venue_type","booking_channel","registration","open_from","open_until","price_max","sort","night_lighting","indoor","show_suspended"];
+  const SELECT_VALUES = {operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],sort:["name","price"]};
+  const AREA_STAGES = {'23区':'wards','多摩':'tama','島しょ':'islands'};
+  const placeParents = Object.fromEntries([...$('#venue-places-filter').options].map(option=>[option.value,option.dataset.parent]));
   const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
   let loadingRequest = null;
   let searchTimer;
   let mapRequest;
+  let regionDraft = null;
+
+  function ancestors(place) {
+    const result=[];
+    while(placeParents[place]) {place=placeParents[place];result.push(place);}
+    return result;
+  }
+  function getPlaces() {return [...$('#venue-places-filter').selectedOptions].map(option=>option.value);}
+  function setPlaces(places) {
+    const field=$('#venue-places-filter');
+    for(const place of places) if(![...field.options].some(option=>option.value===place)) field.add(new Option(place,place));
+    for(const option of field.options) option.selected=places.includes(option.value);
+  }
+  function placeLabel(places) {
+    if(!places.length) return '地域指定なし';
+    return places.length===1 && placeParents[places[0]] ? `東京都 / ${places[0]}` : places.join('・');
+  }
+  function defaultStage(places) {
+    const stages=[...new Set(places.map(place=>[place,...ancestors(place)].map(key=>AREA_STAGES[key]).find(Boolean)))];
+    if(stages.length===1 && stages[0]) return stages[0];
+    return places.length && places.every(place=>place in placeParents && !placeParents[place]) ? 'kanto' : 'tokyo';
+  }
+  function paintMap() {
+    const places=regionDraft?.places || getPlaces();
+    for(const control of $('#venue-region-selector').querySelectorAll('[data-place]')) {
+      const active=places.includes(control.dataset.place);
+      if(control.matches('input')) {control.checked=active;control.closest('label').classList.toggle('is-active',active);}
+      else {control.classList.toggle('is-active',active);control.setAttribute('aria-checked',String(active));}
+    }
+    updateRegionSummary();
+  }
+  function previewRegion() {
+    if(state.loaded) {
+      state.matches=sortCourts(filterCourts(state.courts,{...readFilters(),places:regionDraft.places}),readFilters().sort);
+      state.visibleCount=PAGE_SIZE;
+      renderResults();
+    }
+    paintMap();
+  }
+  function togglePlace(place) {
+    if(!regionDraft) return;
+    regionDraft.places=regionDraft.places.includes(place) ? regionDraft.places.filter(item=>item!==place)
+      : [...regionDraft.places.filter(item=>!ancestors(place).includes(item)&&!ancestors(item).includes(place)),place];
+    previewRegion();
+  }
 
   function syncMap(force = false) {
     const fields = $("#venue-court-filters").elements;
-    const stage = fields.map.value || ({'23区':'wards','多摩':'tama','島しょ':'islands'}[fields.area.value] || 'tokyo');
+    const stage = regionDraft?.stage || fields.map.value || defaultStage(getPlaces());
     const panel = $('.venue-region-panel');
-    if (!force && panel?.dataset.stage === stage && panel.dataset.area === fields.area.value && panel.dataset.municipality === fields.municipality.value) return;
+    if (!force && panel?.dataset.stage === stage) {
+      mapRequest?.abort();
+      $('#venue-region-selector').removeAttribute('aria-busy');
+      $('#venue-map-error').hidden=true;
+      paintMap();
+      return;
+    }
     mapRequest?.abort();
     mapRequest = new AbortController();
     const signal = mapRequest.signal;
     $('#venue-region-selector').setAttribute('aria-busy','true');
     $('#venue-map-error').hidden = true;
-    fetch(browser.location.href,{credentials:'omit',signal}).then(response => {
+    const url=currentUrl();
+    url.searchParams.set('v_map',stage);
+    url.searchParams.set('v_places',(regionDraft?.places || getPlaces()).join(','));
+    fetch(url.href,{credentials:'omit',signal}).then(response => {
       if (!response.ok) throw new Error('Map unavailable');
       return response.text();
     }).then(html => {
@@ -33,6 +89,7 @@
       const replacement = new DOMParser().parseFromString(html,'text/html').querySelector('#venue-region-selector');
       if (!replacement) throw new Error('Map unavailable');
       $('#venue-region-selector').innerHTML = replacement.innerHTML;
+      paintMap();
       if ($('#venue-region-dialog').open) $('#venue-region-dialog-title').focus({preventScroll:true});
     }).catch(() => {
       if (!signal.aborted) $('#venue-map-error').hidden = false;
@@ -42,12 +99,11 @@
   }
 
   function updateRegionSummary() {
-    const fields = $('#venue-court-filters').elements;
-    const label = fields.municipality.value || fields.area.value;
-    const selected = label ? `東京都 / ${label}` : '東京都全域';
+    const selected = placeLabel(getPlaces());
     $('#venue-region-label').textContent = selected;
     $('#venue-open-region').title = selected;
-    $('#venue-region-result').textContent = `${selected} · ${$('#venue-result-count').textContent}`;
+    $('#venue-region-selection').textContent = placeLabel(regionDraft?.places || getPlaces());
+    $('#venue-region-result').textContent = state.loaded ? $('#venue-result-count').textContent : '';
   }
 
   function numberOrNull(value) {
@@ -101,8 +157,7 @@
       const searchable = normalize([court.name,court.operator,court.municipality,court.area,court.address,court.surface,court.booking_method,court.booking_note,court.price_note].filter(Boolean).join(" "));
       const price = numberOrNull(court.price_per_hour);
       return (filters.show_suspended || court.availability_status !== "SUSPENDED") && terms.every(term => searchable.includes(term)) &&
-        (!filters.municipality || court.municipality === filters.municipality) &&
-        (!filters.area || court.area === filters.area) &&
+        (!filters.places.length || filters.places.some(place=>[court.prefecture||'東京都',court.area,court.municipality].includes(place))) &&
         (!filters.operator_type || court.operator_type === filters.operator_type) &&
         (!filters.facility_kind || (court.facility_kind || "COURT") === filters.facility_kind) &&
         (!filters.venue_type || list(court.venue_types).includes(filters.venue_type)) &&
@@ -152,6 +207,7 @@
     const fields = $("#venue-court-filters").elements;
     const rawPrice = normalize(fields.price_max.value).replaceAll(",", "");
     const filters=Object.fromEntries(URL_FILTER_NAMES.map(name=>[name,fields[name].value]));
+    filters.places=getPlaces();
     filters.price_max=rawPrice === "" ? null : numberOrNull(Number(rawPrice));
     for(const name of ["night_lighting","indoor","show_suspended"]) filters[name]=fields[name].checked;
     return filters;
@@ -160,20 +216,13 @@
     try { return browser ? new URL(browser.location.href) : null; }
     catch { return null; }
   }
-  function updateMunicipalities(preferred) {
-    const fields=$("#venue-court-filters").elements, area=fields.area.value;
-    const current=preferred ?? fields.municipality.value;
-    const municipalities=[...new Set(state.courts.filter(court=>!area || court.area===area).map(court=>court.municipality))].sort((a,b)=>a.localeCompare(b,"ja"));
-    fields.municipality.innerHTML='<option value="">すべての自治体</option>'+municipalities.map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join("");
-    fields.municipality.value=municipalities.includes(current)?current:"";
-  }
   function restoreUrlFilters(usePreferences = false) {
     const url = currentUrl();
     if (!url) return;
     const fields = $("#venue-court-filters").elements;
     $("#venue-court-filters").reset();
     const preferences=browser.CircleMatchSettings?.get() || {};
-    const explicit=URL_FILTER_NAMES.some(name=>url.searchParams.has(`v_${name}`)||url.searchParams.has(name));
+    const explicit=[...URL_FILTER_NAMES,'area','municipality'].some(name=>url.searchParams.has(`v_${name}`)||url.searchParams.has(name));
     const saved=usePreferences && !explicit && preferences.rememberVenueSearch ? browser.CircleMatchSettings?.getVenue(state.meta.sport || "all") || {} : {};
     const read = name => url.searchParams.get(`v_${name}`) ?? url.searchParams.get(name) ?? (usePreferences && !explicit ? saved[name] ?? (name==="area"?preferences.venueArea:name==="sort"?preferences.venueSort:null) : null);
     fields.q.value = (read("q") || "").slice(0,200);
@@ -182,8 +231,9 @@
       const value = read(name) || (name === "sort" ? "name" : "");
       fields[name].value = allowed.includes(value) ? value : name === "sort" ? "name" : "";
     }
-    const municipality = read("municipality") || "";
-    updateMunicipalities(municipality);
+    const rawPlaces=url.searchParams.has('v_places') ? url.searchParams.getAll('v_places') : url.searchParams.has('places') ? url.searchParams.getAll('places') : read('places');
+    const legacyPlace=read('municipality') || read('area') || (usePreferences && !explicit ? preferences.venueArea : '') || '';
+    setPlaces(rawPlaces!==null && rawPlaces!==undefined ? [...new Set((Array.isArray(rawPlaces)?rawPlaces:[rawPlaces]).flatMap(value=>String(value).split(',')).map(value=>value.trim().slice(0,80)).filter(Boolean))].slice(0,100) : legacyPlace?[legacyPlace]:[]);
     const rawPrice = read("price_max");
     const price = rawPrice !== null && String(rawPrice).trim() ? numberOrNull(Number(normalize(rawPrice).replaceAll(",", ""))) : null;
     fields.price_max.value = price === null ? "" : String(price);
@@ -195,12 +245,15 @@
   function persistUrlFilters(filters, push = false) {
     const url = currentUrl();
     if (!url || !browser.history) return;
+    for(const key of ['v_area','area','v_municipality','municipality']) url.searchParams.delete(key);
     for (const name of URL_FILTER_NAMES) {
       const key = `v_${name}`, value = filters[name];
       url.searchParams.delete(key);
       url.searchParams.delete(name);
       if (typeof value === "boolean") {
         if (value) url.searchParams.set(key,"1");
+      } else if (Array.isArray(value)) {
+        if(value.length) url.searchParams.set(key,value.join(','));
       } else if (value !== null && value !== "" && value !== undefined && !(name === "sort" && value === "name")) {
         url.searchParams.set(key,String(value));
       }
@@ -244,9 +297,9 @@
     const fields = $("#venue-court-filters").elements;
     for (const name of URL_FILTER_NAMES) {
       if (["night_lighting","indoor","show_suspended"].includes(name)) fields[name].checked = false;
+      else if(name==='places') setPlaces([]);
       else fields[name].value = name === "sort" ? "name" : "";
     }
-    updateMunicipalities("");
     applyFilters();
   }
   function renderMetadata() {
@@ -255,9 +308,6 @@
     $("#venue-coverage-note").textContent = state.meta.coverage_note || "掲載施設は都内の全施設を網羅したものではありません。利用前に公式サイトで最新情報をご確認ください。";
     const municipalities = [...new Set([...list(state.meta.municipalities).filter(value => typeof value === "string"),...state.courts.map(court => court.municipality)].filter(value => typeof value === "string" && value.trim()))].sort((a,b) => a.localeCompare(b,"ja"));
     $("#venue-catalog-total").textContent += ` · ${municipalities.length} 自治体`;
-    const current = $("#venue-municipality-filter").value;
-    $("#venue-municipality-filter").innerHTML = '<option value="">すべての自治体</option>' + municipalities.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join("");
-    $("#venue-municipality-filter").value = municipalities.includes(current) ? current : "";
   }
   function loadCourts() {
     if (loadingRequest) return loadingRequest;
@@ -301,12 +351,11 @@
   $("#venue-court-filters").addEventListener("submit",event => {if(!state.loaded)return;event.preventDefault();clearTimeout(searchTimer);applyFilters();});
   $("#venue-court-filters").addEventListener("input",event => {
     clearTimeout(searchTimer);
-    if(event.target.name === "area") updateMunicipalities();
     if (state.loaded) persistUrlFilters(readFilters());
     if (event.target.name === "q") searchTimer = setTimeout(applyFilters,150);
     else applyFilters();
   });
-  $("#venue-court-filters").addEventListener("change",event => {if(event.target.name === "area")updateMunicipalities();clearTimeout(searchTimer);applyFilters();});
+  $("#venue-court-filters").addEventListener("change",()=>{clearTimeout(searchTimer);applyFilters();});
   $("#venue-sort").addEventListener("change",()=>applyFilters());
   $("#venue-reset-filters").addEventListener("click",resetFilters);
   $("#venue-empty-reset").addEventListener("click",resetFilters);
@@ -320,37 +369,46 @@
       $('#venue-court-filters').elements.price_max.focus();
       return;
     }
-    updateRegionSummary();
+    regionDraft={places:getPlaces(),stage:$('#venue-court-filters').elements.map.value || defaultStage(getPlaces())};
+    paintMap();
     regionDialog.showModal();
     document.body.classList.add('venue-modal-open');
-    if (state.loaded) syncMap();
+    syncMap();
   });
   $('#venue-region-close').addEventListener('click',()=>regionDialog.close());
   $('#venue-region-done').addEventListener('click',()=>{
+    const fields=$('#venue-court-filters').elements;
+    setPlaces(regionDraft.places);
+    fields.map.value=regionDraft.stage;
+    regionDraft=null;
+    if(!state.loaded) {persistUrlFilters(readFilters());browser.location.assign(browser.location.href);return;}
+    applyFilters(true,true);
     regionDialog.close();
-    $('#venue-court-results').focus({preventScroll:true});
-    $('#venue-court-results').scrollIntoView({block:'start'});
   });
-  regionDialog.addEventListener('close',()=>document.body.classList.remove('venue-modal-open'));
+  regionDialog.addEventListener('close',()=>{
+    document.body.classList.remove('venue-modal-open');
+    if(regionDraft) {regionDraft=null;applyFilters(false);}
+  });
+  $('#venue-region-clear').addEventListener('click',()=>{regionDraft.places=[];previewRegion();});
   regionDialog.addEventListener('click',event=>{
     if (event.target !== regionDialog) return;
     const rect = regionDialog.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) regionDialog.close();
   });
   $('#venue-map-retry').addEventListener('click',()=>syncMap(true));
+  $('#venue-region-selector').addEventListener('change',event=>{if(event.target.dataset.place)togglePlace(event.target.dataset.place);});
+  $('#venue-region-selector').addEventListener('keydown',event=>{
+    if(event.key===' ' && event.target.matches('a[data-place]')) {event.preventDefault();togglePlace(event.target.dataset.place);}
+  });
   directory.addEventListener('click',event => {
     const link = event.target.closest('a');
     if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     if (link.closest('#venue-region-selector')) {
       const target = new URL(link.href), url = currentUrl();
       if (!url || target.origin !== url.origin || target.pathname !== '/venues') return;
-      if (!state.loaded) return;
       event.preventDefault();
-      const fields = $('#venue-court-filters').elements;
-      fields.map.value = target.searchParams.get('v_map') || '';
-      fields.area.value = target.searchParams.get('v_area') || '';
-      updateMunicipalities(target.searchParams.get('v_municipality') || '');
-      applyFilters(true,true);
+      if(link.dataset.place) togglePlace(link.dataset.place);
+      else if(regionDraft) {regionDraft.stage=target.searchParams.get('v_map')||'tokyo';syncMap();}
     } else if (link.classList.contains('venue-tariff-more')) {
       const details = directory.querySelector(link.getAttribute('href'));
       if (!details) return;
@@ -362,6 +420,8 @@
   });
   if (browser) browser.addEventListener("popstate",() => {
     clearTimeout(searchTimer);
+    regionDraft=null;
+    if(regionDialog.open) regionDialog.close();
     restoreUrlFilters();
     applyFilters(false);
   });

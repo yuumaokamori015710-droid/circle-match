@@ -84,6 +84,8 @@ def get_catalog(params=None):
 
 def filter_catalog(rows, params):
     """Server-side equivalent of the browser filters, including no-JS GET forms."""
+    from .geography import selection, matches as matches_places
+    places = selection(params)
     def value(key):
         return selected(params, 'v_' + key) if 'v_' + key in (params or {}) else selected(params, key)
     normalize = lambda text: unicodedata.normalize('NFKC', str(text or '')).lower().strip()
@@ -98,7 +100,9 @@ def filter_catalog(rows, params):
     for row in rows:
         if row['availability_status'] == 'SUSPENDED' and value('show_suspended') not in {'1', 'true', 'on'}:
             continue
-        if any(value(key) and row[key] != value(key) for key in ('municipality', 'area', 'operator_type', 'facility_kind')):
+        if not matches_places(row, places):
+            continue
+        if any(value(key) and row[key] != value(key) for key in ('operator_type', 'facility_kind')):
             continue
         if value('venue_type') and value('venue_type') not in row.get('venue_types', []):
             continue
@@ -114,7 +118,7 @@ def filter_catalog(rows, params):
             continue
         if maximum is not None and (row['price_per_hour'] is None or row['price_per_hour'] > maximum):
             continue
-        text = normalize(' '.join(str(row.get(k) or '') for k in ('name', 'operator', 'municipality', 'address', 'surface', 'booking_method', 'booking_note', 'price_note')))
+        text = normalize(' '.join(str(row.get(k) or '') for k in ('name', 'operator', 'municipality', 'area', 'address', 'surface', 'booking_method', 'booking_note', 'price_note')))
         if all(term in text for term in terms):
             matches.append(row)
     if value('sort') == 'price':

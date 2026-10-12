@@ -18,11 +18,13 @@ if __package__:
     from .venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS
     from .venues.search_facets import VENUE_TYPES, CHANNELS
     from .venues.region_map import render as render_region_map
+    from .venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
 else:
     from venues.tennis_catalog import get_catalog
     from venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS
     from venues.search_facets import VENUE_TYPES, CHANNELS
     from venues.region_map import render as render_region_map
+    from venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
 
 
 VENUE_DIR = Path(__file__).resolve().parent / "venues"
@@ -103,12 +105,12 @@ def _filters(params, catalog):
     def select(name, label, options, ident=''):
         items = ''.join(f'<option value="{escape(v, quote=True)}"' + (' selected' if value(name) == v else '') + f'>{escape(text)}</option>' for v, text in options)
         return f'<label><span>{label}</span><select name="{name}" id="{ident}">{items}</select></label>'
-    region = '東京都 / ' + (value('municipality') or value('area')) if value('municipality') or value('area') else '東京都全域'
-    fields = '<div class="venue-region-field"><label for="venue-open-region">地域</label><button id="venue-open-region" type="button" aria-haspopup="dialog" aria-controls="venue-region-dialog"><span id="venue-region-label">' + escape(region) + '</span><span aria-hidden="true">&#9662;</span></button></div>'
-    fields += '<label class="venue-search-field"><span>施設名・地名</span><input name="q" type="search" placeholder="施設名・住所で検索" maxlength="200" value="' + escape(value('q')[:200], quote=True) + '"></label>'
-    geography = select('area', 'エリア', [('', '都内すべて'), ('23区', '23区'), ('多摩', '多摩'), ('島しょ', '島しょ')], 'venue-area-filter')
-    municipalities = catalog['meta']['municipalities_by_area'].get(value('area'), catalog['meta']['municipalities'])
-    geography += select('municipality', '自治体', [('', 'すべての自治体')] + [(m, m) for m in municipalities], 'venue-municipality-filter')
+    places = selected_places(params)
+    fields = '<label class="venue-search-field"><span>施設名・地名</span><input name="q" type="search" placeholder="施設名・住所で検索" maxlength="200" value="' + escape(value('q')[:200], quote=True) + '"></label>'
+    fields += '<div class="venue-region-field"><label for="venue-open-region">地域</label><button id="venue-open-region" type="button" aria-haspopup="dialog" aria-controls="venue-region-dialog"><span id="venue-region-label">' + escape(region_label(places)) + '</span><span aria-hidden="true">&#9662;</span></button></div>'
+    parent_map = place_parents()
+    options = ''.join(f'<option value="{escape(place, quote=True)}" data-parent="{escape(parent_map.get(place, ""), quote=True)}"' + (' selected' if place in places else '') + f'>{escape(place)}</option>' for place in dict.fromkeys([*PREFECTURES, *parent_map, *places]))
+    geography = f'<label><span>地域（複数選択可）</span><select name="places" id="venue-places-filter" multiple size="8">{options}</select></label>'
     fields += select('booking_channel', '予約方法', [('', 'すべての予約方法')] + list(CHANNELS) + [('unknown', '予約方法は未確認')])
     registration = select('registration', '施設の利用者登録', [('', '登録条件すべて'), ('required', '必要（確認済み）'), ('not_required', '不要（確認済み）'), ('unknown', '要否は未確認')])
     fields += '<label><span>料金上限 <small>コート1面・1時間換算</small></span><div class="venue-price-input"><input name="price_max" type="text" inputmode="numeric" maxlength="12" placeholder="例：3000" value="' + escape(value('price_max'), quote=True) + '"><span>円</span></div></label>'
@@ -155,9 +157,9 @@ def render_venue_body(params=None) -> str:
         pager = []
         for number, label in ((page-1, '前へ'), (page+1, '次へ')):
             if 1 <= number <= (len(matches)+49)//50:
-                query = {k: v[0] if isinstance(v, list) else v for k, v in params.items()}
+                query = dict(params)
                 query['v_page'] = number
-                pager.append(f'<a href="/venues?{escape(urlencode(query), quote=True)}">{label}</a>')
+                pager.append(f'<a href="/venues?{escape(urlencode(query, doseq=True), quote=True)}">{label}</a>')
         values['PAGER'] = '<noscript><nav class="venue-pagination" aria-label="会場一覧ページ">' + ' '.join(pager) + '</nav></noscript>'
         for key, value in values.items():
             body = body.replace('__VENUE_' + key + '__', value)

@@ -392,16 +392,20 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
             panel = soup.select_one('.venue-region-panel')
             self.assertEqual(panel['data-stage'],stage)
             self.assertGreater(len(panel.select('svg path')),0)
-            link = next(a for a in panel.select('.venue-map-choice[href]') if a.select_one('span').get_text()==destination)
+            if stage == 'japan':
+                link = panel.select_one('.venue-map-choice[href]')
+            elif stage in {'kanto','tokyo'}:
+                link = panel.select_one(f'.venue-map-zoom[aria-label="{destination}を詳しく選ぶ"]')
+            else:
+                link = panel.select_one(f'.venue-map-shape[data-place="{destination}"]')
             from urllib.parse import parse_qs
             target = parse_qs(urlsplit(link['href']).query)
             self.assertEqual(target['sport'],[query['sport']])
             self.assertEqual(target['v_q'],['公園'])
             self.assertEqual(target['v_booking_channel'],['web'])
-            if area:
-                self.assertEqual(target['v_area'],[area])
             if stage == 'wards':
-                self.assertEqual(target['v_municipality'],['新宿区'])
+                self.assertEqual(target['v_places'],['新宿区'])
+            self.assertNotIn('v_area',target)
         self.assertIn('掲載準備中', self.request('/venues?v_map=japan')[1].decode())
 
     def test_compact_table_and_removed_filters_keep_legacy_urls(self):
@@ -409,6 +413,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         page = BeautifulSoup(self.request('/venues')[1].decode(),'html.parser')
         self.assertEqual(len(page.select('.venue-filter-grid>*')),4)
         self.assertIsNotNone(page.select_one('.venue-filter-grid #venue-open-region'))
+        self.assertIsNotNone(page.select_one('.venue-filter-grid>*:first-child [name="q"]'))
         self.assertIsNotNone(page.select_one('.venue-extra-filters [name="registration"]'))
         self.assertEqual(len(page.select('.venue-table>thead th')),6)
         self.assertEqual(len(page.select('.venue-table>tbody>tr.venue-court-card')),50)
@@ -548,16 +553,58 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertEqual(urls.count('https://circle-match.jp/venues'), 1)
         self.assertNotIn('https://circle-match.jp/?tab=venues', urls)
 
-    def test_area_get_form_keeps_area_and_scopes_municipalities(self):
-        for area, expected, excluded in [('多摩', '八王子市', '新宿区'), ('23区', '新宿区', '八王子市')]:
+    def test_legacy_area_urls_preselect_the_new_multiple_region_form(self):
+        from bs4 import BeautifulSoup
+        for area in ('多摩', '23区'):
             status, body, _ = self.request('/venues?' + urlencode({'area': area}))
             self.assertEqual(status, 200)
             page = body.decode()
-            options = page.split('id="venue-municipality-filter">')[1].split('</select>')[0]
-            self.assertIn(expected, options)
-            self.assertNotIn(excluded, options)
-            self.assertLess(page.index('id="venue-area-filter"'), page.index('id="venue-municipality-filter"'))
+            field = BeautifulSoup(page,'html.parser').select_one('#venue-places-filter')
+            self.assertIn('multiple',field.attrs)
+            self.assertEqual([option['value'] for option in field.select('option[selected]')],[area])
             self.assertIn('class="venue-court-card"', page)
+
+    def test_multiple_regions_are_or_matched_and_server_rendered(self):
+        from bs4 import BeautifulSoup
+        from venues.sports_catalog import get_catalog, filter_catalog
+        rows = get_catalog()['courts']
+        expected = [row for row in rows if row['municipality'] in {'新宿区','渋谷区'} and row['availability_status']!='SUSPENDED']
+        for places in ('新宿区,渋谷区',['新宿区','渋谷区']):
+            params = {'places':places}
+            self.assertEqual({r['id'] for r in filter_catalog(rows,params)},{r['id'] for r in expected})
+            page = BeautifulSoup(self.request('/venues?' + urlencode(params,doseq=True))[1].decode(),'html.parser')
+            self.assertEqual(page.select_one('#venue-result-count').get_text(),f'{len(expected):,} 件')
+            self.assertEqual(len(page.select('.venue-map-shape.is-active')),2)
+            self.assertEqual([o['value'] for o in page.select('#venue-places-filter option[selected]')],['新宿区','渋谷区'])
+            self.assertEqual(page.select_one('#venue-region-done').get_text(),'反映する')
+            pager = page.select_one('nav[aria-label="会場一覧ページ"] a')
+            self.assertIsNotNone(pager)
+            next_page = BeautifulSoup(self.request(pager['href'])[1].decode(),'html.parser')
+            self.assertEqual(next_page.select_one('#venue-result-count').get_text(),f'{len(expected):,} 件')
+            self.assertEqual([o['value'] for o in next_page.select('#venue-places-filter option[selected]')],['新宿区','渋谷区'])
+        self.assertEqual(filter_catalog(rows,{'v_places':'埼玉県'}),[])
+        self.assertEqual(len(filter_catalog(rows,{'v_places':'東京都,埼玉県'})),len(filter_catalog(rows,{})))
+        combined=filter_catalog(rows,{'v_places':'新宿区,渋谷区','v_booking_channel':'web'})
+        self.assertTrue(all(r['municipality'] in {'新宿区','渋谷区'} and 'web' in r['booking_channels'] for r in combined))
+        page = BeautifulSoup(self.request('/venues?' + urlencode({'places':['新宿区','渋谷区']},doseq=True))[1].decode(),'html.parser')
+        self.assertEqual(page.select_one('#directoryContext input[name="v_places"]')['value'],'新宿区,渋谷区')
+
+    def test_region_hierarchy_refines_only_the_selected_parent(self):
+        from venues.geography import toggle, matches
+        self.assertEqual(toggle(['東京都','埼玉県'],'新宿区'),['埼玉県','新宿区'])
+        self.assertEqual(toggle(['新宿区','渋谷区','埼玉県'],'東京都'),['埼玉県','東京都'])
+        self.assertEqual(toggle(['23区','多摩'],'渋谷区'),['多摩','渋谷区'])
+        self.assertEqual(toggle(['新宿区','渋谷区'],'新宿区'),['渋谷区'])
+        self.assertTrue(matches({'prefecture':'埼玉県','area':'県南','municipality':'川口市'},['東京都','埼玉県']))
+
+    def test_search_is_normalized_partial_matching_not_typo_correction(self):
+        from venues.sports_catalog import get_catalog, filter_catalog
+        rows = get_catalog()['courts']
+        self.assertGreater(len(filter_catalog(rows,{'q':'高円寺'})),0)
+        self.assertEqual({r['id'] for r in filter_catalog(rows,{'q':'ＦＣ'})},
+                         {r['id'] for r in filter_catalog(rows,{'q':'fc'})})
+        self.assertGreater(len(filter_catalog(rows,{'q':'ＦＣ'})),0)
+        self.assertEqual(filter_catalog(rows,{'q':'高円寺XYZ存在しない'}),[])
 
     def test_sort_is_associated_with_form_but_outside_filter_panel(self):
         page = self.request('/venues?v_sort=price')[1].decode()

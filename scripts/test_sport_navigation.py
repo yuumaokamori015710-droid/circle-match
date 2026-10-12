@@ -217,7 +217,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 self.assert_shared_tabs(parsed, current, self.GLOBAL, 'social' if current == 'サークルDB' else 'university')
                 if current == '会場予約':
                     self.assertEqual(parsed.selected('sport'),['テニス'])
-                    self.assertIn('data-stage="tokyo"', self.page(path)[0])
+                    self.assertIn('data-stage="wards"', self.page(path)[0])
                 else:
                     self.assert_shared_context(parsed, 'テニス', 'prefecture:東京都')
 

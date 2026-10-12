@@ -17,9 +17,10 @@
     <div class="venue-dialog-head"><h2 id="venue-region-dialog-title" tabindex="-1" autofocus>地域を選ぶ</h2><button id="venue-region-close" type="button" aria-label="地域選択を閉じる" title="閉じる">&times;</button></div>
     <div id="venue-region-selector">__VENUE_REGION_MAP__</div>
     <div id="venue-map-error" role="alert" hidden><span>地図を更新できませんでした。</span><button id="venue-map-retry" type="button">再試行</button></div>
-    <div class="venue-dialog-footer"><p id="venue-region-result" role="status" aria-live="polite"></p><button id="venue-region-done" type="button" class="venue-primary-button">施設一覧を見る</button></div>
+    <div class="venue-region-selection"><p id="venue-region-selection"></p><button id="venue-region-clear" type="button" class="venue-text-button">選択を解除</button></div>
+    <div class="venue-dialog-footer"><p id="venue-region-result" role="status" aria-live="polite"></p><button id="venue-region-done" type="button" class="venue-primary-button">反映する</button></div>
   </dialog>
-  <noscript><style>.venue-directory .venue-region-field{display:none}.venue-directory .venue-region-dialog{display:block;position:static;width:100%;max-height:none;border:0;box-shadow:none;padding:0;margin:0}.venue-directory .venue-dialog-head,.venue-directory .venue-dialog-footer{display:none}</style></noscript>
+  <noscript><style>.venue-directory .venue-region-field{display:none}.venue-directory .venue-region-dialog{display:block;position:static;width:100%;max-height:none;border:0;box-shadow:none;padding:0;margin:0}.venue-directory .venue-dialog-head,.venue-directory .venue-dialog-footer,.venue-directory .venue-region-selection,.venue-directory label.venue-map-choice{display:none}</style></noscript>
   <section id="venue-court-results" aria-labelledby="venue-result-heading" tabindex="-1">
     <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite">__VENUE_COUNT__</span></h2><div class="venue-results-controls"><span id="venue-visible-count" class="venue-visible-count">__VENUE_VISIBLE__</span><label class="venue-sort"><span>並び順</span><select id="venue-sort" name="sort" form="venue-court-filters"><option value="name" __VENUE_SORT_NAME__>施設名の順</option><option value="price" __VENUE_SORT_PRICE__>コート1面1時間の安い順</option></select></label></div></div>
     <p class="venue-results-note">会場確保後に「この会場で募集を作る」から、会場名と競技を入力済みの募集を作成できます。</p>

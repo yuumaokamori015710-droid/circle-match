@@ -1564,6 +1564,8 @@ def render_directory_context(params, tab):
     venue_keys = ('q','municipality','area','map','operator_type','facility_kind','venue_type','booking_channel','registration','open_from','open_until','price_max','sort','night_lighting','indoor','show_suspended')
     local_keys = ("q", "sort") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else tuple('v_' + key for key in venue_keys))
     hidden += ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params[key][0], quote=True)}">' for key in local_keys if params.get(key))
+    if tab == 'venues' and venues.selected_places(params):
+        hidden += f'<input type="hidden" name="v_places" value="{html.escape(",".join(venues.selected_places(params)), quote=True)}">'
     region_control = f'<label>地域<select name="area">{area_options}</select></label>'
     if tab == 'venues' and venues.supports_catalog(params):
         region_control = ''.join(f'<input type="hidden" name="{key}" value="{html.escape(value, quote=True)}">' for key, value in [('region', region), ('prefecture', prefecture)] if value)
