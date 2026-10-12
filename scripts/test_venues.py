@@ -407,7 +407,9 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
     def test_compact_table_and_removed_filters_keep_legacy_urls(self):
         from bs4 import BeautifulSoup
         page = BeautifulSoup(self.request('/venues')[1].decode(),'html.parser')
-        self.assertEqual(len(page.select('.venue-filter-grid>label')),4)
+        self.assertEqual(len(page.select('.venue-filter-grid>*')),4)
+        self.assertIsNotNone(page.select_one('.venue-filter-grid #venue-open-region'))
+        self.assertIsNotNone(page.select_one('.venue-extra-filters [name="registration"]'))
         self.assertEqual(len(page.select('.venue-table>thead th')),6)
         self.assertEqual(len(page.select('.venue-table>tbody>tr.venue-court-card')),50)
         for key in ('venue_type','operator_type','open_from','open_until'):
@@ -416,6 +418,23 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         old = self.request('/venues?' + urlencode({'venue_type':'gym','operator_type':'PUBLIC','open_from':'20:00','open_until':'21:00'}))[1].decode()
         self.assertIn('以前のURLの追加条件',old)
         self.assertIn('class="venue-court-card"',old)
+
+    def test_region_is_a_condition_with_a_closed_map_dialog(self):
+        from bs4 import BeautifulSoup
+        html = self.request('/venues?' + urlencode({'v_area':'23区','v_municipality':'新宿区','v_map':'wards'}))[1].decode()
+        page = BeautifulSoup(html,'html.parser')
+        button = page.select_one('#venue-open-region')
+        self.assertEqual(button['aria-haspopup'],'dialog')
+        self.assertEqual(button['aria-controls'],'venue-region-dialog')
+        self.assertEqual(button.select_one('#venue-region-label').get_text(),'東京都 / 新宿区')
+        dialog = page.select_one('dialog#venue-region-dialog')
+        self.assertNotIn('open',dialog.attrs)
+        self.assertIsNotNone(dialog.select_one('#venue-region-selector svg'))
+        self.assertIsNotNone(dialog.select_one('#venue-region-close'))
+        self.assertIsNotNone(dialog.select_one('#venue-region-done'))
+        self.assertIsNotNone(dialog.select_one('#venue-map-error[hidden]'))
+        self.assertLess(html.index('id="venue-court-filters"'),html.index('id="venue-region-dialog"'))
+        self.assertIn('.venue-region-dialog{display:block;position:static',html)
 
     def test_tariffs_are_explicit_sourced_and_do_not_modify_legacy_records(self):
         from venues.fees import validate

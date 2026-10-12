@@ -13,7 +13,17 @@
 .venue-directory .venue-intro h2{font-size:22px;margin:0 0 8px}
 .venue-directory .venue-catalog-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted)}
 .venue-directory .venue-coverage-note{font-size:12px;margin:6px 0;color:var(--muted)}
-.venue-directory .venue-region-panel{border-block:1px solid var(--border);padding:18px 0;margin-bottom:20px}
+.venue-directory .venue-region-panel{padding:8px 0;margin-bottom:8px}
+.venue-directory .venue-region-dialog{width:min(900px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:20px;border:1px solid var(--border);border-radius:8px;color:var(--ink);background:white;box-shadow:0 16px 48px #17304b33;overflow:auto}
+.venue-directory .venue-region-dialog::backdrop{background:#15263880}
+body.venue-modal-open{overflow:hidden}
+.venue-directory .venue-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.venue-directory .venue-dialog-head h2{font-size:20px;margin:0}
+.venue-directory #venue-region-close{display:grid;place-items:center;width:44px;height:44px;padding:0;font-size:28px;line-height:1}
+.venue-directory .venue-dialog-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;bottom:-20px;background:white;padding:16px 0 0;border-top:1px solid var(--border)}
+.venue-directory .venue-dialog-footer p{margin:0;font-size:13px;overflow-wrap:anywhere}
+.venue-directory #venue-map-error{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:#a12915;padding:10px 0}
+.venue-directory #venue-region-selector[aria-busy=true]{opacity:.65;pointer-events:none}
 .venue-directory .venue-region-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .venue-directory .venue-region-heading h3{margin:0;font-size:16px}
 .venue-directory .venue-map-breadcrumbs{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px}
@@ -42,7 +52,13 @@
 .venue-directory fieldset{border:0;padding:0;margin:0;min-width:0}
 .venue-directory fieldset:disabled{opacity:.6}
 .venue-directory .venue-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px;padding:0;background:transparent;border:0}
-.venue-directory .venue-filter-grid>label{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-width:0}
+.venue-directory .venue-filter-grid>label,.venue-directory .venue-region-field{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-width:0}
+.venue-directory .venue-region-field>label{font-size:13px;font-weight:600}
+.venue-directory #venue-open-region{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:44px;min-width:0;text-align:left;padding:9px 10px;font-weight:400}
+.venue-directory #venue-region-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.venue-directory .venue-extra-registration{max-width:300px;margin:0 0 10px}
+.venue-directory .venue-extra-registration label{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.venue-directory .venue-extra-registration select{font:inherit;min-height:44px;border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--ink);background:white}
 .venue-directory .venue-filter-grid label>span{font-size:13px;font-weight:600}
 .venue-directory .venue-filter-grid label small{font-size:11px;font-weight:400;color:var(--muted)}
 .venue-directory .venue-filter-grid input,.venue-directory .venue-filter-grid select,.venue-directory .venue-geography-state select{width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:6px;background:white;color:var(--ink);padding:9px 10px}
@@ -128,6 +144,11 @@
  .venue-directory .venue-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:640px){
+ .venue-directory .venue-region-dialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);padding:14px}
+ .venue-directory .venue-dialog-footer{bottom:-14px;gap:10px;padding-top:12px}
+ .venue-directory .venue-dialog-footer p{font-size:12px}
+ .venue-directory .venue-dialog-footer button{white-space:nowrap;padding-inline:10px}
+ .venue-directory .venue-map-breadcrumbs{gap:6px;font-size:12px}
  .venue-directory .venue-region-heading{gap:4px}
  .venue-directory .venue-map-layout{grid-template-columns:1fr;gap:8px}
  .venue-directory .venue-region-map{height:190px}
@@ -135,7 +156,7 @@
  .venue-directory .venue-map-choice{font-size:12px;min-height:48px;padding:6px}
  .venue-directory .venue-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
  .venue-directory .venue-filter-grid input,.venue-directory .venue-filter-grid select{font-size:16px;padding:9px 6px}
- .venue-directory .venue-filter-grid label>span{font-size:12px}
+ .venue-directory .venue-filter-grid label>span,.venue-directory .venue-region-field>label{font-size:12px}
  .venue-directory .venue-filter-grid label small{display:block}
  .venue-directory .venue-results-heading{align-items:flex-start;flex-direction:column;gap:10px}
  .venue-directory .venue-results-controls{justify-content:space-between;width:100%;gap:8px}

@@ -103,19 +103,21 @@ def _filters(params, catalog):
     def select(name, label, options, ident=''):
         items = ''.join(f'<option value="{escape(v, quote=True)}"' + (' selected' if value(name) == v else '') + f'>{escape(text)}</option>' for v, text in options)
         return f'<label><span>{label}</span><select name="{name}" id="{ident}">{items}</select></label>'
-    fields = '<label class="venue-search-field"><span>施設名・地名</span><input name="q" type="search" placeholder="施設名・住所で検索" maxlength="200" value="' + escape(value('q')[:200], quote=True) + '"></label>'
+    region = '東京都 / ' + (value('municipality') or value('area')) if value('municipality') or value('area') else '東京都全域'
+    fields = '<div class="venue-region-field"><label for="venue-open-region">地域</label><button id="venue-open-region" type="button" aria-haspopup="dialog" aria-controls="venue-region-dialog"><span id="venue-region-label">' + escape(region) + '</span><span aria-hidden="true">&#9662;</span></button></div>'
+    fields += '<label class="venue-search-field"><span>施設名・地名</span><input name="q" type="search" placeholder="施設名・住所で検索" maxlength="200" value="' + escape(value('q')[:200], quote=True) + '"></label>'
     geography = select('area', 'エリア', [('', '都内すべて'), ('23区', '23区'), ('多摩', '多摩'), ('島しょ', '島しょ')], 'venue-area-filter')
     municipalities = catalog['meta']['municipalities_by_area'].get(value('area'), catalog['meta']['municipalities'])
     geography += select('municipality', '自治体', [('', 'すべての自治体')] + [(m, m) for m in municipalities], 'venue-municipality-filter')
     fields += select('booking_channel', '予約方法', [('', 'すべての予約方法')] + list(CHANNELS) + [('unknown', '予約方法は未確認')])
-    fields += select('registration', '施設の利用者登録', [('', '登録条件すべて'), ('required', '必要（確認済み）'), ('not_required', '不要（確認済み）'), ('unknown', '要否は未確認')])
+    registration = select('registration', '施設の利用者登録', [('', '登録条件すべて'), ('required', '必要（確認済み）'), ('not_required', '不要（確認済み）'), ('unknown', '要否は未確認')])
     fields += '<label><span>料金上限 <small>コート1面・1時間換算</small></span><div class="venue-price-input"><input name="price_max" type="text" inputmode="numeric" maxlength="12" placeholder="例：3000" value="' + escape(value('price_max'), quote=True) + '"><span>円</span></div></label>'
     legacy = ''.join(f'<input type="hidden" name="{key}" value="{escape(value(key), quote=True)}">' for key in ('venue_type', 'operator_type', 'open_from', 'open_until'))
     toggles = ''.join(f'<label class="venue-checkbox-label"><input name="{key}" type="checkbox" value="1"' + (' checked' if value(key) in {'1', 'true', 'on'} else '') + f'><span>{label}</span></label>' for key, label in [('night_lighting', '夜間照明あり'), ('indoor', '屋内施設あり'), ('show_suspended', '休止中の施設も表示')])
     context = ''.join(f'<input type="hidden" name="{key}" value="{escape(selected(params, key), quote=True)}">' for key in ('sport', 'region', 'prefecture') if selected(params, key))
     context += f'<input type="hidden" name="facility_kind" value="{escape(value("facility_kind"), quote=True)}"><input type="hidden" name="map" value="{escape(value("map"), quote=True)}">'
     active = '<p class="venue-filter-note">以前のURLの追加条件を適用中です。「条件をリセット」で解除できます。</p>' if any(value(key) for key in ('venue_type', 'operator_type', 'facility_kind', 'open_from', 'open_until')) else ''
-    return context + legacy + f'<fieldset id="venue-filter-fields"><legend class="venue-visually-hidden">会場の絞り込み条件</legend><div class="venue-filter-grid">{fields}</div><div class="venue-filter-footer"><details class="venue-extra-filters"><summary>追加条件</summary><div class="venue-filter-options">{toggles}</div><p class="venue-filter-note">料金上限・安い順は、条件が一定のコート1面・1時間に換算できる施設が対象です。空き状況・最終料金は公式予約先で確認してください。</p></details><button class="venue-apply" type="submit">条件を適用</button></div><div class="venue-geography-state">{geography}</div><noscript><style>.venue-directory .venue-geography-state{{display:grid!important}}</style></noscript>{active}</fieldset>'
+    return context + legacy + f'<fieldset id="venue-filter-fields"><legend class="venue-visually-hidden">会場の絞り込み条件</legend><div class="venue-filter-grid">{fields}</div><div class="venue-filter-footer"><details class="venue-extra-filters"><summary>追加条件</summary><div class="venue-extra-registration">{registration}</div><div class="venue-filter-options">{toggles}</div><p class="venue-filter-note">料金上限・安い順は、条件が一定のコート1面・1時間に換算できる施設が対象です。空き状況・最終料金は公式予約先で確認してください。</p></details><button class="venue-apply" type="submit">条件を適用</button></div><div class="venue-geography-state">{geography}</div><noscript><style>.venue-directory .venue-geography-state{{display:grid!important}}</style></noscript>{active}</fieldset>'
 
 
 def render_venue_body(params=None) -> str:

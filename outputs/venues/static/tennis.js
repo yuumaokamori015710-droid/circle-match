@@ -15,22 +15,39 @@
   let searchTimer;
   let mapRequest;
 
-  function syncMap() {
+  function syncMap(force = false) {
     const fields = $("#venue-court-filters").elements;
     const stage = fields.map.value || ({'23区':'wards','多摩':'tama','島しょ':'islands'}[fields.area.value] || 'tokyo');
     const panel = $('.venue-region-panel');
-    if (panel?.dataset.stage === stage && panel.dataset.area === fields.area.value && panel.dataset.municipality === fields.municipality.value) return;
+    if (!force && panel?.dataset.stage === stage && panel.dataset.area === fields.area.value && panel.dataset.municipality === fields.municipality.value) return;
     mapRequest?.abort();
     mapRequest = new AbortController();
     const signal = mapRequest.signal;
+    $('#venue-region-selector').setAttribute('aria-busy','true');
+    $('#venue-map-error').hidden = true;
     fetch(browser.location.href,{credentials:'omit',signal}).then(response => {
       if (!response.ok) throw new Error('Map unavailable');
       return response.text();
     }).then(html => {
       if (signal.aborted) return;
       const replacement = new DOMParser().parseFromString(html,'text/html').querySelector('#venue-region-selector');
-      if (replacement) $('#venue-region-selector').innerHTML = replacement.innerHTML;
-    }).catch(() => {});
+      if (!replacement) throw new Error('Map unavailable');
+      $('#venue-region-selector').innerHTML = replacement.innerHTML;
+      if ($('#venue-region-dialog').open) $('#venue-region-dialog-title').focus({preventScroll:true});
+    }).catch(() => {
+      if (!signal.aborted) $('#venue-map-error').hidden = false;
+    }).finally(() => {
+      if (!signal.aborted) $('#venue-region-selector').removeAttribute('aria-busy');
+    });
+  }
+
+  function updateRegionSummary() {
+    const fields = $('#venue-court-filters').elements;
+    const label = fields.municipality.value || fields.area.value;
+    const selected = label ? `東京都 / ${label}` : '東京都全域';
+    $('#venue-region-label').textContent = selected;
+    $('#venue-open-region').title = selected;
+    $('#venue-region-result').textContent = `${selected} · ${$('#venue-result-count').textContent}`;
   }
 
   function numberOrNull(value) {
@@ -175,7 +192,7 @@
       fields[name].checked = [true,"1","true","on"].includes(read(name));
     }
   }
-  function persistUrlFilters(filters) {
+  function persistUrlFilters(filters, push = false) {
     const url = currentUrl();
     if (!url || !browser.history) return;
     for (const name of URL_FILTER_NAMES) {
@@ -190,7 +207,7 @@
     }
     url.searchParams.delete("v_page");
     if (url.href !== browser.location.href) {
-      browser.history.replaceState(browser.history.state,"",url.pathname + url.search + url.hash);
+      browser.history[push ? 'pushState' : 'replaceState'](browser.history.state,"",url.pathname + url.search + url.hash);
     }
   }
   function renderResults() {
@@ -202,15 +219,16 @@
     $("#venue-empty-state").hidden = !state.loaded || count > 0;
     $("#venue-pagination").hidden = visible.length >= count;
     $("#venue-show-more").textContent = `さらに${Math.min(PAGE_SIZE,count-visible.length)}件表示`;
+    updateRegionSummary();
   }
-  function applyFilters(updateUrl = true) {
+  function applyFilters(updateUrl = true, pushUrl = false) {
     if (!state.loaded) return;
     const filters = readFilters();
     const invalidPrice=fieldsPriceInvalid();
     $("#venue-filter-error").textContent=invalidPrice?"料金上限は0以上の金額で入力してください。":"";
     $("#venue-filter-error").hidden=!invalidPrice;
     if(invalidPrice) return;
-    if (updateUrl) persistUrlFilters(filters);
+    if (updateUrl) persistUrlFilters(filters, pushUrl);
     if(updateUrl) browser.CircleMatchSettings?.saveVenue(state.meta.sport || "all",filters);
     state.matches = sortCourts(filterCourts(state.courts,filters),filters.sort);
     state.visibleCount = PAGE_SIZE;
@@ -295,16 +313,44 @@
   $("#venue-retry-load").addEventListener("click",loadCourts);
   $("#venue-show-more").addEventListener("click",() => {state.visibleCount += PAGE_SIZE;renderResults();});
   $("#venue-show-all").addEventListener("click",() => {state.visibleCount = state.matches.length;renderResults();});
+  const regionDialog = $('#venue-region-dialog');
+  $('#venue-open-region').addEventListener('click',() => {
+    if (state.loaded && fieldsPriceInvalid()) {
+      applyFilters();
+      $('#venue-court-filters').elements.price_max.focus();
+      return;
+    }
+    updateRegionSummary();
+    regionDialog.showModal();
+    document.body.classList.add('venue-modal-open');
+    if (state.loaded) syncMap();
+  });
+  $('#venue-region-close').addEventListener('click',()=>regionDialog.close());
+  $('#venue-region-done').addEventListener('click',()=>{
+    regionDialog.close();
+    $('#venue-court-results').focus({preventScroll:true});
+    $('#venue-court-results').scrollIntoView({block:'start'});
+  });
+  regionDialog.addEventListener('close',()=>document.body.classList.remove('venue-modal-open'));
+  regionDialog.addEventListener('click',event=>{
+    if (event.target !== regionDialog) return;
+    const rect = regionDialog.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) regionDialog.close();
+  });
+  $('#venue-map-retry').addEventListener('click',()=>syncMap(true));
   directory.addEventListener('click',event => {
     const link = event.target.closest('a');
     if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     if (link.closest('#venue-region-selector')) {
       const target = new URL(link.href), url = currentUrl();
       if (!url || target.origin !== url.origin || target.pathname !== '/venues') return;
+      if (!state.loaded) return;
       event.preventDefault();
-      for (const key of ['area','municipality','map','v_area','v_municipality','v_map','v_page']) url.searchParams.delete(key);
-      for (const key of ['v_area','v_municipality','v_map']) if (target.searchParams.has(key)) url.searchParams.set(key,target.searchParams.get(key));
-      browser.location.assign(url.pathname + url.search);
+      const fields = $('#venue-court-filters').elements;
+      fields.map.value = target.searchParams.get('v_map') || '';
+      fields.area.value = target.searchParams.get('v_area') || '';
+      updateMunicipalities(target.searchParams.get('v_municipality') || '');
+      applyFilters(true,true);
     } else if (link.classList.contains('venue-tariff-more')) {
       const details = directory.querySelector(link.getAttribute('href'));
       if (!details) return;

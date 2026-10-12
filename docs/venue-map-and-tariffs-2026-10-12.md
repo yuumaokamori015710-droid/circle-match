@@ -5,10 +5,11 @@
 - Keep all 1,202 venue records, identifiers, booking URLs and legacy catalogs intact.
 - Tokyo-first administrative map: Japan > Kanto > Tokyo > 23 wards / Tama / islands > municipality.
 - Areas without matching sport facilities are disabled. This is geographic selection, not facility pins or live availability.
-- Four visible filters: name/address, booking channel, registration requirement, comparable court price ceiling. Two rows on phones, one row on desktop.
+- Conditions first: region, name/address, booking channel, comparable court price ceiling. Two rows on phones, one row on desktop. Registration requirement remains in additional conditions.
+- Region opens a native modal containing the administrative map. Drill-down updates the underlying count and table immediately, keeps the modal open, and pushes URL history without replacing the document. Close, Escape and the results button retain the selected conditions.
 - Facility type, ownership and strict hours are removed from the visible filter UI. Older URLs still work and can be reset.
 - Desktop comparison table; compact mobile rows. Sorting stays on the results header, outside the filters.
-- Native GET forms, SVG links and server-rendered first 50 results work without JavaScript. Client search and saved settings remain supported.
+- Native GET forms, inline SVG links and server-rendered first 50 results work without JavaScript. When JavaScript is enabled, the map is hidden until the region condition is opened. Client search and saved settings remain supported. Map-fetch failure has an explicit retry; catalog failure retains server results and native map navigation.
 
 ## Map Provenance
 
@@ -48,6 +49,6 @@ The fee builder uses the existing dated review evidence in `docs/venue-fee-revie
 ## Verification and Recovery
 
 - Python integration and regression suites cover venues, sport navigation, SEO, event/account flows, pricing/notifications and latest-event homepage.
-- Browser checks: 14 sports at 390/768/1440/1920px; table/fee units; map drill-down and browser back/forward; booking/registration/price filters; old hours URLs; reload/shared conditions; saved preferences; forced mobile/desktop views; settings at 320/390/768/1440/1920px; JavaScript-disabled map/forms/tariffs; API-failure retention of SSR results.
+- Browser checks: 14 sports at 390/768/1440/1920px; table/fee units; live modal drill-down, focus restoration and browser back/forward; dialogs at 320/390/768/1440/1920px; map failure/retry; booking/registration/price filters; old hours URLs; reload/shared conditions; saved preferences; forced mobile/desktop views; settings at 320/390/768/1440/1920px; JavaScript-disabled map/forms/tariffs; API-failure retention of SSR results.
 - Existing circle/event/auth data are unchanged. No SQLite or Supabase migration, no environment or plan changes.
 - Recovery: revert this release commit and deploy its successor normally. No database restoration is needed. Do not reset unrelated changes or deploy an old pinned commit.
