@@ -103,11 +103,11 @@ class SportNavigationTests(IsolatedAppHttpCase):
 
     def assert_shared_tabs(self, parsed, current, global_values, audience='university'):
         tabs = parsed.metadata.tabs
-        self.assertEqual([item['text'] for item in tabs], ['大会・イベント', 'サークルDB', '会場予約'])
+        self.assertEqual([item['text'] for item in tabs], ['大会・イベント', '会場予約', 'サークルDB'])
         active = [item['text'] for item in tabs if item.get('aria-current') == 'page'
                   or 'active' in item.get('class', '').split()]
         self.assertEqual(active, [current] if current else [])
-        for item, path in zip(tabs, ['/events', '/', '/venues']):
+        for item, path in zip(tabs, ['/events', '/venues', '/']):
             parts = urlsplit(item['href'])
             self.assertEqual(parts.path, path)
             self.assertFalse(parts.netloc)

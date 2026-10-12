@@ -1,5 +1,6 @@
-"""Inline circle geography, using the same boundary assets as venue search."""
+"""Circle geography picker, sharing venue boundaries and native modal behavior."""
 from html import escape
+from hashlib import sha256
 import json
 from pathlib import Path
 import re
@@ -12,7 +13,10 @@ ASSET_PATHS = {
     '/assets/regions/map.css': (ROOT / 'regions/map.css', 'text/css; charset=utf-8'),
     '/assets/regions/map.js': (ROOT / 'regions/map.js', 'application/javascript; charset=utf-8'),
 }
-RESOURCES = '<link rel="stylesheet" href="/assets/regions/map.css?v=20261012"><script src="/assets/regions/map.js?v=20261012" defer></script>'
+RESOURCES = ''.join((f'<link rel="stylesheet" href="{url}?v={sha256(path.read_bytes()).hexdigest()[:12]}">'
+                     if content_type.startswith('text/css') else
+                     f'<script src="{url}?v={sha256(path.read_bytes()).hexdigest()[:12]}" defer></script>')
+                    for url, (path, content_type) in ASSET_PATHS.items())
 
 
 def value(params, key):
@@ -99,6 +103,19 @@ def destination(params, path, stage, places):
     query = {k: v for k, v in params.items() if k in {'tab', 'audience', 'q', 'sport', 'status', 'sort', 'organization_type'}}
     query.update(c_map=stage, places=','.join(places))
     return path + '?' + urlencode(query, doseq=True)
+
+
+def control(params, regions):
+    label = escape('・'.join(selected(params, regions)) or '全国')
+    return f'''<div class="circle-region-field"><label for="circle-open-region">地域</label><button id="circle-open-region" class="circle-region-trigger" type="button" aria-haspopup="dialog" aria-controls="circle-region-dialog" title="地図から地域を選ぶ"><span id="circle-region-label">{label}</span><span aria-hidden="true">&#9662;</span></button></div>'''
+
+
+def dialog(markup):
+    return f'''<dialog id="circle-region-dialog" class="circle-region-dialog" aria-labelledby="circle-region-dialog-title">
+<div class="circle-dialog-head"><h2 id="circle-region-dialog-title" tabindex="-1" autofocus>地域を選ぶ</h2><button id="circle-region-close" type="button" aria-label="地域選択を閉じる" title="閉じる">&times;</button></div>
+{markup}
+<div class="circle-dialog-footer"><p id="circle-region-result" role="status" aria-live="polite"></p><button id="circle-region-done" type="button">反映する</button></div></dialog>
+<noscript><style>.circle-region-field{{display:none}}.circle-region-dialog{{display:block;position:static;width:100%;max-height:none;border:0;box-shadow:none;padding:0;margin:0}}.circle-dialog-head,.circle-dialog-footer{{display:none}}</style></noscript>'''
 
 
 def render(params, grouped, regions, path='/', error=False):

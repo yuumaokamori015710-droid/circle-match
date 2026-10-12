@@ -1,4 +1,23 @@
 .circle-region-picker{padding:20px 24px;margin:0 0 16px;border-block:1px solid var(--line,#dbe4ed);background:#fff;min-width:0}
+.circle-region-field{display:grid;gap:6px;max-width:320px;margin:16px 0;font-size:13px;color:#50637a;min-width:0}
+.circle-region-field>label{font-weight:700}
+.circle-region-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:44px;min-width:0;padding:9px 10px;border:1px solid var(--line,#dbe4ed);border-radius:6px;font:inherit;color:var(--ink,#17304b);background:#fff;cursor:pointer}
+#circle-region-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dbFilters{grid-template-columns:minmax(0,1fr) minmax(180px,280px) auto}
+#dbFilters .circle-region-field{max-width:none;margin:0}
+.circle-region-dialog{box-sizing:border-box;width:min(900px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:20px;border:1px solid var(--line,#dbe4ed);border-radius:8px;color:var(--ink,#17304b);background:#fff;box-shadow:0 16px 48px #17304b33;overflow:auto}
+.circle-region-dialog *{box-sizing:border-box;letter-spacing:0}
+.circle-region-dialog::backdrop{background:#15263880}
+body.circle-modal-open{overflow:hidden}
+.circle-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--line,#dbe4ed)}
+.circle-dialog-head h2{font-size:20px;margin:0}
+#circle-region-close{display:grid;place-items:center;width:44px;height:44px;min-height:44px;flex-shrink:0;padding:0;font-size:28px;line-height:1;border:1px solid var(--line,#dbe4ed);border-radius:6px;background:#fff;color:inherit;cursor:pointer}
+.circle-region-dialog .circle-region-picker{padding:12px 0;margin:0;border:0}
+.circle-dialog-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;bottom:-20px;padding:16px 0 0;border-top:1px solid var(--line,#dbe4ed);background:#fff}
+.circle-dialog-footer p{margin:0;font-size:13px;overflow-wrap:anywhere}
+#circle-region-done{font:inherit;min-height:44px;padding:10px 20px;border:1px solid #14705b;border-radius:6px;background:#14705b;color:#fff;white-space:nowrap;cursor:pointer}
+.circle-region-dialog :focus-visible,.circle-region-trigger:focus-visible{outline:3px solid #e9a34b;outline-offset:3px}
+html[data-cm-view=mobile] .circle-region-dialog{width:min(366px,calc(100% - 24px))}
 .circle-region-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .circle-region-heading h2{font-size:18px;margin:0;padding:0;border:0}
 .circle-map-breadcrumbs{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:13px}
@@ -23,9 +42,10 @@
 .circle-map-credit{font-size:10px;color:var(--muted,#65758a);margin:6px 0 0}
 .circle-region-error{padding:12px;color:#a12915;background:#fff4ee;font-size:13px}
 .circle-region-error button{margin-left:12px;min-height:44px;font:inherit}
-#circle-region-picker[aria-busy=true]{opacity:.7}
+#circle-region-picker[aria-busy=true]{opacity:.7;pointer-events:none}
 .circle-map-choice:focus-visible,.circle-map-zoom:focus-visible,.circle-map-shape:focus-visible{outline:3px solid #c9613f;outline-offset:2px}
 .circle-legacy-directory #regionFilter,.circle-legacy-directory #prefFilter,.circle-legacy-directory .breadcrumb{display:none}
 .circle-legacy-directory .filters{grid-template-columns:minmax(180px,1fr) repeat(3,minmax(100px,180px))}
 @media(max-width:760px){.circle-legacy-directory .filters{grid-template-columns:1fr 1fr}.circle-legacy-directory .filters #q{grid-column:1/-1}}
 @media(max-width:760px){.circle-region-picker{padding:14px}.circle-map-layout{grid-template-columns:1fr;gap:8px}.circle-region-map{height:200px}.circle-map-choices{grid-template-columns:repeat(2,minmax(0,1fr));max-height:210px}.circle-map-zoom{width:36px;flex-basis:36px}.circle-map-choice{font-size:12px;padding:6px}.circle-map-breadcrumbs{gap:6px}.circle-region-heading{gap:4px}}
+@media(max-width:699px){#dbFilters{grid-template-columns:minmax(0,1fr) auto}#dbFilters .db-search{grid-column:1/-1}.circle-region-dialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);padding:14px}.circle-dialog-footer{bottom:-14px;gap:10px;padding-top:12px}.circle-dialog-footer p{font-size:12px}.circle-dialog-footer button{padding-inline:12px}.circle-region-map{height:180px}}

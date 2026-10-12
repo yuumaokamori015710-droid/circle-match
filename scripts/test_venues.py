@@ -136,11 +136,11 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
 
     def assert_tabs(self, page, current):
         parsed = PublicPage(page)
-        self.assertEqual([item['text'] for item in parsed.tabs], ['大会・イベント', 'サークルDB', '会場予約'])
+        self.assertEqual([item['text'] for item in parsed.tabs], ['大会・イベント', '会場予約', 'サークルDB'])
         active = [item['text'] for item in parsed.tabs
                   if 'active' in item.get('class', '').split() or item.get('aria-current') == 'page']
         self.assertEqual(active, [current])
-        self.assertEqual(parsed.tabs[2]['href'], '/venues')
+        self.assertEqual(parsed.tabs[1]['href'], '/venues')
         for item in parsed.tabs:
             self.assertTrue(item['href'].startswith('/'))
             self.assertFalse(urlsplit(item['href']).netloc)

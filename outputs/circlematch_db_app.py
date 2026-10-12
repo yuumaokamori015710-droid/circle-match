@@ -1548,7 +1548,7 @@ def directory_hidden_context(params):
 
 def render_directory_tabs(tab, params=None):
     params = params or {}
-    links = tuple((key, label, directory_url(params if key != "db" or tab == "db" else {k: v for k, v in params.items() if k != "audience"}, key)) for key, label in (("events", "大会・イベント"), ("db", "サークルDB"), ("venues", "会場予約")))
+    links = tuple((key, label, directory_url(params if key != "db" or tab == "db" else {k: v for k, v in params.items() if k != "audience"}, key)) for key, label in (("events", "大会・イベント"), ("venues", "会場予約"), ("db", "サークルDB")))
     return '<nav class="tabs" aria-label="主要機能">' + ''.join(
         f'<a data-directory-link class="{"active" if key == tab else ""}" href="{html.escape(url, quote=True)}"'
         + (' aria-current="page"' if key == tab else '') + f'>{label}</a>'
@@ -1742,7 +1742,8 @@ def render_public_html(params=None, event_listing=False):
         audience_toggle = f'<div class="db-toggle"><a class="{"active" if audience == "university" else ""}" href="{html.escape(selected_home_query(params, "db", audience="university"), quote=True)}">大学</a><a class="{"active" if audience == "social" else ""}" href="{html.escape(selected_home_query(params, "db", audience="social"), quote=True)}">社会人</a></div>'
         body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><form id="dbFilters" class="filter-grid"><label class="db-search">団体名・大学名で検索<input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"></label>{directory_hidden_context(params)}<a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
         pager = render_db_pager(params, db_page if not db_error else 1, db_stats["circles"] if not db_error else 0)
-        body = body.replace('<div id="dbList"', render_circle_region_map(scoped) + '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
+        body = body.replace('<a class="button" href="' + ('/circles' if audience == 'university' else '/social/circles') + '">詳細検索</a>', circle_regions.control(scoped, REGION_GROUPS) + '<a class="button" href="' + ('/circles' if audience == 'university' else '/social/circles') + '">詳細検索</a>', 1)
+        body = body.replace('<div id="dbList"', render_circle_region_map(scoped, include_control=False) + '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
         body = circle_regions.RESOURCES + body
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
     if tab == "db":
@@ -5790,12 +5791,13 @@ def circle_region_groups(params):
                    where ''' + ' and '.join(where) + ' group by u.prefecture, u.city, c.activity_area', args)
 
 
-def render_circle_region_map(params, path='/'):
+def render_circle_region_map(params, path='/', include_control=True):
     try:
-        return circle_regions.render(params, circle_region_groups(params), REGION_GROUPS, path)
+        markup = circle_regions.render(params, circle_region_groups(params), REGION_GROUPS, path)
     except Exception as exc:
         log(f'circle map SSR failed: {type(exc).__name__}: {exc}')
-        return circle_regions.render(params, [], REGION_GROUPS, path, error=True)
+        markup = circle_regions.render(params, [], REGION_GROUPS, path, error=True)
+    return (circle_regions.control(params, REGION_GROUPS) if include_control else '') + circle_regions.dialog(markup)
 
 
 def circle_query_stats(params):

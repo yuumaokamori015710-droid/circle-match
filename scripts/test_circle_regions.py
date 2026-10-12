@@ -4,6 +4,7 @@ import re
 from html import unescape
 from urllib.parse import urlencode, parse_qs, urlsplit
 from unittest.mock import patch
+from bs4 import BeautifulSoup
 
 from test_venues import IsolatedAppHttpCase
 
@@ -48,13 +49,22 @@ class CircleRegionTests(IsolatedAppHttpCase):
         query['places'] = ['新宿区', '渋谷区']
         self.assertEqual(self.app.circle_query_stats(query)['circles'], 28)
 
-    def test_inline_ssr_in_all_circle_views(self):
+    def test_modal_with_ssr_and_no_js_fallback_in_all_circle_views(self):
         for path, audience in [('/?tab=db', 'university'), ('/?tab=db&audience=social', 'social'), ('/circles?', 'university'), ('/social/circles?', 'social')]:
             status, body, _ = self.request(path + '&' + urlencode({'q': '地図テスト', 'places': '新宿区,渋谷区', 'c_map': 'wards'}))
             text = body.decode()
             self.assertEqual(status, 200)
             self.assertIn('id="circle-region-picker"', text)
-            self.assertNotIn('<dialog', text)
+            page = BeautifulSoup(text, 'html.parser')
+            dialog = page.select_one('dialog#circle-region-dialog')
+            self.assertIsNotNone(dialog.select_one('#circle-region-picker'))
+            self.assertFalse(dialog.has_attr('open'))
+            self.assertEqual(page.select_one('#circle-open-region')['aria-controls'], dialog['id'])
+            self.assertEqual(page.select_one('#circle-region-done').get_text(), '反映する')
+            self.assertEqual(page.select_one('#circle-region-label').get_text(), '新宿区・渋谷区')
+            self.assertIn('.circle-region-dialog{display:block;position:static', text)
+            if path.startswith('/?'):
+                self.assertIsNotNone(page.select_one('#dbFilters #circle-open-region'))
             visible = re.sub(r'<script\b[^>]*>.*?</script>', '', text, flags=re.S)
             self.assertIn('地図テスト'+audience+'shinjuku', visible)
             self.assertNotIn('地図テスト'+('social' if audience == 'university' else 'university')+'shinjuku', visible)
@@ -65,6 +75,7 @@ class CircleRegionTests(IsolatedAppHttpCase):
         self.assertEqual(status, 200)
         markup = json.loads(body)['html']
         self.assertIn('aria-label="新宿区 27団体"', markup)
+        self.assertNotIn('<dialog', markup)
         self.assertNotIn('地図テスト', markup)
         status, body, _ = self.request('/api/circle-map?' + urlencode({'path': '/social/circles', 'q': '地図テスト', 'sport': 'テニス', 'c_map': 'wards'}))
         self.assertIn('aria-label="新宿区 0団体"', json.loads(body)['html'])
