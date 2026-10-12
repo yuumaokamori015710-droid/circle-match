@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 import circlematch_seo as seo
 import circlematch_venues as venues
 import circlematch_settings as settings_ui
+import circlematch_regions as circle_regions
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
 import circlematch_contact_research as contact_research
@@ -712,12 +713,13 @@ PUBLIC_HTML = """<!doctype html>
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
-    function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
+    function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); const url=new URLSearchParams(location.search);for(const key of ['places','c_map'])if(url.has(key))qs.set(key,url.get(key));return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("uniCount").textContent=stats.universities; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
     function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="7">データなし</td></tr>`}
     function applyInitialSummary(){if(!initialCircleSummary)return; $("prefCount").textContent=initialCircleSummary.prefectures; $("uniCount").textContent=initialCircleSummary.universities; $("circleCount").textContent=initialCircleSummary.circles; $("verifiedCount").textContent=initialCircleSummary.verified_circles}
-    async function refresh(){const qs=currentQuery(); qs.set("limit","120"); $("matchBridge").href="/?"+qs+"#matches"; const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]); updateSummary(stats); $("rows").innerHTML=renderRows(data)}
+    let refreshRequest=0;
+    async function refresh(event){const latest=++refreshRequest,qs=currentQuery(); const next=new URL(location.href);for(const key of ['q','sport','status','sort']){if(qs.get(key))next.searchParams.set(key,qs.get(key));else next.searchParams.delete(key)}history.replaceState(null,'',next.pathname+next.search);if(event?.type!=='circle-region-change')document.dispatchEvent(new Event('circle-filters-updated'));qs.set("limit","120"); $("matchBridge").href="/events?"+qs;try{const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]);if(latest!==refreshRequest)return;updateSummary(stats); $("rows").innerHTML=renderRows(data)}catch(e){if(latest!==refreshRequest)return;$("rows").innerHTML='<tr><td colspan="7" class="ssr-error">データを取得できませんでした</td></tr>';for(const id of ['prefCount','uniCount','circleCount','verifiedCount'])$(id).textContent='取得失敗'}}
     async function boot(){fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"university"; applyInitialSummary(); if(initialCircles){$("rows").innerHTML=renderRows(initialCircles)} await refresh()}
     ["q","prefFilter","sportFilter","statusFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh));
     $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); refresh()});
@@ -773,10 +775,12 @@ SOCIAL_HTML = """<!doctype html>
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
     function syncPrefOptions(){const current=$("prefFilter").value; fillSelect($("prefFilter"),prefValues(),selectedRegion()?`${selectedRegion().label}すべて`:"全都道府県"); if(prefValues().includes(current)) $("prefFilter").value=current}
-    function currentQuery(){const qs=new URLSearchParams({audience:"social",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
+    function currentQuery(){const qs=new URLSearchParams({audience:"social",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value);const url=new URLSearchParams(location.search);for(const key of ['places','c_map'])if(url.has(key))qs.set(key,url.get(key));return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("sportCount").textContent=stats.sports; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
-    async function refresh(){const qs=currentQuery(); qs.set("limit","120"); $("matchBridge").href="/social?"+qs+"#matches"; const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]); updateSummary(stats); $("rows").innerHTML=data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
+    function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
+    let refreshRequest=0;
+    async function refresh(event){const latest=++refreshRequest,qs=currentQuery();const next=new URL(location.href);for(const key of ['q','sport','status','sort']){if(qs.get(key))next.searchParams.set(key,qs.get(key));else next.searchParams.delete(key)}history.replaceState(null,'',next.pathname+next.search);if(event?.type!=='circle-region-change')document.dispatchEvent(new Event('circle-filters-updated'));qs.set("limit","120");$("matchBridge").href="/events?"+qs;try{const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]);if(latest!==refreshRequest)return;updateSummary(stats);$("rows").innerHTML=renderRows(data)}catch(e){if(latest!==refreshRequest)return;$("rows").innerHTML='<tr><td colspan="9" class="ssr-error">データを取得できませんでした</td></tr>';for(const id of ['prefCount','sportCount','circleCount','verifiedCount'])$(id).textContent='取得失敗'}}
     async function boot(){fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"prefecture"; await refresh()}
     $("rows").addEventListener("click",async e=>{const button=e.target.closest("[data-invite]"); if(!button)return; try{await navigator.clipboard.writeText(button.dataset.invite); button.textContent="コピーしました"; button.classList.add("copied"); setTimeout(()=>{button.textContent="文面をコピー";button.classList.remove("copied")},1800)}catch(_){alert("コピーに失敗しました。もう一度お試しください。")}}); ["q","prefFilter","sportFilter","statusFilter","sortFilter"].forEach(id=>$(id).addEventListener("input",refresh)); $("regionFilter").addEventListener("input",()=>{syncPrefOptions(); refresh()}); boot().catch(e=>alert(e.message));
   </script>
@@ -1121,7 +1125,7 @@ def ssr_error_value():
 def ssr_circle_rows(circles):
     """Render the first public DB records into the initial /circles document."""
     if not circles:
-        return '<tr><td colspan="7" class="ssr-error">データを取得できませんでした</td></tr>'
+        return '<tr><td colspan="7" class="empty">条件に合う団体はありません。</td></tr>'
 
     status_labels = {
         "university_verified": "大学公式情報掲載",
@@ -1418,6 +1422,9 @@ def selected_home_query(params, tab, *, path="/", **updates):
         if value:
             values[key] = value
     values.update({key: value for key, value in updates.items() if value})
+    if tab == 'db' and 'places' in params:
+        values['places'] = ','.join(circle_regions.selected(params, REGION_GROUPS))
+        values['c_map'] = circle_regions.stage_for(params, REGION_GROUPS)
     values["tab"] = tab
     return path + "?" + urlencode(values)
 
@@ -1509,7 +1516,9 @@ def safe_public_source(value):
 
 
 def render_db_pager(params, page, total):
-    values = {key: value[0] for key, value in params.items() if value and key in {"tab", "audience", "q", "sport", "region", "prefecture", "sort"}}
+    values = {key: value[0] for key, value in params.items() if value and key in {"tab", "audience", "q", "sport", "region", "prefecture", "sort", "c_map", "places"}}
+    if 'places' in params:
+        values['places'] = ','.join(circle_regions.selected(params, REGION_GROUPS))
     values["tab"] = "db"
     links = []
     if page > 1:
@@ -1527,11 +1536,14 @@ def directory_url(params, tab, **updates):
     path = {"events": "/events", "db": "/", "venues": "/venues"}[tab]
     if tab == "db":
         values.update(tab="db", audience=updates.get("audience") or audience_scope(params, "university"))
+        if 'places' in params:
+            values.update(places=','.join(circle_regions.selected(params, REGION_GROUPS)), c_map=circle_regions.stage_for(params, REGION_GROUPS))
     return path + ("?" + urlencode(values) if values else "")
 
 
 def directory_hidden_context(params):
-    return ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params.get(key, [""])[0], quote=True)}">' for key in ("sport", "region", "prefecture"))
+    keys = ('sport', 'region', 'prefecture', 'places', 'c_map') if params.get('tab') == ['db'] else ('sport', 'region', 'prefecture')
+    return ''.join(f'<input type="hidden" name="{key}" value="{html.escape(",".join(circle_regions.selected(params, REGION_GROUPS)) if key == "places" else params.get(key, [""])[0], quote=True)}">' for key in keys)
 
 
 def render_directory_tabs(tab, params=None):
@@ -1562,11 +1574,15 @@ def render_directory_context(params, tab):
     action = "/" if tab == "db" else "/" + tab
     hidden = f'<input type="hidden" name="tab" value="db"><input type="hidden" name="audience" value="{audience}">' if tab == "db" else ""
     venue_keys = ('q','municipality','area','map','operator_type','facility_kind','venue_type','booking_channel','registration','open_from','open_until','price_max','sort','night_lighting','indoor','show_suspended')
-    local_keys = ("q", "sort") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else tuple('v_' + key for key in venue_keys))
+    local_keys = ("q", "sort", "c_map", "places") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else tuple('v_' + key for key in venue_keys))
     hidden += ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params[key][0], quote=True)}">' for key in local_keys if params.get(key))
+    if tab == 'db' and 'places' in params:
+        hidden = re.sub(r'(<input type="hidden" name="places" value=")[^"]*', lambda match: match[1] + html.escape(','.join(circle_regions.selected(params, REGION_GROUPS)), quote=True), hidden)
     if tab == 'venues' and venues.selected_places(params):
         hidden += f'<input type="hidden" name="v_places" value="{html.escape(",".join(venues.selected_places(params)), quote=True)}">'
     region_control = f'<label>地域<select name="area">{area_options}</select></label>'
+    if tab == 'db':
+        region_control = region_control.replace('<label>', '<label hidden>')
     if tab == 'venues' and venues.supports_catalog(params):
         region_control = ''.join(f'<input type="hidden" name="{key}" value="{html.escape(value, quote=True)}">' for key, value in [('region', region), ('prefecture', prefecture)] if value)
     return event_home_navigation(sport or purpose) + f'''<section class="directory-context"><div class="directory-title">{thumbnail}<div><p class="eyebrow">SPORTS DIRECTORY</p><h1>{html.escape(sport or "すべての競技")}</h1></div></div><form id="directoryContext" action="{action}" method="get" aria-label="競技・地域を選ぶ" data-tab="{tab}">{hidden}<label>競技<select name="sport">{sport_options_html}</select></label>{region_control}<noscript><button class="button" type="submit">条件を変更する</button></noscript></form></section>'''
@@ -1726,7 +1742,8 @@ def render_public_html(params=None, event_listing=False):
         audience_toggle = f'<div class="db-toggle"><a class="{"active" if audience == "university" else ""}" href="{html.escape(selected_home_query(params, "db", audience="university"), quote=True)}">大学</a><a class="{"active" if audience == "social" else ""}" href="{html.escape(selected_home_query(params, "db", audience="social"), quote=True)}">社会人</a></div>'
         body = shared_head + tabs + f'''<section class="section panel"><div class="panel-head"><div><h2>サークルDB</h2><p>大学と社会人を切り替え、競技・地域から団体情報を確認できます。</p></div>{audience_toggle}</div><div class="db-summary"><div class="metric"><span>対象地域</span><strong id="dbPrefectures">{db_stats.get("prefectures", 0)}</strong></div><div class="metric"><span>{"対象大学" if audience == "university" else "掲載団体"}</span><strong id="dbUniversities">{db_stats.get("universities", 0)}</strong></div><div class="metric"><span>検索結果</span><strong id="dbCircles">{db_stats.get("circles", 0)}</strong></div></div><form id="dbFilters" class="filter-grid"><label class="db-search">団体名・大学名で検索<input name="q" value="{html.escape((params.get("q", [""])[0] or ""), quote=True)}" placeholder="団体名・大学名・地域で検索"></label>{directory_hidden_context(params)}<a class="button" href="{'/circles' if audience == 'university' else '/social/circles'}">詳細検索</a></form><div id="dbList" class="circle-list">{db_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>団体データは公開情報・掲載申請情報を基に整理しています。DBに掲載されていることと、募集を主催する権限は別です。公式な団体名で主催する場合は、確認済み代表者だけが紐付けできます。</p></section>'''
         pager = render_db_pager(params, db_page if not db_error else 1, db_stats["circles"] if not db_error else 0)
-        body = body.replace('<div id="dbList"', '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
+        body = body.replace('<div id="dbList"', render_circle_region_map(scoped) + '<div id="dbPagerTop" class="db-pager">' + pager + '</div><div id="dbList"').replace('</section><section class="about">', '<div id="dbPager" class="db-pager">' + pager + '</div></section><section class="about">')
+        body = circle_regions.RESOURCES + body
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
     if tab == "db":
         body = body.replace('<div class="db-summary">', '<p class="context-notice">交流したい団体に、イベントへの招待や練習試合の相談を渡せます。<a href="/invitations">自分の交流招待を確認する</a></p><div class="db-summary">', 1)
@@ -1783,7 +1800,8 @@ EVENT_HOME_SCRIPT = r"""
     if(initialError)list.innerHTML=`<div class="error-box">${esc(initialError)}</div>`;else render(initialCircles);
     function pager(total){const page=Math.max(1,Number(qs().get('page'))||1),link=(p,label)=>{const query=qs();query.set('page',p);return `<a class="button" href="/?${esc(query.toString())}#dbList">${label}</a>`};const markup=(page>1?link(page-1,'前へ'):'')+`<span role="status">${Math.min((page-1)*24+1,total)}〜${Math.min(page*24,total)}件 / 全${total}件</span>`+(page*24<total?link(page+1,'次へ'):'');for(const id of ['dbPager','dbPagerTop'])document.getElementById(id).innerHTML=markup}
     const sync=async(resetPage=true)=>{clearTimeout(timer);updateUrl(form,resetPage!==false);const latest=++request;try{const query=new URLSearchParams(new FormData(form));query.set('audience',pageAudience);query.set('offset',String((Math.max(1,Number(qs().get('page'))||1)-1)*24));const [data,stats]=await Promise.all([getJson('/api/circles?limit=24&'+query.toString()),getJson('/api/circle-stats?'+query.toString())]);if(latest!==request)return;render(data);pager(stats.circles);for(const [key,id] of Object.entries({prefectures:'dbPrefectures',universities:'dbUniversities',circles:'dbCircles'})){const node=document.getElementById(id);if(node)node.textContent=stats[key]??0}}catch(e){if(latest===request){list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`;for(const id of ['dbPrefectures','dbUniversities','dbCircles'])document.getElementById(id).textContent='取得失敗'}}};
-    form.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(sync,220)});form.addEventListener('change',sync);form.addEventListener('submit',e=>{e.preventDefault();sync()});
+    form.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>{sync();document.dispatchEvent(new Event('circle-filters-updated'))},220)});form.addEventListener('change',()=>{sync();document.dispatchEvent(new Event('circle-filters-updated'))});form.addEventListener('submit',e=>{e.preventDefault();sync();document.dispatchEvent(new Event('circle-filters-updated'))});
+    document.addEventListener('circle-region-change',()=>sync(false));
     window.addEventListener('popstate',()=>{restoreFilters(form);sync(false)});
   }
   if(pageTab==='events')bootEvents();else bootDb();
@@ -2396,11 +2414,24 @@ def render_event_contact_html(event_id, user, peer_user_id=""):
     return event_page("質問・連絡", body, EVENT_OPERATIONS_SCRIPT)
 
 
-def render_circles_html():
+def decorate_circle_map(page, params, audience):
+    path = '/social/circles' if audience == 'social' else '/circles'
+    page = page.replace('</head>', circle_regions.RESOURCES + '</head>', 1)
+    page = page.replace('<body>', '<body class="circle-legacy-directory">', 1)
+    page = page.replace('<div class="breadcrumb">', render_circle_region_map(params, path) + '<div class="breadcrumb">', 1)
+    adapter = r'''<script>
+    document.addEventListener('circle-region-change',refresh);
+    window.addEventListener('popstate',()=>{const url=new URLSearchParams(location.search);for(const [id,key] of [['q','q'],['sportFilter','sport'],['statusFilter','status'],['sortFilter','sort'],['regionFilter','region'],['prefFilter','prefecture']]){const field=document.getElementById(id);field.value=url.get(key)||(key==='sort'?field.options[0].value:'')}refresh()});
+    </script>'''
+    return page.replace('</body>', adapter + '</body>')
+
+
+def render_circles_html(params=None):
+    params = dict(params or {}, audience=['university'])
     initial_sports = SPORTS
     try:
-        initial_summary = summary("university")
-        initial_circles = search_circles({"audience": ["university"]}, limit=24)
+        initial_summary = circle_query_stats(params)
+        initial_circles = search_circles(params, limit=24)
         initial_sports = sport_options("university")
         stat_values = {
             "__SSR_PREFECTURE_COUNT__": str(initial_summary["prefectures"]),
@@ -2436,19 +2467,48 @@ def render_circles_html():
     )
     for placeholder, value in stat_values.items():
         page = page.replace(placeholder, value)
-    return page.encode("utf-8")
+    return decorate_circle_map(page, params, 'university').encode("utf-8")
 
 
-def render_social_circles_html():
-    return (
+def render_social_circles_html(params=None):
+    params = dict(params or {}, audience=['social'])
+    page = (
         with_adsense(SOCIAL_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
         .replace("__SPORTS__", json.dumps(sport_options("social"), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
-        .encode("utf-8")
     )
+    try:
+        initial = search_circles(params, limit=24)
+        stats = circle_query_stats(params)
+        for key, ident in [('prefectures', 'prefCount'), ('sports', 'sportCount'), ('circles', 'circleCount'), ('verified_circles', 'verifiedCount')]:
+            page = page.replace(f'id="{ident}">0</strong>', f'id="{ident}">{stats[key]}</strong>')
+        initial_rows = ssr_social_circle_rows(initial)
+    except Exception as exc:
+        log(f'social circle list SSR failed: {type(exc).__name__}: {exc}')
+        page = re.sub(r'(id="(?:prefCount|sportCount|circleCount|verifiedCount)">)0', r'\1取得失敗', page)
+        initial_rows = '<tr><td colspan="9">データを取得できませんでした</td></tr>'
+    page = page.replace('<tbody id="rows"></tbody>', '<tbody id="rows">' + initial_rows + '</tbody>')
+    return decorate_circle_map(page, params, 'social').encode('utf-8')
+
+
+def ssr_social_circle_rows(circles):
+    if not circles:
+        return '<tr><td colspan="9" class="empty">条件に合う団体はありません。</td></tr>'
+    output = []
+    status_labels = {'claimed': '代表申請受付', 'admin_verified': '公開情報掲載', 'university_verified': '大学公式情報掲載', 'unverified': '未確認'}
+    for circle in circles:
+        esc = lambda key: html.escape(str(circle.get(key) or ''))
+        profile = f'<a href="{html.escape(circle["profile_url"], quote=True)}">紹介ページ</a>' if circle.get('profile_url') else ''
+        source = f'<a href="{html.escape(circle["source_url"], quote=True)}" target="_blank" rel="noopener noreferrer">出典URL</a>' if safe_public_source(circle.get('source_url')) else ''
+        listing = '代表申請受付' if circle.get('verification_status') == 'claimed' else '公開掲載済み' if circle.get('public_status') == 'published' and circle.get('source_url') else '掲載準備中'
+        status = html.escape(status_labels.get(circle.get('verification_status'), circle.get('verification_status') or '未確認'))
+        email = circle.get('public_contact_email') or ''
+        contact = f'<a href="mailto:{html.escape(quote(email), quote=True)}">メールを作成</a>' if email else source
+        output.append(f'<tr><td><span class="name">{esc("prefecture")}</span><span class="sub">{esc("city") or esc("activity_area")}</span></td><td><span class="name">{esc("circle_name")}</span></td><td>{listing}</td><td>{profile}</td><td>{esc("organization_type")}</td><td>{esc("sport_category")}</td><td>{status}</td><td>{contact}</td><td>{source}</td></tr>')
+    return ''.join(output)
 
 
 def render_social_html():
@@ -4975,6 +5035,18 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path in settings_ui.ASSET_PATHS:
                 path, content_type = settings_ui.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)
+            elif parsed.path in circle_regions.ASSET_PATHS:
+                path, content_type = circle_regions.ASSET_PATHS[parsed.path]
+                self.send_file(path, content_type)
+            elif parsed.path == '/api/circle-map':
+                path = query.get('path', ['/'])[0]
+                query['audience'] = ['social' if path == '/social/circles' else 'university' if path == '/circles' else audience_scope(query, 'university')]
+                markup = circle_regions.render(query, circle_region_groups(query), REGION_GROUPS, path)
+                try:
+                    self.send_json({'html': markup})
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                    # A newer selection can cancel the previous map response.
+                    return
             elif parsed.path == "/events":
                 query["tab"] = ["events"]
                 self.send_html(render_public_html(query, event_listing=True))
@@ -5073,7 +5145,7 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path == "/representative":
                 self.send_html(render_representative_html())
             elif parsed.path == "/social/circles":
-                self.send_html(render_social_circles_html())
+                self.send_html(render_social_circles_html(query))
             elif parsed.path == "/social/sports":
                 sport = (parse_qs(parsed.query).get("sport", ["野球"])[0] or "野球").strip()
                 self.send_html(render_social_sport_html(sport))
@@ -5086,7 +5158,7 @@ class Handler(BaseHTTPRequestHandler):
                 region = (parse_qs(parsed.query).get("region", ["kanto"])[0] or "kanto").strip()
                 self.send_html(render_region_html(region))
             elif parsed.path == "/circles":
-                self.send_html(render_circles_html())
+                self.send_html(render_circles_html(query))
             elif parsed.path.startswith("/circles/"):
                 profile_slug = unquote(parsed.path.removeprefix("/circles/").strip("/"))
                 page = render_circle_profile_html(profile_slug)
@@ -5684,7 +5756,13 @@ def circle_query_conditions(params):
     if query:
         where.append("(c.circle_name like ? or c.sport_category like ? or c.activity_area like ? or u.university_name like ?)")
         args.extend([f"%{query}%"] * 4)
-    if prefecture:
+    places = circle_regions.selected(params, REGION_GROUPS) if 'places' in params else []
+    if 'places' in params:
+        location_clause, location_args = circle_regions.clause(places, REGION_GROUPS)
+        if location_clause:
+            where.append(location_clause)
+            args.extend(location_args)
+    elif prefecture:
         where.append("u.prefecture=?")
         args.append(prefecture)
     elif region:
@@ -5702,6 +5780,22 @@ def circle_query_conditions(params):
         where.append("c.verification_status=?")
         args.append(status)
     return where, args
+
+
+def circle_region_groups(params):
+    scoped = {key: val for key, val in params.items() if key not in {'places', 'prefecture', 'region', 'c_map'}}
+    where, args = circle_query_conditions(scoped)
+    return rows('''select u.prefecture, u.city, c.activity_area, count(*) as count
+                   from circles c join universities u on u.university_id=c.university_id
+                   where ''' + ' and '.join(where) + ' group by u.prefecture, u.city, c.activity_area', args)
+
+
+def render_circle_region_map(params, path='/'):
+    try:
+        return circle_regions.render(params, circle_region_groups(params), REGION_GROUPS, path)
+    except Exception as exc:
+        log(f'circle map SSR failed: {type(exc).__name__}: {exc}')
+        return circle_regions.render(params, [], REGION_GROUPS, path, error=True)
 
 
 def circle_query_stats(params):
