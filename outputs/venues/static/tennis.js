@@ -135,14 +135,17 @@
   function priceLabel(court) {
     const minimum = numberOrNull(court.price_from), maximum = numberOrNull(court.price_to);
     const plans=list(court.fee_options);
-    if(plans.length) return plans.slice(0,2).map(plan=>`<span class="venue-rate-preview"><span>${esc(plan.label)}</span><span class="venue-price-amount">${Number(plan.amount).toLocaleString('ja-JP')}円</span></span>`).join('');
-    if (minimum === null) return '<span class="venue-unconfirmed">金額未取得</span>';
-    const amount = value => `${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}円`;
-    const span = value => `<span class="venue-price-amount">${amount(value)}</span>`;
-    if (maximum !== null && maximum >= minimum) {
-      return maximum === minimum ? span(minimum) : `${span(minimum)}<span class="venue-price-amount"><small>〜</small>${amount(maximum)}</span>`;
+    const groups=new Map();
+    for(const plan of plans) {
+      const group=groups.get(plan.unit)||{unit:plan.unit,minimum:Number(plan.amount),maximum:Number(plan.amount)};
+      group.minimum=Math.min(group.minimum,Number(plan.amount));
+      group.maximum=Math.max(group.maximum,Number(plan.amount));
+      groups.set(plan.unit,group);
     }
-    return span(minimum);
+    const ranges=groups.size?[...groups.values()]:minimum===null?[]:[{unit:court.price_unit,minimum,maximum:maximum??minimum}];
+    if (!ranges.length) return '<span class="venue-unconfirmed">金額未取得</span>';
+    const amount = value => `${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}円`;
+    return ranges.slice(0,2).map(range=>`<div class="venue-rate-preview"><span class="venue-price-amount">${amount(range.minimum)}${range.maximum===range.minimum?'':`〜${amount(range.maximum)}`}</span><p class="venue-price-unit">${esc(range.unit)}</p></div>`).join('');
   }
   function checkedDate(value) {
     const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ""));
@@ -208,9 +211,9 @@
     const createParams = new URLSearchParams({venue:court.id,sport:state.meta.sport || list(court.sports)[0] || "",prefecture:"東京都"});
     const createLink = suspended ? "" : `<a class="venue-secondary-link" href="/events/new?${esc(createParams.toString())}">この会場で募集を作る</a>`;
     const channels=list(court.booking_channels).map(c=>({web:'Web',phone:'電話',counter:'窓口'}[c]||c)).join('・')||'公式案内';
-    const tariff=plans.length?`<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>${plans.map(p=>`<tr><th scope="row">${esc(p.label)}</th><td>${Number(p.amount).toLocaleString('ja-JP')}円</td><td>${esc(p.unit)}</td><td>${esc(p.conditions)}</td></tr>`).join('')}</tbody></table>`:'';
+    const tariff=plans.length?`<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>${plans.map(p=>`<tr><th scope="row">${esc(p.label)}</th><td class="venue-tariff-amount">${Number(p.amount).toLocaleString('ja-JP')}円</td><td>${esc(p.unit)}</td><td>${esc(p.conditions)}</td></tr>`).join('')}</tbody></table>`:'';
     return `<tr class="venue-court-card" aria-labelledby="venue-court-title-${index}"><th scope="row" class="venue-court-main"><h3 id="venue-court-title-${index}">${esc(court.name)}</h3>${suspended?`<p class="venue-availability-note">休止中：${esc(court.availability_note)}</p>`:''}<p class="venue-court-features">${list(court.sports).map(esc).join(' / ')}</p></th>
-      <td class="venue-location-cell" data-label="所在地">${esc(court.municipality)}</td><td class="venue-court-price" data-label="料金"><div class="venue-original-price">${priceLabel(court)}</div><p class="venue-price-unit">${esc(plans[0]?.unit||court.price_unit)}</p>${plans.length?`<a class="venue-tariff-more" href="#venue-details-${index}">全${plans.length}区分の料金</a>`:''}${feeLink}</td><td class="venue-booking-cell" data-label="予約方法">${esc(channels)}</td><td class="venue-registration-cell" data-label="事前登録">${registration}</td><td class="venue-action-cell"><div class="venue-court-links">${bookingLink}${createLink}</div></td></tr>
+      <td class="venue-location-cell" data-label="所在地">${esc(court.municipality)}</td><td class="venue-court-price" data-label="料金"><div class="venue-original-price">${priceLabel(court)}</div>${plans.length?`<a class="venue-tariff-more" href="#venue-details-${index}">全${plans.length}区分の料金</a>`:''}${feeLink}</td><td class="venue-booking-cell" data-label="予約方法">${esc(channels)}</td><td class="venue-registration-cell" data-label="事前登録">${registration}</td><td class="venue-action-cell"><div class="venue-court-links">${bookingLink}${createLink}</div></td></tr>
       <tr class="venue-details-row"><td colspan="6"><details id="venue-details-${index}" class="venue-court-details"><summary>料金表・施設詳細</summary><div class="venue-detail-content"><div>${tariff}<p class="venue-court-note">${esc(court.price_note)}</p><p class="venue-court-note">${esc(court.fee_note)}</p><p class="venue-opening-hours"><strong>通常利用時間</strong> ${hours}</p></div><div><dl><dt>住所</dt><dd>${externalLink(mapSearchUrl(court),court.address)}</dd><dt>予約方法</dt><dd>${esc(court.booking_method)}</dd><dt>利用条件</dt><dd>${esc(court.booking_note)}</dd><dt>施設</dt><dd>${esc(court.facility_label)}</dd><dt>運営</dt><dd>${esc(court.operator)}（${operatorType}）</dd><dt>確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl>${officialLink}<ul class="venue-source-list">${sources.map(source=>`<li>${source}</li>`).join('')}</ul></div></div></details></td></tr>`;
   }
   function readFilters() {

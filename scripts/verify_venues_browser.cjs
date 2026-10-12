@@ -61,16 +61,17 @@ async function zoom(page,name,stage) {
         await page.locator('#venue-filter-fields:not([disabled])').waitFor();
         const card = page.locator('.venue-court-card').filter({has:page.getByRole('heading',{name,exact:true})});
         if (row.fee_options?.length) {
-          assert.equal(await card.locator('.venue-rate-preview').count(),Math.min(2,row.fee_options.length));
+          assert.equal(await card.locator('.venue-rate-preview').count(),Math.min(2,row.fee_ranges.length));
           await card.locator('.venue-tariff-more').click();
           const detail=card.locator('xpath=following-sibling::tr[1]');
           assert.equal(await detail.locator('.venue-tariff tbody tr').count(),row.fee_options.length);
           assert.equal(await detail.locator('details').getAttribute('open'),'');
-          assert.equal(await card.locator('.venue-price-unit').innerText(),row.fee_options[0].unit);
+          assert.equal(await card.locator('.venue-price-unit').first().innerText(),row.fee_options[0].unit);
           assert.equal(await card.locator('.venue-fee-link').getAttribute('href'),row.fee_options[0].source_url);
         } else {
           const expected = row.price_from.toLocaleString('ja-JP')+'円'+(row.price_to===row.price_from?'':'〜'+row.price_to.toLocaleString('ja-JP')+'円');
-          assert.equal(await card.locator('.venue-original-price').innerText(),expected);
+          assert.equal(await card.locator('.venue-price-amount').innerText(),expected);
+          assert.equal(await card.locator('.venue-price-unit').innerText(),row.price_unit);
         }
         const overflow = await card.locator('.venue-court-price').evaluate(el=>{
           const parent=el.getBoundingClientRect();

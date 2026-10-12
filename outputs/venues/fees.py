@@ -43,7 +43,29 @@ def attach(rows):
     unknown = set(tariffs) - {row['id'] for row in rows}
     if unknown:
         raise ValueError('Tariffs reference unknown venue ids: ' + ','.join(sorted(unknown)))
-    return [dict(row, fee_options=tariffs[row['id']]['fee_options'],
-                 fee_note=tariffs[row['id']].get('fee_note', ''),
-                 fee_checked_at=tariffs[row['id']]['checked_at'])
-            if row['id'] in tariffs else row for row in rows]
+    result = []
+    for row in rows:
+        if row['id'] in tariffs:
+            entry = tariffs[row['id']]
+            row = dict(row, fee_options=entry['fee_options'],
+                       fee_note=entry.get('fee_note', ''), fee_checked_at=entry['checked_at'])
+        result.append(dict(row, fee_ranges=price_ranges(row)))
+    return result
+
+
+def price_ranges(row):
+    """Keep unlike billing units separate; bounds cover only reviewed tariffs."""
+    groups = {}
+    for plan in row.get('fee_options', []):
+        group = groups.setdefault(plan['unit'], dict(unit=plan['unit'], minimum=plan['amount'],
+                                                     maximum=plan['amount'], tariff_count=0))
+        group['minimum'] = min(group['minimum'], plan['amount'])
+        group['maximum'] = max(group['maximum'], plan['amount'])
+        group['tariff_count'] += 1
+    if groups:
+        return list(groups.values())
+    if row.get('price_from') is None:
+        return []
+    return [dict(unit=row['price_unit'], minimum=row['price_from'],
+                 maximum=row.get('price_to') if row.get('price_to') is not None else row['price_from'],
+                 tariff_count=1)]

@@ -120,10 +120,10 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-court-card>th,.venue-directory .venue-court-card>td{padding:9px 10px 2px;vertical-align:top;min-width:0;overflow-wrap:anywhere;font-weight:400;font-size:13px;line-height:1.45}
 .venue-directory .venue-court-card h3{font-size:14px;line-height:1.45;margin:0 0 3px;overflow-wrap:anywhere}
 .venue-directory .venue-court-features{font-size:11px;color:var(--muted);margin:0}
-.venue-directory .venue-original-price{font-size:16px;font-weight:700;line-height:1.45;margin:0 0 2px}
-.venue-directory .venue-rate-preview{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;font-weight:400}
-.venue-directory .venue-rate-preview>span:first-child{min-width:0;overflow-wrap:anywhere}
-.venue-directory .venue-price-amount{display:inline-block;white-space:nowrap;font-weight:700;font-size:16px}
+.venue-directory .venue-original-price{font-size:16px;font-weight:700;line-height:1.45;margin:0 0 2px;text-align:right}
+.venue-directory .venue-rate-preview{display:block;min-width:0;font-size:11px;font-weight:400}
+.venue-directory .venue-rate-preview+.venue-rate-preview{margin-top:4px}
+.venue-directory .venue-price-amount{display:inline-block;white-space:nowrap;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums lining-nums}
 .venue-directory .venue-unconfirmed{font-size:14px;font-weight:500;color:var(--muted)}
 .venue-directory .venue-price-unit{font-size:11px;margin:0 0 3px;color:var(--muted);overflow-wrap:anywhere}
 .venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:28px;font-size:11px;margin-right:8px}
@@ -146,6 +146,8 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-tariff th,.venue-directory .venue-tariff td{border-bottom:1px solid var(--border);padding:8px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 .venue-directory .venue-tariff thead{background:#f0f4f5}
 .venue-directory .venue-tariff th{font-weight:600}
+.venue-directory .venue-tariff thead th:nth-child(2){text-align:right}
+.venue-directory .venue-tariff .venue-tariff-amount{width:96px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
 .venue-directory .venue-availability-note{font-size:12px;background:#fff8e9;padding:8px;color:#7d632f;white-space:pre-wrap}
 .venue-directory .venue-pagination{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0}
 .venue-directory .venue-primary-button{color:white;background:var(--green);border-color:var(--green)}
@@ -196,6 +198,7 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-sort select{width:180px;font-size:12px}
  .venue-directory .venue-visible-count{font-size:11px}
  .venue-directory .venue-tariff,.venue-directory .venue-tariff tbody{display:block}
+ .venue-directory .venue-tariff caption{display:block;width:100%}
  .venue-directory .venue-tariff thead{display:none}
  .venue-directory .venue-tariff tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;border-bottom:1px solid var(--border);padding:8px 0}
  .venue-directory .venue-tariff th,.venue-directory .venue-tariff td{border:0;padding:0}

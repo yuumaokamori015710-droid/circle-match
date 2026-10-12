@@ -365,7 +365,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
     def test_initial_html_displays_reviewed_ranges_units_sources_free_and_unknown(self):
         html = self.request('/venues?' + urlencode({'q': '高円寺みんなの体育館'}))[1].decode()
         self.assertIn('>1,500円</td>', html)
-        self.assertIn('>6,000円</span>', html)
+        self.assertIn('>1,500円〜6,000円</span>', html)
         self.assertNotIn('<small>〜</small>', html)
         self.assertIn('条件別料金', html)
         self.assertIn('半面', html)

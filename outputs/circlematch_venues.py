@@ -17,12 +17,14 @@ if __package__:
     from .venues.tennis_catalog import get_catalog
     from .venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS, SORTS
     from .venues.search_facets import VENUE_TYPES, CHANNELS
+    from .venues.fees import price_ranges
     from .venues.region_map import render as render_region_map
     from .venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
 else:
     from venues.tennis_catalog import get_catalog
     from venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS, SORTS
     from venues.search_facets import VENUE_TYPES, CHANNELS
+    from venues.fees import price_ranges
     from venues.region_map import render as render_region_map
     from venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
 
@@ -61,18 +63,16 @@ def _card(row, index, sport):
     e = lambda key: escape(str(row.get(key) or ''))
     suspended = row['availability_status'] == 'SUSPENDED'
     badges = ' / '.join(escape(s) for s in row['sports'])
-    amount = lambda value: f'<span class="venue-price-amount">{value:,}円</span>'
     plans = row.get('fee_options', [])
-    if plans:
-        price = ''.join(f'<span class="venue-rate-preview"><span>{escape(p["label"])}</span>{amount(p["amount"])}</span>' for p in plans[:2])
-    elif row['price_from'] is None:
+    ranges = price_ranges(row)
+    price = ''
+    for bounds in ranges[:2]:
+        text = f'{bounds["minimum"]:,}円'
+        if bounds['maximum'] != bounds['minimum']:
+            text += f'〜{bounds["maximum"]:,}円'
+        price += f'<div class="venue-rate-preview"><span class="venue-price-amount">{text}</span><p class="venue-price-unit">{escape(bounds["unit"])}</p></div>'
+    if not ranges:
         price = '<span class="venue-unconfirmed">金額未取得</span>'
-    elif row.get('price_to') == row['price_from']:
-        price = amount(row['price_from'])
-    elif row.get('price_to') is not None:
-        price = amount(row['price_from']) + f'<span class="venue-price-amount"><small>〜</small>{row["price_to"]:,}円</span>'
-    else:
-        price = amount(row['price_from'])
     fee_source = ({'url': plans[0]['source_url']} if plans else next((s for s in row['sources'] if '公式料金表' in s['title']), None))
     fee_link = _link(fee_source['url'], '公式料金表', 'venue-fee-link') if fee_source and (plans or row['price_from'] is not None) else ''
     sources = ''.join('<li>' + _link(s['url'], s['title']) + '</li>' for s in row['sources'])
@@ -85,15 +85,14 @@ def _card(row, index, sport):
     registration = {True: '必要', False: '不要', None: '未確認'}[row.get('registration_required')]
     hours = (e('opening_hours') + ' ' + e('opening_note')) if row.get('opening_hours') else '利用時間は未確認'
     hours_link = _link(row['official_url'], '利用時間の公式案内') if row.get('opening_hours') else ''
-    rates = ''.join(f'<tr><th scope="row">{escape(p["label"])}</th><td>{p["amount"]:,}円</td><td>{escape(p["unit"])}</td><td>{escape(p["conditions"])}</td></tr>' for p in plans)
+    rates = ''.join(f'<tr><th scope="row">{escape(p["label"])}</th><td class="venue-tariff-amount">{p["amount"]:,}円</td><td>{escape(p["unit"])}</td><td>{escape(p["conditions"])}</td></tr>' for p in plans)
     tariff = f'<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>{rates}</tbody></table>' if rates else ''
     channels = '・'.join(dict(CHANNELS).get(c, c) for c in row.get('booking_channels', [])) or '公式案内'
-    unit = escape(plans[0]['unit']) if plans else e('price_unit')
     more = f'<a class="venue-tariff-more" href="#venue-details-{index}">全{len(plans)}区分の料金</a>' if plans else ''
     return f'''<tr class="venue-court-card" aria-labelledby="venue-court-title-{index}">
 <th scope="row" class="venue-court-main"><h3 id="venue-court-title-{index}">{e('name')}</h3>{warning}<p class="venue-court-features">{badges}</p></th>
 <td class="venue-location-cell" data-label="所在地">{e('municipality')}</td>
-<td class="venue-court-price" data-label="料金"><div class="venue-original-price">{price}</div><p class="venue-price-unit">{unit}</p>{more}{fee_link}</td>
+<td class="venue-court-price" data-label="料金"><div class="venue-original-price">{price}</div>{more}{fee_link}</td>
 <td class="venue-booking-cell" data-label="予約方法">{escape(channels)}</td><td class="venue-registration-cell" data-label="事前登録">{registration}</td>
 <td class="venue-action-cell"><div class="venue-court-links">{booking}{create}</div></td></tr>
 <tr class="venue-details-row"><td colspan="6"><details id="venue-details-{index}" class="venue-court-details"><summary>料金表・施設詳細</summary><div class="venue-detail-content"><div>{tariff}<p class="venue-court-note">{e('price_note')}</p><p class="venue-court-note">{escape(row.get('fee_note', ''))}</p><p class="venue-opening-hours"><strong>通常利用時間</strong> {hours} {hours_link}</p></div><div><dl><dt>住所</dt><dd>{e('address')}</dd><dt>予約方法</dt><dd>{e('booking_method')}</dd><dt>利用条件</dt><dd>{e('booking_note')}</dd><dt>施設</dt><dd>{e('facility_label')}</dd><dt>運営</dt><dd>{e('operator')}（{'公営' if row['operator_type']=='PUBLIC' else '民営'}）</dd><dt>確認日</dt><dd>{e('checked_at')}</dd></dl>{official}<ul class="venue-source-list">{sources}</ul></div></div></details></td></tr>'''

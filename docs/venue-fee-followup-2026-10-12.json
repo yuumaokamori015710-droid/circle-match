@@ -1,0 +1,514 @@
+[
+  {
+    "id": "tokyo-sports-017",
+    "name": "東京体育館フットサルコート",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1面60分（税込）",
+        "minimum": 7700,
+        "maximum": 19800,
+        "tariff_count": 10
+      },
+      {
+        "unit": "1面90分（税込）",
+        "minimum": 24200,
+        "maximum": 26400,
+        "tariff_count": 4
+      }
+    ],
+    "source_urls": [
+      "https://www.totai-futsal.jp/guide/"
+    ]
+  },
+  {
+    "id": "tokyo-sports-018",
+    "name": "新宿中央公園フットサル施設",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1面1時間",
+        "minimum": 3000,
+        "maximum": 5000,
+        "tariff_count": 3
+      }
+    ],
+    "source_urls": [
+      "https://shinjukuchuo-park.jp/futsal/"
+    ]
+  },
+  {
+    "id": "tokyo-sports-021",
+    "name": "ジェクサー・フットサルクラブ アトレ大井町店",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1面1時間",
+        "minimum": 13200,
+        "maximum": 24200,
+        "tariff_count": 6
+      }
+    ],
+    "source_urls": [
+      "https://www.jexer.jp/futsal/oi/program.html"
+    ]
+  },
+  {
+    "id": "tokyo-sports-022",
+    "name": "フットサルコート品川",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1面30分（税込）",
+        "minimum": 4400,
+        "maximum": 7700,
+        "tariff_count": 6
+      },
+      {
+        "unit": "3面連結・2時間（税込）",
+        "minimum": 52800,
+        "maximum": 72600,
+        "tariff_count": 2
+      }
+    ],
+    "source_urls": [
+      "https://www.sports-alpha.com/shinagawa/use.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-e34356792fd2",
+    "name": "駒場体育館",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "体育室・競技場貸切1枠（3時間）",
+        "minimum": 8700,
+        "maximum": 21600,
+        "tariff_count": 8
+      }
+    ],
+    "source_urls": [
+      "https://www.city.meguro.tokyo.jp/sports/shisetsu/sports/komaba_kashikiritaiikushitsu.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-19bdbd66ba0c",
+    "name": "目黒区民センター体育館",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "体育室・競技場貸切1枠（3時間）",
+        "minimum": 6600,
+        "maximum": 16500,
+        "tariff_count": 8
+      }
+    ],
+    "source_urls": [
+      "https://www.city.meguro.tokyo.jp/sports/shisetsu/sports/center_kashikiritaiikushitsu.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-14082e508e16",
+    "name": "碑文谷体育館",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "体育室・競技場貸切1枠（3時間）",
+        "minimum": 9400,
+        "maximum": 23300,
+        "tariff_count": 8
+      }
+    ],
+    "source_urls": [
+      "https://www.city.meguro.tokyo.jp/sports/shisetsu/sports/himonya_taiikusitu_kasikiriri.html"
+    ]
+  },
+  {
+    "id": "tokyo-gym-e4e044521f5b",
+    "name": "中央体育館【目黒区】",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "体育室・競技場貸切1枠（3時間）",
+        "minimum": 13100,
+        "maximum": 32400,
+        "tariff_count": 8
+      }
+    ],
+    "source_urls": [
+      "https://www.city.meguro.tokyo.jp/sports/shisetsu/sports/chuo_kashikirikyogijo.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-ec8de0668a02",
+    "name": "八雲体育館",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "体育室・競技場貸切1枠（3時間）",
+        "minimum": 8000,
+        "maximum": 19800,
+        "tariff_count": 8
+      }
+    ],
+    "source_urls": [
+      "https://www.city.meguro.tokyo.jp/sports/shisetsu/sports/yakumo_kashikiritaiikushitsu.html"
+    ]
+  },
+  {
+    "id": "tokyo-sports-027",
+    "name": "大森スポーツセンター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "競技場全面・区内平日3時間",
+        "minimum": 24100,
+        "maximum": 24100,
+        "tariff_count": 1
+      },
+      {
+        "unit": "競技場全面・区内平日4時間",
+        "minimum": 28300,
+        "maximum": 40700,
+        "tariff_count": 2
+      },
+      {
+        "unit": "競技場全面・区内平日全日",
+        "minimum": 93100,
+        "maximum": 93100,
+        "tariff_count": 1
+      }
+    ],
+    "source_urls": [
+      "https://www.city.ota.tokyo.jp/shisetsu/sports/oomori_s/oomorisportsc_arena.html"
+    ]
+  },
+  {
+    "id": "tokyo-jelly-shibuya",
+    "name": "JELLY JELLY CAFE 渋谷本店",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1人・最大5時間（税込）",
+        "minimum": 1800,
+        "maximum": 2800,
+        "tariff_count": 4
+      },
+      {
+        "unit": "1人・最大10時間（税込）",
+        "minimum": 2800,
+        "maximum": 4000,
+        "tariff_count": 2
+      }
+    ],
+    "source_urls": [
+      "https://jellyjellycafe.com/shibuya"
+    ]
+  },
+  {
+    "id": "tokyo-jelly-ikebukuro",
+    "name": "JELLY JELLY CAFE 池袋1号店",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1人・最大5時間（税込）",
+        "minimum": 1800,
+        "maximum": 2800,
+        "tariff_count": 4
+      },
+      {
+        "unit": "1人・最大10時間（税込）",
+        "minimum": 2800,
+        "maximum": 4000,
+        "tariff_count": 2
+      },
+      {
+        "unit": "1人・最大3時間（税込）",
+        "minimum": 1500,
+        "maximum": 1500,
+        "tariff_count": 1
+      }
+    ],
+    "source_urls": [
+      "https://jellyjellycafe.com/ikebukuro"
+    ]
+  },
+  {
+    "id": "tokyo-venue-dff77efedde0",
+    "name": "アカデミー千石",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 1300,
+        "maximum": 1700,
+        "tariff_count": 4
+      }
+    ],
+    "source_urls": [
+      "https://www.city.bunkyo.lg.jp/b014/p006740.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-b174e617a088",
+    "name": "アカデミー向丘",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 600,
+        "maximum": 3400,
+        "tariff_count": 15
+      }
+    ],
+    "source_urls": [
+      "https://www.city.bunkyo.lg.jp/b014/p006736.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-4cb3ef8c14e8",
+    "name": "アカデミー湯島",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 300,
+        "maximum": 3400,
+        "tariff_count": 15
+      }
+    ],
+    "source_urls": [
+      "https://www.city.bunkyo.lg.jp/b014/p006741.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-8d8af605fc9a",
+    "name": "アカデミー茗台",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 1200,
+        "maximum": 7600,
+        "tariff_count": 18
+      }
+    ],
+    "source_urls": [
+      "https://www.city.bunkyo.lg.jp/b014/p006738.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-50f3a154a242",
+    "name": "アカデミー音羽",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 300,
+        "maximum": 4000,
+        "tariff_count": 21
+      }
+    ],
+    "source_urls": [
+      "https://www.city.bunkyo.lg.jp/b014/p006739.html"
+    ]
+  },
+  {
+    "id": "tokyo-venue-7402270095c6",
+    "name": "四谷地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 300,
+        "maximum": 6100,
+        "tariff_count": 70
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1400,
+        "maximum": 24200,
+        "tariff_count": 14
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-114f55c645a3",
+    "name": "牛込箪笥地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 200,
+        "maximum": 5000,
+        "tariff_count": 90
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1200,
+        "maximum": 19800,
+        "tariff_count": 18
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-cf4327aef0b5",
+    "name": "榎町地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 300,
+        "maximum": 4600,
+        "tariff_count": 100
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1400,
+        "maximum": 18200,
+        "tariff_count": 20
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-ded9f764c9cd",
+    "name": "若松地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 400,
+        "maximum": 4600,
+        "tariff_count": 100
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1900,
+        "maximum": 18200,
+        "tariff_count": 20
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-d512d4711cc4",
+    "name": "大久保地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 300,
+        "maximum": 5000,
+        "tariff_count": 60
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1700,
+        "maximum": 19800,
+        "tariff_count": 12
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-1e5205d5cee1",
+    "name": "戸塚地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 100,
+        "maximum": 5500,
+        "tariff_count": 110
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 700,
+        "maximum": 21700,
+        "tariff_count": 22
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-278a59752c4c",
+    "name": "落合第一地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 200,
+        "maximum": 6200,
+        "tariff_count": 90
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 1200,
+        "maximum": 24700,
+        "tariff_count": 18
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-25548e202989",
+    "name": "柏木地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 400,
+        "maximum": 5800,
+        "tariff_count": 70
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 2200,
+        "maximum": 23200,
+        "tariff_count": 14
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  },
+  {
+    "id": "tokyo-venue-3ba2d17ed46e",
+    "name": "角筈地域センター",
+    "checked_at": "2026-10-12",
+    "ranges": [
+      {
+        "unit": "1室・1利用区分",
+        "minimum": 400,
+        "maximum": 4700,
+        "tariff_count": 54
+      },
+      {
+        "unit": "1室・全日",
+        "minimum": 2200,
+        "maximum": 18800,
+        "tariff_count": 10
+      }
+    ],
+    "source_urls": [
+      "https://www.city.shinjuku.lg.jp/content/000423351.pdf"
+    ]
+  }
+]
