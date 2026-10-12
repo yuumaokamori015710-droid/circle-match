@@ -8,6 +8,7 @@ import unicodedata
 from .tennis_catalog import CATALOG_PATH as TENNIS_PATH, validate_catalog
 
 CATALOG_PATH = Path(__file__).resolve().parent / 'catalogs' / 'tokyo_sports.json'
+EXPANSION_PATH = CATALOG_PATH.with_name('tokyo_expansion.json')
 SPORTS = ('野球', 'サッカー・フットサル', 'テニス', 'ピックルボール', '卓球', 'ゴルフ',
           'バスケットボール', 'バレーボール', 'バドミントン', 'ランニング', 'ラグビー',
           'カラオケ', 'イベント', 'ボードゲーム')
@@ -42,19 +43,27 @@ def validate_sports_catalog(rows):
 
 
 @lru_cache(maxsize=1)
-def _load(tennis_modified, sports_modified):
+def _load(tennis_modified, sports_modified, expansion_modified):
     tennis = validate_catalog(json.loads(TENNIS_PATH.read_text(encoding='utf-8-sig')))
     for row in tennis:
         row.update(sports=['テニス'], facility_label='テニスコート')
     extra = validate_sports_catalog(json.loads(CATALOG_PATH.read_text(encoding='utf-8-sig')))
-    rows = extra + tennis
+    expansion = validate_sports_catalog(json.loads(EXPANSION_PATH.read_text(encoding='utf-8-sig')))
+    # New source checks must not silently replace or duplicate existing facilities.
+    identity = lambda row: (row['municipality'], unicodedata.normalize('NFKC', row['name']).replace(' ', '').replace('　', '').lower())
+    identities = {identity(row) for row in extra + tennis}
+    for row in expansion:
+        if identity(row) in identities:
+            raise ValueError(f"Duplicate expansion venue: {row['id']}")
+        identities.add(identity(row))
+    rows = extra + expansion + tennis
     if len({r['id'] for r in rows}) != len(rows):
         raise ValueError('Duplicate venue id across catalogs')
     return rows
 
 
 def get_catalog(params=None):
-    rows = _load(TENNIS_PATH.stat().st_mtime_ns, CATALOG_PATH.stat().st_mtime_ns)
+    rows = _load(TENNIS_PATH.stat().st_mtime_ns, CATALOG_PATH.stat().st_mtime_ns, EXPANSION_PATH.stat().st_mtime_ns)
     sport = selected(params, 'sport')
     scoped = [row for row in rows if not sport or sport in row['sports']] if supports_catalog(params) else []
     counts = Counter(s for row in rows for s in row['sports'])

@@ -39,6 +39,36 @@ unknown. Booking eligibility and municipal registration requirements are
 included. Direct booking systems may require login or reject automated access;
 the facility's official information link is also available.
 
+`tokyo_expansion.json` adds 662 distinct facilities checked on 2026-10-12,
+bringing the combined inventory to 1,113 (including retained suspended records).
+The additions include sports grounds and gyms, 135 operator-listed karaoke
+stores with store-specific Web booking links, and 312 event/meeting facilities.
+Multi-purpose venues appear in several sport filters but count once in the
+total. Soccer/futsal now has 157 facilities. Existing IDs, prices and source
+records in both original files are unchanged.
+
+The source audit retrieved 1,213 distinct official information/reservation URLs
+with bounded concurrency. Candidate records were checked against retrieved
+facility names, street addresses, supported sport terms and reservation routes.
+Duplicate names/aliases and complex-wide records were consolidated; numbered
+court/room listings were not used to inflate the inventory. Unverified addresses,
+unsupported sport tags, failed URLs, expired session links and current known
+closures were excluded. For example, the Gotanda Cultural Center music hall
+is omitted during its published 2026-09-24 to 2026-12-08 construction closure.
+Current unknown prices and availability remain unknown, not zero or available.
+
+Some official metropolitan sports records describe telephone/counter booking
+or link to legacy session-based systems. Their stable official "reservation
+method" page is used instead of storing a session URL. Municipal meeting rooms
+remain event-only, with group-registration and permitted-use restrictions.
+The catalog is loaded locally with a one-entry mtime-invalidated cache across
+all three files; public requests do not crawl external sites or read private DBs.
+
+To roll back this inventory release, revert its commit and deploy the resulting
+latest branch. No private database migration or replacement is involved. Do not
+remove the expansion file alone while its loader references it. Run the venue,
+sport-navigation, SEO and event-flow tests and the browser verifier after updates.
+
 `GET /api/venues?sport=...` serves the combined catalog, scoped to the selected
 category. The original `/api/tennis-courts` and 404-record tennis file are
 unchanged. `/venues?sport=...&prefecture=東京都` retains the shared sports,

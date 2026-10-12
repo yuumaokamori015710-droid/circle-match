@@ -200,7 +200,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertEqual(status, 200)
         catalog = json.loads(body)
         self.assertGreaterEqual(catalog['meta']['sports']['サッカー・フットサル'], 15)
-        self.assertEqual(catalog['meta']['sports']['テニス'], 404)
+        self.assertGreaterEqual(catalog['meta']['sports']['テニス'], 404)
         self.assertEqual(set(catalog['meta']['sports']), set(self.app.venues.SPORTS))
         for sport in self.app.venues.SPORTS:
             with self.subTest(sport=sport):
@@ -215,6 +215,39 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertNotIn('__VENUE_', html)
                 self.assertTrue(PublicPage(html).meta['robots'].startswith('index, follow'))
                 self.assertNotIn('JavaScriptを有効', html)
+
+    def test_expansion_preserves_original_records_and_exceeds_one_thousand(self):
+        status, body, _ = self.request('/api/venues')
+        self.assertEqual(status, 200)
+        catalog = json.loads(body)
+        rows = catalog['courts']
+        self.assertGreaterEqual(len(rows), 1000)
+        self.assertEqual(catalog['meta']['total'], len(rows))
+        self.assertEqual(len({row['id'] for row in rows}), len(rows))
+        by_id = {row['id']: row for row in rows}
+        for original in self.catalog()['courts']:
+            for field, value in original.items():
+                self.assertEqual(by_id[original['id']][field], value)
+        new = [row for row in rows if row['id'].startswith('tokyo-venue-')]
+        self.assertGreaterEqual(len(new), 550)
+        for row in new:
+            self.assertEqual(row['checked_at'], '2026-10-12')
+            self.assertEqual(row['availability_status'], 'UNKNOWN')
+            self.assertTrue(row['sources'])
+            self.assertTrue(row['booking_url'])
+            self.assertTrue(row['address'].startswith('東京都'))
+            self.assertIn(row['municipality'], row['address'])
+        self.assertGreaterEqual(catalog['meta']['sports']['サッカー・フットサル'], 100)
+
+    def test_no_javascript_expansion_pagination_keeps_filters_and_next_page(self):
+        query = {'sport': 'サッカー・フットサル', 'prefecture': '東京都'}
+        first = self.request('/venues?' + urlencode(query))[1].decode()
+        second = self.request('/venues?' + urlencode({**query, 'v_page': 2}))[1].decode()
+        self.assertEqual(first.count('class="venue-court-card"'), 50)
+        self.assertIn('class="venue-court-card"', second)
+        self.assertNotEqual(first, second)
+        self.assertIn('v_page=2', first)
+        self.assertIn('sport=', second)
 
     def test_server_filters_and_escaped_input_keep_booking_links_in_initial_html(self):
         rows = json.loads(self.request('/api/venues?' + urlencode({'sport': 'サッカー・フットサル'}))[1])['courts']
