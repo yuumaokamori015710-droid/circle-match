@@ -45,6 +45,30 @@ const results = [];
           await page.screenshot({path:path.join(out,`football-results-${width}.png`)});
         }
       }
+      for (const name of ['高円寺みんなの体育館','高円寺地域区民センター（セシオン杉並）','上高田運動施設庭球場','カラオケまねきねこ 経堂農大通り店']) {
+        const row = catalog.courts.find(row=>row.name===name);
+        assert(row && row.price_to !== undefined);
+        await page.goto(base+'/venues?'+new URLSearchParams({v_q:name}));
+        await page.locator('#venue-filter-fields:not([disabled])').waitFor();
+        const card = page.locator('.venue-court-card').filter({has:page.getByRole('heading',{name,exact:true})});
+        const expected = row.price_from.toLocaleString('ja-JP')+'円'+(row.price_to===row.price_from?'':'〜'+row.price_to.toLocaleString('ja-JP')+'円');
+        assert.equal(await card.locator('.venue-original-price').innerText(),expected);
+        assert.equal(await card.locator('.venue-price-unit').innerText(),row.price_unit);
+        const source = row.sources.find(s=>s.title.includes('公式料金表'));
+        assert.equal(await card.locator('.venue-fee-link').getAttribute('href'),source.url);
+        const overflow = await card.locator('.venue-court-price').evaluate(el=>{
+          const parent=el.getBoundingClientRect();
+          return [...el.querySelectorAll('.venue-price-amount')].some(span=>{
+            const rect=span.getBoundingClientRect();
+            return rect.right>parent.right+1 || rect.left<parent.left-1;
+          });
+        });
+        assert.equal(overflow,false);
+        if(name==='高円寺みんなの体育館' && [390,1440].includes(width)) {
+          await card.scrollIntoViewIfNeeded();
+          await page.screenshot({path:path.join(out,`fee-range-${width}.png`)});
+        }
+      }
       await page.goto(base+'/venues?'+new URLSearchParams({sport:'サッカー・フットサル'}));
       await page.locator('#venue-filter-fields:not([disabled])').waitFor();
       await page.locator('input[name=q]').fill('no-matching-venue-xyz');
@@ -65,6 +89,9 @@ const results = [];
     await plain.getByRole('button',{name:'条件を適用',exact:true}).click();
     await plain.waitForURL(/q=/);
     assert.equal(await plain.locator('.venue-court-card').count(),0);
+    await plain.goto(base+'/venues?'+new URLSearchParams({v_q:'高円寺みんなの体育館'}));
+    assert.equal(await plain.locator('.venue-original-price').innerText(),'1,500円〜6,000円');
+    assert.equal(await plain.locator('.venue-fee-link').count(),1);
     await nojs.close();
     const failed = await browser.newPage();
     await failed.route('**/api/venues*',route=>route.abort());
@@ -73,6 +100,6 @@ const results = [];
     assert(await failed.locator('.venue-court-card').count()>=15);
     await failed.close();
     fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(results,null,2));
-    console.log(`PASS: ${results.length} sport/viewport combinations, filters, sport switch, no-JS, offline fallback`);
+    console.log(`PASS: ${results.length} sport/viewport combinations, 16 fee/unit/source/overflow checks, filters, sport switch, no-JS, offline fallback`);
   } finally {await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>{if(server)server.kill();});

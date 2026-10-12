@@ -30,6 +30,16 @@
   }
   const normalize = value => String(value ?? "").normalize("NFKC").toLocaleLowerCase("ja").trim();
   const yen = value => `¥${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}`;
+  function priceLabel(court) {
+    const minimum = numberOrNull(court.price_from), maximum = numberOrNull(court.price_to);
+    if (minimum === null) return '<span class="venue-unconfirmed">料金は要確認</span>';
+    const amount = value => `${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}円`;
+    const span = value => `<span class="venue-price-amount">${amount(value)}</span>`;
+    if (maximum !== null && maximum >= minimum) {
+      return maximum === minimum ? span(minimum) : `${span(minimum)}<span class="venue-price-amount"><small>〜</small>${amount(maximum)}</span>`;
+    }
+    return `<span class="venue-price-amount">${yen(minimum)}<small>〜</small></span>`;
+  }
   function checkedDate(value) {
     const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ""));
     return match ? `${match[1]}年${Number(match[2])}月${Number(match[3])}日` : "確認日未記録";
@@ -66,9 +76,11 @@
   }
   function courtCard(court, index) {
     const suspended = court.availability_status === "SUSPENDED";
-    const originalPrice = numberOrNull(court.price_from), hourlyPrice = numberOrNull(court.price_per_hour), courtCount = numberOrNull(court.courts_count);
+    const hourlyPrice = numberOrNull(court.price_per_hour), courtCount = numberOrNull(court.courts_count);
     const operatorType = court.facility_kind === "SCHOOL" ? "学校開放" : court.operator_type === "PUBLIC" ? "公営" : court.operator_type === "PRIVATE" ? "民営" : "運営区分は要確認";
     const sources = list(court.sources).map(source => externalLink(source.url,source.title || "公式情報")).filter(Boolean);
+    const feeSource = list(court.sources).find(source => String(source.title || "").includes("公式料金表"));
+    const feeLink = feeSource && numberOrNull(court.price_from) !== null ? externalLink(feeSource.url,"公式料金表","venue-fee-link") : "";
     const bookingLabel = /Web|ウェブ|ネット|オンライン/i.test(court.booking_method || "") ? "公式予約へ" : "予約方法を確認";
     const bookingLink = suspended ? externalLink(court.official_url,"公式の営業案内","venue-secondary-link") || externalLink(court.booking_url,"公式情報を確認","venue-secondary-link") : externalLink(court.booking_url,bookingLabel,"venue-primary-link");
     const officialLink = externalLink(court.official_url,"公式案内","venue-secondary-link");
@@ -78,7 +90,7 @@
     const createLink = suspended ? "" : `<a class="venue-secondary-link" href="/events/new?${esc(createParams.toString())}">この会場で募集を作る</a>`;
     return `<article class="venue-court-card" aria-labelledby="venue-court-title-${index}">
       <div class="venue-court-main"><div class="venue-court-location"><span class="venue-operator-badge ${court.operator_type === "PRIVATE" ? "venue-private" : ""}">${esc(operatorType)}</span>${suspended ? '<span class="venue-suspended-badge">休止中</span>' : ""}<span>${esc([court.municipality,court.area].filter(Boolean).join(" · "))}</span></div><h3 id="venue-court-title-${index}">${esc(court.name || "施設名は要確認")}</h3>${suspended ? `<p class="venue-availability-note">${esc(court.availability_note || "現在は休止中です。営業再開の案内は公式サイトでご確認ください。")}</p>` : ""}<p class="venue-court-address">${court.address ? externalLink(mapSearchUrl(court),court.address,"venue-map-link") : "住所は要確認"}</p><ul class="venue-court-features">${features.map(feature => `<li>${esc(feature)}</li>`).join("")}</ul></div>
-      <div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">${originalPrice === null ? '<span class="venue-unconfirmed">料金は要確認</span>' : `${yen(originalPrice)}<small>〜</small>`}</p><p class="venue-price-unit">${esc(court.price_unit || "料金の単位は要確認")}</p>${court.price_note ? `<p class="venue-court-note">${esc(court.price_note)}</p>` : ""}${court.facility_kind === "VENUE" ? "" : `<p class="venue-hourly-price">${hourlyPrice === null ? "1面1時間換算: 要確認" : `比較用: ${yen(hourlyPrice)} / 1面・1時間`}</p>`}</div>
+      <div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">${priceLabel(court)}</p><p class="venue-price-unit">${esc(court.price_unit || "料金の単位は要確認")}</p>${feeLink}${court.price_note ? `<p class="venue-court-note">${esc(court.price_note)}</p>` : ""}${court.facility_kind === "VENUE" ? "" : `<p class="venue-hourly-price">${hourlyPrice === null ? "1面1時間換算: 要確認" : `比較用: ${yen(hourlyPrice)} / 1面・1時間`}</p>`}</div>
       <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">${esc(court.booking_method || "公式案内で確認してください")}</p>${court.booking_note ? `<p class="venue-court-note">${esc(court.booking_note)}</p>` : ""}<div class="venue-court-links">${bookingLink || '<span class="venue-link-unconfirmed">予約ページは要確認</span>'}${suspended || safeUrl(court.booking_url) === safeUrl(court.official_url) ? "" : officialLink}${createLink}</div></div>
       <details class="venue-court-details"><summary>施設情報・根拠を確認</summary><div class="venue-detail-content"><dl><dt>運営</dt><dd>${esc(court.operator || "要確認")}</dd><dt>情報確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl><div><p class="venue-column-label">根拠リンク</p>${sources.length ? `<ul class="venue-source-list">${sources.map(source => `<li>${source}</li>`).join("")}</ul>` : officialLink || '<p class="venue-court-note">根拠リンクは要確認です。</p>'}<p class="venue-source-note">料金・登録資格・抽選や先着の条件は変更されることがあります。利用前に公式案内をご確認ください。</p></div></div></details>
     </article>`;

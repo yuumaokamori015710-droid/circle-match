@@ -62,6 +62,8 @@
 .venue-directory .venue-column-label{font-size:10px;font-weight:600;color:var(--muted);margin:1px 0 8px}
 .venue-directory .venue-original-price{font-size:23px;font-weight:750;line-height:1.35;margin:0 0 5px;letter-spacing:0}
 .venue-directory .venue-original-price small{font-size:14px;margin-left:4px;font-weight:500}
+.venue-directory .venue-price-amount{display:inline-block;white-space:nowrap}
+.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:30px;font-size:12px;text-decoration:underline}
 .venue-directory .venue-unconfirmed{font-size:16px;letter-spacing:0;font-weight:650;color:#526479}
 .venue-directory .venue-price-unit{font-size:11px;margin:0 0 9px;color:#526479;overflow-wrap:anywhere}
 .venue-directory .venue-court-note{font-size:12px;line-height:1.9;margin:8px 0;color:#64748b;white-space:pre-wrap;overflow-wrap:anywhere}

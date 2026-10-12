@@ -54,7 +54,17 @@ def _card(row, index, sport):
     e = lambda key: escape(str(row.get(key) or ''))
     suspended = row['availability_status'] == 'SUSPENDED'
     badges = ''.join(f'<li>{escape(s)}</li>' for s in row['sports'])
-    price = '料金は要確認' if row['price_from'] is None else f"¥{row['price_from']:,}〜"
+    amount = lambda value: f'<span class="venue-price-amount">{value:,}円</span>'
+    if row['price_from'] is None:
+        price = '<span class="venue-unconfirmed">料金は要確認</span>'
+    elif row.get('price_to') == row['price_from']:
+        price = amount(row['price_from'])
+    elif row.get('price_to') is not None:
+        price = amount(row['price_from']) + f'<span class="venue-price-amount"><small>〜</small>{row["price_to"]:,}円</span>'
+    else:
+        price = f'<span class="venue-price-amount">¥{row["price_from"]:,}<small>〜</small></span>'
+    fee_source = next((s for s in row['sources'] if '公式料金表' in s['title']), None)
+    fee_link = _link(fee_source['url'], '公式料金表', 'venue-fee-link') if fee_source and row['price_from'] is not None else ''
     sources = ''.join('<li>' + _link(s['url'], s['title']) + '</li>' for s in row['sources'])
     booking = _link(row['official_url'] if suspended else row['booking_url'],
                     '公式の営業案内' if suspended else '予約先・利用条件を確認', 'venue-primary-link')
@@ -64,7 +74,7 @@ def _card(row, index, sport):
     warning = f'<p class="venue-availability-note">休止中：{e("availability_note")}</p>' if suspended else ''
     return f'''<article class="venue-court-card" aria-labelledby="venue-court-title-{index}">
 <div class="venue-court-main"><div class="venue-court-location"><span class="venue-operator-badge">{'公営' if row['operator_type'] == 'PUBLIC' else '民営'}</span><span>{e('municipality')} · {e('facility_label')}</span></div><h3 id="venue-court-title-{index}">{e('name')}</h3>{warning}<p class="venue-court-address">{e('address')}</p><ul class="venue-court-features">{badges}</ul></div>
-<div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price"><span class="venue-unconfirmed">{price}</span></p><p class="venue-price-unit">{e('price_unit')}</p><p class="venue-court-note">{e('price_note')}</p></div>
+<div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">{price}</p><p class="venue-price-unit">{e('price_unit')}</p>{fee_link}<p class="venue-court-note">{e('price_note')}</p></div>
 <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">{e('booking_method')}</p><p class="venue-court-note">{e('booking_note')}</p><div class="venue-court-links">{booking}{official}{create}</div></div>
 <details class="venue-court-details"><summary>施設情報・根拠を確認</summary><div class="venue-detail-content"><dl><dt>運営</dt><dd>{e('operator')}</dd><dt>情報確認日</dt><dd>{e('checked_at')}</dd></dl><ul class="venue-source-list">{sources}</ul></div></details></article>'''
 

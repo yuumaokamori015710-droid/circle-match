@@ -1,6 +1,7 @@
 """Native venue directory checks using disposable SQLite and loopback HTTP only."""
 from collections import Counter
 import base64
+import importlib
 from html.parser import HTMLParser
 from http.server import ThreadingHTTPServer
 import json
@@ -177,7 +178,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         public_fields = {'id', 'name', 'operator', 'municipality', 'area', 'address', 'price_unit',
                          'price_note', 'booking_method', 'booking_note', 'booking_url', 'official_url',
                          'checked_at', 'operator_type', 'courts_count', 'surface', 'indoor',
-                         'night_lighting', 'price_from', 'sources', 'availability_status',
+                         'night_lighting', 'price_from', 'price_to', 'sources', 'availability_status',
                          'facility_kind', 'availability_note', 'price_per_hour'}
         for court in courts:
             with self.subTest(court=court['id']):
@@ -263,7 +264,9 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertTrue(set(row['sports']) <= supported)
                 self.assertTrue(row['sources'])
                 self.assertIn(row['municipality'], row['address'])
-                self.assertIsNone(row['price_from'])
+                if row['price_from'] is not None:
+                    self.assertGreaterEqual(row['price_to'], row['price_from'])
+                    self.assertTrue(any('公式料金表' in s['title'] for s in row['sources']))
                 self.assertEqual(row['availability_status'], 'UNKNOWN')
         for sport in supported:
             with self.subTest(sport=sport):
@@ -323,6 +326,56 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertIsNone(courts['inagi-kitamidori']['price_per_hour'])
         self.assertEqual(courts['taito-ryuhoku']['availability_status'], 'SUSPENDED')
         self.assertTrue(courts['taito-ryuhoku']['availability_note'])
+
+    def test_price_ranges_are_validated_without_changing_legacy_payloads(self):
+        module = importlib.import_module(self.app.venues.get_catalog.__module__)
+        original = next(r for r in self.catalog()['courts'] if r['id'] == 'metro-hibiya')
+        self.assertNotIn('price_to', module.validate_catalog([original])[0])
+        for minimum, maximum in ((None, 1), (1300, 1299), (1300, True),
+                                 (1300, float('nan')), (1300, float('inf')), (1300, '1500')):
+            with self.subTest(minimum=minimum, maximum=maximum), self.assertRaises(ValueError):
+                module.validate_catalog([{**original, 'price_from': minimum, 'price_to': maximum}])
+        variable = module.validate_catalog([{**original, 'price_to': 2000}])[0]
+        self.assertEqual(variable['price_to'], 2000)
+        self.assertIsNone(variable['price_per_hour'])
+        fixed = module.validate_catalog([{**original, 'price_to': 1300}])[0]
+        self.assertEqual(fixed['price_per_hour'], 1300)
+        for unit in ('1人30分', '1室1時間', '体育館貸切2時間'):
+            row = module.validate_catalog([{**original, 'price_unit': unit, 'price_to': 1300}])[0]
+            self.assertIsNone(row['price_per_hour'])
+
+    def test_reviewed_fees_have_source_units_and_no_hourly_range_misrepresentation(self):
+        rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}
+        audit_path = Path(__file__).resolve().parents[1] / 'docs' / 'venue-fee-review-2026-10-12.json'
+        changes = json.loads(audit_path.read_text(encoding='utf-8'))
+        self.assertGreaterEqual(len(changes), 300)
+        self.assertEqual(len(changes), len({r['id'] for r in changes}))
+        for change in changes:
+            with self.subTest(venue=change['id']):
+                row = rows[change['id']]
+                for field in ('name', 'price_from', 'price_to', 'price_unit', 'price_note', 'checked_at'):
+                    self.assertEqual(row[field], change[field])
+                self.assertTrue(change['evidence'])
+                self.assertIn(change['source'], [s['url'] for s in row['sources'] if '公式料金表' in s['title']])
+                if row['price_from'] != row['price_to']:
+                    self.assertIsNone(row['price_per_hour'])
+        query = urlencode({'q': 'Bonfim Football Park 落合南長崎', 'price_max': 100000})
+        self.assertNotIn('class="venue-court-card"', self.request('/venues?' + query)[1].decode())
+
+    def test_initial_html_displays_reviewed_ranges_units_sources_free_and_unknown(self):
+        html = self.request('/venues?' + urlencode({'q': '高円寺みんなの体育館'}))[1].decode()
+        self.assertIn('>1,500円</span>', html)
+        self.assertIn('<small>〜</small>6,000円</span>', html)
+        self.assertIn('体育館貸切2時間', html)
+        self.assertIn('class="venue-fee-link"', html)
+        self.assertNotIn('料金は要確認', html)
+        rows = json.loads(self.request('/api/venues')[1])['courts']
+        free = next(r for r in rows if r['id'] == 'okutama-kawai')
+        card = self.app.venues._card({**free, 'price_to': 0}, 0, 'テニス')
+        self.assertIn('>0円</span>', card)
+        self.assertNotIn('料金は要確認', card)
+        unknown = self.request('/venues?' + urlencode({'q': '千歳テニスクラブ'}))[1].decode()
+        self.assertIn('料金は要確認', unknown)
 
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:

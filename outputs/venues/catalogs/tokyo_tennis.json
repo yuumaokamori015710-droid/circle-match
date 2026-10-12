@@ -883,11 +883,11 @@
     "operator_type": "PUBLIC",
     "area": "23区",
     "indoor": false,
-    "price_from": null,
-    "price_unit": "公式で確認",
-    "price_note": "公式で確認",
+    "price_from": 600,
+    "price_unit": "1面2時間",
+    "price_note": "平日600円、土日祝1,000円。照明代は30分200円で別途。施設の会員登録が必要です。減免は含みません。",
     "booking_method": "公式予約システム",
-    "checked_at": "2026-10-10",
+    "checked_at": "2026-10-12",
     "notes": "nullの設備・料金は今回の公開資料確認で未確定。",
     "id": "nakano-kamitakada",
     "name": "上高田運動施設庭球場",
@@ -912,18 +912,23 @@
       {
         "title": "中野区生涯学習・スポーツ施設案内",
         "url": "https://www.city.tokyo-nakano.lg.jp/kurashi/bunka/manabu/2023shogaigakushu.files/tetugakudou.pdf"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.tetsugakudo.jp/niwas.html"
       }
-    ]
+    ],
+    "price_to": 1000
   },
   {
     "operator_type": "PUBLIC",
     "area": "23区",
     "indoor": false,
-    "price_from": null,
-    "price_unit": "公式で確認",
-    "price_note": "公式で確認",
+    "price_from": 600,
+    "price_unit": "1面2時間",
+    "price_note": "平日600円、土日祝1,000円。照明代は30分200円で別途。施設の会員登録が必要です。減免は含みません。",
     "booking_method": "公式予約システム",
-    "checked_at": "2026-10-10",
+    "checked_at": "2026-10-12",
     "notes": "nullの設備・料金は今回の公開資料確認で未確定。",
     "id": "nakano-tetsugakudo",
     "name": "哲学堂運動施設庭球場",
@@ -948,8 +953,13 @@
       {
         "title": "中野区生涯学習・スポーツ施設案内",
         "url": "https://www.city.tokyo-nakano.lg.jp/kurashi/bunka/manabu/2023shogaigakushu.files/tetugakudou.pdf"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.tetsugakudo.jp/niwa.html"
       }
-    ]
+    ],
+    "price_to": 1000
   },
   {
     "id": "school-1cd77d86e2e2",
@@ -2044,11 +2054,11 @@
     "operator_type": "PUBLIC",
     "area": "23区",
     "indoor": false,
-    "price_from": null,
-    "price_unit": "公式で確認",
-    "price_note": "公式で確認",
+    "price_from": 720,
+    "price_unit": "1面1時間（料金表の課金単位）",
+    "price_note": "2026年4月利用分からの改定料金。平日・土日祝と区内・区外利用者で異なります。予約は2時間等の利用区分になる場合があります。照明・駐車・減免を除きます。登録資格・予約区分は公式案内を確認してください。",
     "booking_method": "オンライン予約",
-    "checked_at": "2026-10-10",
+    "checked_at": "2026-10-12",
     "notes": "nullの設備・料金は今回の公開資料確認で未確定。",
     "id": "ota-gasbashi",
     "name": "多摩川ガス橋緑地テニスコート",
@@ -2069,18 +2079,23 @@
       {
         "title": "公式予約・利用案内",
         "url": "https://www.yoyaku.city.ota.tokyo.jp/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/shisetsushiyouryounokaitei.files/uguisunettaishoushisetsushiyouryoukaitei.pdf"
       }
-    ]
+    ],
+    "price_to": 2800
   },
   {
     "operator_type": "PUBLIC",
     "area": "23区",
     "indoor": false,
-    "price_from": null,
-    "price_unit": "公式で確認",
-    "price_note": "公式で確認",
+    "price_from": 720,
+    "price_unit": "1面1時間（料金表の課金単位）",
+    "price_note": "2026年4月利用分からの改定料金。平日・土日祝と区内・区外利用者で異なります。予約は2時間等の利用区分になる場合があります。照明・駐車・減免を除きます。登録資格・予約区分は公式案内を確認してください。",
     "booking_method": "オンライン予約",
-    "checked_at": "2026-10-10",
+    "checked_at": "2026-10-12",
     "notes": "nullの設備・料金は今回の公開資料確認で未確定。",
     "id": "ota-rokugobashi",
     "name": "多摩川六郷橋緑地テニスコート",
@@ -2101,8 +2116,13 @@
       {
         "title": "公式予約・利用案内",
         "url": "https://www.yoyaku.city.ota.tokyo.jp/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/shisetsushiyouryounokaitei.files/uguisunettaishoushisetsushiyouryoukaitei.pdf"
       }
-    ]
+    ],
+    "price_to": 2800
   },
   {
     "operator_type": "PUBLIC",

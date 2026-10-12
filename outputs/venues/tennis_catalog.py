@@ -76,6 +76,10 @@ def validate_catalog(rows: list) -> list[dict]:
         price = row.get("price_from")
         if price is not None and (isinstance(price, bool) or not isinstance(price, (int, float)) or not math.isfinite(price) or price < 0):
             raise ValueError(f"Invalid price: {row['id']}")
+        ceiling = row.get("price_to")
+        if ceiling is not None and (price is None or isinstance(ceiling, bool)
+                or not isinstance(ceiling, (int, float)) or not math.isfinite(ceiling) or ceiling < price):
+            raise ValueError(f"Invalid price range: {row['id']}")
         date.fromisoformat(row["checked_at"])
         sources = row.get("sources")
         if not isinstance(sources, list) or not sources or any(not isinstance(s, dict) or not isinstance(s.get("title"), str) or not s["title"].strip() or not _url(s.get("url")) for s in sources):
@@ -93,6 +97,11 @@ def validate_catalog(rows: list) -> list[dict]:
         public["facility_kind"] = row.get("facility_kind", "COURT")
         public["availability_note"] = row.get("availability_note", "")
         public["price_per_hour"] = hourly_price(price, row["price_unit"])
+        if "price_to" in row:
+            public["price_to"] = ceiling
+        # A conditional range is not a guaranteed hourly quote for comparison.
+        if ceiling is not None and ceiling != price:
+            public["price_per_hour"] = None
         result.append(public)
         ids.add(row["id"])
         facilities.add(pair)

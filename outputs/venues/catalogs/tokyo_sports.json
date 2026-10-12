@@ -6,9 +6,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区高円寺南2丁目36番31号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1500,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。杉並区公共施設予約システム「さざんかねっと」で予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -29,6 +29,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e9%ab%98%e5%86%86%e5%af%ba%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14546.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -39,7 +43,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-002",
@@ -48,9 +53,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区南荻窪2丁目1番1号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1500,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -71,6 +76,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e5%a4%a7%e5%ae%ae%e5%89%8d%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e5%a4%a7%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14549.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -80,7 +89,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-003",
@@ -89,9 +99,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区永福1丁目7番6号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1500,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -112,6 +122,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e6%b0%b8%e7%a6%8f%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14544.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -122,7 +136,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-004",
@@ -131,9 +146,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区上井草3丁目34番1号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1300,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -154,6 +169,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e4%b8%8a%e4%ba%95%e8%8d%89%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e3%82%bb%e3%83%b3%e3%82%bf%e3%83%bc%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14547.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -163,7 +182,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 8000
   },
   {
     "id": "tokyo-sports-005",
@@ -172,9 +192,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区荻窪3丁目47番2号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1500,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -195,6 +215,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e8%8d%bb%e7%aa%aa%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14548.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -205,7 +229,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-006",
@@ -214,9 +239,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区清水3丁目20番12号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1500,
+    "price_unit": "体育館貸切2時間（分割面〜全面）",
+    "price_note": "一般貸切の体育館使用料。分割する面積により異なります。少年・障害者の減額、備品・照明等の追加料金は含みません。",
     "booking_method": "公式Web予約",
     "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -237,6 +262,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e5%a6%99%e6%ad%a3%e5%af%ba%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14545.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -247,7 +276,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-007",
@@ -256,9 +286,9 @@
     "municipality": "練馬区",
     "area": "23区",
     "address": "東京都練馬区谷原1丁目7番5号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 4400,
+    "price_unit": "競技場貸切1枠（2〜3時間・分割面〜全面）",
+    "price_note": "一般団体の午前・午後1・午後2・夜間枠。面積・時間枠により異なります。全日枠、卓球場・武道場・会議室、減免、付帯設備代は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "競技場の夕方以降のバドミントンは当日仮予約ができません。 団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
     "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
@@ -283,6 +313,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e7%b7%8f%e5%90%88%e4%bd%93%e8%82%b2%e9%a4%a8%e3%80%90%e7%b7%b4%e9%a6%ac%e5%8c%ba%e3%80%91%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/shisetushiyouryou.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -292,7 +326,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 13200
   },
   {
     "id": "tokyo-sports-008",
@@ -301,9 +336,9 @@
     "municipality": "練馬区",
     "area": "23区",
     "address": "東京都練馬区光が丘4丁目1番4号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 2200,
+    "price_unit": "競技場貸切1枠（2〜3時間・分割面〜全面）",
+    "price_note": "一般団体の午前・午後1・午後2・夜間枠。面積・時間枠により異なります。全日枠、卓球場・武道場・会議室、減免、付帯設備代は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
     "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
@@ -328,6 +363,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e5%85%89%e3%81%8c%e4%b8%98%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/shisetushiyouryou.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -337,7 +376,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 13200
   },
   {
     "id": "tokyo-sports-009",
@@ -346,9 +386,9 @@
     "municipality": "練馬区",
     "area": "23区",
     "address": "東京都練馬区中村南1丁目2番32号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 3000,
+    "price_unit": "競技場貸切1枠（2〜3時間・分割面〜全面）",
+    "price_note": "一般団体の午前・午後1・午後2・夜間枠。面積・時間枠により異なります。全日枠、卓球場・武道場・会議室、減免、付帯設備代は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
     "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
@@ -373,6 +413,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e4%b8%ad%e6%9d%91%e5%8d%97%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e4%ba%a4%e6%b5%81%e3%82%bb%e3%83%b3%e3%82%bf%e3%83%bc%e4%bd%93%e8%82%b2%e9%a4%a8-%e5%a4%9a%e7%9b%ae%e7%9a%84%e3%82%a2%e3%83%aa%e3%83%bc/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/shisetushiyouryou.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -382,7 +426,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 9000
   },
   {
     "id": "tokyo-sports-010",
@@ -391,9 +436,9 @@
     "municipality": "練馬区",
     "area": "23区",
     "address": "東京都練馬区上石神井1丁目32番37号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 3000,
+    "price_unit": "競技場貸切1枠（2〜3時間・分割面〜全面）",
+    "price_note": "一般団体の午前・午後1・午後2・夜間枠。面積・時間枠により異なります。全日枠、卓球場・武道場・会議室、減免、付帯設備代は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
     "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
@@ -418,6 +463,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e4%b8%8a%e7%9f%b3%e7%a5%9e%e4%ba%95%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/shisetushiyouryou.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -427,7 +476,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 9000
   },
   {
     "id": "tokyo-sports-011",
@@ -436,9 +486,9 @@
     "municipality": "世田谷区",
     "area": "23区",
     "address": "東京都世田谷区八幡山2-18",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 8250,
+    "price_unit": "1面1時間（税込）",
+    "price_note": "通常の有料メンバー・無料メンバー／ビジター料金。平日昼・夜、土日祝で異なります。メンバー登録料・駐車料金・用品代は別途。スクール等の特別利用は別料金。年末年始は土日祝料金。",
     "booking_method": "公式Web予約",
     "booking_note": "Web予約のみ。チーム登録が必要。4時間以上の予約はキャンセル不可。",
     "booking_url": "https://labola.jp/reserve/shop/2081/calendar_week",
@@ -455,13 +505,18 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.futsal-tokyo.co.jp/hachimanyama/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.futsal-tokyo.co.jp/hachimanyama/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 15950
   },
   {
     "id": "tokyo-sports-012",
@@ -708,9 +763,9 @@
     "municipality": "豊島区",
     "area": "23区",
     "address": "東京都豊島区南長崎4-5-20 iTerrace 5F（受付4F）",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 9000,
+    "price_unit": "1面1時間（税込）",
+    "price_note": "メンバー・ビジターの通常コート使用料。曜日・時間帯により異なります。メンバー登録料7,900円、指定の1.5時間枠・駐車料金は別途。大会・個サル開催は事前申請が必要です。",
     "booking_method": "公式Web予約",
     "booking_note": "公式サイトの「コート予約はこちら」から予約。",
     "booking_url": "https://labola.jp/r/shop/2013/calendar_week/",
@@ -727,13 +782,18 @@
       {
         "title": "施設の公式案内",
         "url": "https://bonfim.co.jp/ochiai/rental_court/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://bonfim.co.jp/ochiai/court_price/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 17000
   },
   {
     "id": "tokyo-sports-020",
@@ -991,9 +1051,9 @@
     "municipality": "府中市",
     "area": "多摩",
     "address": "東京都府中市矢崎町5丁目5番地",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 6700,
+    "price_unit": "第1体育室貸切1区分（2時間15分〜3時間）",
+    "price_note": "市内一般団体の第1体育室使用料。市外団体は1.5倍。午前・午後・夜間の区分により異なります。全日・個人利用・他の室場・付帯設備代は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "公共施設予約システム利用者登録と施設利用団体登録後、システムで使用申請。一般公開利用は登録・予約不要の場合あり。",
     "booking_url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/yoyaku/toroku.html",
@@ -1018,6 +1078,10 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e7%b7%8f%e5%90%88%e4%bd%93%e8%82%b2%e9%a4%a8%e3%80%90%e5%ba%9c%e4%b8%ad%e5%b8%82%e3%80%91%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ac%ac2%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/sogo/sogo.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1027,7 +1091,8 @@
       "バスケットボール",
       "バレーボール",
       "バドミントン"
-    ]
+    ],
+    "price_to": 12000
   },
   {
     "id": "tokyo-sports-029",
@@ -1081,9 +1146,9 @@
     "municipality": "練馬区",
     "area": "23区",
     "address": "東京都練馬区練馬2丁目29番10号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 3000,
+    "price_unit": "陸上競技場貸切2時間（半面〜全面）",
+    "price_note": "陸上競技場の一般貸切料金。人工芝グラウンドは別料金。3時間枠は半面4,500円、全面9,000円。駐車料金・減免は含みません。",
     "booking_method": "公共施設予約システム",
     "booking_note": "団体利用は練馬区施設予約システムへの利用登録と予約が必要です。2026年7月から新システムへ移行しており、旧システム利用者も新規登録が必要です。",
     "booking_url": "https://shisetsuyoyaku.city.nerima.tokyo.jp/",
@@ -1104,13 +1169,18 @@
       {
         "title": "2026年7月からの施設予約・登録案内",
         "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/shisetushiyouryou.html"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "ランニング"
-    ]
+    ],
+    "price_to": 6000
   },
   {
     "id": "tokyo-sports-031",
@@ -1234,9 +1304,9 @@
     "municipality": "北区",
     "area": "23区",
     "address": "東京都北区赤羽西5-2-27",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 5420,
+    "price_unit": "グラウンド貸切1回帯（半面〜全面）",
+    "price_note": "早朝・午前・午後1・午後2・夜間の一般貸切料金。回帯・面積により異なります。全日・会議室等は除外。夜間照明料は別途1時間4,620円（半面2,310円）。回帯の時間・団体登録条件は公式案内を確認してください。",
     "booking_method": "北区施設予約システム、電話、体育系窓口",
     "booking_note": "サッカー場・屋外フットサル場は事前の団体登録が必要。区内登録団体は抽選申込ができ、抽選後はシステム・電話・窓口で随時予約。予約後の支払期限・方法は最新の公式案内をご確認ください。",
     "booking_url": "https://kita-yoyaku.openreaf02.jp/",
@@ -1261,13 +1331,18 @@
       {
         "title": "最新の予約システム・支払手続き",
         "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010391.html"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 14900
   },
   {
     "id": "tokyo-sports-035",
@@ -1276,9 +1351,9 @@
     "municipality": "北区",
     "area": "23区",
     "address": "東京都北区赤羽北1-22-22先",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 2440,
+    "price_unit": "1面2時間",
+    "price_note": "サッカー場1面の一般使用料。登録団体の予約が必要です。少年団体等の減免は含みません。",
     "booking_method": "北区施設予約システム、電話、体育系窓口",
     "booking_note": "サッカー場利用には事前の団体登録が必要。区内登録団体は利用希望月の抽選に申込可能で、抽選後はシステム・電話・窓口で随時予約。",
     "booking_url": "https://kita-yoyaku.openreaf02.jp/",
@@ -1303,13 +1378,18 @@
       {
         "title": "最新の予約システム・支払手続き",
         "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010405.html"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 2440
   },
   {
     "id": "tokyo-sports-036",
@@ -1318,9 +1398,9 @@
     "municipality": "北区",
     "area": "23区",
     "address": "東京都北区浮間4-27-1",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 2440,
+    "price_unit": "フットサル場1面2時間",
+    "price_note": "一般フットサル利用の料金。少年サッカー利用とは利用条件・料金区分が異なります。団体登録・利用可能時間は公式案内を確認してください。",
     "booking_method": "北区施設予約システム、電話、体育系窓口",
     "booking_note": "サッカー場・屋外フットサル場は団体登録が必要。少年登録団体向けの抽選枠があり、一般登録団体は少年団体の利用がない時間帯に限られ抽選参加不可。",
     "booking_url": "https://kita-yoyaku.openreaf02.jp/",
@@ -1345,13 +1425,18 @@
       {
         "title": "最新の予約システム・支払手続き",
         "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010401/1010404/1010406.html"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 2440
   },
   {
     "id": "tokyo-sports-037",
@@ -1360,9 +1445,9 @@
     "municipality": "北区",
     "area": "23区",
     "address": "東京都北区豊島5-3-13",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 4560,
+    "price_unit": "一般サッカー貸切2時間（18:30〜20:30）",
+    "price_note": "施設料2,920円と照明料1,640円の合計。少年利用の減免を含みません。一般利用は夜間のみ。予約時に照明も申し込んでください。",
     "booking_method": "北区施設予約システム、電話、体育系窓口",
     "booking_note": "利用には団体登録が必要。少年サッカー等の時間枠と一般サッカー枠が設定され、抽選後はシステム・電話・窓口で随時予約。",
     "booking_url": "https://kita-yoyaku.openreaf02.jp/",
@@ -1387,6 +1472,10 @@
       {
         "title": "最新の予約システム・支払手続き",
         "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010392.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1394,7 +1483,8 @@
     "sports": [
       "サッカー・フットサル",
       "野球"
-    ]
+    ],
+    "price_to": 4560
   },
   {
     "id": "tokyo-sports-038",
@@ -1441,9 +1531,9 @@
     "municipality": "江戸川区",
     "area": "23区",
     "address": "東京都江戸川区東篠崎2丁目3番先（旧江戸川河川敷内）",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 460,
+    "price_unit": "フットサルコート1面1時間（ゴール代別）",
+    "price_note": "2026年4月以降の改定使用料。フットサルコート料460円。ゴール・照明等は別途。少年野球場兼ソフトボール場は2時間2,300円で別料金。利用区分・登録条件は公式案内を確認してください。 改定前の承認済み予約は旧料金の場合があります。",
     "booking_method": "江戸川区施設予約システム『えどねっと』",
     "booking_note": "施設予約・登録団体（サークル）利用はえどねっと。利用登録が必要。",
     "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
@@ -1464,6 +1554,10 @@
       {
         "title": "対応種目・利用条件の公式案内",
         "url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/futsalcourt.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.edogawa.tokyo.jp/documents/67566/ichiranv2.pdf"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1471,7 +1565,8 @@
     "sports": [
       "サッカー・フットサル",
       "野球"
-    ]
+    ],
+    "price_to": 460
   },
   {
     "id": "tokyo-sports-040",
@@ -1480,9 +1575,9 @@
     "municipality": "江戸川区",
     "area": "23区",
     "address": "東京都江戸川区臨海町1丁目1番2号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 1720,
+    "price_unit": "1施設1時間",
+    "price_note": "2026年4月以降の改定使用料。1施設当たりの基本使用料。夜間照明・備品等の追加料金と減免を除きます。競技・利用面・登録条件は公式案内を確認してください。 改定前の承認済み予約は旧料金の場合があります。",
     "booking_method": "江戸川区施設予約システム『えどねっと』",
     "booking_note": "えどねっとで受け付けるのはフットサルコートの予約のみ。利用登録が必要。",
     "booking_url": "https://www.shisetsuyoyaku.city.edogawa.tokyo.jp/user/Home",
@@ -1503,13 +1598,18 @@
       {
         "title": "対応種目・利用条件の公式案内",
         "url": "https://www.city.edogawa.tokyo.jp/e030/kuseijoho/denshi/shisetsuyoyaku/shisetuitiran.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.edogawa.tokyo.jp/documents/67566/ichiranv2.pdf"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 1720
   },
   {
     "id": "tokyo-sports-041",
@@ -1553,9 +1653,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区下高井戸3丁目26番1号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 3800,
+    "price_unit": "運動場貸切2時間（半面〜全面）",
+    "price_note": "サッカー等で利用する運動場使用料。野球場は別料金（2時間4,700円）。夜間照明は別途。減額・備品代は含みません。",
     "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
     "booking_note": "利用には事前登録が必要。人工芝グラウンドは成人サッカー1面・少年サッカー2面。野球場と兼用で毎月1～15日はマウンド設置。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -1572,6 +1672,10 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14539.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14539.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1579,7 +1683,8 @@
     "sports": [
       "野球",
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 7500
   },
   {
     "id": "tokyo-sports-043",
@@ -1588,9 +1693,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区井草4丁目12番1号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 4700,
+    "price_unit": "運動場貸切2時間（半面〜全面）",
+    "price_note": "運動場の一般貸切使用料。半面4,700円、全面9,400円。団体登録が必要。天候・芝の状態等により利用できない場合があります。減額・備品代は含みません。",
     "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
     "booking_note": "利用には事前登録が必要。天然芝サッカー場は成人1面・少年2面、ラグビー1面。天候・施設状況で使用できない場合がある。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -1607,6 +1712,10 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14543.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14543.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1614,7 +1723,8 @@
     "sports": [
       "サッカー・フットサル",
       "ラグビー"
-    ]
+    ],
+    "price_to": 9400
   },
   {
     "id": "tokyo-sports-044",
@@ -1623,9 +1733,9 @@
     "municipality": "杉並区",
     "area": "23区",
     "address": "東京都杉並区上井草3丁目34番1号",
-    "price_from": null,
-    "price_unit": "施設・時間区分による",
-    "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
+    "price_from": 4700,
+    "price_unit": "運動場貸切2時間（半面〜全面）",
+    "price_note": "運動場の一般貸切使用料。他の室場・野球場・庭球場は別料金。夜間照明・減額・備品代は含みません。",
     "booking_method": "杉並区公共施設予約システム『さざんかねっと』によるオンライン予約",
     "booking_note": "貸切使用は事前予約と事前登録が必要。人工芝グラウンドは成人サッカー1面・少年サッカー2面、テニスコート4面。弓道場の一般使用は予約不要で利用者証が必要。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
@@ -1642,6 +1752,10 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14541.html"
+      },
+      {
+        "title": "公式料金表（2026年10月12日確認）",
+        "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14541.html"
       }
     ],
     "availability_status": "UNKNOWN",
@@ -1649,7 +1763,8 @@
     "sports": [
       "野球",
       "サッカー・フットサル"
-    ]
+    ],
+    "price_to": 9400
   },
   {
     "price_from": null,
