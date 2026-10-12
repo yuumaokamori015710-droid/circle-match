@@ -47,6 +47,28 @@ Multi-purpose venues appear in several sport filters but count once in the
 total. Soccer/futsal now has 157 facilities. Existing IDs, prices and source
 records in both original files are unchanged.
 
+An indoor-sports follow-up checked 238 official SPOPITA basketball/volleyball
+detail pages on 2026-10-12. It adds 89 gyms and enriches the sport/source fields
+of 55 retained facilities, bringing the combined inventory to 1,202. Current
+category counts are basketball 139, volleyball 145, badminton 149 and table
+tennis 148. These category counts overlap; each facility counts once in the
+combined inventory. Main/small gymnasium rooms are consolidated, and reviewed
+aliases such as Hikari Sports Center and San Machida Asahi Gymnasium retain
+their existing IDs instead of becoming duplicate listings.
+
+New indoor records require a documented indoor facility type, exact sport
+buttons, Tokyo street address and reservation instructions on the facility's
+official detail page. School/restricted training facilities, outdoor courts,
+records without reservation information and the closed Ryuhoku Sports Plaza
+are not added. Registration, municipal/nonresident eligibility and reservation
+conditions are retained in booking notes. Unknown prices remain null and
+availability remains UNKNOWN. Booking links use stable official instructions,
+not expired session URLs. Existing names, prices, booking URLs and the entire
+legacy tennis file/API remain unchanged. Enrichment adds sports, sources,
+the check date and evidence-supported indoor flags; cultural/community-center
+labels and booking notes clarify which gym rooms support sports. The existing
+toggle means "indoor facility exists", including mixed indoor/outdoor complexes.
+
 The source audit retrieved 1,213 distinct official information/reservation URLs
 with bounded concurrency. Candidate records were checked against retrieved
 facility names, street addresses, supported sport terms and reservation routes.

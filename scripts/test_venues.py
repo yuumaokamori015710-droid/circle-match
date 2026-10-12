@@ -249,6 +249,31 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertIn('v_page=2', first)
         self.assertIn('sport=', second)
 
+    def test_indoor_sports_expansion_has_evidence_and_usable_filters(self):
+        status, body, _ = self.request('/api/venues')
+        self.assertEqual(status, 200)
+        catalog = json.loads(body)
+        additions = [row for row in catalog['courts'] if row['id'].startswith('tokyo-gym-')]
+        self.assertGreaterEqual(len(additions), 80)
+        supported = {'バスケットボール', 'バレーボール', 'バドミントン', '卓球'}
+        for row in additions:
+            with self.subTest(venue=row['id']):
+                self.assertTrue(row['indoor'])
+                self.assertEqual(row['facility_label'], '体育館・体育室')
+                self.assertTrue(set(row['sports']) <= supported)
+                self.assertTrue(row['sources'])
+                self.assertIn(row['municipality'], row['address'])
+                self.assertIsNone(row['price_from'])
+                self.assertEqual(row['availability_status'], 'UNKNOWN')
+        for sport in supported:
+            with self.subTest(sport=sport):
+                self.assertGreaterEqual(catalog['meta']['sports'][sport], 130)
+                query = urlencode({'sport': sport, 'v_indoor': 1, 'v_q': '新宿コズミック'})
+                status, body, _ = self.request('/venues?' + query)
+                self.assertEqual(status, 200)
+                self.assertIn('新宿コズミックスポーツセンター', body.decode('utf-8'))
+                self.assertIn('class="venue-court-card"', body.decode('utf-8'))
+
     def test_server_filters_and_escaped_input_keep_booking_links_in_initial_html(self):
         rows = json.loads(self.request('/api/venues?' + urlencode({'sport': 'サッカー・フットサル'}))[1])['courts']
         first = rows[0]

@@ -10,7 +10,7 @@
     "price_unit": "施設・時間区分による",
     "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
     "booking_method": "公式Web予約",
-    "booking_note": "貸切は事前予約・利用者事前登録が必要。杉並区公共施設予約システム「さざんかねっと」で予約。一般使用は事前予約不要。",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。杉並区公共施設予約システム「さざんかねっと」で予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
     "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14546.html",
     "checked_at": "2026-10-12",
@@ -25,14 +25,20 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14546.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e9%ab%98%e5%86%86%e5%af%ba%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バドミントン",
+      "サッカー・フットサル",
+      "卓球",
       "バスケットボール",
-      "サッカー・フットサル"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -46,7 +52,7 @@
     "price_unit": "施設・時間区分による",
     "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
     "booking_method": "公式Web予約",
-    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
     "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14549.html",
     "checked_at": "2026-10-12",
@@ -61,13 +67,19 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14549.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e5%a4%a7%e5%ae%ae%e5%89%8d%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e5%a4%a7%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バドミントン",
-      "卓球"
+      "卓球",
+      "バスケットボール",
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -81,7 +93,7 @@
     "price_unit": "施設・時間区分による",
     "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
     "booking_method": "公式Web予約",
-    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
     "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14544.html",
     "checked_at": "2026-10-12",
@@ -96,14 +108,20 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14544.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e6%b0%b8%e7%a6%8f%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バドミントン",
+      "サッカー・フットサル",
+      "卓球",
       "バスケットボール",
-      "サッカー・フットサル"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -117,7 +135,7 @@
     "price_unit": "施設・時間区分による",
     "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
     "booking_method": "公式Web予約",
-    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用・トレーニングルームは事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
     "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14547.html",
     "checked_at": "2026-10-12",
@@ -132,13 +150,19 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14547.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e4%b8%8a%e4%ba%95%e8%8d%89%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e3%82%bb%e3%83%b3%e3%82%bf%e3%83%bc%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バドミントン",
-      "卓球"
+      "卓球",
+      "バスケットボール",
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -152,7 +176,7 @@
     "price_unit": "施設・時間区分による",
     "price_note": "最新の料金・追加費用は公式案内をご確認ください。",
     "booking_method": "公式Web予約",
-    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。",
+    "booking_note": "貸切は事前予約・利用者事前登録が必要。さざんかねっとで予約。一般使用は事前予約不要。 体育館・体育室区画では卓球・バスケットボール・バレーボール・バドミントンに対応。競技ごとの利用可能な体育室、団体登録・区市町村外の利用条件は根拠の公式体育館案内をご確認ください。",
     "booking_url": "https://www.shisetsuyoyaku.city.suginami.tokyo.jp/user/Home",
     "official_url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14548.html",
     "checked_at": "2026-10-12",
@@ -167,14 +191,20 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14548.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e8%8d%bb%e7%aa%aa%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バドミントン",
+      "サッカー・フットサル",
       "卓球",
-      "サッカー・フットサル"
+      "バスケットボール",
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -203,16 +233,20 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.suginami.tokyo.jp/s032/shisetsu/14545.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e5%a6%99%e6%ad%a3%e5%af%ba%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バスケットボール",
       "サッカー・フットサル",
+      "卓球",
+      "バスケットボール",
       "バレーボール",
-      "バドミントン",
-      "卓球"
+      "バドミントン"
     ]
   },
   {
@@ -245,15 +279,19 @@
       {
         "title": "2026年7月からの施設予約・登録案内",
         "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e7%b7%8f%e5%90%88%e4%bd%93%e8%82%b2%e9%a4%a8%e3%80%90%e7%b7%b4%e9%a6%ac%e5%8c%ba%e3%80%91%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バレーボール",
+      "卓球",
       "バスケットボール",
-      "バドミントン",
-      "卓球"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -286,15 +324,19 @@
       {
         "title": "2026年7月からの施設予約・登録案内",
         "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e5%85%89%e3%81%8c%e4%b8%98%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バレーボール",
+      "卓球",
       "バスケットボール",
-      "バドミントン",
-      "卓球"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -327,15 +369,19 @@
       {
         "title": "2026年7月からの施設予約・登録案内",
         "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e4%b8%ad%e6%9d%91%e5%8d%97%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e4%ba%a4%e6%b5%81%e3%82%bb%e3%83%b3%e3%82%bf%e3%83%bc%e4%bd%93%e8%82%b2%e9%a4%a8-%e5%a4%9a%e7%9b%ae%e7%9a%84%e3%82%a2%e3%83%aa%e3%83%bc/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バレーボール",
+      "卓球",
       "バスケットボール",
-      "バドミントン",
-      "卓球"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -368,15 +414,19 @@
       {
         "title": "2026年7月からの施設予約・登録案内",
         "url": "https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e4%b8%8a%e7%9f%b3%e7%a5%9e%e4%ba%95%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ab%b6%e6%8a%80%e5%a0%b4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
-      "バレーボール",
+      "卓球",
       "バスケットボール",
-      "バドミントン",
-      "卓球"
+      "バレーボール",
+      "バドミントン"
     ]
   },
   {
@@ -960,15 +1010,23 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/sogo/sogo.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e7%b7%8f%e5%90%88%e4%bd%93%e8%82%b2%e9%a4%a8%e3%80%90%e5%ba%9c%e4%b8%ad%e5%b8%82%e3%80%91%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ac%ac1%e4%bd%93%e8%82%b2%e5%ae%a4/"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e7%b7%8f%e5%90%88%e4%bd%93%e8%82%b2%e9%a4%a8%e3%80%90%e5%ba%9c%e4%b8%ad%e5%b8%82%e3%80%91%e4%bd%93%e8%82%b2%e9%a4%a8-%e7%ac%ac2%e4%bd%93%e8%82%b2%e5%ae%a4/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
       "卓球",
+      "バスケットボール",
       "バレーボール",
-      "バドミントン",
-      "バスケットボール"
+      "バドミントン"
     ]
   },
   {
@@ -1001,15 +1059,19 @@
       {
         "title": "団体利用の予約・登録案内",
         "url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010437.html"
+      },
+      {
+        "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
+        "url": "https://spopita.jp/%e6%bb%9d%e9%87%8e%e5%b7%9d%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/"
       }
     ],
     "availability_status": "UNKNOWN",
     "availability_note": "",
     "sports": [
+      "卓球",
       "バスケットボール",
       "バレーボール",
-      "バドミントン",
-      "卓球"
+      "バドミントン"
     ]
   },
   {
