@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 import circlematch_seo as seo
 import circlematch_venues as venues
+import circlematch_settings as settings_ui
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
 import circlematch_contact_research as contact_research
@@ -1071,8 +1072,10 @@ def personalize_navigation(body, session_id, return_to):
     bell = (f'<a id="notificationBell" class="cm-bell" href="/notifications" aria-label="{label}" title="{label}">'
             f'{BELL_ICON}<span id="notificationBadge" class="cm-notification-badge" {"" if count else "hidden"}>{count or ""}</span></a>')
     home = f'<a class="cm-home" href="/" aria-label="ホーム" title="ホーム">{HOME_ICON}</a>'
+    settings_url = '/settings?' + urlencode({'return_to': safe_return_path(return_to, '/')})
+    settings = f'<a class="cm-settings" href="{html.escape(settings_url, quote=True)}" aria-label="設定" title="設定">{SETTINGS_ICON}</a>'
     before = re.sub(r'<a\b[^>]*>\s*(?:大会・イベント|サークルDB)\s*</a>', '', before)
-    before = before.replace("</nav>", home + bell + "</nav>", 1)
+    before = before.replace("</nav>", home + bell + settings + "</nav>", 1)
     before = before.replace("</head>", NOTIFICATION_STYLE + "</head>", 1)
     if user.get("authenticated"):
         after = after.replace("</body>", NOTIFICATION_BADGE_SCRIPT + "</body>", 1)
@@ -1082,15 +1085,18 @@ def personalize_navigation(body, session_id, return_to):
 
 # Lucide bell icon, ISC license (see docs/licenses/lucide.txt).
 BELL_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>'
+SETTINGS_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>'
 
 NOTIFICATION_STYLE = '''<style>
 [data-notification-header]{position:sticky;top:0;z-index:30}
-header nav a.cm-bell,header nav a.cm-home{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;flex:0 0 44px;padding:0;border:1px solid #dbe4ed;border-radius:8px;background:#fff;color:#243c50;text-decoration:none;box-sizing:border-box}
+header nav a.cm-bell,header nav a.cm-home,header nav a.cm-settings{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;flex:0 0 44px;padding:0;border:1px solid #dbe4ed;border-radius:8px;background:#fff;color:#243c50;text-decoration:none;box-sizing:border-box}
 header nav a.cm-home{border-color:transparent}.cm-home:hover{background:#edf4f7}.cm-home:focus-visible{outline:3px solid #e15b31;outline-offset:2px}
 .cm-bell:hover{background:#edf4f7}.cm-bell:focus-visible{outline:3px solid #e15b31;outline-offset:2px}
+.cm-settings:hover{background:#edf4f7}.cm-settings:focus-visible{outline:3px solid #e15b31;outline-offset:2px}
 .cm-notification-badge{position:absolute;right:-4px;top:-4px;min-width:18px;padding:2px 4px;border-radius:12px;background:#bc3519;color:#fff;font:700 11px/1.3 system-ui;text-align:center}
 .cm-notification-badge[hidden]{display:none}.notification-list{padding:0 18px}.notification-heading{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 @media(max-width:620px){header a.brand .brand-wordmark{display:none}.site-nav{gap:6px}.site-nav .main-nav{gap:2px}}
+@media(max-width:380px){.site-nav{flex-wrap:wrap}.site-nav .main-nav{flex-wrap:wrap;min-width:0;justify-content:flex-end}.site-nav a.account,.site-nav .logout-button{font-size:12px;padding-inline:7px}}
 </style>'''
 
 NOTIFICATION_BADGE_SCRIPT = '''<script>
@@ -4826,6 +4832,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def send_html(self, body, status=200):
         body = personalize_navigation(body, self.cookie_value("cm_session"), self.path)
+        body = settings_ui.decorate(body)
         event = None
         event_path = urlparse(self.path).path
         if status == 200 and re.fullmatch(r'/events/[^/]+', event_path) and event_path != '/events/new':
@@ -4925,7 +4932,8 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
         try:
-            if parsed.path in {"/", "/events", "/venues"} and "area" in query:
+            if (parsed.path in {"/", "/events", "/venues"} and "area" in query
+                    and (parsed.path != '/venues' or query['area'][0].startswith(('region:', 'prefecture:')))):
                 area = query.pop("area")[0]
                 query.pop("region", None)
                 query.pop("prefecture", None)
@@ -4944,6 +4952,9 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_html(render_public_html(query))
             elif parsed.path == "/venues":
                 self.send_html(render_venues_html(query))
+            elif parsed.path == '/settings':
+                return_to = safe_return_path(query.get('return_to', ['/'])[0], '/')
+                self.send_html(event_page('設定', settings_ui.render_body(return_to)).encode('utf-8'))
             elif parsed.path in {"/venues/", "/tennis"}:
                 query.pop("tab", None)
                 self.redirect("/venues" + ("?" + urlencode(query, doseq=True) if query else ""))
@@ -4953,6 +4964,9 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(venues.get_venue_catalog(query))
             elif parsed.path in venues.ASSET_PATHS:
                 path, content_type = venues.ASSET_PATHS[parsed.path]
+                self.send_file(path, content_type)
+            elif parsed.path in settings_ui.ASSET_PATHS:
+                path, content_type = settings_ui.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)
             elif parsed.path == "/events":
                 query["tab"] = ["events"]
@@ -5259,7 +5273,7 @@ class Handler(BaseHTTPRequestHandler):
             handle_http(self)
             return
         parsed = urlparse(self.path)
-        if parsed.path in {"/venues", "/venues/", "/tennis", "/api/tennis-courts", "/api/venues"} or parsed.path in venues.ASSET_PATHS:
+        if parsed.path in {"/settings", "/venues", "/venues/", "/tennis", "/api/tennis-courts", "/api/venues"} or parsed.path in venues.ASSET_PATHS or parsed.path in settings_ui.ASSET_PATHS:
             self.send_response(405)
             self.send_header("Allow", "GET")
             self.send_header("Content-Length", "0")

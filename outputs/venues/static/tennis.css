@@ -143,3 +143,27 @@
 .venue-directory{position:relative;display:block;box-sizing:border-box;min-width:0;width:100%;background:transparent;font-size:14px}
 .venue-directory .venue-filter-grid{padding:0;background:transparent;border:0}
 .venue-directory .venue-checkbox-label input{width:16px;height:16px;min-width:16px;min-height:16px;padding:0;margin:0;border:0;border-radius:0;appearance:auto;background:transparent;box-shadow:none;flex:0 0 16px}
+.venue-directory .venue-filter-grid label>span{font-size:13px}
+.venue-directory .venue-filter-grid>label{justify-content:flex-end}
+.venue-directory .venue-filter-grid label small{font-size:11px;display:block;margin:0}
+.venue-directory .venue-filter-grid input,.venue-directory .venue-filter-grid select{font-size:14px;min-height:44px}
+.venue-directory .venue-filter-grid input[type=time]{appearance:auto;min-width:0}
+.venue-directory .venue-filter-note{font-size:12px;line-height:1.8}
+.venue-directory .venue-panel-heading h2{font-size:16px}
+.venue-directory .venue-apply{margin-top:14px;color:var(--green)}
+.venue-directory .venue-results-controls{display:flex;align-items:center;gap:16px;min-width:0}
+.venue-directory .venue-sort{display:flex;align-items:center;gap:8px;font-size:13px;min-width:0}
+.venue-directory .venue-sort select{max-width:100%;min-width:0;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);font-size:13px}
+.venue-directory .venue-opening-hours{grid-column:1/-1;margin:0 0 16px;color:#526479;font-size:12px;overflow-wrap:anywhere}
+.venue-directory .venue-opening-hours strong{color:var(--ink);margin-right:8px}
+.venue-directory .venue-registration{font-size:12px;color:#536b62;margin:6px 0}
+.venue-directory .venue-filter-error{font-size:13px;color:#a12915}
+@media(max-width:640px){
+.venue-directory .venue-filter-grid input,.venue-directory .venue-filter-grid select{font-size:16px}
+.venue-directory .venue-filter-grid label>span{font-size:12px}
+.venue-directory .venue-results-heading{align-items:flex-start;flex-direction:column;gap:10px}
+.venue-directory .venue-results-controls{justify-content:space-between;width:100%;gap:8px}
+.venue-directory .venue-sort{gap:5px;font-size:12px}
+.venue-directory .venue-sort select{width:180px;font-size:12px}
+.venue-directory .venue-opening-hours{padding-top:14px;border-top:1px solid var(--border)}
+}

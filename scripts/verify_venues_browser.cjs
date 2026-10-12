@@ -81,6 +81,108 @@ const results = [];
       await page.locator('#venue-page-title').filter({hasText:'ピックルボール'}).waitFor();
       await page.close();
     }
+    const facetPage=await browser.newPage({viewport:{width:1440,height:1000}});
+    const errors=[];
+    facetPage.on('pageerror',error=>errors.push(error.message));
+    await facetPage.goto(base+'/venues');
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    await facetPage.locator('#venue-area-filter').selectOption('23区');
+    await facetPage.locator('[name=municipality]').selectOption('新宿区');
+    await facetPage.locator('#venue-area-filter').selectOption('多摩');
+    assert.equal(await facetPage.locator('[name=municipality]').inputValue(),'');
+    const options=await facetPage.locator('[name=municipality] option').allTextContents();
+    assert(options.includes('八王子市') && !options.includes('新宿区'));
+    await facetPage.locator('#venue-reset-filters').click();
+    for(const [field,value,predicate] of [
+      ['booking_channel','phone',row=>row.booking_channels.includes('phone')],
+      ['booking_channel','web',row=>row.booking_channels.includes('web')],
+      ['registration','required',row=>row.registration_required===true],
+      ['registration','unknown',row=>row.registration_required===null],
+      ['venue_type','gym',row=>row.venue_types.includes('gym')]
+    ]) {
+      await facetPage.locator('#venue-reset-filters').click();
+      await facetPage.locator(`[name=${field}]`).selectOption(value);
+      const expected=catalog.courts.filter(row=>row.availability_status!=='SUSPENDED' && predicate(row)).length;
+      assert.equal(await facetPage.locator('#venue-result-count').innerText(),expected.toLocaleString('ja-JP')+' 件');
+      await facetPage.reload();
+      await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+      assert.equal(await facetPage.locator(`[name=${field}]`).inputValue(),value);
+      assert.equal(await facetPage.locator('#venue-result-count').innerText(),expected.toLocaleString('ja-JP')+' 件');
+    }
+    await facetPage.locator('#venue-reset-filters').click();
+    await facetPage.locator('[name=open_from]').fill('20:00');
+    await facetPage.locator('[name=open_until]').fill('21:00');
+    assert.equal(await facetPage.locator('.venue-court-card').count(),12);
+    await facetPage.locator('#venue-reset-filters').click();
+    await facetPage.locator('[name=price_max]').fill('1,300');
+    assert((await facetPage.locator('.venue-court-card').count())>0);
+    await facetPage.locator('[name=price_max]').fill('not-a-price');
+    assert.equal(await facetPage.locator('#venue-filter-error').isVisible(),true);
+    await facetPage.locator('#venue-reset-filters').click();
+    await facetPage.locator('#venue-sort').selectOption('price');
+    assert(facetPage.url().includes('v_sort=price'));
+    assert.equal(await facetPage.locator('#venue-sort').evaluate(el=>el.closest('.venue-filter-panel')),null);
+    const returnUrl=new URL(facetPage.url()).pathname+new URL(facetPage.url()).search;
+    await facetPage.getByRole('link',{name:'設定',exact:true}).click();
+    await facetPage.getByRole('radio',{name:'スマホビュー',exact:true}).check();
+    await facetPage.getByRole('button',{name:'設定を保存',exact:true}).click();
+    await facetPage.getByText('設定を保存しました。',{exact:true}).waitFor();
+    assert.equal(await facetPage.evaluate(()=>CircleMatchSettings.get().view),'mobile');
+    assert.equal(await facetPage.evaluate(()=>document.documentElement.dataset.cmView),'auto');
+    await facetPage.getByRole('link',{name:'元の画面へ戻る',exact:false}).click();
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(new URL(facetPage.url()).pathname+new URL(facetPage.url()).search,returnUrl);
+    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'block');
+    assert.equal(await facetPage.evaluate(()=>document.documentElement.dataset.cmView),'mobile');
+    assert.equal(await facetPage.evaluate(()=>Math.round(document.body.getBoundingClientRect().width)),390);
+    await facetPage.screenshot({path:path.join(out,'forced-mobile-on-desktop.png')});
+    await facetPage.getByRole('link',{name:'設定',exact:true}).click();
+    await facetPage.getByRole('radio',{name:'PCビュー',exact:true}).check();
+    await facetPage.locator('[name=venueArea]').selectOption('多摩');
+    await facetPage.locator('[name=venueSort]').selectOption('price');
+    await facetPage.getByRole('button',{name:'設定を保存',exact:true}).click();
+    await facetPage.goto(base+'/venues');
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'多摩');
+    assert.equal(await facetPage.locator('#venue-sort').inputValue(),'price');
+    assert.equal(await facetPage.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'grid');
+    await facetPage.goto(base+'/venues?v_area='+encodeURIComponent('23区'));
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'23区');
+    await facetPage.getByRole('link',{name:'設定',exact:true}).click();
+    await facetPage.getByRole('button',{name:'初期設定に戻す',exact:true}).click();
+    assert.equal(await facetPage.evaluate(()=>document.documentElement.dataset.cmView),'auto');
+    await facetPage.locator('[name=rememberVenueSearch]').check();
+    await facetPage.getByRole('button',{name:'設定を保存',exact:true}).click();
+    await facetPage.goto(base+'/venues');
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    await facetPage.locator('#venue-area-filter').selectOption('多摩');
+    await facetPage.goto(base+'/venues');
+    await facetPage.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await facetPage.locator('#venue-area-filter').inputValue(),'多摩');
+    assert.deepEqual(errors,[]);
+    await facetPage.close();
+    for(const width of [320,390,768,1440,1920]) {
+      const settings=await browser.newPage({viewport:{width,height:1000}});
+      await settings.goto(base+'/settings');
+      assert.equal(await settings.getByRole('link',{name:'設定',exact:true}).count(),1);
+      assert(await settings.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+      await settings.screenshot({path:path.join(out,`settings-${width}.png`)});
+      // Layout-only signed-in navigation fixture; no login or logout request.
+      if(width<=390) {
+        await settings.evaluate(()=>{
+          const account=document.getElementById('accountLink');account.textContent='マイページ';account.href='/mypage';
+          account.insertAdjacentHTML('afterend','<form class="account-logout"><button type="button">ログアウト</button></form>');
+        });
+        assert(await settings.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+        const overlapping=await settings.locator('.main-nav').evaluate(nav=>{
+          const rects=[...nav.children].map(el=>el.getBoundingClientRect());
+          return rects.some((a,i)=>rects.slice(i+1).some(b=>a.left<b.right-1 && b.left<a.right-1 && a.top<b.bottom-1 && b.top<a.bottom-1));
+        });
+        assert.equal(overlapping,false);
+      }
+      await settings.close();
+    }
     const nojs = await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
     const plain = await nojs.newPage();
     await plain.goto(base+'/venues?'+new URLSearchParams({sport:'サッカー・フットサル'}));
@@ -92,7 +194,29 @@ const results = [];
     await plain.goto(base+'/venues?'+new URLSearchParams({v_q:'高円寺みんなの体育館'}));
     assert.equal(await plain.locator('.venue-original-price').innerText(),'1,500円〜6,000円');
     assert.equal(await plain.locator('.venue-fee-link').count(),1);
+    await plain.goto(base+'/venues?area='+encodeURIComponent('多摩'));
+    assert(!(await plain.locator('[name=municipality] option').allTextContents()).includes('新宿区'));
+    await plain.locator('[name=booking_channel]').selectOption('phone');
+    await plain.locator('#venue-sort').selectOption('price');
+    await plain.getByRole('button',{name:'条件を適用',exact:true}).click();
+    assert.equal(await plain.locator('#venue-area-filter').inputValue(),'多摩');
+    assert.equal(await plain.locator('#venue-sort').inputValue(),'price');
+    assert((await plain.locator('.venue-court-card').count())>0);
     await nojs.close();
+    const phone=await browser.newContext({viewport:{width:390,height:844},isMobile:true,deviceScaleFactor:1});
+    const device=await phone.newPage();
+    await device.goto(base+'/settings');
+    await device.getByRole('radio',{name:'PCビュー',exact:true}).check();
+    await device.getByRole('button',{name:'設定を保存',exact:true}).click();
+    await device.goto(base+'/venues');
+    await device.locator('#venue-filter-fields:not([disabled])').waitFor();
+    assert.equal(await device.locator('.venue-court-card').first().evaluate(el=>getComputedStyle(el).display),'grid');
+    assert.equal(await device.locator('meta[name=viewport]').getAttribute('content'),'width=1280');
+    await device.getByRole('link',{name:'設定',exact:true}).click();
+    await device.getByRole('button',{name:'初期設定に戻す',exact:true}).click();
+    assert((await device.locator('meta[name=viewport]').getAttribute('content')).includes('device-width'));
+    assert(await device.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await phone.close();
     const failed = await browser.newPage();
     await failed.route('**/api/venues*',route=>route.abort());
     await failed.goto(base+'/venues?'+new URLSearchParams({sport:'サッカー・フットサル'}));
@@ -100,6 +224,6 @@ const results = [];
     assert(await failed.locator('.venue-court-card').count()>=15);
     await failed.close();
     fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(results,null,2));
-    console.log(`PASS: ${results.length} sport/viewport combinations, 16 fee/unit/source/overflow checks, filters, sport switch, no-JS, offline fallback`);
+    console.log(`PASS: ${results.length} sport/viewport combinations, 16 fee checks, cascading area/municipality, booking/registration/type/hours/price filters, URL reload, sorting, saved settings, forced mobile/desktop, 5 settings widths, no-JS, offline fallback`);
   } finally {await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>{if(server)server.kill();});

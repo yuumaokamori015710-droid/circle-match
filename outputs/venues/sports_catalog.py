@@ -6,6 +6,7 @@ from pathlib import Path
 import unicodedata
 
 from .tennis_catalog import CATALOG_PATH as TENNIS_PATH, validate_catalog
+from .search_facets import enrich, within_hours
 
 CATALOG_PATH = Path(__file__).resolve().parent / 'catalogs' / 'tokyo_sports.json'
 EXPANSION_PATH = CATALOG_PATH.with_name('tokyo_expansion.json')
@@ -59,7 +60,7 @@ def _load(tennis_modified, sports_modified, expansion_modified):
     rows = extra + expansion + tennis
     if len({r['id'] for r in rows}) != len(rows):
         raise ValueError('Duplicate venue id across catalogs')
-    return rows
+    return [enrich(row) for row in rows]
 
 
 def get_catalog(params=None):
@@ -70,6 +71,9 @@ def get_catalog(params=None):
     return {'courts': scoped, 'meta': {
         'total': len(scoped), 'checked_at': max((row['checked_at'] for row in scoped), default=''),
         'municipalities': sorted({row['municipality'] for row in scoped}),
+        'municipalities_by_area': {area: sorted({row['municipality'] for row in scoped if row['area'] == area})
+                                   for area in ('23区', '多摩', '島しょ')},
+        'hours_verified': sum(bool(row['opening_windows']) for row in scoped),
         'sports': dict(counts), 'sport': sport, 'prefecture': '東京都',
         'coverage_note': '東京都内の公式情報を確認した施設を掲載しています。全施設の網羅・空き状況のリアルタイム照会には対応していません。予約は施設の公式サイト・窓口で行ってください。',
     }}
@@ -82,7 +86,7 @@ def filter_catalog(rows, params):
     normalize = lambda text: unicodedata.normalize('NFKC', str(text or '')).lower().strip()
     terms = normalize(value('q')).split()
     try:
-        maximum = float(value('price_max')) if value('price_max') else None
+        maximum = float(normalize(value('price_max')).replace(',', '')) if value('price_max') else None
         if maximum is not None and (maximum < 0 or not maximum < float('inf')):
             maximum = None
     except ValueError:
@@ -92,6 +96,16 @@ def filter_catalog(rows, params):
         if row['availability_status'] == 'SUSPENDED' and value('show_suspended') not in {'1', 'true', 'on'}:
             continue
         if any(value(key) and row[key] != value(key) for key in ('municipality', 'area', 'operator_type', 'facility_kind')):
+            continue
+        if value('venue_type') and value('venue_type') not in row.get('venue_types', []):
+            continue
+        channel = value('booking_channel')
+        if channel and (bool(row.get('booking_channels')) if channel == 'unknown' else channel not in row.get('booking_channels', [])):
+            continue
+        registration = value('registration')
+        if registration and {'required': True, 'not_required': False, 'unknown': None}.get(registration) is not row.get('registration_required'):
+            continue
+        if not within_hours(row, value('open_from'), value('open_until')):
             continue
         if any(value(key) in {'1', 'true', 'on'} and row[key] is not True for key in ('indoor', 'night_lighting')):
             continue

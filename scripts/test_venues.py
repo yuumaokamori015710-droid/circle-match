@@ -456,6 +456,95 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertEqual(urls.count('https://circle-match.jp/venues'), 1)
         self.assertNotIn('https://circle-match.jp/?tab=venues', urls)
 
+    def test_area_get_form_keeps_area_and_scopes_municipalities(self):
+        for area, expected, excluded in [('多摩', '八王子市', '新宿区'), ('23区', '新宿区', '八王子市')]:
+            status, body, _ = self.request('/venues?' + urlencode({'area': area}))
+            self.assertEqual(status, 200)
+            page = body.decode()
+            options = page.split('id="venue-municipality-filter">')[1].split('</select>')[0]
+            self.assertIn(expected, options)
+            self.assertNotIn(excluded, options)
+            self.assertLess(page.index('id="venue-area-filter"'), page.index('id="venue-municipality-filter"'))
+            self.assertIn('class="venue-court-card"', page)
+
+    def test_sort_is_associated_with_form_but_outside_filter_panel(self):
+        page = self.request('/venues?v_sort=price')[1].decode()
+        self.assertNotIn('name="sort"', page.split('</form>')[0])
+        self.assertIn('id="venue-sort" name="sort" form="venue-court-filters"', page)
+        self.assertIn('value="price" selected', page)
+        self.assertIn('name="price_max" type="text" inputmode="numeric"', page)
+        self.assertNotIn('step="1"', page)
+
+    def test_booking_and_registration_filters_do_not_treat_unknown_as_no_registration(self):
+        module = importlib.import_module(self.app.venues.get_venue_catalog.__module__)
+        rows = module.get_catalog()['courts']
+        for channel in ('web', 'phone', 'counter'):
+            matches = module.filter_catalog(rows, {'booking_channel': channel})
+            self.assertGreater(len(matches), 0)
+            self.assertTrue(all(channel in r['booking_channels'] for r in matches))
+        unknown = module.filter_catalog(rows, {'registration': 'unknown'})
+        required = module.filter_catalog(rows, {'registration': 'required'})
+        self.assertGreater(len(unknown), 0)
+        self.assertGreater(len(required), 0)
+        self.assertTrue(all(r['registration_required'] is None for r in unknown))
+        self.assertTrue(all(r['registration_required'] is True for r in required))
+        not_required = module.filter_catalog(rows, {'registration': 'not_required'})
+        self.assertTrue(all(r['registration_required'] is False for r in not_required))
+        facets = importlib.import_module(module.enrich.__module__)
+        base = {**rows[0], 'booking_method': '窓口申請（予約システムでは空き状況確認のみ）', 'booking_note': ''}
+        self.assertEqual(facets.enrich(base)['booking_channels'], ['counter'])
+        base.update(booking_method='電話予約・登録不要')
+        self.assertIs(facets.enrich(base)['registration_required'], False)
+
+    def test_hours_filters_only_match_confirmed_windows_and_boundaries(self):
+        module = importlib.import_module(self.app.venues.get_venue_catalog.__module__)
+        rows = module.get_catalog()['courts']
+        matches = module.filter_catalog(rows, {'open_from': '20:00', 'open_until': '21:00'})
+        self.assertEqual(len(matches), 12)
+        self.assertTrue(all(r['opening_checked_at'] and r['official_url'] for r in matches))
+        late = module.filter_catalog(rows, {'open_from': '22:00', 'open_until': '23:00'})
+        self.assertEqual({r['id'] for r in late}, {'tokyo-jelly-ikebukuro', 'tokyo-jelly-shibuya', 'tokyo-sports-011'})
+        self.assertEqual(module.filter_catalog(rows, {'open_from': '23:00', 'open_until': '01:00'}), [])
+        self.assertEqual(module.filter_catalog(rows, {'open_from': '21:00', 'open_until': '21:00'}), [])
+        self.assertEqual(module.filter_catalog(rows, {'open_from': '25:00'}), module.filter_catalog(rows, {}))
+        page = self.request('/venues?open_from=20%3A00&open_until=21%3A00')[1].decode()
+        self.assertEqual(page.count('class="venue-court-card"'), 12)
+        self.assertIn('伊興地域学習センター', page)
+        self.assertIn('通常利用時間', page)
+
+    def test_facility_types_are_independent_of_operator(self):
+        module = importlib.import_module(self.app.venues.get_venue_catalog.__module__)
+        rows = module.get_catalog()['courts']
+        gyms = module.filter_catalog(rows, {'venue_type': 'gym'})
+        self.assertGreater(len(gyms), 100)
+        self.assertTrue(all('gym' in r['venue_types'] for r in gyms))
+        public = module.filter_catalog(rows, {'venue_type': 'gym', 'operator_type': 'PUBLIC'})
+        self.assertTrue(all(r['operator_type'] == 'PUBLIC' for r in public))
+        matches = module.filter_catalog(rows, {'price_max': '１,３００'})
+        self.assertTrue(matches)
+        self.assertTrue(all(r['price_per_hour'] is not None and r['price_per_hour'] <= 1300 for r in matches))
+
+    def test_settings_page_assets_and_navigation_are_public_and_safe(self):
+        with patch.object(self.app, 'connect', side_effect=AssertionError('Preferences must not open SQLite')):
+            for path in ('/settings', *self.app.settings_ui.ASSET_PATHS):
+                status, body, headers = self.request(path)
+                self.assertEqual(status, 200)
+                self.assertTrue(body)
+                self.assertNotIn('Set-Cookie', headers)
+                self.assertEqual(self.request(path, method='POST')[0], 405)
+            page = self.request('/settings?return_to=https://evil.example')[1].decode()
+            self.assertIn('class="cm-settings-back" href="/"', page)
+            self.assertIn('スマホビュー', page)
+            self.assertIn('PCビュー', page)
+            self.assertIn('前回の会場検索条件を引き継ぐ', page)
+            self.assertTrue(PublicPage(page).meta['robots'].startswith('noindex'))
+            self.assertNotIn('https://evil.example', page)
+            header = self.request('/venues')[1].decode().split('</header>')[0]
+            self.assertIn('class="cm-settings"', header)
+            self.assertLess(header.index('id="notificationBell"'), header.index('class="cm-settings"'))
+            self.assertIn('/assets/settings/preferences.js?v=', header)
+            self.assertEqual(self.request('/assets/settings/../circlematch_db_app.py')[0], 404)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

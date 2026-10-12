@@ -12,9 +12,11 @@
     <div class="venue-panel-heading"><h2 id="venue-filter-heading">条件から探す</h2><button id="venue-reset-filters" type="button" class="venue-text-button">条件をリセット</button></div>
     <form id="venue-court-filters" role="search" action="/venues" method="get">__VENUE_FILTERS__</form>
     <p id="venue-price-filter-note" class="venue-filter-note">料金比較はコート1面・1時間に換算できる施設のみです。料金上限を指定すると、料金未確認・人数単位・会議室単位などの施設は表示しません。</p>
+    <p class="venue-filter-note">利用時間は曜日共通の確認済み時間帯で検索します（この競技で<span id="venue-hours-count">__VENUE_HOURS_COUNT__</span>施設）。時刻を指定すると未確認の施設は除外します。休館日・予約枠・空き状況は公式案内でご確認ください。</p>
+    <p id="venue-filter-error" class="venue-filter-error" role="alert" hidden></p>
   </section>
   <section id="venue-court-results" aria-labelledby="venue-result-heading" tabindex="-1">
-    <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite">__VENUE_COUNT__</span></h2><span id="venue-visible-count" class="venue-visible-count">__VENUE_VISIBLE__</span></div>
+    <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite">__VENUE_COUNT__</span></h2><div class="venue-results-controls"><span id="venue-visible-count" class="venue-visible-count">__VENUE_VISIBLE__</span><label class="venue-sort"><span>並び順</span><select id="venue-sort" name="sort" form="venue-court-filters"><option value="name" __VENUE_SORT_NAME__>施設名の順</option><option value="price" __VENUE_SORT_PRICE__>コート1面1時間の安い順</option></select></label></div></div>
     <p class="venue-results-note">会場確保後に「この会場で募集を作る」から、会場名と競技を入力済みの募集を作成できます。</p>
     <div id="venue-loading-state" class="venue-message-panel" role="status" hidden><span class="venue-spinner" aria-hidden="true"></span><p>施設一覧を更新しています…</p></div>
     <div id="venue-error-state" class="venue-message-panel" role="alert" hidden><h3>施設一覧を更新できませんでした</h3><p>表示済みの施設は確認できます。通信状況を確認して、もう一度お試しください。</p><button id="venue-retry-load" type="button" class="venue-primary-button">もう一度読み込む</button></div>

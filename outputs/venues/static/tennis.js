@@ -8,8 +8,8 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const PAGE_SIZE = 50;
   const browser = typeof window === "undefined" ? null : window;
-  const URL_FILTER_NAMES = ["q","municipality","area","operator_type","facility_kind","price_max","sort","night_lighting","indoor","show_suspended"];
-  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],sort:["name","price"]};
+  const URL_FILTER_NAMES = ["q","municipality","area","operator_type","facility_kind","venue_type","booking_channel","registration","open_from","open_until","price_max","sort","night_lighting","indoor","show_suspended"];
+  const SELECT_VALUES = {area:["","23区","多摩","島しょ"],operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],sort:["name","price"]};
   const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
   let loadingRequest = null;
   let searchTimer;
@@ -30,6 +30,15 @@
   }
   const normalize = value => String(value ?? "").normalize("NFKC").toLocaleLowerCase("ja").trim();
   const yen = value => `¥${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}`;
+  const minutes = value => /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value || "") ? Number(value.slice(0,2))*60+Number(value.slice(3)) : null;
+  function withinHours(court, from, until) {
+    const start=minutes(from), end=minutes(until);
+    if(start===null && end===null) return true;
+    return list(court.opening_windows).some(([opening,closing])=>{
+      if(start!==null && end!==null) {const finish=end+(end<start?1440:0);return opening<=start && start<finish && finish<=closing;}
+      return start!==null ? opening<=start && start<closing : opening<end && end<=closing;
+    });
+  }
   function priceLabel(court) {
     const minimum = numberOrNull(court.price_from), maximum = numberOrNull(court.price_to);
     if (minimum === null) return '<span class="venue-unconfirmed">料金は要確認</span>';
@@ -58,6 +67,10 @@
         (!filters.area || court.area === filters.area) &&
         (!filters.operator_type || court.operator_type === filters.operator_type) &&
         (!filters.facility_kind || (court.facility_kind || "COURT") === filters.facility_kind) &&
+        (!filters.venue_type || list(court.venue_types).includes(filters.venue_type)) &&
+        (!filters.booking_channel || (filters.booking_channel === "unknown" ? !list(court.booking_channels).length : list(court.booking_channels).includes(filters.booking_channel))) &&
+        (!filters.registration || (court.registration_required ?? null) === {required:true,not_required:false,unknown:null}[filters.registration]) &&
+        withinHours(court,filters.open_from,filters.open_until) &&
         (maxPrice === null || price !== null && price <= maxPrice) &&
         (!filters.night_lighting || court.night_lighting === true) &&
         (!filters.indoor || court.indoor === true);
@@ -77,7 +90,9 @@
   function courtCard(court, index) {
     const suspended = court.availability_status === "SUSPENDED";
     const hourlyPrice = numberOrNull(court.price_per_hour), courtCount = numberOrNull(court.courts_count);
-    const operatorType = court.facility_kind === "SCHOOL" ? "学校開放" : court.operator_type === "PUBLIC" ? "公営" : court.operator_type === "PRIVATE" ? "民営" : "運営区分は要確認";
+    const operatorType = court.operator_type === "PUBLIC" ? "公営" : court.operator_type === "PRIVATE" ? "民営" : "運営区分は要確認";
+    const registration = court.registration_required === true ? "利用者登録が必要" : court.registration_required === false ? "利用者登録は不要" : "利用者登録の要否は未確認";
+    const hours = court.opening_hours ? `${esc(court.opening_hours)} ${esc(court.opening_note)} ${externalLink(court.official_url,"利用時間の公式案内")}` : "利用時間は未確認";
     const sources = list(court.sources).map(source => externalLink(source.url,source.title || "公式情報")).filter(Boolean);
     const feeSource = list(court.sources).find(source => String(source.title || "").includes("公式料金表"));
     const feeLink = feeSource && numberOrNull(court.price_from) !== null ? externalLink(feeSource.url,"公式料金表","venue-fee-link") : "";
@@ -91,38 +106,52 @@
     return `<article class="venue-court-card" aria-labelledby="venue-court-title-${index}">
       <div class="venue-court-main"><div class="venue-court-location"><span class="venue-operator-badge ${court.operator_type === "PRIVATE" ? "venue-private" : ""}">${esc(operatorType)}</span>${suspended ? '<span class="venue-suspended-badge">休止中</span>' : ""}<span>${esc([court.municipality,court.area].filter(Boolean).join(" · "))}</span></div><h3 id="venue-court-title-${index}">${esc(court.name || "施設名は要確認")}</h3>${suspended ? `<p class="venue-availability-note">${esc(court.availability_note || "現在は休止中です。営業再開の案内は公式サイトでご確認ください。")}</p>` : ""}<p class="venue-court-address">${court.address ? externalLink(mapSearchUrl(court),court.address,"venue-map-link") : "住所は要確認"}</p><ul class="venue-court-features">${features.map(feature => `<li>${esc(feature)}</li>`).join("")}</ul></div>
       <div class="venue-court-price"><p class="venue-column-label">掲載の参考料金</p><p class="venue-original-price">${priceLabel(court)}</p><p class="venue-price-unit">${esc(court.price_unit || "料金の単位は要確認")}</p>${feeLink}${court.price_note ? `<p class="venue-court-note">${esc(court.price_note)}</p>` : ""}${court.facility_kind === "VENUE" ? "" : `<p class="venue-hourly-price">${hourlyPrice === null ? "1面1時間換算: 要確認" : `比較用: ${yen(hourlyPrice)} / 1面・1時間`}</p>`}</div>
-      <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">${esc(court.booking_method || "公式案内で確認してください")}</p>${court.booking_note ? `<p class="venue-court-note">${esc(court.booking_note)}</p>` : ""}<div class="venue-court-links">${bookingLink || '<span class="venue-link-unconfirmed">予約ページは要確認</span>'}${suspended || safeUrl(court.booking_url) === safeUrl(court.official_url) ? "" : officialLink}${createLink}</div></div>
+      <div class="venue-court-booking"><p class="venue-column-label">予約方法</p><p class="venue-booking-method">${esc(court.booking_method || "公式案内で確認してください")}</p><p class="venue-registration">${registration}</p>${court.booking_note ? `<p class="venue-court-note">${esc(court.booking_note)}</p>` : ""}<div class="venue-court-links">${bookingLink || '<span class="venue-link-unconfirmed">予約ページは要確認</span>'}${suspended || safeUrl(court.booking_url) === safeUrl(court.official_url) ? "" : officialLink}${createLink}</div></div>
+      <p class="venue-opening-hours"><strong>通常利用時間</strong> ${hours}</p>
       <details class="venue-court-details"><summary>施設情報・根拠を確認</summary><div class="venue-detail-content"><dl><dt>運営</dt><dd>${esc(court.operator || "要確認")}</dd><dt>情報確認日</dt><dd>${esc(checkedDate(court.checked_at))}</dd></dl><div><p class="venue-column-label">根拠リンク</p>${sources.length ? `<ul class="venue-source-list">${sources.map(source => `<li>${source}</li>`).join("")}</ul>` : officialLink || '<p class="venue-court-note">根拠リンクは要確認です。</p>'}<p class="venue-source-note">料金・登録資格・抽選や先着の条件は変更されることがあります。利用前に公式案内をご確認ください。</p></div></div></details>
     </article>`;
   }
   function readFilters() {
     const fields = $("#venue-court-filters").elements;
-    const rawPrice = fields.price_max.value;
-    return {q:fields.q.value,municipality:fields.municipality.value,area:fields.area.value,operator_type:fields.operator_type.value,facility_kind:fields.facility_kind.value,price_max:rawPrice === "" ? null : numberOrNull(Number(rawPrice)),sort:fields.sort.value,night_lighting:fields.night_lighting.checked,indoor:fields.indoor.checked,show_suspended:fields.show_suspended.checked};
+    const rawPrice = normalize(fields.price_max.value).replaceAll(",", "");
+    const filters=Object.fromEntries(URL_FILTER_NAMES.map(name=>[name,fields[name].value]));
+    filters.price_max=rawPrice === "" ? null : numberOrNull(Number(rawPrice));
+    for(const name of ["night_lighting","indoor","show_suspended"]) filters[name]=fields[name].checked;
+    return filters;
   }
   function currentUrl() {
     try { return browser ? new URL(browser.location.href) : null; }
     catch { return null; }
   }
-  function restoreUrlFilters() {
+  function updateMunicipalities(preferred) {
+    const fields=$("#venue-court-filters").elements, area=fields.area.value;
+    const current=preferred ?? fields.municipality.value;
+    const municipalities=[...new Set(state.courts.filter(court=>!area || court.area===area).map(court=>court.municipality))].sort((a,b)=>a.localeCompare(b,"ja"));
+    fields.municipality.innerHTML='<option value="">すべての自治体</option>'+municipalities.map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join("");
+    fields.municipality.value=municipalities.includes(current)?current:"";
+  }
+  function restoreUrlFilters(usePreferences = false) {
     const url = currentUrl();
     if (!url) return;
     const fields = $("#venue-court-filters").elements;
     $("#venue-court-filters").reset();
-    const read = name => url.searchParams.get(`v_${name}`) ?? url.searchParams.get(name);
+    const preferences=browser.CircleMatchSettings?.get() || {};
+    const explicit=URL_FILTER_NAMES.some(name=>url.searchParams.has(`v_${name}`)||url.searchParams.has(name));
+    const saved=usePreferences && !explicit && preferences.rememberVenueSearch ? browser.CircleMatchSettings?.getVenue(state.meta.sport || "all") || {} : {};
+    const read = name => url.searchParams.get(`v_${name}`) ?? url.searchParams.get(name) ?? (usePreferences && !explicit ? saved[name] ?? (name==="area"?preferences.venueArea:name==="sort"?preferences.venueSort:null) : null);
     fields.q.value = (read("q") || "").slice(0,200);
     for (const [name,allowed] of Object.entries(SELECT_VALUES)) {
       const value = read(name) || (name === "sort" ? "name" : "");
       fields[name].value = allowed.includes(value) ? value : name === "sort" ? "name" : "";
     }
     const municipality = read("municipality") || "";
-    const municipalities = [...list(state.meta.municipalities),...state.courts.map(court => court.municipality)];
-    fields.municipality.value = municipalities.includes(municipality) ? municipality : "";
+    updateMunicipalities(municipality);
     const rawPrice = read("price_max");
-    const price = rawPrice && rawPrice.trim() ? numberOrNull(Number(rawPrice)) : null;
+    const price = rawPrice !== null && String(rawPrice).trim() ? numberOrNull(Number(normalize(rawPrice).replaceAll(",", ""))) : null;
     fields.price_max.value = price === null ? "" : String(price);
+    for(const name of ["open_from","open_until"]) fields[name].value=minutes(read(name))===null?"":read(name);
     for (const name of ["night_lighting","indoor","show_suspended"]) {
-      fields[name].checked = ["1","true","on"].includes(read(name));
+      fields[name].checked = [true,"1","true","on"].includes(read(name));
     }
   }
   function persistUrlFilters(filters) {
@@ -156,10 +185,19 @@
   function applyFilters(updateUrl = true) {
     if (!state.loaded) return;
     const filters = readFilters();
+    const invalidPrice=fieldsPriceInvalid();
+    $("#venue-filter-error").textContent=invalidPrice?"料金上限は0以上の金額で入力してください。":"";
+    $("#venue-filter-error").hidden=!invalidPrice;
+    if(invalidPrice) return;
     if (updateUrl) persistUrlFilters(filters);
+    if(updateUrl) browser.CircleMatchSettings?.saveVenue(state.meta.sport || "all",filters);
     state.matches = sortCourts(filterCourts(state.courts,filters),filters.sort);
     state.visibleCount = PAGE_SIZE;
     renderResults();
+  }
+  function fieldsPriceInvalid() {
+    const raw=normalize($("#venue-court-filters").elements.price_max.value).replaceAll(",", "");
+    return raw!=="" && (!/^\d+(?:\.\d+)?$/.test(raw) || numberOrNull(Number(raw))===null);
   }
   function resetFilters() {
     clearTimeout(searchTimer);
@@ -168,12 +206,14 @@
       if (["night_lighting","indoor","show_suspended"].includes(name)) fields[name].checked = false;
       else fields[name].value = name === "sort" ? "name" : "";
     }
+    updateMunicipalities("");
     applyFilters();
   }
   function renderMetadata() {
     $("#venue-catalog-total").textContent = `掲載 ${(numberOrNull(state.meta.total) ?? state.courts.length).toLocaleString("ja-JP")} 施設`;
     $("#venue-catalog-checked").textContent = `情報確認 ${checkedDate(state.meta.checked_at)}`;
     $("#venue-coverage-note").textContent = state.meta.coverage_note || "掲載施設は都内の全施設を網羅したものではありません。利用前に公式サイトで最新情報をご確認ください。";
+    $("#venue-hours-count").textContent=state.meta.hours_verified || 0;
     const municipalities = [...new Set([...list(state.meta.municipalities).filter(value => typeof value === "string"),...state.courts.map(court => court.municipality)].filter(value => typeof value === "string" && value.trim()))].sort((a,b) => a.localeCompare(b,"ja"));
     $("#venue-catalog-total").textContent += ` · ${municipalities.length} 自治体`;
     const current = $("#venue-municipality-filter").value;
@@ -187,6 +227,7 @@
     $("#venue-empty-state").hidden = true;
     $("#venue-retry-load").disabled = true;
     $("#venue-filter-fields").disabled = true;
+    $("#venue-sort").disabled=true;
     loadingRequest = (async () => {
       try {
         const response = await fetch(directory.dataset.catalogUrl,{credentials:"omit",headers:{Accept:"application/json"}});
@@ -197,14 +238,18 @@
         state.meta = data.meta && typeof data.meta === "object" ? data.meta : {};
         state.loaded = true;
         renderMetadata();
-        restoreUrlFilters();
+        restoreUrlFilters(true);
         $("#venue-filter-fields").disabled = false;
+        $("#venue-sort").disabled=false;
         applyFilters(false);
+        persistUrlFilters(readFilters());
       } catch {
         $("#venue-error-state").hidden = false;
         // Keep server-rendered records and counts readable on network failure.
         $("#venue-empty-state").hidden = $("#venue-court-list").children.length > 0;
       } finally {
+        $("#venue-filter-fields").disabled = false;
+        $("#venue-sort").disabled=false;
         $("#venue-loading-state").hidden = true;
         $("#venue-retry-load").disabled = false;
         loadingRequest = null;
@@ -213,14 +258,16 @@
     return loadingRequest;
   }
 
-  $("#venue-court-filters").addEventListener("submit",event => {event.preventDefault();clearTimeout(searchTimer);applyFilters();});
+  $("#venue-court-filters").addEventListener("submit",event => {if(!state.loaded)return;event.preventDefault();clearTimeout(searchTimer);applyFilters();});
   $("#venue-court-filters").addEventListener("input",event => {
     clearTimeout(searchTimer);
+    if(event.target.name === "area") updateMunicipalities();
     if (state.loaded) persistUrlFilters(readFilters());
     if (event.target.name === "q") searchTimer = setTimeout(applyFilters,150);
     else applyFilters();
   });
-  $("#venue-court-filters").addEventListener("change",() => {clearTimeout(searchTimer);applyFilters();});
+  $("#venue-court-filters").addEventListener("change",event => {if(event.target.name === "area")updateMunicipalities();clearTimeout(searchTimer);applyFilters();});
+  $("#venue-sort").addEventListener("change",()=>applyFilters());
   $("#venue-reset-filters").addEventListener("click",resetFilters);
   $("#venue-empty-reset").addEventListener("click",resetFilters);
   $("#venue-retry-load").addEventListener("click",loadCourts);
