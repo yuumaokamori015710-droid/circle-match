@@ -36,6 +36,17 @@ const query=name=>'/venues?'+new URLSearchParams({v_q:name});
       assert(metrics.length>10);
       assert(Math.max(...metrics.map(m=>m.right))-Math.min(...metrics.map(m=>m.right))<=1,'Amounts are not vertically aligned');
       assert(metrics.every(m=>m.font.includes('tabular-nums')&&m.fits));
+      assert.equal(await page.locator('.venue-tariff-more').count(),0);
+      const linksAligned=await page.locator('.venue-fee-link').evaluateAll(links=>links.every(link=>{
+        const price=link.closest('td').querySelector('.venue-price-amount');
+        return price&&Math.abs(link.getBoundingClientRect().right-price.getBoundingClientRect().right)<=1;
+      }));
+      assert(linksAligned,'Official tariff links are not right-aligned with amounts');
+      if([390,1440].includes(width)){
+        await page.locator('.venue-court-card').first().scrollIntoViewIfNeeded();
+        await page.evaluate(()=>scrollBy(0,-85));
+        await page.screenshot({path:path.join(out,`list-links-${width}.png`)});
+      }
       for(const id of ids){
         const row=catalog.courts.find(r=>r.id===id);
         assert(row);
@@ -44,9 +55,13 @@ const query=name=>'/venues?'+new URLSearchParams({v_q:name});
         assert.equal(await card.count(),1);
         assert.deepEqual(await card.locator('.venue-price-amount').allTextContents(),row.fee_ranges.slice(0,2).map(label));
         assert.deepEqual(await card.locator('.venue-price-unit').allTextContents(),row.fee_ranges.slice(0,2).map(r=>r.unit));
+        assert.equal(await card.locator('.venue-tariff-more').count(),0);
+        assert.equal(await card.locator('.venue-court-price a:not(.venue-fee-link)').count(),0);
         if(!row.fee_ranges.length) assert.equal(await card.locator('.venue-unconfirmed').textContent(),'金額未取得');
         if(row.fee_options?.length){
-          await card.locator('.venue-tariff-more').click();
+          assert.equal(await card.locator('.venue-fee-link').getAttribute('href'),row.fee_options[0].source_url);
+          assert.equal(await card.locator('.venue-fee-link').getAttribute('target'),'_blank');
+          await card.locator('xpath=following-sibling::tr[1]').locator('summary').click();
           const amounts=card.locator('xpath=following-sibling::tr[1]').locator('.venue-tariff-amount');
           assert.equal(await amounts.count(),row.fee_options.length);
           const edges=await amounts.evaluateAll(cells=>cells.map(c=>c.getBoundingClientRect().right));
@@ -71,6 +86,8 @@ const query=name=>'/venues?'+new URLSearchParams({v_q:name});
       await page.goto(base+query(row.name));
       const card=page.locator('.venue-court-card').filter({has:page.getByRole('heading',{name:row.name,exact:true})});
       assert.deepEqual(await card.locator('.venue-price-amount').allTextContents(),row.fee_ranges.slice(0,2).map(label));
+      assert.equal(await card.locator('.venue-tariff-more').count(),0);
+      assert.equal(await card.locator('.venue-court-price a').count(),1);
     }
     await context.close();
     assert.deepEqual(errors,[]);

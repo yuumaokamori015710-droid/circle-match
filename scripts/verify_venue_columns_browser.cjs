@@ -10,7 +10,14 @@ fs.mkdirSync(out,{recursive:true});
 let server;
 const ready=page=>page.locator('#venue-loading-state[hidden]').waitFor({state:'attached'});
 const names=page=>page.locator('.venue-court-card h3').allTextContents();
-async function open(page,column){const menu=page.locator(`[data-venue-column="${column}"] .venue-column-menu`);await menu.locator('summary').click();await menu.locator('.venue-column-options').waitFor();return menu;}
+async function open(page,column,positioned=true){
+  const menu=page.locator(`[data-venue-column="${column}"] .venue-column-menu`);
+  await menu.locator('summary').click();
+  await menu.locator('.venue-column-options').waitFor();
+  // Native details queues its toggle event after becoming visible.
+  if(positioned) await page.waitForFunction(key=>document.querySelector(`[data-venue-column="${key}"] .venue-column-options`).style.position==='fixed',column);
+  return menu;
+}
 async function select(page,column,key,value){const menu=await open(page,column);await menu.locator(`[data-venue-control="${key}"][data-value="${value}"]`).click();}
 (async()=>{
   if(!process.env.VENUE_TEST_URL){
@@ -97,7 +104,7 @@ async function select(page,column,key,value){const menu=await open(page,column);
     const plain=await context.newPage();
     await plain.goto(base+'/venues?'+new URLSearchParams({sport:'サッカー・フットサル',v_name:'駒沢'}));
     assert((await names(plain)).some(name=>name.endsWith('第二球技場')));
-    const priceMenu=await open(plain,'price');
+    const priceMenu=await open(plain,'price',false);
     await priceMenu.locator('[data-venue-control="sort"][data-value="price_desc"]').click();
     assert(plain.url().includes('v_name=')&&plain.url().includes('v_sort=price_desc'));
     assert((await names(plain)).some(name=>name.endsWith('第二球技場')));

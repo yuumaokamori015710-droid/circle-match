@@ -44,6 +44,12 @@ class VenueFeeRangeTests(IsolatedAppHttpCase):
                     self.assertEqual(preview.select_one('.venue-price-amount').get_text(), f"{bounds['minimum']:,}円〜{bounds['maximum']:,}円")
                     self.assertEqual(preview.select_one('.venue-price-unit').get_text(), bounds['unit'])
                 self.assertNotIn('金額未取得', str(card))
+                self.assertIsNone(card.select_one('.venue-tariff-more'))
+                self.assertEqual(len(card.select('.venue-court-price a')), 1)
+                link = card.select_one('.venue-fee-link')
+                self.assertEqual(link['href'], row['fee_options'][0]['source_url'])
+                self.assertEqual(link['target'], '_blank')
+                self.assertNotRegex(card.get_text(), r'全\d+区分の料金')
 
     def test_followup_preserves_catalog_and_includes_source_for_every_amount(self):
         rows = {row['id']: row for row in json.loads(self.request('/api/venues')[1])['courts']}

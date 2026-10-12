@@ -62,8 +62,8 @@ async function zoom(page,name,stage) {
         const card = page.locator('.venue-court-card').filter({has:page.getByRole('heading',{name,exact:true})});
         if (row.fee_options?.length) {
           assert.equal(await card.locator('.venue-rate-preview').count(),Math.min(2,row.fee_ranges.length));
-          await card.locator('.venue-tariff-more').click();
           const detail=card.locator('xpath=following-sibling::tr[1]');
+          await detail.locator('summary').click();
           assert.equal(await detail.locator('.venue-tariff tbody tr').count(),row.fee_options.length);
           assert.equal(await detail.locator('details').getAttribute('open'),'');
           assert.equal(await card.locator('.venue-price-unit').first().innerText(),row.fee_options[0].unit);

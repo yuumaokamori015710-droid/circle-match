@@ -88,11 +88,10 @@ def _card(row, index, sport):
     rates = ''.join(f'<tr><th scope="row">{escape(p["label"])}</th><td class="venue-tariff-amount">{p["amount"]:,}円</td><td>{escape(p["unit"])}</td><td>{escape(p["conditions"])}</td></tr>' for p in plans)
     tariff = f'<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>{rates}</tbody></table>' if rates else ''
     channels = '・'.join(dict(CHANNELS).get(c, c) for c in row.get('booking_channels', [])) or '公式案内'
-    more = f'<a class="venue-tariff-more" href="#venue-details-{index}">全{len(plans)}区分の料金</a>' if plans else ''
     return f'''<tr class="venue-court-card" aria-labelledby="venue-court-title-{index}">
 <th scope="row" class="venue-court-main"><h3 id="venue-court-title-{index}">{e('name')}</h3>{warning}<p class="venue-court-features">{badges}</p></th>
 <td class="venue-location-cell" data-label="所在地">{e('municipality')}</td>
-<td class="venue-court-price" data-label="料金"><div class="venue-original-price">{price}</div>{more}{fee_link}</td>
+<td class="venue-court-price" data-label="料金"><div class="venue-original-price">{price}</div>{fee_link}</td>
 <td class="venue-booking-cell" data-label="予約方法">{escape(channels)}</td><td class="venue-registration-cell" data-label="事前登録">{registration}</td>
 <td class="venue-action-cell"><div class="venue-court-links">{booking}{create}</div></td></tr>
 <tr class="venue-details-row"><td colspan="6"><details id="venue-details-{index}" class="venue-court-details"><summary>料金表・施設詳細</summary><div class="venue-detail-content"><div>{tariff}<p class="venue-court-note">{e('price_note')}</p><p class="venue-court-note">{escape(row.get('fee_note', ''))}</p><p class="venue-opening-hours"><strong>通常利用時間</strong> {hours} {hours_link}</p></div><div><dl><dt>住所</dt><dd>{e('address')}</dd><dt>予約方法</dt><dd>{e('booking_method')}</dd><dt>利用条件</dt><dd>{e('booking_note')}</dd><dt>施設</dt><dd>{e('facility_label')}</dd><dt>運営</dt><dd>{e('operator')}（{'公営' if row['operator_type']=='PUBLIC' else '民営'}）</dd><dt>確認日</dt><dd>{e('checked_at')}</dd></dl>{official}<ul class="venue-source-list">{sources}</ul></div></div></details></td></tr>'''

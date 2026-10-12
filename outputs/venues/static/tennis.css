@@ -120,13 +120,14 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-court-card>th,.venue-directory .venue-court-card>td{padding:9px 10px 2px;vertical-align:top;min-width:0;overflow-wrap:anywhere;font-weight:400;font-size:13px;line-height:1.45}
 .venue-directory .venue-court-card h3{font-size:14px;line-height:1.45;margin:0 0 3px;overflow-wrap:anywhere}
 .venue-directory .venue-court-features{font-size:11px;color:var(--muted);margin:0}
+.venue-directory .venue-court-price{text-align:right}
 .venue-directory .venue-original-price{font-size:16px;font-weight:700;line-height:1.45;margin:0 0 2px;text-align:right}
 .venue-directory .venue-rate-preview{display:block;min-width:0;font-size:11px;font-weight:400}
 .venue-directory .venue-rate-preview+.venue-rate-preview{margin-top:4px}
 .venue-directory .venue-price-amount{display:inline-block;white-space:nowrap;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums lining-nums}
 .venue-directory .venue-unconfirmed{font-size:14px;font-weight:500;color:var(--muted)}
 .venue-directory .venue-price-unit{font-size:11px;margin:0 0 3px;color:var(--muted);overflow-wrap:anywhere}
-.venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:28px;font-size:11px;margin-right:8px}
+.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:28px;font-size:11px}
 .venue-directory .venue-court-links{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px 8px}
 .venue-directory .venue-primary-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:6px;background:var(--green);color:white;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none}
 .venue-directory .venue-primary-link:hover{background:#0b5948;color:white}
@@ -171,7 +172,7 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-court-details>summary{min-height:44px;display:flex;align-items:center;gap:6px}
  .venue-directory .venue-court-details>summary:before{content:'▸'}
  .venue-directory .venue-court-details[open]>summary:before{content:'▾'}
- .venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{min-height:36px}
+ .venue-directory .venue-fee-link{min-height:36px}
  .venue-directory .venue-details-row,.venue-directory .venue-details-row>td{display:block}
  .venue-directory .venue-details-row>td{padding:0 12px}
  .venue-directory .venue-detail-content{grid-template-columns:1fr;gap:16px}
