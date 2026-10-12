@@ -23,7 +23,9 @@
     const viewport=document.querySelector('meta[name="viewport"]');
     if(viewport) {
       originalViewport ??= viewport.content;
-      viewport.content=mode==="desktop"?"width=1280":originalViewport;
+      const physicalWidth=window.visualViewport?visualViewport.width*visualViewport.scale:window.innerWidth;
+      const content=mode==="desktop"?`width=1280, initial-scale=${Math.min(1,Math.round(physicalWidth)/1280)}`:originalViewport;
+      if(viewport.content!==content)viewport.content=content;
     }
     if(mode==="auto" && lastMode==="auto")return;
     const logicalWidth=mode==="mobile"?390:1280;

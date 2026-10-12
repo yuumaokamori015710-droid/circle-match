@@ -38,5 +38,6 @@ Ikebukuro opens earlier on weekends; only the common range is used in filtering.
 - Auto/mobile/desktop display, default venue area/sort, and optional last-search persistence are local to this browser (`circlematch.preferences.v1`, `circlematch.venue-search.v1.*`). Nothing is written to accounts, cookies or the database.
 - Forced mobile uses a 390px presentation and browser-parsed media rules; desktop uses a 1280px viewport on phones. Other media features such as reduced motion remain intact. Auto restores the original rules and viewport.
 - Settings themselves always use auto display so the phone user can easily restore auto mode after choosing desktop.
+- Desktop mode sets an explicit initial scale to fit the phone display. Changing viewport width alone can leave Chrome at 1:1 scale and place right-side controls outside the visible viewport.
 - Explicit URL conditions override saved conditions. Applied defaults also enter the URL for sharing. Storage failures show an error rather than a false saved message. Reset clears only Circle Match preferences and saved venue conditions.
 - No dependencies, secrets, environment variables, paid plans or DB migrations are added. Rollback is redeployment of the previous application commit. Existing event and venue data are unaffected.
