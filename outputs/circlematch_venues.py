@@ -15,13 +15,13 @@ import logging
 
 if __package__:
     from .venues.tennis_catalog import get_catalog
-    from .venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS
+    from .venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS, SORTS
     from .venues.search_facets import VENUE_TYPES, CHANNELS
     from .venues.region_map import render as render_region_map
     from .venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
 else:
     from venues.tennis_catalog import get_catalog
-    from venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS
+    from venues.sports_catalog import get_catalog as get_venue_catalog, supports_catalog, filter_catalog, selected, SPORTS, SORTS
     from venues.search_facets import VENUE_TYPES, CHANNELS
     from venues.region_map import render as render_region_map
     from venues.geography import selection as selected_places, label as region_label, parents as place_parents, PREFECTURES
@@ -118,8 +118,46 @@ def _filters(params, catalog):
     toggles = ''.join(f'<label class="venue-checkbox-label"><input name="{key}" type="checkbox" value="1"' + (' checked' if value(key) in {'1', 'true', 'on'} else '') + f'><span>{label}</span></label>' for key, label in [('night_lighting', '夜間照明あり'), ('indoor', '屋内施設あり'), ('show_suspended', '休止中の施設も表示')])
     context = ''.join(f'<input type="hidden" name="{key}" value="{escape(selected(params, key), quote=True)}">' for key in ('sport', 'region', 'prefecture') if selected(params, key))
     context += f'<input type="hidden" name="facility_kind" value="{escape(value("facility_kind"), quote=True)}"><input type="hidden" name="map" value="{escape(value("map"), quote=True)}">'
+    context += f'<input type="hidden" name="price_status" value="{escape(value("price_status"), quote=True)}">'
     active = '<p class="venue-filter-note">以前のURLの追加条件を適用中です。「条件をリセット」で解除できます。</p>' if any(value(key) for key in ('venue_type', 'operator_type', 'facility_kind', 'open_from', 'open_until')) else ''
     return context + legacy + f'<fieldset id="venue-filter-fields"><legend class="venue-visually-hidden">会場の絞り込み条件</legend><div class="venue-filter-grid">{fields}</div><div class="venue-filter-footer"><details class="venue-extra-filters"><summary>追加条件</summary><div class="venue-extra-registration">{registration}</div><div class="venue-filter-options">{toggles}</div><p class="venue-filter-note">料金上限・安い順は、条件が一定のコート1面・1時間に換算できる施設が対象です。空き状況・最終料金は公式予約先で確認してください。</p></details><button class="venue-apply" type="submit">条件を適用</button></div><div class="venue-geography-state">{geography}</div><noscript><style>.venue-directory .venue-geography-state{{display:grid!important}}</style></noscript>{active}</fieldset>'
+
+
+def _column_headers(params):
+    def value(key):
+        return selected(params, 'v_' + key) if 'v_' + key in params else selected(params, key)
+    def option(key, choice, label):
+        query = {k: v for k, v in params.items() if k not in {key, 'v_' + key, 'v_page'}}
+        if key == 'places':
+            query = {k: v for k, v in query.items() if k not in {'area', 'v_area', 'municipality', 'v_municipality'}}
+        if choice:
+            query['v_' + key] = choice
+        href = '/venues?' + urlencode(query, doseq=True) + '#venue-court-results'
+        return (f'<a href="{escape(href, quote=True)}" data-venue-control="{key}" '
+                f'data-value="{escape(choice, quote=True)}">{escape(label)}</a>')
+    def sorts(ascending, descending):
+        labels = dict(SORTS)
+        return '<div class="venue-column-sorts">' + option('sort', ascending, labels[ascending]) + option('sort', descending, labels[descending]) + '</div>'
+    name = (f'<label>施設名<input name="name" type="search" form="venue-court-filters" maxlength="200" '
+            f'value="{escape(value("name")[:200], quote=True)}" placeholder="施設名で絞る"></label>'
+            '<button type="submit" form="venue-court-filters">反映する</button>' + option('name', '', '施設名の絞り込みを解除'))
+    location = '<a href="#venue-places-filter" data-venue-open-region>地図から地域を選ぶ</a>' + option('places', '', '地域の絞り込みを解除')
+    prices = ''.join(option('price_status', key, label) for key, label in [('', '料金の有無すべて'), ('available', '料金掲載あり'), ('missing', '金額未取得'), ('hourly', '1面1時間で比較できる施設')])
+    prices += option('sort', 'available', '料金掲載あり優先')
+    booking = ''.join(option('booking_channel', key, label) for key, label in [('', 'すべての予約方法'), *CHANNELS, ('unknown', '予約方法は未確認')])
+    registration = ''.join(option('registration', key, label) for key, label in [('', '登録条件すべて'), ('not_required', '登録不要'), ('required', '登録必要'), ('unknown', '要否は未確認')])
+    actions = option('show_suspended', '', '休止中の施設を除く') + option('show_suspended', '1', '休止中の施設も表示')
+    columns = [('施設名', 'name', 'name_desc', name), ('所在地', 'location', 'location_desc', location),
+               ('料金・適用区分', 'price', 'price_desc', prices), ('予約方法', 'booking', 'booking_desc', booking),
+               ('事前登録', 'registration', 'registration_desc', registration), ('予約・募集', 'checked_asc', 'checked', actions)]
+    result = []
+    for label, ascending, descending, filters in columns:
+        order = value('sort') or 'available'
+        aria = 'ascending' if order == ascending else 'descending' if order == descending else 'other' if label.startswith('料金') and order == 'available' else 'none'
+        result.append(f'<th scope="col" data-venue-column="{ascending}" aria-sort="{aria}"><details class="venue-column-menu">'
+                      f'<summary title="{label}の絞り込み・並べ替え"><span>{label}</span><span aria-hidden="true">&#9662;</span></summary>'
+                      f'<div class="venue-column-options"><strong>{label}</strong>{sorts(ascending, descending)}{filters}</div></details></th>')
+    return ''.join(result)
 
 
 def render_venue_body(params=None) -> str:
@@ -144,9 +182,10 @@ def render_venue_body(params=None) -> str:
             page = 1
         shown = matches[(page-1)*50:page*50]
         body = (VENUE_DIR / 'static' / 'tennis.html').read_text(encoding='utf-8')
+        order = selected(params, 'v_sort') or selected(params, 'sort') or 'available'
+        sort_options = ''.join(f'<option value="{key}"' + (' selected' if key == order else '') + f'>{escape(label)}</option>' for key, label in SORTS)
         values = {'TITLE': escape(title), 'FILTERS': _filters(params, catalog), 'REGION_MAP': render_region_map(params, catalog['courts']),
-                  'SORT_NAME': 'selected' if (selected(params, 'v_sort') or selected(params, 'sort')) != 'price' else '',
-                  'SORT_PRICE': 'selected' if (selected(params, 'v_sort') or selected(params, 'sort')) == 'price' else '',
+                  'SORT_OPTIONS': sort_options, 'COLUMN_HEADERS': _column_headers(params),
                   'HOURS_COUNT': str(catalog['meta']['hours_verified']),
                   'TOTAL': f"掲載 {catalog['meta']['total']:,} 施設", 'CHECKED': escape(catalog['meta']['checked_at']),
                   'COVERAGE': escape(catalog['meta']['coverage_note']), 'COUNT': f'{len(matches):,} 件',

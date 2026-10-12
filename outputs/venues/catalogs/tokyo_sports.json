@@ -1914,5 +1914,164 @@
         "url": "https://jellyjellycafe.com/reserved"
       }
     ]
+  },
+  {
+    "id": "tokyo-komazawa-ballgame1",
+    "name": "駒沢オリンピック公園総合運動場 第一球技場",
+    "operator": "東京都スポーツ文化事業団・オーエンス・東京都レクリエーション協会",
+    "municipality": "世田谷区",
+    "area": "23区",
+    "address": "東京都世田谷区駒沢公園1-1",
+    "operator_type": "PUBLIC",
+    "sports": [
+      "サッカー・フットサル"
+    ],
+    "facility_label": "第一球技場",
+    "booking_method": "Web予約・窓口申込",
+    "booking_note": "初回は窓口で事前に団体登録が必要です。先着順。全面は原則6か月前の月の10日から、半面は2か月前の月の初日から受付。Webは利用10日前まで、窓口は前日まで。",
+    "official_url": "https://www.tef.or.jp/kopgp/ballgame1/index.html",
+    "booking_url": "https://sports.tef.or.jp/",
+    "price_from": 29100,
+    "price_unit": "全面4時間（午前8:30～12:30）",
+    "price_note": "アマチュアスポーツ・観客入場料なし・スタンド未使用。サッカーは非公式規格。 税込。スタンド使用・有料入場・附属設備は別料金。",
+    "checked_at": "2026-10-12",
+    "courts_count": 1,
+    "surface": "人工芝",
+    "indoor": false,
+    "night_lighting": false,
+    "facility_kind": "COURT",
+    "availability_status": "SUSPENDED",
+    "availability_note": "人工芝等の改修工事のため2026年9月1日～2027年3月31日は休館予定。再開状況は公式案内で確認してください。",
+    "sources": [
+      {
+        "title": "公式施設案内・利用料金表",
+        "url": "https://www.tef.or.jp/kopgp/ballgame1/index.html"
+      },
+      {
+        "title": "公式の申込受付・団体登録・予約方法",
+        "url": "https://www.tef.or.jp/kopgp/general/"
+      },
+      {
+        "title": "第一球技場の工事休館期間",
+        "url": "https://www.tef.or.jp/news/post-746.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-komazawa-ballgame2",
+    "name": "駒沢オリンピック公園総合運動場 第二球技場",
+    "operator": "東京都スポーツ文化事業団・オーエンス・東京都レクリエーション協会",
+    "municipality": "世田谷区",
+    "area": "23区",
+    "address": "東京都世田谷区駒沢公園1-1",
+    "operator_type": "PUBLIC",
+    "sports": [
+      "サッカー・フットサル"
+    ],
+    "facility_label": "第二球技場",
+    "booking_method": "Web予約・窓口申込",
+    "booking_note": "初回は窓口で事前に団体登録が必要です。先着順。全面は原則6か月前の月の10日から、半面は2か月前の月の初日から受付。Webは利用10日前まで、窓口は前日まで。",
+    "official_url": "https://www.tef.or.jp/kopgp/ballgame2/",
+    "booking_url": "https://sports.tef.or.jp/",
+    "price_from": 19800,
+    "price_unit": "全面4時間（午前8:30～12:30）",
+    "price_note": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。 税込。スタンド使用・有料入場・附属設備は別料金。",
+    "checked_at": "2026-10-12",
+    "courts_count": 1,
+    "surface": "人工芝",
+    "indoor": false,
+    "night_lighting": true,
+    "facility_kind": "COURT",
+    "availability_status": "OPEN",
+    "availability_note": "",
+    "sources": [
+      {
+        "title": "公式施設案内・利用料金表",
+        "url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "title": "公式の申込受付・団体登録・予約方法",
+        "url": "https://www.tef.or.jp/kopgp/general/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-komazawa-substadium",
+    "name": "駒沢オリンピック公園総合運動場 補助競技場",
+    "operator": "東京都スポーツ文化事業団・オーエンス・東京都レクリエーション協会",
+    "municipality": "世田谷区",
+    "area": "23区",
+    "address": "東京都世田谷区駒沢公園1-1",
+    "operator_type": "PUBLIC",
+    "sports": [
+      "サッカー・フットサル",
+      "ラグビー",
+      "ランニング"
+    ],
+    "facility_label": "補助競技場",
+    "booking_method": "Web予約・窓口申込",
+    "booking_note": "初回は窓口で事前に団体登録が必要です。先着順。全面は原則6か月前の月の10日から、半面は2か月前の月の初日から受付。Webは利用10日前まで、窓口は前日まで。",
+    "official_url": "https://www.tef.or.jp/kopgp/substadium/index.html",
+    "booking_url": "https://sports.tef.or.jp/",
+    "price_from": 18000,
+    "price_unit": "全面4時間（午前8:30～12:30）",
+    "price_note": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。 税込。スタンド使用・有料入場・附属設備は別料金。",
+    "checked_at": "2026-10-12",
+    "courts_count": 1,
+    "surface": "人工芝",
+    "indoor": false,
+    "night_lighting": true,
+    "facility_kind": "COURT",
+    "availability_status": "OPEN",
+    "availability_note": "",
+    "sources": [
+      {
+        "title": "公式施設案内・利用料金表",
+        "url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "title": "公式の申込受付・団体登録・予約方法",
+        "url": "https://www.tef.or.jp/kopgp/general/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-komazawa-stadium",
+    "name": "駒沢オリンピック公園総合運動場 陸上競技場",
+    "operator": "東京都スポーツ文化事業団・オーエンス・東京都レクリエーション協会",
+    "municipality": "世田谷区",
+    "area": "23区",
+    "address": "東京都世田谷区駒沢公園1-1",
+    "operator_type": "PUBLIC",
+    "sports": [
+      "サッカー・フットサル",
+      "ランニング"
+    ],
+    "facility_label": "陸上競技場",
+    "booking_method": "窓口申込（Webは空き照会のみ）",
+    "booking_note": "初回は窓口で事前に団体登録が必要です。陸上競技場の予約は窓口で利用日の3日前まで。",
+    "official_url": "https://www.tef.or.jp/kopgp/stadium/index.html",
+    "booking_url": "https://www.tef.or.jp/kopgp/general/",
+    "price_from": 48400,
+    "price_unit": "全面4時間（午前8:30～12:30）",
+    "price_note": "団体専用利用・観客入場料なし・スタンド未使用。個人の陸上トラック利用料金とは異なります。 税込。スタンド使用・有料入場・附属設備は別料金。",
+    "checked_at": "2026-10-12",
+    "courts_count": 1,
+    "surface": "陸上トラック・芝フィールド",
+    "indoor": false,
+    "night_lighting": false,
+    "facility_kind": "COURT",
+    "availability_status": "OPEN",
+    "availability_note": "",
+    "sources": [
+      {
+        "title": "公式施設案内・利用料金表",
+        "url": "https://www.tef.or.jp/kopgp/stadium/index.html"
+      },
+      {
+        "title": "公式の申込受付・団体登録・予約方法",
+        "url": "https://www.tef.or.jp/kopgp/general/"
+      }
+    ]
   }
 ]

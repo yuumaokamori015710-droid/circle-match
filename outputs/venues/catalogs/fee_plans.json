@@ -40990,5 +40990,201 @@
       }
     ],
     "fee_note": "JSC公式施設案内の掲載額。休業日・登録条件は予約前に公式案内をご確認ください。"
+  },
+  {
+    "id": "tokyo-komazawa-ballgame1",
+    "checked_at": "2026-10-12",
+    "fee_options": [
+      {
+        "label": "午前 / 全面",
+        "amount": 29100,
+        "unit": "全面4時間（8:30～12:30）",
+        "conditions": "アマチュアスポーツ・観客入場料なし・スタンド未使用。サッカーは非公式規格。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame1/index.html"
+      },
+      {
+        "label": "午後 / 全面",
+        "amount": 32300,
+        "unit": "全面4時間（13:00～17:00）",
+        "conditions": "アマチュアスポーツ・観客入場料なし・スタンド未使用。サッカーは非公式規格。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame1/index.html"
+      },
+      {
+        "label": "全日 / 全面",
+        "amount": 54900,
+        "unit": "全面8:30～17:00",
+        "conditions": "アマチュアスポーツ・観客入場料なし・スタンド未使用。サッカーは非公式規格。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame1/index.html"
+      }
+    ],
+    "fee_note": "掲載額は税込の通常利用区分です。スタンド使用・有料入場・附属設備・超過料金は公式料金表を確認してください。人工芝等の改修工事のため2026年9月1日～2027年3月31日は休館予定。再開状況は公式案内で確認してください。"
+  },
+  {
+    "id": "tokyo-komazawa-ballgame2",
+    "checked_at": "2026-10-12",
+    "fee_options": [
+      {
+        "label": "午前 / 全面",
+        "amount": 19800,
+        "unit": "全面4時間（8:30～12:30）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "午後 / 全面",
+        "amount": 21500,
+        "unit": "全面4時間（12:45～16:45）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "夜間 / 全面",
+        "amount": 30300,
+        "unit": "全面4時間（17:00～21:00）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "午前 / 半面",
+        "amount": 9900,
+        "unit": "半面4時間（8:30～12:30）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "午後 / 半面",
+        "amount": 11000,
+        "unit": "半面4時間（12:45～16:45）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "夜間 / 半面",
+        "amount": 15400,
+        "unit": "半面4時間（17:00～21:00）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "午前・午後 / 全面",
+        "amount": 37400,
+        "unit": "全面8:30～16:45",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "午後・夜間 / 全面",
+        "amount": 47300,
+        "unit": "全面12:45～21:00",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      },
+      {
+        "label": "全日 / 全面",
+        "amount": 59400,
+        "unit": "全面8:30～21:00",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame2/"
+      }
+    ],
+    "fee_note": "掲載額は税込の通常利用区分です。スタンド使用・有料入場・附属設備・超過料金は公式料金表を確認してください。"
+  },
+  {
+    "id": "tokyo-komazawa-substadium",
+    "checked_at": "2026-10-12",
+    "fee_options": [
+      {
+        "label": "午前 / 全面",
+        "amount": 18000,
+        "unit": "全面4時間（8:30～12:30）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "午後 / 全面",
+        "amount": 19500,
+        "unit": "全面4時間（12:45～16:45）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "夜間 / 全面",
+        "amount": 27700,
+        "unit": "全面4時間（17:00～21:00）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "午前 / 半面",
+        "amount": 9900,
+        "unit": "半面4時間（8:30～12:30）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "午後 / 半面",
+        "amount": 11000,
+        "unit": "半面4時間（12:45～16:45）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "夜間 / 半面",
+        "amount": 15400,
+        "unit": "半面4時間（17:00～21:00）",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "午前・午後 / 全面",
+        "amount": 36000,
+        "unit": "全面8:30～16:45",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "午後・夜間 / 全面",
+        "amount": 43200,
+        "unit": "全面12:45～21:00",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      },
+      {
+        "label": "全日 / 全面",
+        "amount": 54000,
+        "unit": "全面8:30～21:00",
+        "conditions": "観客入場料なし・スタンド未使用。半面利用は原則練習のみ。夜間照明は別途1式1時間3,400円。",
+        "source_url": "https://www.tef.or.jp/kopgp/substadium/index.html"
+      }
+    ],
+    "fee_note": "掲載額は税込の通常利用区分です。スタンド使用・有料入場・附属設備・超過料金は公式料金表を確認してください。"
+  },
+  {
+    "id": "tokyo-komazawa-stadium",
+    "checked_at": "2026-10-12",
+    "fee_options": [
+      {
+        "label": "午前 / 全面",
+        "amount": 48400,
+        "unit": "全面4時間（8:30～12:30）",
+        "conditions": "団体専用利用・観客入場料なし・スタンド未使用。個人の陸上トラック利用料金とは異なります。",
+        "source_url": "https://www.tef.or.jp/kopgp/stadium/index.html"
+      },
+      {
+        "label": "午後 / 全面",
+        "amount": 55000,
+        "unit": "全面4時間（13:00～17:00）",
+        "conditions": "団体専用利用・観客入場料なし・スタンド未使用。個人の陸上トラック利用料金とは異なります。",
+        "source_url": "https://www.tef.or.jp/kopgp/stadium/index.html"
+      },
+      {
+        "label": "全日 / 全面",
+        "amount": 99000,
+        "unit": "全面8:30～17:00",
+        "conditions": "団体専用利用・観客入場料なし・スタンド未使用。個人の陸上トラック利用料金とは異なります。",
+        "source_url": "https://www.tef.or.jp/kopgp/stadium/index.html"
+      }
+    ],
+    "fee_note": "掲載額は税込の通常利用区分です。スタンド使用・有料入場・附属設備・超過料金は公式料金表を確認してください。"
   }
 ]

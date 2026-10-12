@@ -22,12 +22,12 @@
   </dialog>
   <noscript><style>.venue-directory .venue-region-field{display:none}.venue-directory .venue-region-dialog{display:block;position:static;width:100%;max-height:none;border:0;box-shadow:none;padding:0;margin:0}.venue-directory .venue-dialog-head,.venue-directory .venue-dialog-footer,.venue-directory .venue-region-selection,.venue-directory label.venue-map-choice{display:none}</style></noscript>
   <section id="venue-court-results" aria-labelledby="venue-result-heading" tabindex="-1">
-    <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite">__VENUE_COUNT__</span></h2><div class="venue-results-controls"><span id="venue-visible-count" class="venue-visible-count">__VENUE_VISIBLE__</span><label class="venue-sort"><span>並び順</span><select id="venue-sort" name="sort" form="venue-court-filters"><option value="name" __VENUE_SORT_NAME__>施設名の順</option><option value="price" __VENUE_SORT_PRICE__>コート1面1時間の安い順</option></select></label></div></div>
+    <div class="venue-results-heading"><h2 id="venue-result-heading">施設一覧 <span id="venue-result-count" role="status" aria-live="polite">__VENUE_COUNT__</span></h2><div class="venue-results-controls"><span id="venue-visible-count" class="venue-visible-count">__VENUE_VISIBLE__</span><label class="venue-sort"><span>並び順</span><select id="venue-sort" name="sort" form="venue-court-filters">__VENUE_SORT_OPTIONS__</select></label></div></div>
     <p class="venue-results-note">会場確保後に「この会場で募集を作る」から、会場名と競技を入力済みの募集を作成できます。</p>
     <div id="venue-loading-state" class="venue-message-panel" role="status" hidden><span class="venue-spinner" aria-hidden="true"></span><p>施設一覧を更新しています…</p></div>
     <div id="venue-error-state" class="venue-message-panel" role="alert" hidden><h3>施設一覧を更新できませんでした</h3><p>表示済みの施設は確認できます。通信状況を確認して、もう一度お試しください。</p><button id="venue-retry-load" type="button" class="venue-primary-button">もう一度読み込む</button></div>
     <div id="venue-empty-state" class="venue-message-panel" __VENUE_EMPTY_HIDDEN__><h3>条件に合う施設は見つかりませんでした</h3><p>キーワードや料金上限を変えて、お試しください。</p><button id="venue-empty-reset" type="button">条件をリセット</button></div>
-    <table class="venue-table"><caption class="venue-visually-hidden">条件に合う会場の比較一覧</caption><thead><tr><th scope="col">施設名</th><th scope="col">所在地</th><th scope="col">料金・適用区分</th><th scope="col">予約方法</th><th scope="col">事前登録</th><th scope="col">予約・募集</th></tr></thead><tbody id="venue-court-list">__VENUE_CARDS__</tbody></table>
+    <table class="venue-table"><caption class="venue-visually-hidden">条件に合う会場の比較一覧</caption><thead><tr>__VENUE_COLUMN_HEADERS__</tr></thead><tbody id="venue-court-list">__VENUE_CARDS__</tbody></table>
     <div id="venue-pagination" class="venue-pagination" hidden><button id="venue-show-more" type="button" class="venue-primary-button">さらに50件表示</button><button id="venue-show-all" type="button">すべて表示</button></div>
     __VENUE_PAGER__
   </section>

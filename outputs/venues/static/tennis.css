@@ -96,29 +96,43 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-sort select{max-width:100%;min-width:0;min-height:44px;padding:8px;border:1px solid var(--border);border-radius:6px;background:white;color:var(--ink);font-size:13px}
 .venue-directory .venue-results-note{font-size:12px;color:var(--muted);margin:8px 0 16px}
 .venue-directory .venue-table{width:100%;table-layout:fixed;border-collapse:collapse;background:white;text-align:left}
-.venue-directory .venue-table>thead th{padding:12px 10px;background:#f0f4f5;font-size:12px;border-block:1px solid var(--border);font-weight:600}
+.venue-directory .venue-table>thead th{padding:4px 10px;background:#f0f4f5;font-size:12px;border-block:1px solid var(--border);font-weight:600;vertical-align:middle}
+.venue-directory .venue-column-menu{position:relative;text-align:left}
+.venue-directory .venue-column-menu>summary{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:40px;cursor:pointer;list-style:none;white-space:normal;line-height:1.4}
+.venue-directory .venue-column-menu>summary::-webkit-details-marker{display:none}
+.venue-directory .venue-column-menu>summary.is-filtered{color:#a24627}
+.venue-directory .venue-column-menu>summary.is-filtered>span:first-child:after{content:'';display:inline-block;width:6px;height:6px;background:#c9613f;border-radius:50%;margin-left:5px;vertical-align:middle}
+.venue-directory .venue-column-options{position:absolute;top:100%;left:0;z-index:30;width:250px;max-height:420px;overflow:auto;padding:12px;background:white;border:1px solid var(--border);border-radius:6px;box-shadow:0 6px 24px #17304b26;font-weight:400}
+.venue-directory th:last-child .venue-column-options{left:auto;right:0}
+.venue-directory .venue-column-options>strong{display:block;font-size:13px;margin-bottom:8px}
+.venue-directory .venue-column-options a{display:flex;align-items:center;min-height:40px;padding:6px 8px;font-size:12px;text-decoration:none;line-height:1.5}
+.venue-directory .venue-column-options a:hover,.venue-directory .venue-column-options a.is-active{background:#fff2eb;color:#994526}
+.venue-directory .venue-column-sorts{border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:6px}
+.venue-directory .venue-column-options label{display:flex;flex-direction:column;gap:4px;font-size:12px;margin:8px 0}
+.venue-directory .venue-column-options input{width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:5px;padding:8px;background:white;color:var(--ink)}
+.venue-directory .venue-column-options button{width:100%;font-size:12px}
 .venue-directory .venue-table>thead th:nth-child(1){width:26%}
 .venue-directory .venue-table>thead th:nth-child(2){width:9%}
 .venue-directory .venue-table>thead th:nth-child(3){width:27%}
 .venue-directory .venue-table>thead th:nth-child(4){width:9%}
 .venue-directory .venue-table>thead th:nth-child(5){width:8%}
 .venue-directory .venue-table>thead th:nth-child(6){width:21%}
-.venue-directory .venue-court-card>th,.venue-directory .venue-court-card>td{padding:15px 10px 6px;vertical-align:top;min-width:0;overflow-wrap:anywhere;font-weight:400;font-size:13px}
-.venue-directory .venue-court-card h3{font-size:15px;line-height:1.6;margin:0 0 6px;overflow-wrap:anywhere}
+.venue-directory .venue-court-card>th,.venue-directory .venue-court-card>td{padding:9px 10px 2px;vertical-align:top;min-width:0;overflow-wrap:anywhere;font-weight:400;font-size:13px;line-height:1.45}
+.venue-directory .venue-court-card h3{font-size:14px;line-height:1.45;margin:0 0 3px;overflow-wrap:anywhere}
 .venue-directory .venue-court-features{font-size:11px;color:var(--muted);margin:0}
-.venue-directory .venue-original-price{font-size:17px;font-weight:700;line-height:1.6;margin:0 0 4px}
+.venue-directory .venue-original-price{font-size:16px;font-weight:700;line-height:1.45;margin:0 0 2px}
 .venue-directory .venue-rate-preview{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;font-weight:400}
 .venue-directory .venue-rate-preview>span:first-child{min-width:0;overflow-wrap:anywhere}
 .venue-directory .venue-price-amount{display:inline-block;white-space:nowrap;font-weight:700;font-size:16px}
 .venue-directory .venue-unconfirmed{font-size:14px;font-weight:500;color:var(--muted)}
 .venue-directory .venue-price-unit{font-size:11px;margin:0 0 3px;color:var(--muted);overflow-wrap:anywhere}
-.venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:32px;font-size:12px;margin-right:10px}
-.venue-directory .venue-court-links{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{display:inline-flex;align-items:center;min-height:28px;font-size:11px;margin-right:8px}
+.venue-directory .venue-court-links{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px 8px}
 .venue-directory .venue-primary-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:6px;background:var(--green);color:white;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none}
 .venue-directory .venue-primary-link:hover{background:#0b5948;color:white}
 .venue-directory .venue-secondary-link{font-size:12px;min-height:32px;display:inline-flex;align-items:center;overflow-wrap:anywhere}
 .venue-directory .venue-details-row>td{padding:0 10px;border-bottom:1px solid var(--border)}
-.venue-directory .venue-court-details>summary{cursor:pointer;font-size:12px;color:var(--muted);padding:10px 0;min-height:44px}
+.venue-directory .venue-court-details>summary{cursor:pointer;font-size:11px;color:var(--muted);padding:4px 0;min-height:28px;line-height:1.5}
 .venue-directory .venue-detail-content{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;padding:12px 0 20px}
 .venue-directory .venue-detail-content dl{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;font-size:12px;margin:0}
 .venue-directory .venue-detail-content dt{color:var(--muted)}
@@ -141,14 +155,21 @@ body.venue-modal-open{overflow:hidden}
 @keyframes venue-spin{to{transform:rotate(360deg)}}
 @media(max-width:900px){
  .venue-directory .venue-table,.venue-directory .venue-table>tbody{display:block}
- .venue-directory .venue-table>thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
- .venue-directory .venue-court-card{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;padding:16px 12px 0}
+ .venue-directory .venue-table>thead{display:block;position:relative;width:auto;height:auto;overflow:visible;clip-path:none}
+ .venue-directory .venue-table>thead>tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 8px;padding:4px 8px;background:#f0f4f5;border-block:1px solid var(--border)}
+ .venue-directory .venue-table>thead th:nth-child(n){display:block;width:auto;border:0;padding:0;font-size:11px;min-width:0}
+ .venue-directory .venue-column-menu>summary{min-height:44px}
+ .venue-directory .venue-court-card{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px;padding:12px 10px 0}
  .venue-directory .venue-court-card>th,.venue-directory .venue-court-card>td{padding:0}
  .venue-directory .venue-court-main,.venue-directory .venue-location-cell,.venue-directory .venue-court-price,.venue-directory .venue-action-cell{grid-column:1/-1}
  .venue-directory .venue-location-cell{color:var(--muted);font-size:12px}
- .venue-directory .venue-court-price{padding:4px 0!important}
+ .venue-directory .venue-court-price{padding:2px 0!important}
  .venue-directory .venue-booking-cell:before,.venue-directory .venue-registration-cell:before{content:attr(data-label) '：';font-size:12px;color:var(--muted)}
- .venue-directory .venue-court-links{flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px;padding-top:8px}
+ .venue-directory .venue-court-links{gap:4px 12px;padding-top:4px}
+ .venue-directory .venue-court-details>summary{min-height:44px;display:flex;align-items:center;gap:6px}
+ .venue-directory .venue-court-details>summary:before{content:'▸'}
+ .venue-directory .venue-court-details[open]>summary:before{content:'▾'}
+ .venue-directory .venue-tariff-more,.venue-directory .venue-fee-link{min-height:36px}
  .venue-directory .venue-details-row,.venue-directory .venue-details-row>td{display:block}
  .venue-directory .venue-details-row>td{padding:0 12px}
  .venue-directory .venue-detail-content{grid-template-columns:1fr;gap:16px}

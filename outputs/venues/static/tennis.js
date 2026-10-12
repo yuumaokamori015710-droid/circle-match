@@ -8,8 +8,8 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const PAGE_SIZE = 50;
   const browser = typeof window === "undefined" ? null : window;
-  const URL_FILTER_NAMES = ["q","places","map","operator_type","facility_kind","venue_type","booking_channel","registration","open_from","open_until","price_max","sort","night_lighting","indoor","show_suspended"];
-  const SELECT_VALUES = {operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],sort:["name","price"]};
+  const URL_FILTER_NAMES = ["q","name","price_status","places","map","operator_type","facility_kind","venue_type","booking_channel","registration","open_from","open_until","price_max","sort","night_lighting","indoor","show_suspended"];
+  const SELECT_VALUES = {operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],price_status:["","available","missing","hourly"],sort:[...$('#venue-sort').options].map(option=>option.value)};
   const AREA_STAGES = {'23区':'wards','多摩':'tama','島しょ':'islands'};
   const placeParents = Object.fromEntries([...$('#venue-places-filter').options].map(option=>[option.value,option.dataset.parent]));
   const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
@@ -123,6 +123,7 @@
   const normalize = value => String(value ?? "").normalize("NFKC").toLocaleLowerCase("ja").trim();
   const yen = value => `¥${value.toLocaleString("ja-JP",{maximumFractionDigits:2})}`;
   const minutes = value => /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value || "") ? Number(value.slice(0,2))*60+Number(value.slice(3)) : null;
+  const hasPrice = court => numberOrNull(court.price_from)!==null || list(court.fee_options).length>0;
   function withinHours(court, from, until) {
     const start=minutes(from), end=minutes(until);
     if(start===null && end===null) return true;
@@ -152,11 +153,14 @@
   }
   function filterCourts(courts, filters) {
     const terms = normalize(filters.q).split(/\s+/).filter(Boolean);
+    const nameTerms = normalize(filters.name).split(/\s+/).filter(Boolean);
     const maxPrice = numberOrNull(filters.price_max);
     return list(courts).filter(court => {
       const searchable = normalize([court.name,court.operator,court.municipality,court.area,court.address,court.surface,court.booking_method,court.booking_note,court.price_note].filter(Boolean).join(" "));
       const price = numberOrNull(court.price_per_hour);
       return (filters.show_suspended || court.availability_status !== "SUSPENDED") && terms.every(term => searchable.includes(term)) &&
+        nameTerms.every(term=>normalize(court.name).includes(term)) &&
+        (!filters.price_status || ({available:hasPrice(court),missing:!hasPrice(court),hourly:price!==null})[filters.price_status]) &&
         (!filters.places.length || filters.places.some(place=>[court.prefecture||'東京都',court.area,court.municipality].includes(place))) &&
         (!filters.operator_type || court.operator_type === filters.operator_type) &&
         (!filters.facility_kind || (court.facility_kind || "COURT") === filters.facility_kind) &&
@@ -170,14 +174,20 @@
     });
   }
   function sortCourts(courts, sort) {
+    const compare=(a,b)=>a<b?-1:a>b?1:0;
     return [...list(courts)].sort((a,b) => {
-      if (sort === "price") {
-        const left = numberOrNull(a.price_per_hour), right = numberOrNull(b.price_per_hour);
+      const fallback=compare(String(a.name||''),String(b.name||'')) || compare(String(a.id||''),String(b.id||''));
+      if(sort==='available') return Number(hasPrice(b))-Number(hasPrice(a)) || fallback;
+      if(sort==='location'||sort==='location_desc') return compare(a.municipality,b.municipality)*(sort.endsWith('_desc')?-1:1)||fallback;
+      if(sort==='checked'||sort==='checked_asc') return compare(a.checked_at,b.checked_at)*(sort==='checked'?-1:1)||fallback;
+      if (['price','price_desc','booking','booking_desc','registration','registration_desc'].includes(sort)) {
+        const fact=court=>sort.startsWith('price')?numberOrNull(court.price_per_hour):sort.startsWith('booking')?(list(court.booking_channels).join('・')||null):(court.registration_required??null);
+        const left = fact(a), right = fact(b);
         if (left === null && right !== null) return 1;
         if (left !== null && right === null) return -1;
-        if (left !== null && right !== null && left !== right) return left-right;
+        if (left !== null && right !== null && left !== right) return compare(left,right)*(sort.endsWith('_desc')?-1:1);
       }
-      return String(a.name || "").localeCompare(String(b.name || ""),"ja",{numeric:true}) || String(a.id || "").localeCompare(String(b.id || ""));
+      return sort==='name_desc'?compare(a.name,b.name)*-1||compare(a.id,b.id):fallback;
     });
   }
   function courtCard(court, index) {
@@ -226,10 +236,11 @@
     const saved=usePreferences && !explicit && preferences.rememberVenueSearch ? browser.CircleMatchSettings?.getVenue(state.meta.sport || "all") || {} : {};
     const read = name => url.searchParams.get(`v_${name}`) ?? url.searchParams.get(name) ?? (usePreferences && !explicit ? saved[name] ?? (name==="area"?preferences.venueArea:name==="sort"?preferences.venueSort:null) : null);
     fields.q.value = (read("q") || "").slice(0,200);
+    fields.name.value = (read("name") || "").slice(0,200);
     fields.map.value = read('map') || '';
     for (const [name,allowed] of Object.entries(SELECT_VALUES)) {
-      const value = read(name) || (name === "sort" ? "name" : "");
-      fields[name].value = allowed.includes(value) ? value : name === "sort" ? "name" : "";
+      const value = read(name) || (name === "sort" ? "available" : "");
+      fields[name].value = allowed.includes(value) ? value : name === "sort" ? "available" : "";
     }
     const rawPlaces=url.searchParams.has('v_places') ? url.searchParams.getAll('v_places') : url.searchParams.has('places') ? url.searchParams.getAll('places') : read('places');
     const legacyPlace=read('municipality') || read('area') || (usePreferences && !explicit ? preferences.venueArea : '') || '';
@@ -254,7 +265,7 @@
         if (value) url.searchParams.set(key,"1");
       } else if (Array.isArray(value)) {
         if(value.length) url.searchParams.set(key,value.join(','));
-      } else if (value !== null && value !== "" && value !== undefined && !(name === "sort" && value === "name")) {
+      } else if (value !== null && value !== "" && value !== undefined && !(name === "sort" && value === "available")) {
         url.searchParams.set(key,String(value));
       }
     }
@@ -273,6 +284,28 @@
     $("#venue-pagination").hidden = visible.length >= count;
     $("#venue-show-more").textContent = `さらに${Math.min(PAGE_SIZE,count-visible.length)}件表示`;
     updateRegionSummary();
+    updateColumns();
+  }
+  function updateColumns() {
+    const filters=readFilters();
+    for(const link of directory.querySelectorAll('[data-venue-control]')) {
+      const key=link.dataset.venueControl, value=link.dataset.value;
+      const url=currentUrl();
+      url.searchParams.delete(key);url.searchParams.delete('v_'+key);url.searchParams.delete('v_page');
+      if(key==='places')for(const legacy of ['area','v_area','municipality','v_municipality'])url.searchParams.delete(legacy);
+      if(value) url.searchParams.set('v_'+key,value);
+      url.hash='venue-court-results';link.href=url.pathname+url.search+url.hash;
+      const selected=key==='sort'?filters.sort===value:key==='places'?!filters.places.length:String(filters[key]===true?'1':filters[key]||'')===value;
+      link.classList.toggle('is-active',selected);
+      if(selected)link.setAttribute('aria-current','true');else link.removeAttribute('aria-current');
+    }
+    for(const th of directory.querySelectorAll('[data-venue-column]')) {
+      const column=th.dataset.venueColumn, sort=filters.sort;
+      const sorted=column==='checked_asc'?sort.startsWith('checked'):sort===column||sort===column+'_desc';
+      th.setAttribute('aria-sort',sorted?(sort.endsWith('_desc')||sort==='checked'?'descending':'ascending'):column==='price'&&sort==='available'?'other':'none');
+      const active={name:!!filters.name,location:filters.places.length>0,price:!!filters.price_status||filters.price_max!==null,booking:!!filters.booking_channel,registration:!!filters.registration,checked_asc:filters.show_suspended}[column];
+      th.querySelector('summary').classList.toggle('is-filtered',!!active);
+    }
   }
   function applyFilters(updateUrl = true, pushUrl = false) {
     if (!state.loaded) return;
@@ -298,7 +331,7 @@
     for (const name of URL_FILTER_NAMES) {
       if (["night_lighting","indoor","show_suspended"].includes(name)) fields[name].checked = false;
       else if(name==='places') setPlaces([]);
-      else fields[name].value = name === "sort" ? "name" : "";
+      else fields[name].value = name === "sort" ? "available" : "";
     }
     applyFilters();
   }
@@ -357,6 +390,37 @@
   });
   $("#venue-court-filters").addEventListener("change",()=>{clearTimeout(searchTimer);applyFilters();});
   $("#venue-sort").addEventListener("change",()=>applyFilters());
+  directory.addEventListener('input',event=>{
+    if(event.target.matches('[name="name"][form]')) {clearTimeout(searchTimer);searchTimer=setTimeout(()=>applyFilters(true,true),150);}
+  });
+  directory.addEventListener('click',event=>{
+    const link=event.target.closest('[data-venue-control]');
+    if(link && state.loaded && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault();
+      const key=link.dataset.venueControl, field=$('#venue-court-filters').elements[key];
+      if(key==='places')setPlaces([]);else if(field.type==='checkbox')field.checked=link.dataset.value==='1';else field.value=link.dataset.value;
+      link.closest('details').open=false;applyFilters(true,true);
+    }
+    const region=event.target.closest('[data-venue-open-region]');
+    if(region) {event.preventDefault();region.closest('details').open=false;$('#venue-open-region').click();}
+  });
+  function positionColumnMenu(menu) {
+    const panel=menu.querySelector('.venue-column-options'), rect=menu.querySelector('summary').getBoundingClientRect();
+    panel.style.position='fixed';panel.style.width=Math.min(260,innerWidth-24)+'px';panel.style.maxHeight=Math.min(420,innerHeight-24)+'px';
+    panel.style.left=Math.max(12,Math.min(rect.left,innerWidth-panel.offsetWidth-12))+'px';
+    const height=panel.offsetHeight;
+    panel.style.top=Math.max(12,Math.min(rect.bottom+4,innerHeight-height-12))+'px';
+  }
+  directory.addEventListener('toggle',event=>{
+    const menu=event.target;
+    if(!menu.matches('.venue-column-menu')||!menu.open)return;
+    for(const other of directory.querySelectorAll('.venue-column-menu[open]'))if(other!==menu)other.open=false;
+    positionColumnMenu(menu);
+  },true);
+  document.addEventListener('click',event=>{if(!event.target.closest('.venue-column-menu'))for(const menu of directory.querySelectorAll('.venue-column-menu[open]'))menu.open=false;});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')for(const menu of directory.querySelectorAll('.venue-column-menu[open]')){event.preventDefault();menu.open=false;menu.querySelector('summary').focus();}});
+  window.addEventListener('resize',()=>directory.querySelectorAll('.venue-column-menu[open]').forEach(positionColumnMenu));
+  window.addEventListener('scroll',()=>directory.querySelectorAll('.venue-column-menu[open]').forEach(positionColumnMenu));
   $("#venue-reset-filters").addEventListener("click",resetFilters);
   $("#venue-empty-reset").addEventListener("click",resetFilters);
   $("#venue-retry-load").addEventListener("click",loadCourts);

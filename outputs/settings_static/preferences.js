@@ -1,13 +1,13 @@
 "use strict";
 (() => {
   const KEY="circlematch.preferences.v1", VENUES="circlematch.venue-search.v1.";
-  const defaults={view:"auto",venueArea:"",venueSort:"name",rememberVenueSearch:false};
+  const defaults={view:"auto",venueArea:"",venueSort:"available",rememberVenueSearch:false};
   function get() {
     let raw={};
     try {raw=JSON.parse(localStorage.getItem(KEY)) || {};} catch {}
     return {view:["auto","mobile","desktop"].includes(raw.view)?raw.view:"auto",
       venueArea:["","23区","多摩","島しょ"].includes(raw.venueArea)?raw.venueArea:"",
-      venueSort:["name","price"].includes(raw.venueSort)?raw.venueSort:"name",
+      venueSort:["available","name","price"].includes(raw.venueSort)?raw.venueSort:"available",
       rememberVenueSearch:raw.rememberVenueSearch===true};
   }
   window.CircleMatchSettings={get,

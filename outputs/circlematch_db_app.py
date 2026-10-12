@@ -1573,7 +1573,7 @@ def render_directory_context(params, tab):
     audience = audience_scope(params, "university")
     action = "/" if tab == "db" else "/" + tab
     hidden = f'<input type="hidden" name="tab" value="db"><input type="hidden" name="audience" value="{audience}">' if tab == "db" else ""
-    venue_keys = ('q','municipality','area','map','operator_type','facility_kind','venue_type','booking_channel','registration','open_from','open_until','price_max','sort','night_lighting','indoor','show_suspended')
+    venue_keys = ('q','name','price_status','municipality','area','map','operator_type','facility_kind','venue_type','booking_channel','registration','open_from','open_until','price_max','sort','night_lighting','indoor','show_suspended')
     local_keys = ("q", "sort", "c_map", "places") if tab == "db" else (("date_from", "date_to", "event_type", "participation", "q") if tab == "events" else tuple('v_' + key for key in venue_keys))
     hidden += ''.join(f'<input type="hidden" name="{key}" value="{html.escape(params[key][0], quote=True)}">' for key in local_keys if params.get(key))
     if tab == 'db' and 'places' in params:

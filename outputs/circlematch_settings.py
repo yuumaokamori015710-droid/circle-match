@@ -31,7 +31,7 @@ def render_body(return_to='/'):
 <p class="cm-settings-note">保存後、元の画面に戻ると適用されます。設定画面は自動表示です。</p>
 </fieldset><fieldset disabled><legend>会場検索</legend><div class="cm-setting-fields">
 <label><span>最初に表示するエリア</span><select name="venueArea"><option value="">都内すべて</option><option>23区</option><option>多摩</option><option>島しょ</option></select></label>
-<label><span>最初の並び順</span><select name="venueSort"><option value="name">施設名の順</option><option value="price">コート1面1時間の安い順</option></select></label></div>
+<label><span>最初の並び順</span><select name="venueSort"><option value="available">料金掲載あり優先</option><option value="name">施設名の順</option><option value="price">コート1面1時間の安い順</option></select></label></div>
 <label class="cm-remember-setting"><input type="checkbox" name="rememberVenueSearch"><span>前回の会場検索条件を引き継ぐ</span></label>
 <p class="cm-settings-note">共有リンクの条件がある場合は、リンクの条件を優先します。</p>
 </fieldset><div class="cm-settings-actions"><button type="submit" disabled>設定を保存</button><button type="button" id="cm-settings-reset" disabled>初期設定に戻す</button></div>

@@ -14,6 +14,37 @@ EXPANSION_PATH = CATALOG_PATH.with_name('tokyo_expansion.json')
 SPORTS = ('野球', 'サッカー・フットサル', 'テニス', 'ピックルボール', '卓球', 'ゴルフ',
           'バスケットボール', 'バレーボール', 'バドミントン', 'ランニング', 'ラグビー',
           'カラオケ', 'イベント', 'ボードゲーム')
+SORTS = (('available', '料金掲載あり優先'), ('name', '施設名の順'), ('name_desc', '施設名の逆順'),
+         ('location', '所在地の順'), ('location_desc', '所在地の逆順'),
+         ('price', 'コート1面1時間の安い順'), ('price_desc', 'コート1面1時間の高い順'),
+         ('booking', '予約方法の順'), ('booking_desc', '予約方法の逆順'),
+         ('registration', '登録不要を先に'), ('registration_desc', '登録必要を先に'),
+         ('checked', '情報確認の新しい順'), ('checked_asc', '情報確認の古い順'))
+
+
+def has_price(row):
+    return row.get('price_from') is not None or bool(row.get('fee_options'))
+
+
+def sort_catalog(rows, order='available'):
+    rows = sorted(rows, key=lambda row: (row['name'], row['id']))
+    if order in {'name', 'name_desc'}:
+        return sorted(rows, key=lambda row: row['name'], reverse=order.endswith('_desc'))
+    if order in {'location', 'location_desc'}:
+        return sorted(rows, key=lambda row: row['municipality'], reverse=order.endswith('_desc'))
+    if order in {'checked', 'checked_asc'}:
+        return sorted(rows, key=lambda row: row['checked_at'], reverse=order == 'checked')
+    if order in {'price', 'price_desc', 'booking', 'booking_desc', 'registration', 'registration_desc'}:
+        def fact(row):
+            if order.startswith('price'):
+                return row.get('price_per_hour')
+            if order.startswith('booking'):
+                return '・'.join(row.get('booking_channels', [])) or None
+            return row.get('registration_required')
+        known = [row for row in rows if fact(row) is not None]
+        unknown = [row for row in rows if fact(row) is None]
+        return sorted(known, key=fact, reverse=order.endswith('_desc')) + unknown
+    return sorted(rows, key=lambda row: not has_price(row))
 
 
 def selected(params, key):
@@ -90,6 +121,7 @@ def filter_catalog(rows, params):
         return selected(params, 'v_' + key) if 'v_' + key in (params or {}) else selected(params, key)
     normalize = lambda text: unicodedata.normalize('NFKC', str(text or '')).lower().strip()
     terms = normalize(value('q')).split()
+    name_terms = normalize(value('name')).split()
     try:
         maximum = float(normalize(value('price_max')).replace(',', '')) if value('price_max') else None
         if maximum is not None and (maximum < 0 or not maximum < float('inf')):
@@ -101,6 +133,13 @@ def filter_catalog(rows, params):
         if row['availability_status'] == 'SUSPENDED' and value('show_suspended') not in {'1', 'true', 'on'}:
             continue
         if not matches_places(row, places):
+            continue
+        if not all(term in normalize(row['name']) for term in name_terms):
+            continue
+        price_status = value('price_status')
+        if price_status == 'available' and not has_price(row) or price_status == 'missing' and has_price(row):
+            continue
+        if price_status == 'hourly' and row['price_per_hour'] is None:
             continue
         if any(value(key) and row[key] != value(key) for key in ('operator_type', 'facility_kind')):
             continue
@@ -121,8 +160,4 @@ def filter_catalog(rows, params):
         text = normalize(' '.join(str(row.get(k) or '') for k in ('name', 'operator', 'municipality', 'area', 'address', 'surface', 'booking_method', 'booking_note', 'price_note')))
         if all(term in text for term in terms):
             matches.append(row)
-    if value('sort') == 'price':
-        matches.sort(key=lambda row: (row['price_per_hour'] is None, row['price_per_hour'] or 0, row['name']))
-    else:
-        matches.sort(key=lambda row: row['name'])
-    return matches
+    return sort_catalog(matches, value('sort') or 'available')
