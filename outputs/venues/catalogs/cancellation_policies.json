@@ -1,0 +1,7 @@
+[
+  {"id":"tokyo-sports-011","status":"conditional","summary":"4時間未満は13〜7日前50%、6日前〜当日100%。4時間以上（2時間×2面を含む）は取消・時間短縮不可。荒天時は施設の判断に従います。","source_url":"https://yoyaku.labola.jp/r/shop/2083/terms/","checked_at":"2026-10-14"},
+  {"id":"tokyo-sports-012","status":"conditional","summary":"4時間未満は13〜7日前50%、6日前〜当日100%。4時間以上（2時間×2面を含む）は取消・時間短縮不可。荒天時は施設の判断に従います。","source_url":"https://yoyaku.labola.jp/r/shop/2083/terms/","checked_at":"2026-10-14"},
+  {"id":"tokyo-sports-014","status":"conditional","summary":"4時間未満は13〜7日前50%、6日前〜当日100%。4時間以上はキャンセル不可。通常の雨天は利用可能。警報・交通機関の運休等では施設から振替を案内します。","source_url":"https://yoyaku.labola.jp/r/shop/2085/","checked_at":"2026-10-14"},
+  {"id":"tokyo-sports-016","status":"conditional","summary":"4時間未満は30〜14日前30%、13〜7日前50%、6日前〜当日100%。4時間以上（2時間×2面を含む）は取消・時間短縮不可。","source_url":"https://yoyaku.labola.jp/r/shop/2083/terms/","checked_at":"2026-10-14"},
+  {"id":"tokyo-sports-017","status":"conditional","summary":"通常の1面利用は15日前まで無料、14〜7日前50%、6日前〜当日100%。2面同時・1日4時間超の予約は予約時から全額。期限の判定は利用開始時刻が基準です。取消方法・雨天時の扱いは公式規約をご確認ください。","source_url":"https://www.totai-futsal.jp/guide/","checked_at":"2026-10-14"}
+]

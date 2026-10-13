@@ -6,6 +6,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sqlite3
+import sys
 import tempfile
 import threading
 import unittest
@@ -18,6 +19,7 @@ from test_venues import IsolatedAppHttpCase, PublicPage
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'outputs'))
 SPEC = importlib.util.spec_from_file_location(
     "circlematch_invitations_under_test", ROOT / "outputs" / "circlematch_invitations.py"
 )
@@ -615,6 +617,26 @@ class CircleInvitationHttpTests(IsolatedAppHttpCase):
         self.assertEqual(code, 200)
         self.assertIn(own, body.decode())
         self.assert_private_identity_absent(body.decode())
+
+    def test_reviewed_public_contact_reaches_sender_mail_composer_without_sending(self):
+        from bs4 import BeautifulSoup
+        from urllib.parse import parse_qs, urlsplit
+        with self.app.connect() as conn:
+            target = conn.execute("select circle_id,email from circle_public_contacts where source_url like '%119837.html'").fetchone()
+            self.assertIsNotNone(target)
+            before = conn.execute('select count(*) from event_email_outbox').fetchone()[0]
+        code, body, _ = self.send('/invitations/new?circle_id='+target['circle_id'], actor=self.host)
+        self.assertEqual(code,200)
+        self.assertIn(target['email'],body.decode())
+        iid = self.create(target_circle_id=target['circle_id'])
+        code, body, _ = self.send('/invitations/'+iid, actor=self.host)
+        self.assertEqual(code,200)
+        mail = urlsplit(BeautifulSoup(body,'html.parser').select_one('a[href^="mailto:"]')['href'])
+        self.assertEqual(mail.path,target['email'])
+        self.assertIn('/invitations/'+iid,parse_qs(mail.query)['body'][0])
+        self.assertNotIn(target['email'],self.send('/invitations/'+iid)[1].decode())
+        with self.app.connect() as conn:
+            self.assertEqual(conn.execute('select count(*) from event_email_outbox').fetchone()[0],before)
 
 
 if __name__ == "__main__":

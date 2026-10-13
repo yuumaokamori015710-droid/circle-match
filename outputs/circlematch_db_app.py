@@ -30,6 +30,7 @@ import circlematch_regions as circle_regions
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
 import circlematch_contact_research as contact_research
+import circlematch_public_contacts as public_contacts
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
 PUBLIC_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_PUBLIC_SEED_PATH", ROOT / "public_circles_seed.csv"))
 SOCIAL_SEED_PATH = Path(os.environ.get("CIRCLEMATCH_SOCIAL_SEED_PATH", ROOT / "social_circles_seed.csv"))
@@ -1498,6 +1499,7 @@ def render_db_rows(circles):
         link = f'<a href="{html.escape(circle["profile_url"], quote=True)}">紹介ページ</a>' if circle.get("profile_url") else (f'<a href="{html.escape(circle["source_url"], quote=True)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>' if safe_public_source(circle.get("source_url")) else '<a href="/contact">情報を問い合わせる</a>')
         if circle.get("circle_id"):
             link += f'<a class="button" href="/invitations/new?circle_id={quote(str(circle["circle_id"]), safe="")}">交流に招待</a>'
+        link += '<small>' + ('公開メールあり' if circle.get('public_contact_email') else 'メール未掲載・公開窓口を確認') + '</small>'
         output.append(
             '<div class="circle-row">'
             f'<div><strong>{html.escape(circle.get("university_name") or "活動地域")}</strong><small>{html.escape(circle.get("prefecture") or "")}{(" / " + html.escape(circle.get("city") or "")) if circle.get("city") else ""}</small></div>'
@@ -1764,7 +1766,7 @@ EVENT_HOME_SCRIPT = r"""
   const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':`${e.payment_method==='bank_transfer'?'口座振込':'現地払い'}（料金は主催者へ確認）`):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
   const status=e=>[e.availability_label||'受付終了',e.can_apply?'open':(e.status==='cancelled'?'cancelled':'closed')];
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
-  function circleRow(c){let source=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}</div></div>`}
+  function circleRow(c){let source=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}<small>${c.public_contact_email?'公開メールあり':'メール未掲載・公開窓口を確認'}</small></div></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
   function syncLinks(){
@@ -1851,6 +1853,11 @@ def render_invitation_html(path, params, user):
         else:
             invitation_id = path.removeprefix("/invitations/")
             data = invitations.detail(conn, invitation_id, user, invitation_event)
+            if data.get('target_circle_id'):
+                try:
+                    data['contact'] = invitations.target(conn, data['target_circle_id'], public_circle_clause())
+                except ValueError:
+                    data['contact'] = {}
             data["share_url"] = seo.public_origin(base_url()) + "/invitations/" + quote(invitation_id, safe="")
             body, script = invitation_ui.detail(data, user, seo.public_origin(base_url()))
             title = "交流招待"
@@ -4112,6 +4119,8 @@ def init_db():
         if conn.execute("select count(*) from circles").fetchone()[0] == 0:
             seed_public_circles_from_csv(conn)
 
+        public_contacts.import_reviewed(conn)
+
         # Historical cleanup is intentionally one-time per revision.  The
         # marker lives in SQLite so routine restarts only run schema checks.
         if state_value(conn, "startup_maintenance_revision") != STARTUP_MAINTENANCE_REVISION:
@@ -5863,7 +5872,9 @@ def search_circles(params, limit=None, offset=0):
         if offset:
             sql += " offset ?"
             args.append(max(0, int(offset)))
-    result = rows(sql, args)
+    with connect() as conn:
+        result = [dict(row) for row in conn.execute(sql, args)]
+        public_contacts.attach(conn, result)
     for row in result:
         row["profile_url"] = f"/circles/{quote(row['profile_slug'])}" if row.get("profile_slug") else ""
     return result

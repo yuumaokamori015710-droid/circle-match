@@ -70,6 +70,23 @@ def _status(value):
     return STATUS_LABELS.get(value, "状態を確認")
 
 
+def _contact(target, subject='', body=''):
+    email = _s(target.get('public_contact_email'))
+    source = _href(target.get('contact_source_url') or target.get('source_url'), external=True)
+    if email:
+        href = 'mailto:' + quote(email, safe='@') + '?' + urlencode({'subject': subject, 'body': body}, quote_via=quote)
+        result = '<p class="invite-help">公開連絡先：' + _e(email) + '</p><p class="invite-help">' + _e(target.get('contact_purpose') or '団体が公開した連絡先') + '</p>'
+        if body:
+            result += '<a class="invite-button invite-primary" href="' + _e(href) + '">招待メールを作成</a><p class="invite-help">メールアプリで宛先と文面を確認して送信してください。この画面では送信されません。</p>'
+    else:
+        result = '<p class="invite-help">公開メールはまだ確認できていません。招待文をコピーして、掲載元の問い合わせ窓口からご連絡ください。</p>'
+    if source:
+        result += '<a class="invite-text-link" href="' + _e(source) + '" target="_blank" rel="noopener noreferrer">' + ('連絡先の掲載元' if email else '公開問い合わせ先を確認') + ' ↗</a>'
+    if target.get('contact_checked_at'):
+        result += '<p class="invite-help">掲載確認：' + _e(target['contact_checked_at']) + '（到達・招待受入は未確認）</p>'
+    return result
+
+
 def _back(target=None):
     query = {"tab": "db"}
     for key in ("sport", "prefecture"):
@@ -125,6 +142,7 @@ def compose(target, events, user):
         body += '<a class="invite-text-link" href="' + _e(profile) + '">団体の紹介を確認する</a>'
     elif source:
         body += '<a class="invite-text-link" href="' + _e(source) + '" target="_blank" rel="noopener noreferrer">公開情報を確認する ↗</a>'
+    body += _contact(target)
     body += '</section><section class="invite-card"><h2>招待の内容</h2>' + _error() + _no_script()
     fields = '<input type="hidden" name="target_circle_id" value="' + _e(target.get("circle_id")) + '">'
     fields += '<div class="invite-field"><p class="invite-label" id="invite-kind-label">招待の種類</p><div class="invite-choices" role="group" aria-labelledby="invite-kind-label"><label><input type="radio" name="kind" value="consultation" checked>交流の相談</label><label><input type="radio" name="kind" value="event"' + ('' if events else ' disabled') + '>自分のイベントに招待</label></div></div>'
@@ -165,7 +183,7 @@ def _share_text(data, share_url):
             lines.append(label + "：" + _s(data[key]))
     if data.get("kind") == "event" and data.get("event_title"):
         lines.append("イベント：" + _s(data["event_title"]))
-    lines += ["", "内容の確認・返信はこちら", share_url]
+    lines += ["", "Circle Matchで作成した交流のご相談です。", "内容の確認・返信はこちら", share_url]
     return "\n".join(lines)
 
 
@@ -201,6 +219,7 @@ def detail(data, user, origin):
     if sender and active:
         share_url = _shared_url(data, origin)
         share_text = _share_text(data, share_url)
+        body += '<section class="invite-card"><h2>メールで招待する</h2>' + _contact(data.get('contact') or {}, data.get('subject') or 'Circle Matchから交流のご相談', share_text) + '</section>'
         line_text = _s(data.get("target_circle_name") or "ご担当者") + "の皆さまへ\n" + _s(data.get("sender_label")) + "より：" + _s(data.get("subject"))
         line_url = "https://social-plugins.line.me/lineit/share?" + urlencode({"url": share_url, "text": line_text})
         body += '<section class="invite-card"><h2>招待を相手へ渡す</h2><p>招待リンクを作成しました。下の文面をメールやSNSのメッセージに貼り付けて、相手へ渡せます。</p><div class="invite-field"><label for="invite-share-text">相手へ渡す招待文</label><textarea id="invite-share-text" rows="8" readonly>' + _e(share_text) + '</textarea></div><div class="invite-actions"><button class="invite-button invite-primary" type="button" id="invite-copy" disabled>招待文とリンクをコピー</button><a class="invite-button" href="' + _e(line_url) + '" target="_blank" rel="noopener noreferrer">LINEで渡す ↗</a></div><p id="invite-copy-status" class="invite-help" role="status" aria-live="polite"></p><div class="invite-field"><label for="invite-share-url">招待リンク</label><input id="invite-share-url" type="url" value="' + _e(share_url) + '" readonly></div><p class="invite-note">リンクを受け取った人は招待内容を確認できます。返信できるのは、最初にログインして本人として回答した1人です。</p></section>'

@@ -23,11 +23,12 @@ const query=name=>'/venues?'+new URLSearchParams({v_q:name});
   try{
     const catalog=await(await fetch(base+'/api/venues')).json();
     const errors=[];
-    const ids=['tokyo-sports-017','tokyo-sports-018','tokyo-venue-e34356792fd2','tokyo-venue-3ba2d17ed46e','okutama-kawai','inagi-kitamidori'];
-    for(const width of [320,390,768,1440,1920]){
+    const ids=['tokyo-sports-012','tokyo-sports-014','tokyo-sports-016','tokyo-sports-017','tokyo-sports-018','tokyo-venue-e34356792fd2','tokyo-venue-3ba2d17ed46e','okutama-kawai','inagi-kitamidori'];
+    for(const width of [320,390,768,1024,1280,1440,1920]){
       const page=await browser.newPage({viewport:{width,height:1000}});
       page.on('pageerror',error=>errors.push(error.message));
       await page.goto(base+'/venues');await ready(page);
+      await page.locator('#venue-show-all').click();
       const metrics=await page.locator('.venue-price-amount').evaluateAll(spans=>spans.map(span=>({
         right:span.getBoundingClientRect().right,
         font:getComputedStyle(span).fontVariantNumeric,

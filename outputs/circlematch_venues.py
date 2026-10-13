@@ -87,6 +87,10 @@ def _card(row, index, sport):
     hours_link = _link(row['official_url'], '利用時間の公式案内') if row.get('opening_hours') else ''
     rates = ''.join(f'<tr><th scope="row">{escape(p["label"])}</th><td class="venue-tariff-amount">{p["amount"]:,}円</td><td>{escape(p["unit"])}</td><td>{escape(p["conditions"])}</td></tr>' for p in plans)
     tariff = f'<table class="venue-tariff"><caption>条件別料金</caption><thead><tr><th>利用区分</th><th>金額</th><th>単位</th><th>適用条件</th></tr></thead><tbody>{rates}</tbody></table>' if rates else ''
+    policy = row.get('cancellation')
+    cancellation = (escape(policy['summary']) + ' ' + _link(policy['source_url'], '公式キャンセル規定')
+                    + '（確認日：' + escape(policy['checked_at']) + '）') if policy else '条件は未確認です。予約前に公式予約先でご確認ください。'
+    tariff += '<p class="venue-cancellation"><strong>キャンセル条件</strong><br>' + cancellation + '</p>'
     channels = '・'.join(dict(CHANNELS).get(c, c) for c in row.get('booking_channels', [])) or '公式案内'
     return f'''<tr class="venue-court-card" aria-labelledby="venue-court-title-{index}">
 <th scope="row" class="venue-court-main"><h3 id="venue-court-title-{index}">{e('name')}</h3>{warning}<p class="venue-court-features">{badges}</p></th>

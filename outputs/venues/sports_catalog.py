@@ -8,6 +8,7 @@ import unicodedata
 from .tennis_catalog import CATALOG_PATH as TENNIS_PATH, validate_catalog
 from .search_facets import enrich, within_hours
 from .fees import attach, FEE_PATH
+from .policies import attach as attach_policies, POLICY_PATH
 
 CATALOG_PATH = Path(__file__).resolve().parent / 'catalogs' / 'tokyo_sports.json'
 EXPANSION_PATH = CATALOG_PATH.with_name('tokyo_expansion.json')
@@ -76,7 +77,7 @@ def validate_sports_catalog(rows):
 
 
 @lru_cache(maxsize=1)
-def _load(tennis_modified, sports_modified, expansion_modified, fees_modified):
+def _load(tennis_modified, sports_modified, expansion_modified, fees_modified, policies_modified):
     tennis = validate_catalog(json.loads(TENNIS_PATH.read_text(encoding='utf-8-sig')))
     for row in tennis:
         row.update(sports=['テニス'], facility_label='テニスコート')
@@ -92,11 +93,11 @@ def _load(tennis_modified, sports_modified, expansion_modified, fees_modified):
     rows = extra + expansion + tennis
     if len({r['id'] for r in rows}) != len(rows):
         raise ValueError('Duplicate venue id across catalogs')
-    return attach([enrich(row) for row in rows])
+    return attach_policies(attach([enrich(row) for row in rows]))
 
 
 def get_catalog(params=None):
-    rows = _load(TENNIS_PATH.stat().st_mtime_ns, CATALOG_PATH.stat().st_mtime_ns, EXPANSION_PATH.stat().st_mtime_ns, FEE_PATH.stat().st_mtime_ns)
+    rows = _load(TENNIS_PATH.stat().st_mtime_ns, CATALOG_PATH.stat().st_mtime_ns, EXPANSION_PATH.stat().st_mtime_ns, FEE_PATH.stat().st_mtime_ns, POLICY_PATH.stat().st_mtime_ns)
     sport = selected(params, 'sport')
     scoped = [row for row in rows if not sport or sport in row['sports']] if supports_catalog(params) else []
     counts = Counter(s for row in rows for s in row['sports'])

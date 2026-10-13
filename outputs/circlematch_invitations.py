@@ -7,6 +7,7 @@ The caller supplies its existing public-circle policy and event availability che
 from datetime import datetime, timedelta, timezone
 import secrets
 from urllib.parse import quote
+import circlematch_public_contacts as public_contacts
 
 
 def timestamp():
@@ -14,6 +15,7 @@ def timestamp():
 
 
 def init_schema(conn):
+    public_contacts.ensure_tables(conn)
     conn.executescript("""
     create table if not exists circle_invitations (
       invitation_id text primary key,
@@ -79,7 +81,7 @@ def target(conn, circle_id, public_clause):
     result = dict(row)
     result["profile_url"] = "/circles/" + quote(result["profile_slug"], safe="") if result.get("profile_slug") else ""
     result.pop("profile_slug", None)
-    return result
+    return public_contacts.attach(conn, [result])[0]
 
 
 def create(conn, data, user, public_clause, event_check):
@@ -144,6 +146,8 @@ def detail(conn, invitation_id, user, event_check):
             result[key] = ""
         result["can_respond"] = False
     result.update(event_id=None, event_title="", event_url="", event_available=False)
+    if sender and active:
+        result['target_circle_id'] = row['target_circle_id']
     if active and row["event_id"]:
         event = event_check(conn, row["event_id"], None)
         if event:

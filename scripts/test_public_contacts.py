@@ -1,0 +1,93 @@
+"""Reviewed public addresses must not expose private research or override opt-outs."""
+import json
+from pathlib import Path
+import sqlite3
+import sys
+import unittest
+from urllib.parse import parse_qs, urlsplit, quote
+from bs4 import BeautifulSoup
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'outputs'))
+import circlematch_public_contacts as contacts
+import circlematch_invitation_ui as ui
+from test_venues import IsolatedAppHttpCase
+
+
+class PublicContactTests(unittest.TestCase):
+    def setUp(self):
+        self.conn = sqlite3.connect(':memory:')
+        self.conn.row_factory = sqlite3.Row
+        self.addCleanup(self.conn.close)
+        self.conn.executescript('''create table circles(circle_id text primary key,circle_name text,source_url text);
+          create table circle_public_profiles(circle_id text,public_contact_consent integer,is_published integer);''')
+        contacts.ensure_tables(self.conn)
+        self.seed = json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+        self.conn.executemany('insert into circles values(?,?,?)', [(c['circle_id'],c['circle_name'],c['source_url']) for c in self.seed])
+
+    def test_seed_matches_identity_and_is_idempotent(self):
+        contacts.import_reviewed(self.conn)
+        contacts.import_reviewed(self.conn)
+        self.assertEqual(self.conn.execute('select count(*) from circle_public_contacts').fetchone()[0], 8)
+        self.conn.execute('delete from circle_public_contacts')
+        self.conn.execute("update circles set circle_name='Different organization'")
+        contacts.import_reviewed(self.conn)
+        self.assertEqual(self.conn.execute('select count(*) from circle_public_contacts').fetchone()[0], 0)
+
+    def test_profile_privacy_and_suppression_survive_reimport(self):
+        contacts.import_reviewed(self.conn)
+        first,second = self.seed[:2]
+        self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (first['circle_id'],))
+        self.conn.execute('insert into circle_public_profiles values(?,0,1)', (second['circle_id'],))
+        contacts.import_reviewed(self.conn)
+        rows = contacts.attach(self.conn, [{'circle_id':r['circle_id'],'public_contact_email':''} for r in self.seed])
+        self.assertEqual([r['public_contact_email'] for r in rows[:2]], ['', ''])
+        self.assertEqual(sum(bool(r['public_contact_email']) for r in rows), 6)
+
+    def test_mailto_has_single_recipient_and_template_and_requires_sender(self):
+        item = self.seed[1]
+        contact = dict(public_contact_email=item['email'], contact_source_url=item['source_url'], contact_purpose=item['purpose'])
+        data = dict(invitation_id='test',subject='合同練習 & ご相談',target_circle_name=item['circle_name'],
+                    sender_label='招待側',body='日時を相談したいです。',status='pending',is_sender=True,contact=contact)
+        markup,_ = ui.detail(data, {'authenticated':True}, 'https://circle-match.jp')
+        soup = BeautifulSoup(markup,'html.parser')
+        mail = urlsplit(soup.select_one('a[href^="mailto:"]')['href'])
+        self.assertEqual(mail.path, item['email'])
+        query = parse_qs(mail.query)
+        self.assertEqual(query['subject'], [data['subject']])
+        self.assertIn('Circle Match', query['body'][0])
+        self.assertIn('https://circle-match.jp/invitations/test', query['body'][0])
+        self.assertIn('この画面では送信されません', soup.get_text())
+        guest,_ = ui.detail(data, {'authenticated':False}, 'https://circle-match.jp')
+        self.assertNotIn(item['email'],guest)
+
+    def test_missing_contact_has_source_fallback(self):
+        markup,_ = ui.compose({'circle_id':'missing','source_url':'https://example.org/contact'}, [], {})
+        self.assertIn('公開問い合わせ先を確認', markup)
+        self.assertNotIn('mailto:', markup)
+
+
+class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_seed_is_available_to_public_search_but_not_claimant_email(self):
+        body = json.loads(self.request('/api/circles?audience=social&q=Bandits')[1])
+        rows = body
+        self.assertTrue(rows)
+        target = next(row for row in rows if 'Bandits' in row['circle_name'])
+        self.assertTrue(target['public_contact_email'])
+        self.assertIn('119837', target['contact_source_url'])
+        self.assertNotIn('claimant_email', target)
+        self.assertNotIn('user_id', target)
+
+    def test_cancellation_sources_and_unknown_state_in_ssr(self):
+        rows = json.loads(self.request('/api/venues')[1])['courts']
+        known = next(r for r in rows if r['id']=='tokyo-sports-014')
+        self.assertEqual(known['fee_ranges'][0]['minimum'],11000)
+        self.assertEqual(known['fee_ranges'][0]['maximum'],13200)
+        self.assertIn('4時間以上',known['cancellation']['summary'])
+        self.assertIsNone(next(r for r in rows if r['id']=='tokyo-sports-013')['cancellation'])
+        html = self.request('/venues?v_q='+quote('高倉体育館'))[1].decode()
+        self.assertIn('公式キャンセル規定',html)
+        self.assertIn('13〜7日前50%',html)
+
+
+if __name__ == '__main__':
+    unittest.main()

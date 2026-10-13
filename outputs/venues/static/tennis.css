@@ -112,9 +112,9 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-column-options label{display:flex;flex-direction:column;gap:4px;font-size:12px;margin:8px 0}
 .venue-directory .venue-column-options input{width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:5px;padding:8px;background:white;color:var(--ink)}
 .venue-directory .venue-column-options button{width:100%;font-size:12px}
-.venue-directory .venue-table>thead th:nth-child(1){width:26%}
+.venue-directory .venue-table>thead th:nth-child(1){width:33%}
 .venue-directory .venue-table>thead th:nth-child(2){width:9%}
-.venue-directory .venue-table>thead th:nth-child(3){width:27%}
+.venue-directory .venue-table>thead th:nth-child(3){width:20%}
 .venue-directory .venue-table>thead th:nth-child(4){width:9%}
 .venue-directory .venue-table>thead th:nth-child(5){width:8%}
 .venue-directory .venue-table>thead th:nth-child(6){width:21%}
