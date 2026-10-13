@@ -2,8 +2,7 @@
 from datetime import date
 import json
 from pathlib import Path
-import re
-from urllib.parse import urlsplit
+from circlematch_contact_research import contact_email, public_url
 
 SEED_PATH = Path(__file__).with_name('circle_public_contacts.json')
 
@@ -21,14 +20,16 @@ def import_reviewed(conn):
     seen = set()
     for item in entries:
         ident = item['circle_id']
-        url = urlsplit(item['source_url'])
-        if (ident in seen or not re.fullmatch(r'[A-Za-z0-9.!#$%&\'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', item['email'])
-                or url.scheme != 'https' or not url.hostname or url.username or url.password or not item['purpose']):
+        contact_email(item['email'])
+        public_url(item['source_url'], True)
+        identity_source = item.get('circle_source_url', item['source_url'])
+        public_url(identity_source, True)
+        if ident in seen or not item['purpose']:
             raise ValueError('Invalid reviewed club contact')
         seen.add(ident)
         date.fromisoformat(item['checked_at'])
         circle = conn.execute('select circle_name,source_url from circles where circle_id=?', (ident,)).fetchone()
-        if not circle or circle['circle_name'].strip() != item['circle_name'].strip() or circle['source_url'] != item['source_url']:
+        if not circle or circle['circle_name'].strip() != item['circle_name'].strip() or circle['source_url'] != identity_source:
             continue
         conn.execute('''insert into circle_public_contacts(circle_id,email,source_url,purpose,checked_at)
             values(?,?,?,?,?) on conflict(circle_id) do update set email=excluded.email,

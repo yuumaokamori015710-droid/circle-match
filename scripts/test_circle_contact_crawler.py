@@ -29,6 +29,17 @@ def club(name="Blue Tennis Club", source="https://university.example/clubs/"):
 
 @unittest.skipIf(crawler.dom is None, "lxml is required for the contact research runtime")
 class CircleContactAttributionTests(unittest.TestCase):
+    def test_adjacent_ascii_headings_are_not_swallowed_as_email_local_part(self):
+        found, _ = self.contacts('''<main><article><h2>Blue Tennis Club</h2></article>
+            <article><h2>Red Football Club</h2><p>red@clubs.example</p></article></main>''',
+            peers=['Blue Tennis Club','Red Football Club'])
+        self.assertEqual(found, [])
+
+    def test_another_article_is_a_boundary_even_for_an_unknown_club(self):
+        found, _ = self.contacts('''<main><article><h2>Blue Tennis Club</h2></article>
+            <article><h2>Unknown Other Club</h2><p>other@clubs.example</p></article></main>''')
+        self.assertEqual(found, [])
+
     def contacts(self, content, name="Blue Tennis Club", peers=None):
         page, parsed = page_html(content)
         return crawler.extract_contacts(club(name), page, parsed, peers or [name])
@@ -170,6 +181,21 @@ class CircleContactAttributionTests(unittest.TestCase):
 
 @unittest.skipIf(crawler.dom is None, "lxml is required for the contact research runtime")
 class CircleContactDiscoveryTests(unittest.TestCase):
+    def test_listing_homepage_field_is_bound_to_exact_club(self):
+        links, _ = self.links('''<main><table>
+            <tr><th>サークル名</th><td>Blue Tennis Club</td></tr>
+            <tr><th>サークル<br>ホームページ</th><td><a href="https://blue.example/">https://blue.example/</a></td></tr>
+            </table><table><tr><th>サークル名</th><td>Other Club</td></tr>
+            <tr><th>サークルホームページ</th><td><a href="https://other.example/">https://other.example/</a></td></tr>
+            </table></main>''', source='https://www.net-menber.com/look/data/2651.html')
+        self.assertEqual(links, ['https://blue.example/'])
+
+    def test_dedicated_club_contact_does_not_follow_university_global_contact(self):
+        markup = '''<main><h1>Blue Tennis Club</h1><section><h2>参加</h2>
+            <a href="/clubs/blue/contact">お問い合わせ</a><a href="/contact">お問い合わせ</a></section></main>'''
+        links, _ = self.links(markup, source='https://university.example/clubs/blue/', dedicated=True)
+        self.assertEqual(links, ['https://university.example/clubs/blue/contact'])
+
     def links(self, content, source="https://university.example/clubs/", dedicated=False):
         _, parsed = page_html(content, source)
         return crawler.next_links(club(source=source), parsed, source, dedicated)

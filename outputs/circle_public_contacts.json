@@ -1,10 +1,2868 @@
 [
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_エン_7aa073dd95","circle_name":"エンジョイミックス フットサル Bandits","email":"futsaloverage@gmail.com","source_url":"https://www.net-menber.com/look/data/119837.html","purpose":"団体募集ページの体験参加・入会窓口。交流の受入可否は相手にご確認ください。","checked_at":"2026-10-14"},
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_mi_ad9c9dc7a2","circle_name":"mixﾌｯﾄｻﾙﾁｰﾑ★ときめきたい","email":"tokimekitai.2015.futsal@gmail.com","source_url":"https://www.net-menber.com/look/data/90738.html","purpose":"団体募集ページの応募・問い合わせ窓口。対戦相手も募集。","checked_at":"2026-10-14"},
-  {"circle_id":"c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_マ_74d7ca8d01","circle_name":"マデーラサッカークラブ","email":"hajimetowa@icloud.com","source_url":"https://www.net-menber.com/look/data/197831.html","purpose":"クラブの応募窓口。社会人トップチームを含む。交流の受入可否は相手にご確認ください。","checked_at":"2026-10-14"},
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_bl_e76205ceda","circle_name":"BLT3nd[ブランク/初級者歓迎]","email":"blt3rd201312@gmail.com","source_url":"https://www.net-menber.com/look/data/6849.html","purpose":"団体の参加・見学問い合わせ窓口。交流の受入可否は相手にご確認ください。","checked_at":"2026-10-14"},
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_al_eb91514b87","circle_name":"All Marine","email":"all.marine.1kara10@gmail.com","source_url":"https://www.net-menber.com/look/data/52098.html","purpose":"団体の活動・参加相談窓口。","checked_at":"2026-10-14"},
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_21_034e229f19","circle_name":"21世紀エンジェルス","email":"pyrenees_2006@yahoo.co.jp","source_url":"https://www.net-menber.com/look/data/29718.html","purpose":"チームの募集ページに掲載された問い合わせ窓口。","checked_at":"2026-10-11"},
-  {"circle_id":"c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_g__9f742fc13f","circle_name":"G-citrusラパン","email":"amuy-310-official@outlook.com","source_url":"https://www.net-menber.com/look/data/231550.html","purpose":"チームの選手募集・問い合わせ窓口。交流の受入可否は相手にご確認ください。","checked_at":"2026-10-11"},
-  {"circle_id":"c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_fu_c75c169259","circle_name":"Funnys 2nd","email":"gamaoyabin0107@gmail.com","source_url":"https://www.net-menber.com/look/data/222223.html","purpose":"団体の参加・質問窓口。交流の受入可否は相手にご確認ください。","checked_at":"2026-10-11"}
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_エン_7aa073dd95",
+    "circle_name": "エンジョイミックス フットサル Bandits",
+    "email": "futsaloverage@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/119837.html",
+    "purpose": "団体募集ページの体験参加・入会窓口。交流の受入可否は相手にご確認ください。",
+    "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_mi_ad9c9dc7a2",
+    "circle_name": "mixﾌｯﾄｻﾙﾁｰﾑ★ときめきたい",
+    "email": "tokimekitai.2015.futsal@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/90738.html",
+    "purpose": "団体募集ページの応募・問い合わせ窓口。対戦相手も募集。",
+    "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_マ_74d7ca8d01",
+    "circle_name": "マデーラサッカークラブ",
+    "email": "hajimetowa@icloud.com",
+    "source_url": "https://www.net-menber.com/look/data/197831.html",
+    "purpose": "クラブの応募窓口。社会人トップチームを含む。交流の受入可否は相手にご確認ください。",
+    "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_bl_e76205ceda",
+    "circle_name": "BLT3nd[ブランク/初級者歓迎]",
+    "email": "blt3rd201312@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/6849.html",
+    "purpose": "団体の参加・見学問い合わせ窓口。交流の受入可否は相手にご確認ください。",
+    "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_al_eb91514b87",
+    "circle_name": "All Marine",
+    "email": "all.marine.1kara10@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/52098.html",
+    "purpose": "団体の活動・参加相談窓口。",
+    "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_21_034e229f19",
+    "circle_name": "21世紀エンジェルス",
+    "circle_source_url": "https://www.net-menber.com/look/data/29718.html",
+    "email": "pyrenees_2006@yahoo.co.jp",
+    "source_url": "https://www.net-menber.com/look/data/29718.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_g__9f742fc13f",
+    "circle_name": "G-citrusラパン",
+    "circle_source_url": "https://www.net-menber.com/look/data/231550.html",
+    "email": "amuy-310-official@outlook.com",
+    "source_url": "https://www.net-menber.com/look/data/231550.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_fu_c75c169259",
+    "circle_name": "Funnys 2nd",
+    "circle_source_url": "https://www.net-menber.com/look/data/222223.html",
+    "email": "gamaoyabin0107@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/222223.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_buff_2f7de4c0c9",
+    "circle_name": "Buff",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "buff.dhu@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/buff/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_bo_0188d72634",
+    "circle_name": "Body Make Club 東京",
+    "circle_source_url": "https://www.net-menber.com/look/data/113234.html",
+    "email": "kazu.workout@protonmail.com",
+    "source_url": "https://www.net-menber.com/look/data/113234.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_90project_a1ed4ba829",
+    "circle_name": "90PROJECT",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "90projectarchive@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/90project/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_dhuアイドル研究会_eba5bb39c2",
+    "circle_name": "DHUアイドル研究会",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "dhu.otakuidol@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dhu-idol/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_dhu_写真部_0725e44d46",
+    "circle_name": "DHU 写真部",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "syashinbu.at.dhu@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dhushasinbu/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_3_3サークル_4e6b8b662a",
+    "circle_name": "3×3サークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23127i@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1776659/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ga_e59f417d38",
+    "circle_name": "GARAN43/35°｜ダンスよさこいチーム",
+    "circle_source_url": "https://www.net-menber.com/look/data/125651.html",
+    "email": "garan4335@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/125651.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_dhu_audio_c_5a71115d96",
+    "circle_name": "DHU Audio Club",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "DHUAudioClub@protonmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dhu-audio-club/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_h_eea04a1145",
+    "circle_name": "HALO",
+    "circle_source_url": "https://circle-book.com/circles/19812",
+    "email": "halovolley@gmail.com",
+    "source_url": "https://circle-book.com/circles/19812",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_dhu_interna_1e140338aa",
+    "circle_name": "DHU International Club（English Club）",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "A25DC213@dhw.ac.jp",
+    "source_url": "https://www.dhw.ac.jp/life/club/dhu-international-club/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_dhuホビー司令部_h_69dbf582ee",
+    "circle_name": "DHUホビー司令部 Hobby ON",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "shireikan745@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dhuhobby-on/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_j_c89a74145b",
+    "circle_name": "J-STORM",
+    "circle_source_url": "https://www.net-menber.com/look/data/5580.html",
+    "email": "j.storm.aoba@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/5580.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_l_882e69fb85",
+    "circle_name": "Lucky² (ラッキー・ラッキー)",
+    "circle_source_url": "https://www.net-menber.com/look/data/3018.html",
+    "email": "mori1396@f01.itscom.net",
+    "source_url": "https://www.net-menber.com/look/data/3018.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ma_c502edc188",
+    "circle_name": "MAC",
+    "circle_source_url": "https://www.net-menber.com/look/data/204362.html",
+    "email": "mac.trekking.experience@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/204362.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_hcup_a222b8ca56",
+    "circle_name": "HCUP",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "a24dc232@dhw.ac.jp",
+    "source_url": "https://www.dhw.ac.jp/life/club/hcup-2/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_n_e9b3f32e6b",
+    "circle_name": "NAGOMI",
+    "circle_source_url": "https://www.net-menber.com/look/data/165727.html",
+    "email": "yoshi-yuna-kenta@au.com",
+    "source_url": "https://www.net-menber.com/look/data/165727.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_inme_78a9686ea2",
+    "circle_name": "INME",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "dhuinternetmemu@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/inme/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_nan_f4a34468fe",
+    "circle_name": "NaN",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "nan.dhucircle@outlook.jp",
+    "source_url": "https://www.dhw.ac.jp/life/club/nan/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_melies_8c75502569",
+    "circle_name": "MELIES",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "melies.dhw@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/melies/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_multicut_e823492bd2",
+    "circle_name": "MULTICUT",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "multicut.dhuclub@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/multicut/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_mvide_8448058e17",
+    "circle_name": "MVide",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "dhu.mvide@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/mvide/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_p_1fa06e2cdc",
+    "circle_name": "Pleiades",
+    "circle_source_url": "https://www.net-menber.com/look/data/10141.html",
+    "email": "pleiades.liaison@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/10141.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_k_popダンスサークル_crown_ce578f9d06",
+    "circle_name": "K-POPダンスサークル（CROWN）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240476i@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777486/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_ochas_b0f1eb0993",
+    "circle_name": "Ochas",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/r_extracurricular-activities.html",
+    "email": "Ochas.chaco@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/ochas.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_sh_cc98691ce1",
+    "circle_name": "SHUES(短距離)",
+    "circle_source_url": "https://www.net-menber.com/look/data/164125.html",
+    "email": "rinrin-star1995@docomo.ne.jp",
+    "source_url": "https://www.net-menber.com/look/data/164125.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_st_fb17bfd33d",
+    "circle_name": "STRIKE",
+    "circle_source_url": "https://www.net-menber.com/look/data/231536.html",
+    "email": "strike.tokyo@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/231536.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_sb_67ad22fcff",
+    "circle_name": "SBDB(シャバダバ)",
+    "circle_source_url": "https://www.net-menber.com/look/data/188933.html",
+    "email": "zero.custom4@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/188933.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_vi_8ea922073f",
+    "circle_name": "ViReBo（バリボ）",
+    "circle_source_url": "https://www.net-menber.com/look/data/60668.html",
+    "email": "junjun.soccer551@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/60668.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_yo_43cf4a9854",
+    "circle_name": "YOSAKOIソーランチーム 倭奏（わっか）関東支部",
+    "circle_source_url": "https://www.net-menber.com/look/data/110732.html",
+    "email": "wakka.kantou@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/110732.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_physical_ho_8174f1d6fa",
+    "circle_name": "Physical Hollywood",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "A24DC025@dhw.ac.jp",
+    "source_url": "https://www.dhw.ac.jp/life/club/physical-hollywood/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_as_30e427320d",
+    "circle_name": "ashinis",
+    "circle_source_url": "https://www.net-menber.com/look/data/44691.html",
+    "email": "ashinis.tennis@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/44691.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_ttt_644d8a8a52",
+    "circle_name": "TtT",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "ttt0305.1750@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/ttt/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_fi_5a38998b22",
+    "circle_name": "fight10(ファイテン)",
+    "circle_source_url": "https://www.net-menber.com/look/data/74403.html",
+    "email": "imoimooimo.crazy@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/74403.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_f_e22ad8bf2f",
+    "circle_name": "freelance",
+    "circle_source_url": "https://www.net-menber.com/look/data/55414.html",
+    "email": "basketballteamfreelance@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/55414.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_vrサークル_next_frame_698da1e7f4",
+    "circle_name": "VRサークル（Next Frame）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240369r@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1778097/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_zero_7f3c9c723c",
+    "circle_name": "ZERO",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "zerokara.dhw@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/zero/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_電気通信大学_0a321e96ad_uecポケモンだいすきクラブ_8314006990",
+    "circle_name": "UECポケモンだいすきクラブ",
+    "circle_source_url": "https://www.uec.ac.jp/campus/extracurricular/club.html",
+    "email": "uecpokemon@gmail.com",
+    "source_url": "https://uecpokemon.hatenablog.jp/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_e_sports愛好会_dce962d7c0",
+    "circle_name": "e-Sports愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "i24076sz@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/e_sports/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_rosen_berg_山の会_2cb95252ec",
+    "circle_name": "ROSEN BERG 山の会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "rosenbergyamanokai@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports86/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_caving_club_943391e400",
+    "circle_name": "Caving Club",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/",
+    "email": "cavingclub4851@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture26/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_vo_cad33f3ae5",
+    "circle_name": "volare北多摩",
+    "circle_source_url": "https://www.net-menber.com/look/data/136272.html",
+    "email": "volare01volley@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/136272.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ym_867a7f4b12",
+    "circle_name": "yms＆どんぐり 【町田市・相模原市】",
+    "circle_source_url": "https://www.net-menber.com/look/data/90061.html",
+    "email": "ajfpn218@ybb.ne.jp",
+    "source_url": "https://www.net-menber.com/look/data/90061.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27__ミ_0e11cc6a8b",
+    "circle_name": "☆ミリオンスマイル☆",
+    "circle_source_url": "https://www.net-menber.com/look/data/132890.html",
+    "email": "aye.monchi@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/132890.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9__中_d9d0cecb59",
+    "circle_name": "【中学生】アルティメットクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/229465.html",
+    "email": "murakami@red-s.net",
+    "source_url": "https://www.net-menber.com/look/data/229465.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_do_it_your_voice_f96f612c8e",
+    "circle_name": "Do it your voice",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/",
+    "email": "doituneikai26@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture111/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_おちゃっこlab_b4e743a29e",
+    "circle_name": "おちゃっこLab.",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/r_extracurricular-activities.html",
+    "email": "ochalab2017@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/lab.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_vente_us_e3dc23d15e",
+    "circle_name": "vente us",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "vente.us.dhu@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/vente-us/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_お茶の水管弦楽団_72bae6027a",
+    "circle_name": "お茶の水管弦楽団",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ochakan.kouhou@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/ochakan.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_お笑い研究部築笑会_653a4e3d6a",
+    "circle_name": "お笑い研究部築笑会",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daito.ochiken.2@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03618",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_てらこや_fcd1d6714e",
+    "circle_name": "てらこや",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "terakoya269@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/terakoya/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_でさいん_ゆ_fe5608ae3a",
+    "circle_name": "でさいん〈ゆ〉",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "yudesign0519@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dezainu/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_み_0a9eff7dba",
+    "circle_name": "みなとみらいのんびりラン",
+    "circle_source_url": "https://www.net-menber.com/look/data/10690.html",
+    "email": "nonbirirun3710@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/10690.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_ふてさぁ_69a8efee46",
+    "circle_name": "ふてさぁ。",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "fute.circle@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/fute/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_itl_ai研究会_dfbf55b110",
+    "circle_name": "iTL AI研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "itlaigroup2021@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture115/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京経済大学_8994428392_アカペラサークル_3f6937ee37",
+    "circle_name": "アカペラサークル",
+    "circle_source_url": "https://www.tku.ac.jp/campus/club/bunkakai.html",
+    "email": "beatbaby@tku.ac.jp",
+    "source_url": "http://www.tku-bunka.com/introduction/detail/id=113",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_アト_dd502596b4",
+    "circle_name": "アトム",
+    "circle_source_url": "https://www.net-menber.com/look/data/227444.html",
+    "email": "atomoohara2024@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/227444.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_itl国際交流サークル_181ffb5711",
+    "circle_name": "iTL国際交流サークル",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "itlglobal.icc@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture114/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_itl_all_sports_サーク_e4f93b65e7",
+    "circle_name": "iTL All Sports サークル",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "itlallsports.1110@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports114/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_アメリカンフットボール部_970b41e1f2",
+    "circle_name": "アメリカンフットボール部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "webmaster@ku-kaisers.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00056",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_アーチェリー部_bdcf8fd6f1",
+    "circle_name": "アーチェリー部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kuarcheryteam@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00052",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_アカペラサークル__音もだち_71ddd7b859",
+    "circle_name": "アカペラサークル（～音もだち～）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240474k@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/148/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ウィ_21372bf33c",
+    "circle_name": "ウィリーズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/107301.html",
+    "email": "willyz.b.c@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/107301.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_itl_コンテンツプロダクション_f2b6a79e1f",
+    "circle_name": "iTL コンテンツプロダクション",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/",
+    "email": "itl.contects.production@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture116/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_アウトドアサークル_c9670514d8",
+    "circle_name": "アウトドアサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23046s@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777485/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_オフ_94529250b6",
+    "circle_name": "オフィスワーカーズ空手クラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/726.html",
+    "email": "officeworkerskarateclub@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/726.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_千葉大学_7d10a4a9d0_ギタークラブ_d32f6d0c5d",
+    "circle_name": "ギタークラブ",
+    "circle_source_url": "https://www.chiba-u.ac.jp/campus-life/club/",
+    "email": "cgc.web@gmail.com",
+    "source_url": "http://cgc.zouri.jp/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_エ_aba8aec6a2",
+    "circle_name": "エムビー",
+    "circle_source_url": "https://www.net-menber.com/look/data/185650.html",
+    "email": "gntbb390@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/185650.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0__中大スポーツ_新聞部_a0c0c45301",
+    "circle_name": "「中大スポーツ」新聞部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chu-spo@hotmail.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports34/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_アメコミ_ハリウッド_be0b515822",
+    "circle_name": "アメコミ・ハリウッド",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "amekomihariuddo@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/american-comic-book-hollywood/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京経済大学_8994428392_ギタークラブ_ac3f9dcb82",
+    "circle_name": "ギタークラブ",
+    "circle_source_url": "https://www.tku.ac.jp/campus/club/bunkakai.html",
+    "email": "guitar_c@tku.ac.jp",
+    "source_url": "http://www.tku-bunka.com/introduction/detail/id=112",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京経済大学_8994428392_グリークラブ_44c4b2f12b",
+    "circle_name": "グリークラブ",
+    "circle_source_url": "https://www.tku.ac.jp/campus/club/bunkakai.html",
+    "email": "gleeclub@tku.ac.jp",
+    "source_url": "http://www.tku-bunka.com/introduction/detail/id=100",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_明治大学_駿河台キャンパス_6413fd9af5_グリークラブ_36a75b226c",
+    "circle_name": "グリークラブ",
+    "circle_source_url": "https://www.meiji.ac.jp/campus/circle/og.html",
+    "email": "meiji.gleeclub@gmail.com",
+    "source_url": "http://meiji-glee.net/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_こだま会_c984dc4d5b",
+    "circle_name": "こだま会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuokodama@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture33/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_グロ_1308bcf987",
+    "circle_name": "グロリアス",
+    "circle_source_url": "https://www.net-menber.com/look/data/5660.html",
+    "email": "kujilove8@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/5660.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_サ_a1e287e3f6",
+    "circle_name": "サタデーズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/59070.html",
+    "email": "renavsjyurina@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/59070.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_ギタークラブ_d9e77da0a8",
+    "circle_name": "ギタークラブ",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daito.guitarclub@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03632",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_サッカー部_14913349a3",
+    "circle_name": "サッカー部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kufc_form@yahoo.co.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00065",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_コメハリ_1b96230b8a",
+    "circle_name": "コメハリ",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "a25dc052@dhw.ac.jp",
+    "source_url": "https://www.dhw.ac.jp/life/club/kome/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_ゴルフ部_4e88ce4561",
+    "circle_name": "ゴルフ部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23410s@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/174/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_サッカー部_f58c1abbd4",
+    "circle_name": "サッカー部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23481a@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/173/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_サバイバルゲームサークル_c806344af1",
+    "circle_name": "サバイバルゲームサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240906y@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/166/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_スキー競技部_db9a23817c",
+    "circle_name": "スキー競技部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kansai.univ.skiteam@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00075",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_スポーツチャンバラ部_フィアナ_caaf13d5cf",
+    "circle_name": "スポーツチャンバラ部（フィアナ）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240375h@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1776646/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_アニメーション研究会_6b40ddedfb",
+    "circle_name": "アニメーション研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "cacc4508@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture55/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ター_e5ab2b12d7",
+    "circle_name": "ターキッシュブルー",
+    "circle_source_url": "https://www.net-menber.com/look/data/217644.html",
+    "email": "turkishblue2@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/217644.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_日本体育大学_27032ffe18_チアリーダー部_930a63f3c5",
+    "circle_name": "チアリーダー部",
+    "circle_source_url": "https://www.nittai.ac.jp/club/",
+    "email": "vortexnittai@gmail.com",
+    "source_url": "https://blog.nittai.ac.jp/cheerleader/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_キリスト者学生会_a7564a567e",
+    "circle_name": "キリスト者学生会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.kgk@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture60/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_日本体育大学_27032ffe18_トライアスロン部_3a1a4c07b3",
+    "circle_name": "トライアスロン部",
+    "circle_source_url": "https://www.nittai.ac.jp/club/",
+    "email": "triathlonnittaidai@gmail.com",
+    "source_url": "https://blog.nittai.ac.jp/triathlon/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_ド_28f5edb814",
+    "circle_name": "ドラゴンボート ageha-揚羽-",
+    "circle_source_url": "https://www.net-menber.com/look/data/115266.html",
+    "email": "dragonboat.ageha@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/115266.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_クイズサークルoz_d2866b8bd7",
+    "circle_name": "クイズサークルOZ",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "oz21century@hotmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture61/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_クラシックピアノ同好会_e475ca19a2",
+    "circle_name": "クラシックピアノ同好会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "clapi.chuo.u@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture62/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_デジタルハリウッド特撮_d21a975741",
+    "circle_name": "デジタルハリウッド特撮文化研究隊（DTCG） 通称：デ特隊",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "dtcg.official2025@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/detokutai/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京経済大学_8994428392_ハワイアンクラブ_48df6803a2",
+    "circle_name": "ハワイアンクラブ",
+    "circle_source_url": "https://www.tku.ac.jp/campus/club/bunkakai.html",
+    "email": "hawaiian@tku.ac.jp",
+    "source_url": "http://www.tku-bunka.com/introduction/detail/id=123",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ジャグリングサークルorbit_55ed28adcc",
+    "circle_name": "ジャグリングサークルOrbit",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.juggling@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture119/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_バスケットボールサークル_75a05d7c56",
+    "circle_name": "バスケットボールサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240230n@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/171/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ジャーナリズム研究会_50fcf71332",
+    "circle_name": "ジャーナリズム研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "j_society4417@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture69/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_バスケットボール同好会_kiffe_fc7b1a5938",
+    "circle_name": "バスケットボール同好会［Kiffer］",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "m22094ae@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/basket_aikoukai/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_バスケットボール部_137323700d",
+    "circle_name": "バスケットボール部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kandai_kw@yahoo.co.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00084",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_バド_49773a5a5f",
+    "circle_name": "バドミントンクラブ UNITED A",
+    "circle_source_url": "https://www.net-menber.com/look/data/231616.html",
+    "email": "onceagain.re37@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/231616.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_バドミントンサークル_e38243a27c",
+    "circle_name": "バドミントンサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23404r@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/170/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_バスケットボール部_5245b139b3",
+    "circle_name": "バスケットボール部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240768h@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/183/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_千葉大学_7d10a4a9d0_バドミントン部_9ed7a0c3bb",
+    "circle_name": "バドミントン部",
+    "circle_source_url": "https://www.chiba-u.ac.jp/campus-life/club/",
+    "email": "chibadaiopen@gmail.com",
+    "source_url": "https://chibaunivbadminton.fc2.page/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_日本体育大学_27032ffe18_バドミントン部_f4da0f1768",
+    "circle_name": "バドミントン部",
+    "circle_source_url": "https://www.nittai.ac.jp/club/",
+    "email": "otsuka@nittai.ac.jp",
+    "source_url": "https://blog.nittai.ac.jp/badminton/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ソフトボール部_c1512035b6",
+    "circle_name": "ソフトボール部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuosoftball@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports31/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_バドミントン愛好会_98cff0ca0b",
+    "circle_name": "バドミントン愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "h24006az@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/badminton_club/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_バレーボール部_5d90da7639",
+    "circle_name": "バレーボール部",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ochavolley@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/volley.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_バレーボール部_a108942ea4",
+    "circle_name": "バレーボール部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kandai.volley@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00086",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_電気通信大学_0a321e96ad_ピアノの会_eb1bf897e6",
+    "circle_name": "ピアノの会",
+    "circle_source_url": "https://www.uec.ac.jp/campus/extracurricular/club.html",
+    "email": "uec.piano@gmail.com",
+    "source_url": "https://www.piano.club.uec.ac.jp/contact-us/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_バドミントン部_0e670a912b",
+    "circle_name": "バドミントン部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23400i@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777442/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ハイキング部_efc20c3c58",
+    "circle_name": "ハイキング部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.hikingclub@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports74/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_フ_8edd7b2fdb",
+    "circle_name": "ファイヤーズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/114505.html",
+    "email": "hideby0825@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/114505.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_タップダンスサークル_freihei_07ca2f98c9",
+    "circle_name": "タップダンスサークル Freiheit",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "freiheit_l@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_フ_7a398dc753",
+    "circle_name": "ファイティング亀井野",
+    "circle_source_url": "https://www.net-menber.com/look/data/197068.html",
+    "email": "f.kameino@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/197068.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_ピアノ班_3951fc15be",
+    "circle_name": "ピアノ班",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/r_extracurricular-activities.html",
+    "email": "ochapianohan@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/piano.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_バレーボールサークル_1bbb833c6d",
+    "circle_name": "バレーボールサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240120r@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/162/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_バレーボール愛好会_574e4695ca",
+    "circle_name": "バレーボール愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c25054hu@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/volleyclub/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ハンドボール部_e6b2ed3935",
+    "circle_name": "ハンドボール部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuounivhand@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports41/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_フレーバーフレグランス同好会_0802a08293",
+    "circle_name": "フレーバーフレグランス同好会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh140@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/flavor_fragrance/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_フォークソング研究会_e660e57fda",
+    "circle_name": "フォークソング研究会",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240313i@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/151/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_バスケットボール部_d2dd099251",
+    "circle_name": "バスケットボール部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.basket@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports37/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_フットサルサークル_フットサルメン_6856da06fa",
+    "circle_name": "フットサルサークル（フットサルメン）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240100m@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777768/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_ホッケー部_ebb19b9731",
+    "circle_name": "ホッケー部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kaisers.hockey@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00090",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_フットサル愛好会_2170a6a042",
+    "circle_name": "フットサル愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c24046kr@gmail.com",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/futsal/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_専修大学_d1796d00ff_ボランティア活動研究会_樹々の会_4155cc26a3",
+    "circle_name": "ボランティア活動研究会「樹々の会」",
+    "circle_source_url": "https://www.senshu-u.ac.jp/campuslife/activity/club/culture.html#020",
+    "email": "jbaba@isc.senshu-u.ac.jp",
+    "source_url": "https://www.senshu-u.ac.jp/campuslife/activity/club/culture.html",
+    "purpose": "大学の団体紹介に掲載された活動連絡先（顧問教員窓口）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京経済大学_8994428392_ボランティアサークル_clove_a7448048e0",
+    "circle_name": "ボランティアサークル Clover",
+    "circle_source_url": "https://www.tku.ac.jp/campus/club/bunkakai.html",
+    "email": "clover@tku.ac.jp",
+    "source_url": "http://www.tku-bunka.com/introduction/detail/id=278",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_プアンサークル_f0f97198f9",
+    "circle_name": "プアンサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240486m@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777466/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_プリティーサークル_99d1d6e71a",
+    "circle_name": "プリティーサークル",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "pretty.series.dh.club@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/pretty/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ユナ_3efc578402",
+    "circle_name": "ユナイツ",
+    "circle_source_url": "https://www.net-menber.com/look/data/201998.html",
+    "email": "unites.tokyo@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/201998.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_ポケモンサークル_ee325ea45f",
+    "circle_name": "ポケモンサークル",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "pokemoncircle0475@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/pokemon/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_ボードゲーム愛好会_b72515a17f",
+    "circle_name": "ボードゲーム愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c24807yv@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/bordgame/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_岩手大学_09afecc654_マンドリンクラブ_aec13ce6b5",
+    "circle_name": "マンドリンクラブ",
+    "circle_source_url": "https://www.iwate-u.ac.jp/campus/activity/club.html",
+    "email": "gandaimandolin@gmail.com",
+    "source_url": "https://www.iwate-u.ac.jp/upload/7ac85c881bb63acdab0a109444504d74.pdf",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_ラグビーフットボール部_b5940651d6",
+    "circle_name": "ラグビーフットボール部",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "o_rugby@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/rugby/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京国際大学_ed236b2964_ラグビー部_2558dcc164",
+    "circle_name": "ラグビー部",
+    "circle_source_url": "https://www.tiu.ac.jp/campus/club/",
+    "email": "tiurfc.shumu@gmail.com",
+    "source_url": "https://club-rugbytokyo.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_ラグビー部_eba917b232",
+    "circle_name": "ラグビー部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kurft1923@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00094",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_リベ_73059ba3a5",
+    "circle_name": "リベリオン",
+    "circle_source_url": "https://www.net-menber.com/look/data/223148.html",
+    "email": "rebellion.tky@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/223148.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_フットサル部_0c1dce6913",
+    "circle_name": "フットサル部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.futsal.club2020@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports113/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ボクシング部_d70474f12e",
+    "circle_name": "ボクシング部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuoboxing@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports44/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ホッケー部_f53fc80750",
+    "circle_name": "ホッケー部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuofieldhockey@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports45/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_ロック研究会_56497a0ba2",
+    "circle_name": "ロック研究会",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240823k@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/150/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_上_4803c4d011",
+    "circle_name": "上矢部バレーボールクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/34694.html",
+    "email": "yasgin@icloud.com",
+    "source_url": "https://www.net-menber.com/look/data/34694.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_不乱_cf77654282",
+    "circle_name": "不乱健酒多飲(ふらんけんしゅたいん)",
+    "circle_source_url": "https://www.net-menber.com/look/data/47338.html",
+    "email": "frankenstein.kazuma@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/47338.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_モダンジャズ研究会_ccabe2c207",
+    "circle_name": "モダンジャズ研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "modanjazzkenkyukai@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture80/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ライフセービング部_f03f91989d",
+    "circle_name": "ライフセービング部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "clsc.ga@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports106/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京工芸大学_d65846ccba_中野祭実行委員会_741ab27957",
+    "circle_name": "中野祭実行委員会",
+    "circle_source_url": "https://www.t-kougei.ac.jp/campuslife/club/",
+    "email": "nakano.jitsui@st.t-kougei.ac.jp",
+    "source_url": "https://nakanosai.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_久喜_2bbe85fa02",
+    "circle_name": "久喜市 シニアチアダンスチーム「Ruby」",
+    "circle_source_url": "https://www.net-menber.com/look/data/192074.html",
+    "email": "ruby.cheer.team@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/192074.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_中国語研究会_532a9a663e",
+    "circle_name": "中国語研究会",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "zhongguoyuyanjiubu3@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03621",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ラクロス部_1e12ee6d62",
+    "circle_name": "ラクロス部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "bandits8125mg@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports107/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_武蔵野美術大学_41e63619fe_人形劇団ダニ族_04406a10cd",
+    "circle_name": "人形劇団ダニ族",
+    "circle_source_url": "https://www.musabi.ac.jp/student_life/activity/club/",
+    "email": "danizoku1108@gmail.com",
+    "source_url": "https://lit.link/danizoku",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_乳製品研究会_979eec9af2",
+    "circle_name": "乳製品研究会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh120@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/dairy/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_元_32b9d7b1ec",
+    "circle_name": "元住吉JVC",
+    "circle_source_url": "https://www.net-menber.com/look/data/150968.html",
+    "email": "motosumiyoshijvc@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/150968.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ラグビー部_2f743be03c",
+    "circle_name": "ラグビー部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo_u_rugby@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports48/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_専修大学_d1796d00ff_全学応援団_リーダー部_チアリーダー_d83f3729b8",
+    "circle_name": "全学応援団(リーダー部・チアリーダー部・吹奏楽部）",
+    "circle_source_url": "https://www.senshu-u.ac.jp/campuslife/activity/club/other.html#002",
+    "email": "s.ouen@me.com",
+    "source_url": "https://www.senshu-u.ac.jp/campuslife/activity/club/other.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_和光大学_b43952f0d2_全学サークル連合_2e8bc61272",
+    "circle_name": "全学サークル連合",
+    "circle_source_url": "https://www.wako.ac.jp/campuslife/extracurriculars/club-introduction.html",
+    "email": "wako.rengo@gmail.com",
+    "source_url": "https://www.wako.ac.jp/campuslife/extracurriculars/club-introduction.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_レスリング部_c249696be9",
+    "circle_name": "レスリング部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo-u-wrestling@outlook.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports50/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_剣道同好会_d5f13b3726",
+    "circle_name": "剣道同好会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/setagaya/",
+    "email": "nodaidendo@yahoo.do.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/setagaya/dokokai/kendo/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_ワンダーフォーゲル部_2ce66561f3",
+    "circle_name": "ワンダーフォーゲル部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "wangel.shumu@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports51/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_劇団虚構_8193ae328d",
+    "circle_name": "劇団虚構",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "gekidankyokou.twitter@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03630",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_古武道部_d92ad0bf0f",
+    "circle_name": "古武道部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kobudo.kansai.u@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00063",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_劇工舎プリズム_1db77b7390",
+    "circle_name": "劇工舎プリズム",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/r_extracurricular-activities.html",
+    "email": "g-prism@live.jp",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/prism.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_合気_af2d851648",
+    "circle_name": "合気道 一心会（渋谷区道場）",
+    "circle_source_url": "https://www.net-menber.com/look/data/147398.html",
+    "email": "aikido.isshinnkai@gmai.com",
+    "source_url": "https://www.net-menber.com/look/data/147398.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_立教大学_1470bc0ca5_合気道会_abeeefcd15",
+    "circle_name": "合気道会",
+    "circle_source_url": "https://www.rikkyo.ac.jp/campuslife/support/extracurricular_activities/club_activities.html",
+    "email": "aikidokai.r@gmail.com",
+    "source_url": "https://aikidoclub-rikkyouniv.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_中央かるた会_80ec3dc06b",
+    "circle_name": "中央かるた会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chudai.karuta@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture122/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_五葉会_c8658a2a00",
+    "circle_name": "五葉会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "goyokai.since1928@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture34/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_人形劇サークル_しゃぼん玉_86f44bd5dc",
+    "circle_name": "人形劇サークル「しゃぼん玉」",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "shabon.c@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture75/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_合気道同好会_5fccacd311",
+    "circle_name": "合気道同好会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh070@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/aikido/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_合気道部_6e5719eeb2",
+    "circle_name": "合気道部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kandaiaiki@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00053",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_品川_57634914f5",
+    "circle_name": "品川ユース【女子６・男子６、男女積極募集中】",
+    "circle_source_url": "https://www.net-menber.com/look/data/58765.html",
+    "email": "shinagawayouth@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/58765.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_国際インターンシップサポート_e7c16a0c07",
+    "circle_name": "国際インターンシップサポート団体・IAESTE",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "tlsc@iaeste.or.jp",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/intern.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_吹奏楽団_f725656b8e",
+    "circle_name": "吹奏楽団",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "wildcats.daito@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03622",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_女子サッカー部_4fa31e4c78",
+    "circle_name": "女子サッカー部",
+    "circle_source_url": "https://www.daito.ac.jp/sports/",
+    "email": "daito.fussball@gmail.com",
+    "source_url": "https://www2.ic.daito.ac.jp/ryu/fussball/homu.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_児童文学研究会イーハトーヴ_1e4303ccc3",
+    "circle_name": "児童文学研究会イーハトーヴ",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "ohnyudo@ezweb.ne.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture68/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_合気道部_2d18124f69",
+    "circle_name": "合気道部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.aiki@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports01/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_剣道部_e6d83808ef",
+    "circle_name": "剣道部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo_dennbeya@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports08/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_学生懇談会_c2337e6c41",
+    "circle_name": "学生懇談会",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/index.html",
+    "email": "info@cc.ocha.ac.jp",
+    "source_url": "https://www.ocha.ac.jp/campuslife/info/student_meeting_2024.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_史学研究会_0773725c52",
+    "circle_name": "史学研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "sigakuken@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture66/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_国際政治経済研究会_d8c5f2b0df",
+    "circle_name": "国際政治経済研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.kokusaiseiji@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture82/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_卓球同好会_0d1e277d8a",
+    "circle_name": "卓球同好会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "takudo.chuo@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports67/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_弓道部_a49da4a4bd",
+    "circle_name": "弓道部",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ocha.qd@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/kyudo.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_室内球技愛好会_e90ae14dc1",
+    "circle_name": "室内球技愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "m24047db@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/indoor_sports/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_弓道部_655c18e8a2",
+    "circle_name": "弓道部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kansai.u.kyudo@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00059",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_弓道愛好会_143716ed0a",
+    "circle_name": "弓道愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c24007sy@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/kyudo/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_日本体育大学_27032ffe18_応援団部_db0c16fbcd",
+    "circle_name": "応援団部",
+    "circle_source_url": "https://www.nittai.ac.jp/club/",
+    "email": "nittai.cheeringsection@gmail.com",
+    "source_url": "https://blog.nittai.ac.jp/cheering-squad/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_和太鼓サークル_鼓央_d9e5bf8193",
+    "circle_name": "和太鼓サークル 鼓央",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "kooh.note@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture30/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_弓道部_f0f735371b",
+    "circle_name": "弓道部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a250950s@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/177/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_立教大学_1470bc0ca5_手話サークルテブクロ_266c51e3af",
+    "circle_name": "手話サークルテブクロ",
+    "circle_source_url": "https://www.rikkyo.ac.jp/campuslife/support/extracurricular_activities/club_activities.html",
+    "email": "tebukuro_rikkyo@yahoo.co.jp",
+    "source_url": "https://tebukurorikkyo.wixsite.com/tebukuro-rikkyo",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_弦楽部_bf1ab8073e",
+    "circle_name": "弦楽部",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c24062xh@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/gengaku/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_寺社巡りサークル_219b57b306",
+    "circle_name": "寺社巡りサークル",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.jishameguri@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture118/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_明治学院大学_156eb24f14_戸塚まつり準備会_f5de74f1ba",
+    "circle_name": "戸塚まつり準備会",
+    "circle_source_url": "https://www.meijigakuin.ac.jp/campuslife/activity/",
+    "email": "maturi@mail1.meijigakuin.ac.jp",
+    "source_url": "https://www.meijigakuin.ac.jp/campuslife/festa/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_拳法部_f4a7affb04",
+    "circle_name": "拳法部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kempobu@ku-kempo.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00061",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_射撃部_a7fb25c0a3",
+    "circle_name": "射撃部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuouniv123@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports18/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_料理愛好会_4bc35ab191",
+    "circle_name": "料理愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "i25018rx@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/cooking_club/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_山岳部_f8c9ab463a",
+    "circle_name": "山岳部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.alpine.club@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports15/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_日本_1d165d97a5",
+    "circle_name": "日本橋バドミントンクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/49584.html",
+    "email": "htm.knm.923@i.softbank.jp",
+    "source_url": "https://www.net-menber.com/look/data/49584.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_弓道部_5ef50279ed",
+    "circle_name": "弓道部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "c.kyudo1924@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports07/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_星_14aa95e29b",
+    "circle_name": "星河一天 〜せいがいってん〜",
+    "circle_source_url": "https://www.net-menber.com/look/data/97292.html",
+    "email": "seigaitten.yosakoi2018@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/97292.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_情報工学研究部_a0b99e1cf8",
+    "circle_name": "情報工学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "jouken.chuo@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture92/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_映画制作部_21c3d6a87c",
+    "circle_name": "映画制作部",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daito.eiken@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03635",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_春日_c44a1c76fb",
+    "circle_name": "春日部市 シニアチアダンス『Venus』〜ヴィーナス〜",
+    "circle_source_url": "https://www.net-menber.com/look/data/213802.html",
+    "email": "cocosan-cream-1018@ezweb.ne.jp",
+    "source_url": "https://www.net-menber.com/look/data/213802.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_技術問題研究会_9ea84cf6a3",
+    "circle_name": "技術問題研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "giken2013@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture90/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_拳法部_c1401750ad",
+    "circle_name": "拳法部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.kempo@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports09/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_月_46159d5375",
+    "circle_name": "月明かりのミントス",
+    "circle_source_url": "https://www.net-menber.com/look/data/12141.html",
+    "email": "analog_circuit_136@outlook.jp",
+    "source_url": "https://www.net-menber.com/look/data/12141.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_書道部_7bc28f71fc",
+    "circle_name": "書道部",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daito104shodobu@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03625",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_探検部_14dfa7589e",
+    "circle_name": "探検部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuouuniversity.tankennbu@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture42/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_東京_88b2877b48",
+    "circle_name": "東京JRC(東京Japanレーシングクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/123851.html",
+    "email": "tokyo.jrc2021@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/123851.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_千葉大学_7d10a4a9d0_東洋医学研究会_a51b285c2d",
+    "circle_name": "東洋医学研究会",
+    "circle_source_url": "https://www.chiba-u.ac.jp/campus-life/club/",
+    "email": "touiken.cu@gmail.com",
+    "source_url": "http://touikenncu.web.fc2.com/index.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_数学研究部_5af9b3904a",
+    "circle_name": "数学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo61102suken@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture93/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_未来農研究会_da7002b6ce",
+    "circle_name": "未来農研究会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh170@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/mirainou/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_服飾愛好会_b7701bb415",
+    "circle_name": "服飾愛好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "i24026kz@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/rebirth/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_民族舞踊研究会_21806fd8d4",
+    "circle_name": "民族舞踊研究会",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "tofdc.bucho@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/ethnic_dance.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_書道会_8b3a05a749",
+    "circle_name": "書道会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "umenoma4404@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture39/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_水上競技部_99aa8989ff",
+    "circle_name": "水上競技部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "aquakaisers@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00074",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_水無_b23b265e28",
+    "circle_name": "水無月バレーボールクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/72772.html",
+    "email": "okawalikun@hotmail.co.jp",
+    "source_url": "https://www.net-menber.com/look/data/72772.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_模擬国連団体_6f2234616b",
+    "circle_name": "模擬国連団体",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240667a@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777778/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_映画研究会_4fe92ebc5f",
+    "circle_name": "映画研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuoeiken@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture11/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_棋道会_f477cf988b",
+    "circle_name": "棋道会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chudaishogi@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture25/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_準硬式野球部_3b5bddca41",
+    "circle_name": "準硬式野球部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kansai-u.jbaseball@outlook.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00072",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_新聞学会_3c2c9afe36",
+    "circle_name": "新聞学会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "cupress1928@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture40/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_星友会_3518eae685",
+    "circle_name": "星友会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "seiyukai.hakumon@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture84/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_漕艇部_f6d5feafed",
+    "circle_name": "漕艇部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kandai_rowing@yahoo.co.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00077",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_武蔵野美術大学_41e63619fe_漫画研究会_1e18584331",
+    "circle_name": "漫画研究会",
+    "circle_source_url": "https://www.musabi.ac.jp/student_life/activity/club/",
+    "email": "1970maucl@gmail.com",
+    "source_url": "https://maucl.tumblr.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_漫画研究会_ad2d23e8d4",
+    "circle_name": "漫画研究会",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ocha.manken@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/manga.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_民族音楽研究会_jameal_91d5feae96",
+    "circle_name": "民族音楽研究会（JaMEAL）",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23620t@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777483/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_演劇部_居残りの会_dd28f55e54",
+    "circle_name": "演劇部＜居残りの会＞",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "h24071rm@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/engeki/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_海空法研究会_79491755bf",
+    "circle_name": "海空法研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "1chuo.kaiku@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture03/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_法学会_fafb3ea3cc",
+    "circle_name": "法学会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "hougakukai4431@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture10/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_物理学研究部_a73b8991f0",
+    "circle_name": "物理学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuobkkn@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture98/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工サイクリング同好会_dfad23dc47",
+    "circle_name": "理工サイクリング同好会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuorikoucycling@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports91/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_琴和道会_0d6eb921f9",
+    "circle_name": "琴和道会",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daito.kotowa@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03628",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工ボート部_03e8f7b1da",
+    "circle_name": "理工ボート部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "rikourowing@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports93/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工ワンダーフォーゲルクラブ_db0cf86deb",
+    "circle_name": "理工ワンダーフォーゲルクラブ",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo.rikou.wangeru@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports94/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_白ばら会合唱団_a5a2f969f1",
+    "circle_name": "白ばら会合唱団",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "choirshirobara@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/shirobara.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工ジャズ研究会_a36203fec1",
+    "circle_name": "理工ジャズ研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.u.rikou.jazz@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture102/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工合唱団_0391ad1fc1",
+    "circle_name": "理工合唱団",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.riko.chorus@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture101/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_立教大学_1470bc0ca5_相撲部_35e97f7dff",
+    "circle_name": "相撲部",
+    "circle_source_url": "https://www.rikkyo.ac.jp/campuslife/support/extracurricular_activities/club_activities.html",
+    "email": "rikkyosumo@yahoo.co.jp",
+    "source_url": "http://www.rikkyo.ne.jp/sgrp/sumo/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_硬式テニスサークル_af63b06458",
+    "circle_name": "硬式テニスサークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240452y@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/165/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_硬式テニス部_4ab5455254",
+    "circle_name": "硬式テニス部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240473k@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/184/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_作新学院大学_e3516ea398_硬式野球部_e975a8fbab",
+    "circle_name": "硬式野球部",
+    "circle_source_url": "https://www.sakushin-u.ac.jp/club/page.php?id=656",
+    "email": "baseball@sakushin-u.ac.jp",
+    "source_url": "https://www.sakushin-u.ac.jp/club/page.php?id=181",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_空手_59b548e100",
+    "circle_name": "空手道 護心会 赤羽支部",
+    "circle_source_url": "https://www.net-menber.com/look/data/91879.html",
+    "email": "ouji-goshinkai@protonmail.com",
+    "source_url": "https://www.net-menber.com/look/data/91879.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工庭球部_2828781269",
+    "circle_name": "理工庭球部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuoriko.tennis@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports115/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_理工学部写真会_3bdbd73ced",
+    "circle_name": "理工学部写真会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/",
+    "email": "chuophotoclub_korakuen@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture99/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_空_ac06cd58f0",
+    "circle_name": "空手道MAC横浜仲町台道場",
+    "circle_source_url": "https://www.net-menber.com/look/data/50414.html",
+    "email": "mac-nakamachidai@hotmail.co.jp",
+    "source_url": "https://www.net-menber.com/look/data/50414.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_空手部_44c7be25f5",
+    "circle_name": "空手部",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ochakarate@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/karate.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_生物科学研究部_089b095f2f",
+    "circle_name": "生物科学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.seikaken.2021@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture110/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_白門美術同好会_5c7de6ef0b",
+    "circle_name": "白門美術同好会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "hakumonn.bizyutu@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture97/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_空手道部_a1f4586245",
+    "circle_name": "空手道部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240699m@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/176/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_硬式庭球部_e4930f5711",
+    "circle_name": "硬式庭球部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo_tennis@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports11/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_神奈川大学_37142675f2_管弦楽団_6e64aeb0c2",
+    "circle_name": "管弦楽団",
+    "circle_source_url": "https://www.kanagawa-u.ac.jp/campuslife/activities/club/",
+    "email": "ku.orchestra1973@gmail.com",
+    "source_url": "https://www.kanagawa-u.ac.jp/campuslife/activities/club/article0102_01009",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_硬式テニス同好会わかもの_23a30d8848",
+    "circle_name": "硬式テニス同好会わかもの",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "wakamono65th@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports100/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_硬式野球部_c2eb3fb1ee",
+    "circle_name": "硬式野球部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo_baseballteam@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports12/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_緑会合唱団_1228e75d99",
+    "circle_name": "緑会合唱団",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "midorikai.chorus@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/midori.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_羽_7818af3e66",
+    "circle_name": "羽飛～家(はっぴ〜や)",
+    "circle_source_url": "https://www.net-menber.com/look/data/64926.html",
+    "email": "happyya.bc@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/64926.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_絵画同好会_606678ea1a",
+    "circle_name": "絵画同好会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "kaido.chuo.tama@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture58/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_統計学会_2fbbe5a91d",
+    "circle_name": "統計学会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.toukei@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture08/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_第二ドイツ語学会_62b87667a5",
+    "circle_name": "第二ドイツ語学会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.deutsch@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture88/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_竹桐会_bfa40b8eac",
+    "circle_name": "竹桐会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.chikutoukai@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture43/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_岩手大学_09afecc654_自転車競技部_e5d119d246",
+    "circle_name": "自転車競技部",
+    "circle_source_url": "https://www.iwate-u.ac.jp/campus/activity/club.html",
+    "email": "ganndaicycle@gmail.com",
+    "source_url": "https://www.iwate-u.ac.jp/upload/a3dd3cb45057987ea335b5399d682155.pdf",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_空手部_ecb7943ff6",
+    "circle_name": "空手部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "syumu.chuo.karatebu@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports06/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_千葉大学_7d10a4a9d0_自動車部_63cac20042",
+    "circle_name": "自動車部",
+    "circle_source_url": "https://www.chiba-u.ac.jp/campus-life/club/",
+    "email": "cumcmail@yahoo.co.jp",
+    "source_url": "http://blog.livedoor.jp/cumc_diary/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_精密機械工学研究部_8b01051ca1",
+    "circle_name": "精密機械工学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.u.seiken.club@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture94/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_茶道_華道部_d7d436af67",
+    "circle_name": "茶道・華道部",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "o_sadoka@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/sado_kado/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_第二演劇研究会_504f6bb526",
+    "circle_name": "第二演劇研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuonigeki@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture86/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_お茶の水女子大学_33fdcbd819_華道部_d30ddc9ee5",
+    "circle_name": "華道部",
+    "circle_source_url": "https://www.ocha.ac.jp/campuslife/circle/index.html",
+    "email": "ocha.kado@gmail.com",
+    "source_url": "https://www.ocha.ac.jp/campuslife/circle/kadou.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_草野球サークル_05c17b4b7b",
+    "circle_name": "草野球サークル",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23791k@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/1777487/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_茶道同好会_お茶会_4151698a9d",
+    "circle_name": "茶道同好会＜お茶会＞",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "i24051za@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/sadou/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_表千家茶道部_7dbfc3b4fb",
+    "circle_name": "表千家茶道部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240188s@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/159/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_清泉女子大学_b8979203ec_読書会鼠倶楽部_6e14b4e40e",
+    "circle_name": "読書会鼠倶楽部",
+    "circle_source_url": "https://www.seisen-u.ac.jp/campuslife/activity/club.html",
+    "email": "club-nezumi@seisen-u.ac.jp",
+    "source_url": "https://www.seisen-u.ac.jp/campuslife/activity/club.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_裏千家茶道部_4239747cbf",
+    "circle_name": "裏千家茶道部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a250681i@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/158/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_観光研究同好会_93d7e01618",
+    "circle_name": "観光研究同好会",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "c23021xa@gmail.com",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/kankou/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_軽音楽同好会_b87bbf0004",
+    "circle_name": "軽音楽同好会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh130@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/25889/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_野球部_83738e1e2b",
+    "circle_name": "野球部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kubbc0089-baseball@yahoo.co.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00091",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_自動車部_3f91ca2c59",
+    "circle_name": "自動車部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "cuac_108@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports17/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_茶道会_d2cf8fbfde",
+    "circle_name": "茶道会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "csadoukai@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture35/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_自転車競技部_11ac2c0092",
+    "circle_name": "自転車競技部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuo_bicycle@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports16/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_野鳥研究会_1a124c5fc0",
+    "circle_name": "野鳥研究会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh160@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/bird/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_法政大学_916205ab78_鉄道研究会_021f08cff5",
+    "circle_name": "鉄道研究会",
+    "circle_source_url": "https://www.hosei.ac.jp/campuslife/club/toroku",
+    "email": "houtetsu@hotmail.co.jp",
+    "source_url": "https://ichigayatekken.github.io/HRCI_ichigaya/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_関_7f7f873fa7",
+    "circle_name": "関谷RED KINGS(ミニバス)",
+    "circle_source_url": "https://www.net-menber.com/look/data/84329.html",
+    "email": "kamakurabasketball@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/84329.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_神奈川大学_37142675f2_陸上競技部_527cb256a5",
+    "circle_name": "陸上競技部",
+    "circle_source_url": "https://www.kanagawa-u.ac.jp/campuslife/activities/club/",
+    "email": "kuetno1@99.netyou.jp",
+    "source_url": "https://www.kanagawa-u.ac.jp/campuslife/activities/club/article0102_01003",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_陸上競技部_dd92648c6d",
+    "circle_name": "陸上競技部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "ku.tf.shogai@gmail.com",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00095",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_華道会_1e7706bda3",
+    "circle_name": "華道会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.kado@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture24/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_軟式野球部_5792b59730",
+    "circle_name": "軟式野球部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuonanshiki@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports35/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_鉄道研究会_de0d5062ac",
+    "circle_name": "鉄道研究会",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "daitotetudou@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03617",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_零倶_a0aaee0f02",
+    "circle_name": "零倶楽部Ⅱ",
+    "circle_source_url": "https://www.net-menber.com/look/data/225271.html",
+    "email": "zerosen30@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/225271.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_大東文化大学_676403ea65_防災研究同好会_stera_5f4965e014",
+    "circle_name": "防災研究同好会「STERA」",
+    "circle_source_url": "https://www.daito.ac.jp/campuslife/club/culture/",
+    "email": "stera.info@gmail.com",
+    "source_url": "https://www.daito.ac.jp/campuslife/club/culture/article0101_03616",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_詩友会_0b58fc7d4c",
+    "circle_name": "詩友会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "shiyukai25@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture83/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_韓日文化研究会_0529ed2541",
+    "circle_name": "韓日文化研究会",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23623g@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/152/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_辞達学会_6a37644235",
+    "circle_name": "辞達学会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "zitatsu.gakkai@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture36/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_江戸川大学_e05ab203e2_電波放送部_fm_ers_fed1e77be3",
+    "circle_name": "電波放送部＜FM-ERS＞",
+    "circle_source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/",
+    "email": "edodenpa@edogawa-u.ac.jp",
+    "source_url": "https://www.edogawa-u.ac.jp/zaigakusei/community/club/denpa/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_鉄道研究会_1581bd5ed2",
+    "circle_name": "鉄道研究会",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "rfc.chuo.u.1963@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture74/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_青い鳥_f66136df1e",
+    "circle_name": "青い鳥",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/",
+    "email": "chuo.aoitori@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture53/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_東京農業大学_13f6f828d7_馬術同好会_728132673b",
+    "circle_name": "馬術同好会",
+    "circle_source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/",
+    "email": "tnokh050@nodai.ac.jp",
+    "source_url": "https://www.nodai.ac.jp/campus/club/okhotsk/equestrian/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_音楽部_3bb9aa87dc",
+    "circle_name": "音楽部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240659h@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/143/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_音楽愛好会ヒートウェイブ_69f099f1a7",
+    "circle_name": "音楽愛好会ヒートウェイブ",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "4205heatwave@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture104/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_電気工学研究部_98ee0abada",
+    "circle_name": "電気工学研究部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "denken.chuo.official@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture95/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_千葉大学_7d10a4a9d0_馬術部_94d05de570",
+    "circle_name": "馬術部",
+    "circle_source_url": "https://www.chiba-u.ac.jp/campus-life/club/",
+    "email": "tibajyutubu@gmail.com",
+    "source_url": "http://tibajyutu.web.fc2.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_関西大学_e37048856c_馬術部_ae4eef126a",
+    "circle_name": "馬術部",
+    "circle_source_url": "https://www.kansai-u.ac.jp/sports/activity/group/",
+    "email": "kansai_univ_uma@yahoo.co.jp",
+    "source_url": "https://www.kansai-u.ac.jp/sports/activity/group/detail.php?c=00083",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_高島_bd70d9a43d",
+    "circle_name": "高島平ヤングパワーズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/227623.html",
+    "email": "yoshihiro.f.64@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/227623.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_音楽研究会_スウィング部_d1bb403d85",
+    "circle_name": "音楽研究会（スウィング部）",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "m_swing_crystal@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture18/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_デジタルハリウッド大学_8553a72b9d_駄弁を貪る_7efa09afcc",
+    "circle_name": "駄弁を貪る",
+    "circle_source_url": "https://www.dhw.ac.jp/life/club/",
+    "email": "dbmscircle@gmail.com",
+    "source_url": "https://www.dhw.ac.jp/life/club/dabenwomusaboru/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ｆp_5c6ea1fc7a",
+    "circle_name": "ＦPシャトルズ(練馬バドミントンサークル)",
+    "circle_source_url": "https://www.net-menber.com/look/data/184749.html",
+    "email": "ryubadplay@gmail.com",
+    "source_url": "https://www.net-menber.com/look/data/184749.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_馬術部_16f4e29531",
+    "circle_name": "馬術部",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a240269k@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/181/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_おと_f9edbfc3af",
+    "circle_name": "おとなハイク",
+    "circle_source_url": "https://www.net-menber.com/look/data/133059.html",
+    "email": "math.hirano@gmail.com",
+    "source_url": "https://otonahikeandcircle.wordpress.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_音楽研究会_混声合唱部_60f0d901de",
+    "circle_name": "音楽研究会（混声合唱部）",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.konsei@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture16/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_k_c430b6801e",
+    "circle_name": "KBBC",
+    "circle_source_url": "https://www.net-menber.com/look/data/75418.html",
+    "email": "kbbc-sgmhr@hotmail.com",
+    "source_url": "https://ameblo.jp/kbbc-sgmhr/entry-11945240907.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_音楽研究会_リード合奏部_eea9788b1f",
+    "circle_name": "音楽研究会（リード合奏部）",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chs4305@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture23/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_初_aefd28729c",
+    "circle_name": "初心者でも大会や試合を楽しみたい！",
+    "circle_source_url": "https://www.net-menber.com/look/data/106355.html",
+    "email": "salnakama@nifty.com",
+    "source_url": "https://takunakama.livedoor.blog/archives/12773310.html",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_オレ_d30a5104cf",
+    "circle_name": "オレンジソックス",
+    "circle_source_url": "https://www.net-menber.com/look/data/204714.html",
+    "email": "orange_socks@hotmail.co.jp",
+    "source_url": "http://orange-socks.org/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_麗澤大学_9c47b9bcb5_麗陵祭実行委員会_77af15eb0b",
+    "circle_name": "麗陵祭実行委員会",
+    "circle_source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/",
+    "email": "a23040a@reitaku.jp",
+    "source_url": "https://www.reitaku-u.ac.jp/campuslife/clubs/186/",
+    "purpose": "大学が団体連絡用に公開した代表者窓口（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_音楽研究会_タンゴ部_681b98c1c0",
+    "circle_name": "音楽研究会（タンゴ部）",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture59/",
+    "email": "chuo.lunatango@gmail.com",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/culture/culture19/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_明治学院大学_156eb24f14_広告研究会_7f783a463a",
+    "circle_name": "広告研究会",
+    "circle_source_url": "https://www.meijigakuin.ac.jp/campuslife/activity/",
+    "email": "mgadshougai2026@gmail.com",
+    "source_url": "http://www.mgad.net/",
+    "purpose": "取材・メディア掲載・協賛の相談窓口（一般の交流招待は受入未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_音ら_03d60d2013",
+    "circle_name": "音ら韻",
+    "circle_source_url": "https://www.net-menber.com/look/data/232307.html",
+    "email": "on_line_yosakoi@yahoo.co.jp",
+    "source_url": "https://onliner-s.com/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  },
+  {
+    "circle_id": "c_u_中央大学_9eb2ade5c0_馬術部_204f690e66",
+    "circle_name": "馬術部",
+    "circle_source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports104/",
+    "email": "chuouniv_minorunrun@yahoo.co.jp",
+    "source_url": "https://www.chuo-u.ac.jp/activities/club/sports/sports36/",
+    "purpose": "団体紹介・募集ページに掲載された連絡先（招待受入・到達は未確認）",
+    "checked_at": "2026-10-13"
+  }
 ]

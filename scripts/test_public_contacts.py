@@ -4,6 +4,8 @@ from pathlib import Path
 import sqlite3
 import sys
 import unittest
+from unittest.mock import patch
+import tempfile
 from urllib.parse import parse_qs, urlsplit, quote
 from bs4 import BeautifulSoup
 
@@ -22,12 +24,12 @@ class PublicContactTests(unittest.TestCase):
           create table circle_public_profiles(circle_id text,public_contact_consent integer,is_published integer);''')
         contacts.ensure_tables(self.conn)
         self.seed = json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
-        self.conn.executemany('insert into circles values(?,?,?)', [(c['circle_id'],c['circle_name'],c['source_url']) for c in self.seed])
+        self.conn.executemany('insert into circles values(?,?,?)', [(c['circle_id'],c['circle_name'],c.get('circle_source_url',c['source_url'])) for c in self.seed])
 
     def test_seed_matches_identity_and_is_idempotent(self):
         contacts.import_reviewed(self.conn)
         contacts.import_reviewed(self.conn)
-        self.assertEqual(self.conn.execute('select count(*) from circle_public_contacts').fetchone()[0], 8)
+        self.assertEqual(self.conn.execute('select count(*) from circle_public_contacts').fetchone()[0], len(self.seed))
         self.conn.execute('delete from circle_public_contacts')
         self.conn.execute("update circles set circle_name='Different organization'")
         contacts.import_reviewed(self.conn)
@@ -41,7 +43,21 @@ class PublicContactTests(unittest.TestCase):
         contacts.import_reviewed(self.conn)
         rows = contacts.attach(self.conn, [{'circle_id':r['circle_id'],'public_contact_email':''} for r in self.seed])
         self.assertEqual([r['public_contact_email'] for r in rows[:2]], ['', ''])
-        self.assertEqual(sum(bool(r['public_contact_email']) for r in rows), 6)
+        self.assertEqual(sum(bool(r['public_contact_email']) for r in rows), len(self.seed)-2)
+
+    def test_linked_official_contact_keeps_original_circle_identity(self):
+        entry = dict(self.seed[0], circle_source_url=self.seed[0]['source_url'],
+                     source_url='https://club.example/contact')
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'reviewed.json'
+            path.write_text(json.dumps([entry]),encoding='utf-8')
+            with patch.object(contacts,'SEED_PATH',path):
+                contacts.import_reviewed(self.conn)
+                self.assertEqual(self.conn.execute('select source_url from circle_public_contacts').fetchone()[0], entry['source_url'])
+                self.conn.execute('delete from circle_public_contacts')
+                self.conn.execute("update circles set source_url='https://different.example/'")
+                contacts.import_reviewed(self.conn)
+                self.assertEqual(self.conn.execute('select count(*) from circle_public_contacts').fetchone()[0], 0)
 
     def test_mailto_has_single_recipient_and_template_and_requires_sender(self):
         item = self.seed[1]
@@ -67,6 +83,19 @@ class PublicContactTests(unittest.TestCase):
 
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_every_reviewed_contact_reaches_the_real_seeded_directory(self):
+        expected = {r['circle_id']:r for r in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))}
+        found = {}
+        for offset in range(0, 20000, 200):
+            rows = json.loads(self.request('/api/circles?audience=all&limit=200&sort=circle&offset='+str(offset))[1])
+            found.update({r['circle_id']:r for r in rows if r.get('public_contact_email')})
+            if len(rows)<200:
+                break
+        self.assertEqual(set(expected)-set(found),set())
+        for ident,entry in expected.items():
+            self.assertEqual(found[ident]['public_contact_email'],entry['email'])
+            self.assertEqual(found[ident]['contact_source_url'],entry['source_url'])
+
     def test_seed_is_available_to_public_search_but_not_claimant_email(self):
         body = json.loads(self.request('/api/circles?audience=social&q=Bandits')[1])
         rows = body

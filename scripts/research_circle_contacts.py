@@ -21,6 +21,7 @@ import unicodedata
 from functools import lru_cache
 from collections import Counter, defaultdict, deque
 from datetime import datetime, timezone
+from contextlib import contextmanager
 from pathlib import Path
 from urllib import error, parse, request, robotparser
 
@@ -50,6 +51,12 @@ def norm(value):
 
 def clean(value):
     return re.sub(r'\s+', ' ', re.sub(r'[\x00-\x1f\x7f]', ' ', value or '')).strip()
+
+
+def visible_text(node):
+    # Separate adjacent elements so an ASCII heading is not accidentally
+    # parsed as part of the next element's email local part.
+    return clean(' '.join(node.itertext()))
 
 
 def safe_url(value, resolve=False):
@@ -89,8 +96,9 @@ class CheckedRedirect(request.HTTPRedirectHandler):
 
 
 class Fetcher:
-    def __init__(self, path, delay=1.0):
+    def __init__(self, path, delay=1.0, reuse_caches=()):
         self.path = path
+        self.reuse_caches = [Path(p).resolve() for p in reuse_caches]
         self.delay = delay
         self.lock = threading.Lock()
         self.host_locks = defaultdict(threading.Lock)
@@ -100,22 +108,41 @@ class Fetcher:
         with self.db() as c:
             c.execute('create table if not exists pages(url text primary key, final_url text, status text, body blob, kind text, checked_at text)')
 
+    @contextmanager
     def db(self):
-        return sqlite3.connect(self.path, timeout=60)
+        conn = sqlite3.connect(self.path, timeout=60)
+        try:
+            with conn:
+                yield conn
+        finally:
+            conn.close()
+
+    def cached(self, url):
+        with self.db() as c:
+            row = c.execute('select final_url,status,body,kind,checked_at from pages where url=?', (url,)).fetchone()
+        if row:
+            return row
+        for path in self.reuse_caches:
+            conn = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=60)
+            try:
+                row = conn.execute('select final_url,status,body,kind,checked_at from pages where url=?', (url,)).fetchone()
+            finally:
+                conn.close()
+            if row:
+                return row
+        return None
 
     def fetch(self, url):
         url = safe_url(url)
         if not url:
             return {'url': '', 'status': 'unsafe_url', 'body': b'', 'kind': ''}
-        with self.db() as c:
-            row = c.execute('select final_url,status,body,kind,checked_at from pages where url=?', (url,)).fetchone()
+        row = self.cached(url)
         if row:
             return dict(zip(('url', 'status', 'body', 'kind', 'checked_at'), row))
         host = parse.urlsplit(url).netloc.lower()
         with self.host_locks[host]:
             # Another worker may have fetched this shared URL while we waited.
-            with self.db() as c:
-                row = c.execute('select final_url,status,body,kind,checked_at from pages where url=?', (url,)).fetchone()
+            row = self.cached(url)
             if row:
                 return dict(zip(('url', 'status', 'body', 'kind', 'checked_at'), row))
             out = {'url': url, 'status': 'fetch_error', 'body': b'', 'kind': '', 'checked_at': now()}
@@ -249,7 +276,7 @@ def heading_section_text(container, node, address=''):
     if not preceding:
         end = headings[0][0]
         return clean((container.text or '') + ' ' + ' '.join(
-            (child.text_content() if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
+            (visible_text(child) if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
             for child in children[:end]))
     start, level = preceding[-1]
     end = next((i for i, other_level in headings if i > position and other_level <= level), len(children))
@@ -260,8 +287,8 @@ def heading_section_text(container, node, address=''):
         while lineage and lineage[-1][1] >= heading_level:
             lineage.pop()
         lineage.append((i, heading_level))
-    names = ' '.join(children[i].text_content() for i, _ in lineage[:-1])
-    return clean(names + ' ' + ' '.join((child.text_content() if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
+    names = ' '.join(visible_text(children[i]) for i, _ in lineage[:-1])
+    return clean(names + ' ' + ' '.join((visible_text(child) if isinstance(child.tag, str) else '') + ' ' + (child.tail or '')
                                       for child in children[start:end]))
 
 
@@ -271,7 +298,7 @@ def dedicated_club_identity(tree, node, name, peer_names):
     if any(parent.tag in {'header', 'footer', 'nav', 'aside'} for parent in ancestors):
         return ''
     for heading in tree.xpath('//h1'):
-        title = clean(EMAIL.sub('', heading.text_content()))
+        title = clean(EMAIL.sub('', visible_text(heading)))
         if not names_match(name, title) or len(norm(title)) > len(norm(name)) + 12:
             continue
         if re.search(r'一覧|directory|club\s+list|clubs\s+list', title, re.I):
@@ -298,7 +325,7 @@ def dedicated_club_identity(tree, node, name, peer_names):
                for other in peer_names):
             continue
         for heading in parent.xpath('./h2|./h3|./h4|./*/h2|./*/h3|./*/h4'):
-            title = clean(EMAIL.sub('', heading.text_content()))
+            title = clean(EMAIL.sub('', visible_text(heading)))
             if names_match(name, title) and len(norm(title)) <= len(norm(name)) + 12:
                 return title
     return ''
@@ -332,7 +359,7 @@ def extract_contacts(circle, page, parsed, peer_names):
                 attribution = 'club_context'
                 for _ in range(5):
                     section = heading_section_text(context_node, node, address)
-                    text = clean(section if section is not None else context_node.text_content())
+                    text = clean(section if section is not None else visible_text(context_node))
                     if len(text) > 1600:
                         break
                     named_text = EMAIL.sub('', text)
@@ -350,6 +377,8 @@ def extract_contacts(circle, page, parsed, peer_names):
                         if dedicated and not others and text:
                             evidence = clean(dedicated + ' / ' + text)[:1600]
                             attribution = 'club_page'
+                        break
+                    if context_node.tag == 'article' and context_node.xpath('.//h1|.//h2|.//h3|.//h4') and not dedicated:
                         break
                     context_node = context_node.getparent()
                     if context_node is None or context_node.tag in {'body', 'html', 'footer', 'nav'}:
@@ -375,7 +404,8 @@ def extract_contacts(circle, page, parsed, peer_names):
             continue
         if any(x['email'].lower() == address.lower() for x in found):
             continue
-        found.append({'email': address, 'source_url': page['url'], 'evidence': evidence, 'attribution': attribution})
+        found.append({'email': address, 'source_url': page['url'], 'evidence': evidence, 'attribution': attribution,
+                      'source_checked_at': page.get('checked_at', '')})
     return found, sorted(set(candidates))
 
 
@@ -413,6 +443,22 @@ def next_links(circle, parsed, base, dedicated=False):
         # A generic university /contact or aggregator /help is not a club form.
         official_link = bool(re.search(r'公式サイト|ホームページ|website|公式HP', label, re.I))
         club_contact = contact and contextual and (same_host or aggregator or official_link)
+        # A listing's own homepage field names the organization in another row
+        # of the same table. Do not borrow a title from recommended clubs.
+        if base_host == 'net-menber.com' and node is not None and target_host != base_host:
+            rows = [p for p in node.iterancestors() if p.tag == 'tr']
+            if rows and norm(''.join(rows[0].xpath('./th//text()'))) == norm('サークルホームページ'):
+                tables = [p for p in rows[0].iterancestors() if p.tag == 'table']
+                if tables:
+                    names = tables[0].xpath('.//tr[th[normalize-space(.)="サークル名"]]/td')
+                    club_contact = len(names) == 1 and norm(names[0].text_content()) == norm(circle['circle_name'])
+        # Only follow a generic contact link within a dedicated club's own
+        # content region, never the university/portal's global navigation.
+        if dedicated and not aggregator and same_host and contact and node is not None:
+            identity = dedicated_club_identity(parsed['tree'], node, circle['circle_name'], [])
+            base_path = parse.urlsplit(base).path.rstrip('/')
+            within_club = not base_path or target_path.startswith(base_path + '/')
+            club_contact = club_contact or bool(identity and within_club)
         if exact or club_contact:
             links.append(url)
             if club_contact and re.search(r'form|問い合わせ|問合せ', label + url, re.I) and not re.search(r'/other/|/help|/info-contact/?$', target_path):
@@ -563,6 +609,8 @@ def main():
     p.add_argument('--base-url', default='https://circle-match.onrender.com')
     p.add_argument('--workers', type=int, default=12)
     p.add_argument('--limit', type=int, default=0)
+    p.add_argument('--reuse-cache', type=Path, action='append', default=[],
+                   help='Read-only previous page cache; preserves original acquisition dates')
     args = p.parse_args()
     directory = args.directory.resolve()
     directory.mkdir(parents=True, exist_ok=True)
@@ -594,7 +642,7 @@ def main():
     if args.limit:
         todo = todo[:args.limit]
     print(json.dumps({'total': len(circles), 'todo': len(todo), 'unique_source_urls': len({x['source_url'] for x in circles})}), flush=True)
-    fetcher = Fetcher(directory / 'pages.sqlite')
+    fetcher = Fetcher(directory / 'pages.sqlite', reuse_caches=args.reuse_cache)
     with journal.open('a', encoding='utf-8') as out, concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(args.workers, 20))) as pool:
         tasks = {pool.submit(research_one, c, fetcher, peers[c['university_id']]): c for c in todo}
         last_print = time.monotonic()
