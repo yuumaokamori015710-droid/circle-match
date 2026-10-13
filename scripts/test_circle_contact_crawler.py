@@ -151,6 +151,31 @@ class CircleContactAttributionTests(unittest.TestCase):
         self.assertEqual([item["email"] for item in found], ["blue@clubs.example"])
         self.assertNotIn("visitor@personal.example", uncertain)
 
+    def test_long_club_description_email_is_contact_but_portal_mail_is_not(self):
+        page, parsed = page_html('''<main><h1>サークル「Blue Tennis Club」のメンバー募集情報</h1>
+            <table><tr><th>連絡事項やアピールポイント</th><td>''' + ('週末に活動しています。' * 160) +
+            '''<p>参加希望は blue@clubs.example までメールでご連絡ください。</p>
+            <p>サイトからの通知を受け取るため info@mail.net-menber.com を許可してください。</p>
+            </td></tr></table><dd class="q_d">visitor@personal.example</dd></main>''',
+            "https://www.net-menber.com/look/data/123.html")
+        found, uncertain = crawler.extract_contacts(club(), page, parsed, ["Blue Tennis Club"])
+        self.assertEqual([item['email'] for item in found], ['blue@clubs.example'])
+        self.assertEqual(found[0]['attribution'], 'club_listing')
+        self.assertNotIn('visitor@personal.example', uncertain)
+
+    def test_long_listing_description_requires_exact_club_and_contact_intent(self):
+        for heading, message in [
+            ('Red Tennis Club', '参加希望は blue@clubs.example までメールでご連絡ください。'),
+            ('Blue Tennis Club', 'SNSのサンプルは blue@clubs.example です。'),
+        ]:
+            with self.subTest(heading=heading):
+                page, parsed = page_html('''<main><h1>サークル「''' + heading + '''」のメンバー募集情報</h1>
+                    <table><tr><th>連絡事項やアピールポイント</th><td>''' + ('活動紹介。' * 250) +
+                    message + '''</td></tr></table></main>''',
+                    "https://www.net-menber.com/look/data/123.html")
+                found, _ = crawler.extract_contacts(club(), page, parsed, ["Blue Tennis Club", "Red Tennis Club"])
+                self.assertEqual(found, [])
+
     def test_dedicated_h1_cannot_identify_email_in_a_separate_content_region(self):
         found, _ = self.contacts("""<html><body><main><article><h1>Blue Tennis Club</h1>
             <p>Weekly practice.</p></article><article><h2>Other group</h2><p>Other group activity</p>

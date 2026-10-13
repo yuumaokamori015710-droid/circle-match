@@ -331,6 +331,42 @@ def dedicated_club_identity(tree, node, name, peer_names):
     return ''
 
 
+def own_listing_contact(circle, page, parsed, node, address):
+    """A net-menber club's own description can be longer than the DOM limit."""
+    if (parse.urlsplit(page['url']).hostname or '').lower() not in {'net-menber.com', 'www.net-menber.com'}:
+        return ''
+    if address.lower().endswith('@mail.net-menber.com'):
+        return ''
+    headings = [clean(x) for x in parsed['tree'].xpath('//h1//text()')]
+    if not any(norm('サークル「' + circle['circle_name'] + '」') in norm(x) for x in headings):
+        return ''
+    for ancestor in [node, *node.iterancestors()]:
+        if ancestor.tag != 'td' or ancestor.getparent() is None or ancestor.getparent().tag != 'tr':
+            continue
+        row = ancestor.getparent()
+        if not any('連絡事項やアピールポイント' in clean(x.text_content()) for x in row if x.tag == 'th'):
+            continue
+        content = unicodedata.normalize('NFKC', visible_text(ancestor))
+        content = re.sub(r'(?:\[at\]|\(at\)|【at】)', '@', content, flags=re.I)
+        pos = content.casefold().find(address.casefold())
+        if pos < 0:
+            return ''
+        excerpt = content[max(0, pos - 130):pos + len(address) + 130]
+        if not re.search(r'連絡|問合せ|問い合わせ|メール|メアド|アドレス|応募|代表|E-mail|Gmail|Mail|✉', excerpt, re.I):
+            return ''
+        return clean(circle['circle_name'] + ' / ' + excerpt)
+    return ''
+
+
+def in_own_listing_description(node):
+    for ancestor in [node, *node.iterancestors()]:
+        if ancestor.tag != 'td' or ancestor.getparent() is None or ancestor.getparent().tag != 'tr':
+            continue
+        return any('連絡事項やアピールポイント' in clean(x.text_content())
+                   for x in ancestor.getparent() if x.tag == 'th')
+    return False
+
+
 def extract_contacts(circle, page, parsed, peer_names):
     """Require a bounded DOM context explicitly naming exactly one club.
 
@@ -353,6 +389,13 @@ def extract_contacts(circle, page, parsed, peer_names):
             for address in mails:
                 # Social URLs containing /@handle can look like RFC local parts.
                 if '/' in address.partition('@')[0] and not (node.tag == 'a' and (node.get('href') or '').lower().startswith('mailto:')):
+                    continue
+                listing_evidence = own_listing_contact(circle, page, parsed, node, address)
+                if listing_evidence:
+                    blocks.append((address, listing_evidence, 'club_listing'))
+                    continue
+                if (parse.urlsplit(page['url']).hostname or '').lower() in {'net-menber.com', 'www.net-menber.com'} and in_own_listing_description(node):
+                    candidates.append(address)
                     continue
                 context_node = node
                 evidence = ''
