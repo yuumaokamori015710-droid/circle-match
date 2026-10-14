@@ -48879,5 +48879,120 @@
       }
     ],
     "fee_note": "新宿区の現行総合案内がリンクする料金表を確認。明確に対応づけできた部屋の登録団体・その他一般団体の料金幅。目的利用等の特殊な結合行は含みません。"
+  },
+  {
+    "id": "tokyo-venue-34caff76d086",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "球技場・平日", "amount": 2100, "unit": "球技場1面2時間", "conditions": "世田谷区けやきネットの団体登録等が必要。河川敷のため荒天時は利用不可の場合あり。", "source_url": "https://www.se-sports.or.jp/facilityinfo/futako-ball-game-field/"},
+      {"label": "球技場・土日祝", "amount": 2460, "unit": "球技場1面2時間", "conditions": "世田谷区けやきネットの団体登録等が必要。河川敷のため荒天時は利用不可の場合あり。", "source_url": "https://www.se-sports.or.jp/facilityinfo/futako-ball-game-field/"},
+      {"label": "少年サッカー場・平日", "amount": 2100, "unit": "少年サッカー場1面2時間", "conditions": "原則中学生以下の利用。登録少年団体は無料となる条件あり。一般の有料料金のみ掲載。", "source_url": "https://www.se-sports.or.jp/facilityinfo/futako-youth-soccer-field/"},
+      {"label": "少年サッカー場・土日祝", "amount": 2460, "unit": "少年サッカー場1面2時間", "conditions": "原則中学生以下の利用。登録少年団体は無料となる条件あり。一般の有料料金のみ掲載。", "source_url": "https://www.se-sports.or.jp/facilityinfo/futako-youth-soccer-field/"}
+    ],
+    "fee_note": "球技場と少年サッカー場の同じ2時間枠を別単位で掲載。けやきネット登録料・更新料は別途。登録少年団体の免除は通常料金に混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-c8eeb7f64931",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "運動場・渋谷区民／区内団体", "amount": 4000, "unit": "運動場1面2時間", "conditions": "区民・区内団体の料金。渋谷区施設予約システムで利用。", "source_url": "https://www.city.shibuya.tokyo.jp/shisetsu/sports-shisetsu/sports-center/sp1_2ko.html"},
+      {"label": "運動場・区外団体", "amount": 8000, "unit": "運動場1面2時間", "conditions": "区外団体の料金。渋谷区施設予約システムで利用。", "source_url": "https://www.city.shibuya.tokyo.jp/shisetsu/sports-shisetsu/sports-center/sp1_2ko.html"}
+    ],
+    "fee_note": "所在地は世田谷区でも渋谷区の施設。運動場1面の料金であり、野球場・庭球場の料金を含みません。"
+  },
+  {
+    "id": "tokyo-venue-8af7723f06fb",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "一般市内団体", "amount": 2600, "unit": "1面2時間", "conditions": "登録済み三鷹市内団体のみ。使用可能種目は小学生サッカー等。市外団体は利用不可。", "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/iguchi.html"},
+      {"label": "中学生以下の市内団体", "amount": 1300, "unit": "1面2時間", "conditions": "登録済み三鷹市内の中学生以下の団体のみ。市外団体は利用不可。", "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/iguchi.html"},
+      {"label": "5～8月17:00～18:30・一般市内団体", "amount": 1950, "unit": "1面1時間30分", "conditions": "登録済み三鷹市内団体のみ。5～8月の最終区分。", "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/iguchi.html"},
+      {"label": "5～8月17:00～18:30・中学生以下の市内団体", "amount": 970, "unit": "1面1時間30分", "conditions": "登録済み三鷹市内の中学生以下の団体のみ。5～8月の最終区分。", "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/iguchi.html"}
+    ],
+    "fee_note": "2時間枠と5～8月の最終1時間30分枠を区別。小学生サッカー等に用途が限定され、市外団体・個人は予約不可。"
+  },
+  {
+    "id": "tokyo-venue-76009f87c8f4",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "昼間", "amount": 2000, "unit": "運動場1面2時間", "conditions": "中央区体育施設団体利用登録が必要。季節により利用可能時間区分が異なります。", "source_url": "https://www.city.chuo.lg.jp/a0015/bunkakankou/sports/mosikomihoho/undouzyou.html"},
+      {"label": "夜間・照明料込み", "amount": 8000, "unit": "運動場1面2時間", "conditions": "中央区体育施設団体利用登録が必要。夜間照明料を含む。", "source_url": "https://www.city.chuo.lg.jp/a0015/bunkakankou/sports/mosikomihoho/undouzyou.html"}
+    ],
+    "fee_note": "浜町運動場1面の昼間・夜間2時間料金。隣接する月島運動場は別施設です。"
+  },
+  {
+    "id": "tokyo-venue-fb1731b080c2",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "サッカー・ラグビー場・半面", "amount": 2500, "unit": "半面2時間以内", "conditions": "夜間照明利用時は半面2時間以内につき別途1,500円。", "source_url": "https://www.tobuki-sp.jp/price.html"},
+      {"label": "サッカー・ラグビー場・全面", "amount": 5000, "unit": "全面2時間以内", "conditions": "夜間照明利用時は全面2時間以内につき別途3,000円。", "source_url": "https://www.tobuki-sp.jp/price.html"}
+    ],
+    "fee_note": "半面と全面を別単位で表示。照明料金は基本利用料に加算されるため範囲に含めません。"
+  },
+  {
+    "id": "tokyo-venue-0ed440fdd641",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "体育館・午前／午後1／午後2", "amount": 2440, "unit": "体育館1区分3時間", "conditions": "該当種目の団体登録が必要。9～12時、12～15時、15～18時。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010388.html"},
+      {"label": "体育館・夜間", "amount": 2800, "unit": "体育館1区分3時間", "conditions": "該当種目の団体登録が必要。18～21時。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010388.html"},
+      {"label": "体育館・全日", "amount": 8500, "unit": "体育館全日12時間", "conditions": "該当種目の団体登録が必要。9～21時。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010388.html"},
+      {"label": "第二スポーツ広場・フットサル", "amount": 2440, "unit": "第二スポーツ広場2時間", "conditions": "該当種目の団体登録が必要。9～17時。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010388.html"}
+    ],
+    "fee_note": "体育館・屋外フットサル広場の料金を分離。放課後の無料開放は一般の団体貸切料金に含みません。"
+  },
+  {
+    "id": "tokyo-venue-c00e2b6906bf",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "メインアリーナ全面・午前／午後", "amount": 18000, "unit": "メインアリーナ全面2時間30分", "conditions": "通常の貸館料金。商業利用は別途問い合わせ。9:30～12:00、13:00～15:30、16:00～18:30。", "source_url": "https://www.hachioji.esforta.jp/usage-fee/"},
+      {"label": "メインアリーナ全面・夜間", "amount": 19800, "unit": "メインアリーナ全面2時間30分", "conditions": "通常の貸館料金。商業利用は別途問い合わせ。19:00～21:30。", "source_url": "https://www.hachioji.esforta.jp/usage-fee/"},
+      {"label": "サブアリーナ全面・各区分", "amount": 14400, "unit": "サブアリーナ全面2時間30分", "conditions": "通常の貸館料金。商業利用は別途問い合わせ。", "source_url": "https://www.hachioji.esforta.jp/usage-fee/"}
+    ],
+    "fee_note": "団体貸館の全面2時間30分枠。半面・全日・付帯設備・商業利用は表示範囲外で、公式料金表を確認してください。"
+  },
+  {
+    "id": "tokyo-venue-712511e56aa8",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "メインアリーナ全面・平日", "amount": 11800, "unit": "メインアリーナ全面2時間", "conditions": "午前1～夜間2の通常2時間枠。早朝・長時間・分割面は別料金。団体登録と施設予約が必要。", "source_url": "https://information.konamisportsclub.jp/trust/nakano/pricing/"},
+      {"label": "メインアリーナ全面・土日休日", "amount": 14300, "unit": "メインアリーナ全面2時間", "conditions": "午前1～夜間2の通常2時間枠。早朝・長時間・分割面は別料金。団体登録と施設予約が必要。", "source_url": "https://information.konamisportsclub.jp/trust/nakano/pricing/"},
+      {"label": "サブアリーナ全面・平日", "amount": 4400, "unit": "サブアリーナ全面2時間", "conditions": "午前1～夜間2の通常2時間枠。早朝・長時間は別料金。団体登録と施設予約が必要。", "source_url": "https://information.konamisportsclub.jp/trust/nakano/pricing/"},
+      {"label": "サブアリーナ全面・土日休日", "amount": 5400, "unit": "サブアリーナ全面2時間", "conditions": "午前1～夜間2の通常2時間枠。早朝・長時間は別料金。団体登録と施設予約が必要。", "source_url": "https://information.konamisportsclub.jp/trust/nakano/pricing/"}
+    ],
+    "fee_note": "体育館の団体貸切2時間枠。早朝は1時間45分、長時間は別単位のため範囲に混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-6ab610a2569c",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "メインアリーナ全面・市内団体", "amount": 11400, "unit": "メインアリーナ全面3時間", "conditions": "事前の団体登録と予約が必要。9～21時の3時間区分。興行・営利目的は市内料金の3倍。", "source_url": "https://www.mitakagenki-plaza.jp/_files/00008723/dantaiprice.pdf"},
+      {"label": "メインアリーナ全面・市外団体", "amount": 17100, "unit": "メインアリーナ全面3時間", "conditions": "事前の団体登録と予約が必要。9～21時の3時間区分。", "source_url": "https://www.mitakagenki-plaza.jp/_files/00008723/dantaiprice.pdf"},
+      {"label": "サブアリーナ全面・市内団体", "amount": 6200, "unit": "サブアリーナ全面3時間", "conditions": "事前の団体登録と予約が必要。9～21時の3時間区分。", "source_url": "https://www.mitakagenki-plaza.jp/_files/00008723/dantaiprice.pdf"},
+      {"label": "サブアリーナ全面・市外団体", "amount": 9300, "unit": "サブアリーナ全面3時間", "conditions": "事前の団体登録と予約が必要。9～21時の3時間区分。", "source_url": "https://www.mitakagenki-plaza.jp/_files/00008723/dantaiprice.pdf"}
+    ],
+    "fee_note": "施設が現行利用案内からリンクする団体貸切料金表。アリーナ全面3時間のみ表示。21～22時の1時間枠、半面、個人開放、付帯設備は別料金。2026年10月から予約システム・登録方法が変更されています。"
+  },
+  {
+    "id": "tokyo-venue-a6e3e9da0d77",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "A面・大人区民団体・早朝", "amount": 1400, "unit": "A面2時間・大人団体", "conditions": "目黒区民団体。6:30～8:30。団体種別による予約資格を確認。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "A面・大人区民団体・午前／午後", "amount": 2700, "unit": "A面2時間・大人団体", "conditions": "目黒区民団体。8:30以降の通常2時間枠。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "A面・大人区外団体・早朝", "amount": 2700, "unit": "A面2時間・大人団体", "conditions": "区外団体。6:30～8:30。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "A面・大人区外団体・午前／午後", "amount": 5400, "unit": "A面2時間・大人団体", "conditions": "区外団体。8:30以降の通常2時間枠。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "B面・大人区民団体・早朝", "amount": 900, "unit": "B面2時間・大人団体", "conditions": "目黒区民団体。B面は少年用で、団体種別ごとの予約資格を確認。6:30～8:30。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "B面・大人区民団体・午前／午後", "amount": 1700, "unit": "B面2時間・大人団体", "conditions": "目黒区民団体。B面は少年用で、団体種別ごとの予約資格を確認。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "B面・大人区外団体・早朝", "amount": 1700, "unit": "B面2時間・大人団体", "conditions": "区外団体。B面は少年用で、団体種別ごとの予約資格を確認。6:30～8:30。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"},
+      {"label": "B面・大人区外団体・午前／午後", "amount": 3300, "unit": "B面2時間・大人団体", "conditions": "区外団体。B面は少年用で、団体種別ごとの予約資格を確認。", "source_url": "https://www.city.meguro.tokyo.jp/sports/bunkasports/sports/ryokinhenko.html"}
+    ],
+    "fee_note": "2025年4月改定後の大人団体料金のみ掲載。B面は少年用で大人団体の予約資格に制限があります。高校生相当以下の小人団体料金は公式料金表をご確認ください。"
+  },
+  {
+    "id": "tokyo-venue-340b25d181f0",
+    "checked_at": "2026-10-14",
+    "fee_options": [
+      {"label": "サッカー場", "amount": 2000, "unit": "サッカー場2時間", "conditions": "火曜・年末年始休場。季節により開場時間が異なる。団体利用の登録・予約条件は公式予約先を確認。", "source_url": "https://www.city.hachioji.tokyo.jp/shisetsu/104/p012070.html"}
+    ],
+    "fee_note": "八王子市の現行施設案内に掲載されたサッカー場2時間料金。"
   }
 ]

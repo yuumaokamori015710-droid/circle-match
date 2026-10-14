@@ -8,6 +8,35 @@ from test_venues import IsolatedAppHttpCase
 
 
 class VenueFeeRangeTests(IsolatedAppHttpCase):
+    def test_october_followup_keeps_units_sources_and_unknowns(self):
+        rows = {row['id']: row for row in json.loads(self.request('/api/venues')[1])['courts']}
+        expected = {
+            'tokyo-venue-34caff76d086': [('球技場1面2時間', 2100, 2460)],
+            'tokyo-venue-c8eeb7f64931': [('運動場1面2時間', 4000, 8000)],
+            'tokyo-venue-8af7723f06fb': [('1面2時間', 1300, 2600), ('1面1時間30分', 970, 1950)],
+            'tokyo-venue-76009f87c8f4': [('運動場1面2時間', 2000, 8000)],
+            'tokyo-venue-0ed440fdd641': [('体育館1区分3時間', 2440, 2800)],
+            'tokyo-venue-c00e2b6906bf': [('メインアリーナ全面2時間30分', 18000, 19800)],
+            'tokyo-venue-712511e56aa8': [('メインアリーナ全面2時間', 11800, 14300)],
+            'tokyo-venue-a6e3e9da0d77': [('A面2時間・大人団体', 1400, 5400)],
+            'tokyo-venue-6ab610a2569c': [('メインアリーナ全面3時間', 11400, 17100)],
+        }
+        for ident, groups in expected.items():
+            with self.subTest(venue=ident):
+                row = rows[ident]
+                self.assertEqual(row['fee_checked_at'], '2026-10-14')
+                self.assertEqual([(r['unit'], r['minimum'], r['maximum']) for r in row['fee_ranges'][:len(groups)]], groups)
+                self.assertTrue(all(p['source_url'].startswith('https://') and p['conditions'] for p in row['fee_options']))
+                html = self.request('/venues?' + urlencode({'v_q': row['name']}))[1].decode()
+                page = BeautifulSoup(html, 'html.parser')
+                card = next(c for c in page.select('.venue-court-card') if c.h3.get_text() == row['name'])
+                self.assertEqual(card.select_one('.venue-fee-link')['href'], row['fee_options'][0]['source_url'])
+                self.assertNotIn('金額未取得', card.get_text())
+        for ident in ('tokyo-venue-8d267086196e', 'tokyo-venue-7f5f8dbd18bb',
+                      'tokyo-venue-8e6c0f81a52c', 'tokyo-venue-5b81852866ce'):
+            self.assertEqual(rows[ident]['fee_ranges'], [])
+        self.assertEqual(sum(bool(r['fee_ranges']) for r in rows.values()), 609)
+
     def test_bounds_use_every_tariff_and_keep_billing_units_separate(self):
         from venues.fees import price_ranges
         row = {'fee_options': [

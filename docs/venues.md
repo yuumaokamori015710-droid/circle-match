@@ -109,3 +109,7 @@ catalog validation and `scripts/test_venues.py` before publishing. The catalog
 is intentionally independent of either application's private user database.
 Do not copy private acquisition settings, credentials or management routes
 into this public page.
+
+The 2026-10-14 official fee and cancellation follow-up is recorded in
+`docs/venue-fee-followup-2026-10-14.md`. It adds 11 previously unknown venue
+tariffs without changing venue IDs, original booking URLs or existing tariffs.
