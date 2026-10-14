@@ -27,6 +27,7 @@ work/*.err.log
 
 # Python caches
 __pycache__/
+.venv-payments/
 *.py[cod]
 
 # Node caches

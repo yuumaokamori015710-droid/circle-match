@@ -48,6 +48,12 @@ python outputs\circlematch_db_app.py --init-only
 
 ## Environment Variables
 
+Online participation payments are disabled by default. The local/test-only
+Checkout + Connect implementation, migration, refund operations, and production
+approval checklist are documented in [Online Payments](docs/ONLINE_PAYMENTS.md).
+See [Verification Results](docs/ONLINE_PAYMENTS_VERIFICATION.md) for executed tests
+and the Stripe integration checks that remain unexecuted.
+
 Copy `.env.example` and set equivalent values in your hosting provider.
 
 ```text

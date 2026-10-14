@@ -116,7 +116,7 @@ class PricingNotificationTests(unittest.TestCase):
     def test_fee_input_and_unit_sync_javascript(self):
         source = self.app.EVENT_FORM_SCRIPT
         unit = source[source.index("function syncCapacityUnit(){"):source.index("function fill(){")]
-        payment = re.search(r"function normalizeFee\(value\)\{[^\n]+", source)[0] + "\n" + re.search(r"function syncPayment\(\)\{[^\n]+", source)[0]
+        payment = source[source.index("function normalizeFee(value)"):source.index("async function save(status)")]
         command = r'''
 const assert=require('node:assert/strict'),vm=require('node:vm');
 const code=JSON.parse(require('node:fs').readFileSync(0,'utf8'));

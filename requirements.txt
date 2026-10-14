@@ -3,3 +3,5 @@
 requests>=2.32,<3
 openai>=2.0,<3
 PyJWT[crypto]>=2.10,<3
+# Optional at runtime when online payments are disabled; pinned stable SDK.
+stripe==16.0.0

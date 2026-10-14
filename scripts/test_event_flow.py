@@ -33,7 +33,8 @@ def load_app(database_path):
     with closing(sqlite3.connect(database_path)) as conn, conn:
         schema = conn.execute("select sql from sqlite_master where name='event_posts'").fetchone()[0]
         conn.execute("drop table event_posts")
-        conn.execute(schema.replace("'free','on_site','bank_transfer'", "'free','on_site'"))
+        conn.execute(schema.replace("'free','on_site','bank_transfer','online'", "'free','on_site'")
+                     .replace("'free','on_site','bank_transfer'", "'free','on_site'"))
         conn.execute("create index idx_event_posts_public on event_posts(status, starts_at, sport_category, prefecture)")
     return module
 
