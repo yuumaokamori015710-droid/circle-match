@@ -72,16 +72,24 @@ def _status(value):
 
 def _contact(target, subject='', body=''):
     email = _s(target.get('public_contact_email'))
+    method = _s(target.get('contact_method'))
+    contact_url = _href(target.get('contact_url'), external=True)
     source = _href(target.get('contact_source_url') or target.get('source_url'), external=True)
     if email:
         href = 'mailto:' + quote(email, safe='@') + '?' + urlencode({'subject': subject, 'body': body}, quote_via=quote)
         result = '<p class="invite-help">公開連絡先：' + _e(email) + '</p><p class="invite-help">' + _e(target.get('contact_purpose') or '団体が公開した連絡先') + '</p>'
         if body:
             result += '<a class="invite-button invite-primary" href="' + _e(href) + '">招待メールを作成</a><p class="invite-help">メールアプリで宛先と文面を確認して送信してください。この画面では送信されません。</p>'
+    elif contact_url and method in {'form', 'line'}:
+        label = '問い合わせフォームを開く' if method == 'form' else '公式LINEの案内を見る'
+        result = '<p class="invite-help">' + _e(target.get('contact_purpose') or '団体が案内する公開窓口') + '</p>'
+        result += '<a class="invite-button invite-primary" href="' + _e(contact_url) + '" target="_blank" rel="noopener noreferrer">' + label + ' ↗</a>'
+        if body:
+            result += '<p class="invite-help">下の招待文をコピーし、相手先の窓口で用途を確認してから送ってください。この画面では送信されません。</p>'
     else:
-        result = '<p class="invite-help">公開メールはまだ確認できていません。招待文をコピーして、掲載元の問い合わせ窓口からご連絡ください。</p>'
-    if source:
-        result += '<a class="invite-text-link" href="' + _e(source) + '" target="_blank" rel="noopener noreferrer">' + ('連絡先の掲載元' if email else '公開問い合わせ先を確認') + ' ↗</a>'
+        result = '<p class="invite-help">確認済みの公開連絡窓口はまだありません。掲載元で現在の連絡方法を確認してください。</p>'
+    if source and source != contact_url:
+        result += '<a class="invite-text-link" href="' + _e(source) + '" target="_blank" rel="noopener noreferrer">' + ('連絡先の掲載元' if email else '掲載元を確認') + ' ↗</a>'
     if target.get('contact_checked_at'):
         result += '<p class="invite-help">掲載確認：' + _e(target['contact_checked_at']) + '（到達・招待受入は未確認）</p>'
     return result
@@ -219,7 +227,7 @@ def detail(data, user, origin):
     if sender and active:
         share_url = _shared_url(data, origin)
         share_text = _share_text(data, share_url)
-        body += '<section class="invite-card"><h2>メールで招待する</h2>' + _contact(data.get('contact') or {}, data.get('subject') or 'Circle Matchから交流のご相談', share_text) + '</section>'
+        body += '<section class="invite-card"><h2>相手の連絡窓口</h2>' + _contact(data.get('contact') or {}, data.get('subject') or 'Circle Matchから交流のご相談', share_text) + '</section>'
         line_text = _s(data.get("target_circle_name") or "ご担当者") + "の皆さまへ\n" + _s(data.get("sender_label")) + "より：" + _s(data.get("subject"))
         line_url = "https://social-plugins.line.me/lineit/share?" + urlencode({"url": share_url, "text": line_text})
         body += '<section class="invite-card"><h2>招待を相手へ渡す</h2><p>招待リンクを作成しました。下の文面をメールやSNSのメッセージに貼り付けて、相手へ渡せます。</p><div class="invite-field"><label for="invite-share-text">相手へ渡す招待文</label><textarea id="invite-share-text" rows="8" readonly>' + _e(share_text) + '</textarea></div><div class="invite-actions"><button class="invite-button invite-primary" type="button" id="invite-copy" disabled>招待文とリンクをコピー</button><a class="invite-button" href="' + _e(line_url) + '" target="_blank" rel="noopener noreferrer">LINEで渡す ↗</a></div><p id="invite-copy-status" class="invite-help" role="status" aria-live="polite"></p><div class="invite-field"><label for="invite-share-url">招待リンク</label><input id="invite-share-url" type="url" value="' + _e(share_url) + '" readonly></div><p class="invite-note">リンクを受け取った人は招待内容を確認できます。返信できるのは、最初にログインして本人として回答した1人です。</p></section>'

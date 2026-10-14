@@ -11,7 +11,13 @@ def ensure_tables(conn):
     conn.execute('''create table if not exists circle_public_contacts (
         circle_id text primary key references circles(circle_id),
         email text not null, source_url text not null, purpose text not null,
-        checked_at text not null, enabled integer not null default 1 check(enabled in (0,1)))''')
+        checked_at text not null, enabled integer not null default 1 check(enabled in (0,1)),
+        contact_method text not null default 'email', contact_url text not null default '')''')
+    columns = {row['name'] for row in conn.execute('pragma table_info(circle_public_contacts)')}
+    if 'contact_method' not in columns:
+        conn.execute("alter table circle_public_contacts add column contact_method text not null default 'email'")
+    if 'contact_url' not in columns:
+        conn.execute("alter table circle_public_contacts add column contact_url text not null default ''")
 
 
 def import_reviewed(conn):
@@ -20,7 +26,19 @@ def import_reviewed(conn):
     seen = set()
     for item in entries:
         ident = item['circle_id']
-        contact_email(item['email'])
+        method = item.get('contact_method', 'email')
+        if method not in {'email', 'form', 'line'}:
+            raise ValueError('Invalid reviewed contact method')
+        email = item.get('email', '')
+        url = item.get('contact_url', '')
+        if method == 'email':
+            contact_email(email)
+            if url:
+                raise ValueError('Email contacts cannot have an external contact URL')
+        elif email or not url:
+            raise ValueError('Non-email contacts require a contact URL and no email')
+        if url:
+            public_url(url, True)
         public_url(item['source_url'], True)
         identity_source = item.get('circle_source_url', item['source_url'])
         public_url(identity_source, True)
@@ -31,11 +49,12 @@ def import_reviewed(conn):
         circle = conn.execute('select circle_name,source_url from circles where circle_id=?', (ident,)).fetchone()
         if not circle or circle['circle_name'].strip() != item['circle_name'].strip() or circle['source_url'] != identity_source:
             continue
-        conn.execute('''insert into circle_public_contacts(circle_id,email,source_url,purpose,checked_at)
-            values(?,?,?,?,?) on conflict(circle_id) do update set email=excluded.email,
-            source_url=excluded.source_url,purpose=excluded.purpose,checked_at=excluded.checked_at
+        conn.execute('''insert into circle_public_contacts(circle_id,email,source_url,purpose,checked_at,contact_method,contact_url)
+            values(?,?,?,?,?,?,?) on conflict(circle_id) do update set email=excluded.email,
+            source_url=excluded.source_url,purpose=excluded.purpose,checked_at=excluded.checked_at,
+            contact_method=excluded.contact_method,contact_url=excluded.contact_url
             where circle_public_contacts.checked_at < excluded.checked_at''',
-            (ident,item['email'],item['source_url'],item['purpose'],item['checked_at']))
+            (ident,email,item['source_url'],item['purpose'],item['checked_at'],method,url))
 
 
 def attach(conn, circles):
@@ -50,9 +69,11 @@ def attach(conn, circles):
           and (coalesce(p.public_contact_consent,0)<>1 or coalesce(p.is_published,0)<>1))''', ids)}
     for circle in circles:
         if circle.get('public_contact_email'):
-            circle.update(contact_source_url=circle.get('profile_url', ''), contact_purpose='団体が公開した連絡先', contact_checked_at='')
+            circle.update(contact_method='email', contact_url='', contact_source_url=circle.get('profile_url', ''),
+                          contact_purpose='団体が公開した連絡先', contact_checked_at='')
         elif circle['circle_id'] in contacts:
             contact = contacts[circle['circle_id']]
             circle.update(public_contact_email=contact['email'], contact_source_url=contact['source_url'],
-                          contact_purpose=contact['purpose'], contact_checked_at=contact['checked_at'])
+                          contact_purpose=contact['purpose'], contact_checked_at=contact['checked_at'],
+                          contact_method=contact['contact_method'], contact_url=contact['contact_url'])
     return circles

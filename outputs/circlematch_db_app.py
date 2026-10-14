@@ -771,7 +771,7 @@ SOCIAL_HTML = """<!doctype html>
     function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
     function fillSportOptions(){ $("sportOptions").innerHTML=sports.map(v=>`<option value="${esc(v)}"></option>`).join("") }
     function inviteText(c){return `はじめまして。Circle Matchで${c.circle_name}の活動情報を拝見し、ご連絡しました。\n\n${c.sport_category||""}の活動・交流について、以下の内容でご相談できればと思っています。\n\n・希望内容: [練習試合 / 合同練習 / イベント参加 / メンバー募集について]\n・希望時期: [候補日]\n・活動地域: [地域]\n・こちらの団体: [団体名]\n\n差し支えなければ、ご都合を教えていただけますと幸いです。\n\nCircle Match（https://circle-match.jp/）を通じてご連絡しました。`}
-    function contactCell(c){const invite=inviteText(c); const copy=`<button type="button" class="copy-invite" data-invite="${esc(invite)}">文面をコピー</button>`; if(c.public_contact_email){const subject=`【${c.sport_category||"活動"}のご相談】Circle Matchを見てご連絡しました`; const href=`mailto:${encodeURIComponent(c.public_contact_email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(invite)}`; return `<div class="contact-actions"><a class="contact-link primary" href="${esc(href)}">メールを作成</a>${copy}</div><span class="sub">代表者公開の団体共有メール</span>`} if(c.source_url){return `<div class="contact-actions"><a class="contact-link" href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">掲載ページへ</a>${copy}</div><span class="sub">掲載ページの連絡方法を利用</span>`} return `<span class="sub">連絡先は代表者登録後に表示</span>`}
+    function contactCell(c){const invite=inviteText(c); const copy=`<button type="button" class="copy-invite" data-invite="${esc(invite)}">文面をコピー</button>`; if(c.public_contact_email){const subject=`【${c.sport_category||"活動"}のご相談】Circle Matchを見てご連絡しました`; const href=`mailto:${encodeURIComponent(c.public_contact_email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(invite)}`; return `<div class="contact-actions"><a class="contact-link primary" href="${esc(href)}">メールを作成</a>${copy}</div><span class="sub">${esc(c.contact_purpose||'公開メール。用途を確認してご連絡ください。')}</span>`} if(c.contact_url&&['form','line'].includes(c.contact_method)){const label=c.contact_method==='form'?'問い合わせフォームを開く':'公式LINEの案内を見る';return `<div class="contact-actions"><a class="contact-link primary" href="${esc(c.contact_url)}" target="_blank" rel="noopener noreferrer">${label}</a>${copy}</div><span class="sub">${esc(c.contact_purpose||'相手先で用途を確認してください。')}</span>`} if(c.source_url){return `<div class="contact-actions"><a class="contact-link" href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">掲載元を確認</a>${copy}</div><span class="sub">連絡窓口は未確認</span>`} return `<span class="sub">公開窓口は未確認</span>`}
     function fillRegions(){ $("regionFilter").innerHTML='<option value="">全地域</option>'+regions.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("")}
     function selectedRegion(){return regions.find(r=>r.value===$("regionFilter").value)}
     function prefValues(){return selectedRegion()?.prefectures || prefs}
@@ -1499,7 +1499,12 @@ def render_db_rows(circles):
         link = f'<a href="{html.escape(circle["profile_url"], quote=True)}">紹介ページ</a>' if circle.get("profile_url") else (f'<a href="{html.escape(circle["source_url"], quote=True)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>' if safe_public_source(circle.get("source_url")) else '<a href="/contact">情報を問い合わせる</a>')
         if circle.get("circle_id"):
             link += f'<a class="button" href="/invitations/new?circle_id={quote(str(circle["circle_id"]), safe="")}">交流に招待</a>'
-        link += '<small>' + ('公開メールあり' if circle.get('public_contact_email') else 'メール未掲載・公開窓口を確認') + '</small>'
+        contact_url = circle.get('contact_url')
+        if circle.get('contact_method') == 'form' and safe_public_source(contact_url):
+            link += f'<a href="{html.escape(contact_url, quote=True)}" target="_blank" rel="noopener noreferrer">問い合わせフォーム ↗</a>'
+        elif circle.get('contact_method') == 'line' and safe_public_source(contact_url):
+            link += f'<a href="{html.escape(contact_url, quote=True)}" target="_blank" rel="noopener noreferrer">公式LINE案内 ↗</a>'
+        link += '<small>' + ('公開メールあり' if circle.get('public_contact_email') else '公式窓口あり' if contact_url else '連絡方法は掲載元で確認') + '</small>'
         output.append(
             '<div class="circle-row">'
             f'<div><strong>{html.escape(circle.get("university_name") or "活動地域")}</strong><small>{html.escape(circle.get("prefecture") or "")}{(" / " + html.escape(circle.get("city") or "")) if circle.get("city") else ""}</small></div>'
@@ -1766,7 +1771,7 @@ EVENT_HOME_SCRIPT = r"""
   const fee=e=>e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':`${e.payment_method==='bank_transfer'?'口座振込':'現地払い'}（料金は主催者へ確認）`):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}`;
   const status=e=>[e.availability_label||'受付終了',e.can_apply?'open':(e.status==='cancelled'?'cancelled':'closed')];
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者'; const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="/events/${encodeURIComponent(e.event_id)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="/events/${encodeURIComponent(e.event_id)}">詳細・申込</a></div></article>`}
-  function circleRow(c){let source=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}<small>${c.public_contact_email?'公開メールあり':'メール未掲載・公開窓口を確認'}</small></div></div>`}
+  function circleRow(c){let source=false,contact=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}try{contact=['https:','http:'].includes(new URL(c.contact_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';const channel=contact&&['form','line'].includes(c.contact_method)?`<a href="${esc(c.contact_url)}" target="_blank" rel="noopener noreferrer">${c.contact_method==='form'?'問い合わせフォーム':'公式LINE案内'} ↗</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}${channel}<small>${c.public_contact_email?'公開メールあり':channel?'公式窓口あり':'連絡方法は掲載元で確認'}</small></div></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
   function syncLinks(){
@@ -3495,11 +3500,11 @@ def guide_page(slug):
 def privacy_page():
     body = f"""
 <h1>プライバシーポリシー</h1>
-<p class="meta">制定日: 2026年7月1日 / 最終更新日: {POLICY_UPDATED_AT} / 運営者: {SITE_OPERATOR}</p>
+<p class="meta">制定日: 2026年7月1日 / 最終更新日: 2026年10月14日 / 運営者: {SITE_OPERATOR}</p>
 <p>{SITE_NAME}は、全国の大学サークル・部活動情報の検索、掲載、代表者確認、練習試合等の募集支援を目的としてサービスを運営します。</p>
 <h2>取得する情報</h2>
 <ul>
-  <li>公開情報: 大学名、団体名、競技カテゴリ、活動地域、出典URL、検証ステータス</li>
+  <li>公開情報: 大学名、団体名、競技カテゴリ、活動地域、出典URL、検証ステータス、団体が公開した連絡窓口のURL・用途・確認日</li>
   <li>代表者確認情報: 氏名、大学メールアドレス、所属団体、申請内容、審査履歴</li>
   <li>問い合わせ情報: 氏名または担当者名、メールアドレス、問い合わせ本文</li>
   <li>技術情報: IPアドレス、User-Agent、Cookie、アクセスログ、不正利用防止に必要な情報</li>
@@ -3512,7 +3517,7 @@ def privacy_page():
   <li>サービス改善、利用状況分析、広告配信、法令遵守</li>
 </ul>
 <h2>公開範囲</h2>
-<p>公開検索ページには、公開情報のみを表示します。代表者氏名、大学メールアドレス、問い合わせ本文、内部メモ、認証情報は公開しません。団体が公開に同意した団体用の連絡先メールアドレスだけは、団体紹介ページに表示する場合があります。</p>
+<p>公開検索ページには、団体の掲載情報と、団体自身の公開ページで確認した連絡窓口、または団体が公開に同意して登録した連絡先を表示する場合があります。窓口の出典・用途を示し、訂正・非公開の申し出に対応します。ログイン・代表申請に使用したメールアドレス、問い合わせ本文、内部メモ、認証情報は公開しません。公開窓口の掲載は、当サイトによる団体の公認や連絡への同意を意味しません。</p>
 <h2>第三者配信広告とCookie</h2>
 <p>本サービスではGoogle AdSense等の第三者配信広告を利用する場合があります。Googleなどの第三者配信事業者は、Cookieを使用して、ユーザーの過去のアクセス情報に基づく広告を配信することがあります。パーソナライズ広告は、Googleの広告設定ページ等から無効にできます。</p>
 <h2>第三者提供・委託</h2>
@@ -3568,7 +3573,7 @@ def terms_page():
 def about_data_page():
     body = f"""
 <h1>Circle Match DBの掲載方針と訂正依頼</h1>
-<p class="meta">最終更新日: {POLICY_UPDATED_AT}</p>
+<p class="meta">最終更新日: 2026年10月14日</p>
 <h2>Circle Match DBの目的</h2>
 <p>Circle Matchの中心は、大学・社会人スポーツ団体の情報を検索・比較できるデータベースです。大学公式サイト、団体の公式ページ、公開SNSなどに分散した情報を、団体名、所属先、競技、活動地域、出典、検証状態という共通の項目で整理します。</p>
 <p>練習試合やメンバー募集の掲載は、DBで候補を見つけた後の行動を助ける機能です。掲載件数だけを目的に自動で情報を増やすのではなく、団体そのものと確認できる情報を対象に、更新・訂正を続けることを重視します。</p>
@@ -3580,7 +3585,7 @@ def about_data_page():
   <li>大学名または主な活動地域、団体名、競技カテゴリ</li>
   <li>活動都道府県・市区町村、団体の種別</li>
   <li>出典種別、出典URL、検証または申請の状態</li>
-  <li>代表者が公開に同意して登録した場合のみ、団体紹介ページと団体用連絡先</li>
+  <li>団体が公開に同意して登録した連絡先、または団体自身の公開ページで確認した連絡窓口・用途・確認日</li>
 </ul>
 <h2>掲載前の確認</h2>
 <ul>
@@ -3590,11 +3595,11 @@ def about_data_page():
 </ul>
 <h2>掲載しない情報</h2>
 <ul>
-  <li>代表者の個人メールアドレス、電話番号、LINE ID</li>
+  <li>ログイン・代表申請で取得した非公開の個人メールアドレス、電話番号、LINE ID</li>
   <li>本人同意のない個人名、個人写真、非公開グループの情報</li>
   <li>他サイトの紹介文、画像、口コミ、ランキングのコピー</li>
 </ul>
-<p>団体の公開連絡先は、代表者が公開に同意して登録した団体用メールアドレスに限ります。</p>
+<p>公開ページの連絡窓口は、掲載元から団体自身のページへたどって団体名と用途を確認したものに限ります。掲載元の共通窓口、別団体の連絡先、用途の違う申込専用フォームは団体の一般窓口として掲載しません。リンク先での送信は利用者が判断し、Circle Matchが代理送信することはありません。</p>
 <h2>検証ステータス</h2>
 <ul>
   <li>大学公式情報掲載: 大学公式ページで存在確認済み</li>
