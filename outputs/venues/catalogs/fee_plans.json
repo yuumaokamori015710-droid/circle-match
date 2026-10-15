@@ -48994,5 +48994,73 @@
       {"label": "サッカー場", "amount": 2000, "unit": "サッカー場2時間", "conditions": "火曜・年末年始休場。季節により開場時間が異なる。団体利用の登録・予約条件は公式予約先を確認。", "source_url": "https://www.city.hachioji.tokyo.jp/shisetsu/104/p012070.html"}
     ],
     "fee_note": "八王子市の現行施設案内に掲載されたサッカー場2時間料金。"
+  },
+  {
+    "id": "tokyo-venue-9d64ebf08879",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "平日・区内", "amount": 2200, "unit": "サッカー場1面2時間", "conditions": "大田区の区内料金。利用者登録・予約が必要。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu4.files/10.pdf"},
+      {"label": "平日・区外", "amount": 4400, "unit": "サッカー場1面2時間", "conditions": "大田区の区外料金。利用者登録・予約が必要。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu4.files/10.pdf"},
+      {"label": "土日祝・区内", "amount": 4400, "unit": "サッカー場1面2時間", "conditions": "大田区の区内料金。利用者登録・予約が必要。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu4.files/10.pdf"},
+      {"label": "土日祝・区外", "amount": 8800, "unit": "サッカー場1面2時間", "conditions": "大田区の区外料金。利用者登録・予約が必要。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu4.files/10.pdf"}
+    ],
+    "fee_note": "大田区うぐいすネットの現行料金表。予約方法・利用資格は公式案内を確認。"
+  },
+  {
+    "id": "tokyo-venue-9e9f2744cb5f",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "平日・区内", "amount": 4800, "unit": "フットサル場1面2時間", "conditions": "大田区の区内料金。ナイター照明は別料金。入場料等を徴収する場合は区外料金の2倍。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/omorihigashimizube_footsul.html"},
+      {"label": "平日・区外", "amount": 9600, "unit": "フットサル場1面2時間", "conditions": "大田区の区外料金。ナイター照明は別料金。入場料等を徴収する場合は区外料金の2倍。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/omorihigashimizube_footsul.html"},
+      {"label": "土日祝・区内", "amount": 9600, "unit": "フットサル場1面2時間", "conditions": "大田区の区内料金。ナイター照明は別料金。入場料等を徴収する場合は区外料金の2倍。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/omorihigashimizube_footsul.html"},
+      {"label": "土日祝・区外", "amount": 19200, "unit": "フットサル場1面2時間", "conditions": "大田区の区外料金。ナイター照明は別料金。入場料等を徴収する場合は区外料金の2倍。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/omorihigashimizube_footsul.html"}
+    ],
+    "fee_note": "2026年4月1日以降の通常貸切料金。照明料は区内1,400円・区外2,100円／2時間で別途。"
+  },
+  {
+    "id": "tokyo-venue-04126fcd0345",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "フットサル・平日・区内", "amount": 4800, "unit": "フットサル場1面2時間", "conditions": "大田区の区内料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/foot_shouwajima.html"},
+      {"label": "フットサル・平日・区外", "amount": 9600, "unit": "フットサル場1面2時間", "conditions": "大田区の区外料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/foot_shouwajima.html"},
+      {"label": "フットサル・土日祝・区内", "amount": 9600, "unit": "フットサル場1面2時間", "conditions": "大田区の区内料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/foot_shouwajima.html"},
+      {"label": "フットサル・土日祝・区外", "amount": 19200, "unit": "フットサル場1面2時間", "conditions": "大田区の区外料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/foot_shouwajima.html"}
+    ],
+    "fee_note": "2026年4月1日以降のフットサル料金。少年サッカー場は別料金・2029年度末まで中学生以下団体の免除条件があるため、この範囲に混ぜていません。入場料等を徴収する場合は区外料金の2倍。"
+  },
+  {
+    "id": "tokyo-venue-163714172e30",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "平日・区内チーム", "amount": 9600, "unit": "サッカー場1面2時間", "conditions": "大田区の区内チーム料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/morigasaki_soccer-ground.html"},
+      {"label": "平日・区外チーム", "amount": 19200, "unit": "サッカー場1面2時間", "conditions": "大田区の区外チーム料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/morigasaki_soccer-ground.html"},
+      {"label": "土日祝・区内チーム", "amount": 19200, "unit": "サッカー場1面2時間", "conditions": "大田区の区内チーム料金。照明料は別。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/sports/soccer/morigasaki_soccer-ground.html"},
+      {"label": "土日祝・区外チーム", "amount": 38400, "unit": "サッカー場1面2時間", "conditions": "大田区の区外チーム料金。照明料は別。区の改定料金表にある1時間19,200円を、予約の2時間枠に合わせた額。", "source_url": "https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/shisetsushiyouryounokaitei.files/uguisunettaishoushisetsushiyouryoukaitei.pdf"}
+    ],
+    "fee_note": "2026年4月1日以降の通常貸切料金。照明料は区内1,400円・区外2,100円／1時間で別途。"
+  },
+  {
+    "id": "tokyo-venue-8209aecab477",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "球技場A・B面", "amount": 0, "unit": "球技場1面2時間", "conditions": "足立区の日の出町緑地。無料でも施設予約と利用当日の使用承認書等の提示が必要。野球場E・F面は別料金。", "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/koen/050.html"}
+    ],
+    "fee_note": "サッカー等の球技場A・B面は無料。野球場E・F面の1,100円／2時間を混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-edf26e5b5c90",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "球技場", "amount": 1400, "unit": "球技場1面2時間", "conditions": "足立区の江北橋緑地右岸球技場A面。野球場の料金とは別。", "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/koen/027.html"}
+    ],
+    "fee_note": "球技場の料金。野球場は1,100円／1面2時間。"
+  },
+  {
+    "id": "tokyo-venue-c6af863d384f",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "球技場", "amount": 1400, "unit": "球技場1面2時間", "conditions": "足立区の西新井橋緑地球技場。球技場は冬季（12月第3日曜日～2月第3日曜日）のみ貸出。野球場の料金とは別。", "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/koen/046.html"}
+    ],
+    "fee_note": "球技場の料金。野球場は1,100円／1面2時間。"
   }
 ]

@@ -113,3 +113,8 @@ into this public page.
 The 2026-10-14 official fee and cancellation follow-up is recorded in
 `docs/venue-fee-followup-2026-10-14.md`. It adds 11 previously unknown venue
 tariffs without changing venue IDs, original booking URLs or existing tariffs.
+
+The 2026-10-15 Ota and Adachi follow-up is in
+`docs/venue-fee-followup-2026-10-15.md`. It adds seven source-matched tariffs
+and cancellation conditions while retaining unknown prices where the exact
+bookable facility tariff is unconfirmed.

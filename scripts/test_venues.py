@@ -461,6 +461,28 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
             with self.assertRaises(ValueError):
                 validate([{**example,'fee_options':[{**example['fee_options'][0],'amount':amount}]}])
 
+    def test_ota_and_adachi_followup_keeps_field_tariffs_separate(self):
+        rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}
+        expected = {
+            'tokyo-venue-9d64ebf08879': (2200, 8800),
+            'tokyo-venue-9e9f2744cb5f': (4800, 19200),
+            'tokyo-venue-04126fcd0345': (4800, 19200),
+            'tokyo-venue-163714172e30': (9600, 38400),
+            'tokyo-venue-8209aecab477': (0, 0),
+            'tokyo-venue-edf26e5b5c90': (1400, 1400),
+            'tokyo-venue-c6af863d384f': (1400, 1400),
+        }
+        for ident, bounds in expected.items():
+            with self.subTest(venue=ident):
+                row = rows[ident]
+                self.assertIsNone(row['price_from'])
+                self.assertEqual(len(row['fee_ranges']), 1)
+                self.assertEqual((row['fee_ranges'][0]['minimum'], row['fee_ranges'][0]['maximum']), bounds)
+                self.assertIn('2時間', row['fee_ranges'][0]['unit'])
+                self.assertEqual(row['fee_checked_at'], '2026-10-15')
+                self.assertEqual(row['cancellation']['checked_at'], '2026-10-15')
+        self.assertNotIn('fee_options', rows['tokyo-venue-3de282b7fae3'])
+
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:
             for path in ('/?tab=venues', '/venues/', '/tennis'):
