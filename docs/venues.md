@@ -1,5 +1,7 @@
 # 会場予約タブ
 
+Latest official-price review: [2026-10-15 second batch](venue-fee-followup-2026-10-15-b.md). It reviewed 24 previously unpriced records and attached source-matched tariffs to 16 while retaining unknown prices for the remainder.
+
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
 categories. The first 50 matching facilities, booking links, counts and GET

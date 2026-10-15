@@ -49062,5 +49062,154 @@
       {"label": "球技場", "amount": 1400, "unit": "球技場1面2時間", "conditions": "足立区の西新井橋緑地球技場。球技場は冬季（12月第3日曜日～2月第3日曜日）のみ貸出。野球場の料金とは別。", "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/koen/046.html"}
     ],
     "fee_note": "球技場の料金。野球場は1,100円／1面2時間。"
+  },
+  {
+    "id": "tokyo-venue-f2d52ea48c01",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "運動場全面・各通常枠", "amount": 1200, "unit": "運動場全面2時間", "conditions": "9～17時の4枠。区内児童スポーツ団体に優先枠あり。都内在住・在勤・在学者等の利用資格を確認。運動会利用は別料金。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"}
+    ],
+    "fee_note": "文京区の2026年4月現在の施設料金一覧。団体貸切の通常2時間枠のみ。"
+  },
+  {
+    "id": "tokyo-venue-da052fe01f64",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "運動場全面・早朝／昼間", "amount": 6600, "unit": "運動場全面2時間", "conditions": "早朝枠は4～11月のみ。利用資格とスポーツひろばの対象団体条件を確認。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"},
+      {"label": "運動場全面・夜間", "amount": 12600, "unit": "運動場全面2時間", "conditions": "18:30～20:30。ナイター照明料は季節で変動するため別途確認。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"}
+    ],
+    "fee_note": "小石川運動場の全面貸切料金。会議室・照明料とスポーツひろばの利用条件は含めていません。"
+  },
+  {
+    "id": "tokyo-venue-2aace9be38f2",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "競技場全面・午後枠", "amount": 9100, "unit": "競技場全面2時間30分", "conditions": "12:30～15:00または15:30～18:00。団体登録・競技ごとの利用可能時間を確認。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"},
+      {"label": "競技場全面・午前枠", "amount": 9100, "unit": "競技場全面3時間", "conditions": "9:00～12:00。団体登録・競技ごとの利用可能時間を確認。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"},
+      {"label": "競技場全面・夜間枠", "amount": 11600, "unit": "競技場全面3時間", "conditions": "18:30～21:30。団体登録・競技ごとの利用可能時間を確認。", "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"}
+    ],
+    "fee_note": "2026年4月現在の競技場団体貸切料金。全日枠・他室場・付帯設備は別。"
+  },
+  {
+    "id": "tokyo-venue-58060c86dbf1",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "サッカー場・通常2時間枠", "amount": 2400, "unit": "サッカー場1面2時間", "conditions": "事前の団体登録・予約・料金前払いが必要。冬季や夏季の短縮1時間枠は半額。", "source_url": "https://www.shisetsu-tds.jp/tokyo-itabashi-arakawatodabashi-footballground/fee/"}
+    ],
+    "fee_note": "板橋区指定管理者の現行料金。1時間枠と駐車場料金は含めていません。"
+  },
+  {
+    "id": "tokyo-venue-d28e20b0de17",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "サッカー全面", "amount": 8400, "unit": "サッカー全面2時間", "conditions": "事前の団体登録・予約・料金前払いが必要。", "source_url": "https://www.shisetsu-tds.jp/tokyo-itabashi-takashimadaira-footballground/fee/"},
+      {"label": "少年サッカー半面", "amount": 4200, "unit": "少年サッカー半面2時間", "conditions": "少年サッカー用の半面枠。利用団体の資格を確認。", "source_url": "https://www.shisetsu-tds.jp/tokyo-itabashi-takashimadaira-footballground/fee/"},
+      {"label": "フットサル1面", "amount": 2800, "unit": "フットサル1面2時間", "conditions": "フットサル用1面枠。5月・9月の17～18時1時間枠は半額。", "source_url": "https://www.shisetsu-tds.jp/tokyo-itabashi-takashimadaira-footballground/fee/"}
+    ],
+    "fee_note": "全面・少年半面・フットサル1面を別単位で表示。短縮1時間枠は料金範囲に混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-7594d0210e7b",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "江戸川サッカー場・一般チーム", "amount": 1150, "unit": "サッカー場1面2時間", "conditions": "大人・高校生相当・中学生チーム。中学生チームは無料。2026年3月31日以前の予約は旧料金が適用。", "source_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/ground/edogawaground.html"}
+    ],
+    "fee_note": "江戸川区公式の2026年4月以降料金。中学生チームは免除、個人申込は不可。"
+  },
+  {
+    "id": "tokyo-venue-577e7e506936",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "江戸川少年サッカー場・小学生チーム", "amount": 0, "unit": "少年サッカー場1面2時間", "conditions": "小学生チーム専用。個人利用は不可。予約・チーム登録条件を確認。", "source_url": "https://www.city.edogawa.tokyo.jp/e028/kuseijoho/gaiyo/shisetsuguide/bunya/sportsshisetsu/ground/edogawaground.html"}
+    ],
+    "fee_note": "公式施設案内に無料と明記された少年用4面のみ。一般サッカー場の料金とは別。"
+  },
+  {
+    "id": "tokyo-venue-acf6eedff95e",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "四つ木橋球技場・通常利用", "amount": 1200, "unit": "球技場1面2時間以内", "conditions": "団体登録・予約が必要。少年少女団体は免除申請の提出で施設利用料・備品代が免除。季節で開場枠が異なる。", "source_url": "https://spo.katsushika-web.net/facility/others/"}
+    ],
+    "fee_note": "指定管理者の荒川河川敷・四つ木橋球技場料金。駐車料金・免除後の額は含めていません。"
+  },
+  {
+    "id": "tokyo-venue-c4c0a999cf17",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "木根川橋球技場・通常利用", "amount": 1200, "unit": "球技場1面2時間以内", "conditions": "団体登録・予約が必要。少年少女団体は免除申請の提出で施設利用料・備品代が免除。季節で開場枠が異なる。", "source_url": "https://spo.katsushika-web.net/facility/others/"}
+    ],
+    "fee_note": "指定管理者の荒川河川敷・木根川橋球技場料金。駐車料金・免除後の額は含めていません。"
+  },
+  {
+    "id": "tokyo-venue-48461c620190",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "大体育室全面・午前", "amount": 16000, "unit": "大体育室全面2時間30分", "conditions": "9:00～11:30。団体登録・貸切予約が必要。", "source_url": "https://spo.katsushika-web.net/group_guide/"},
+      {"label": "大体育室全面・午後", "amount": 20400, "unit": "大体育室全面2時間30分", "conditions": "12:30～15:00または15:30～18:00。", "source_url": "https://spo.katsushika-web.net/group_guide/"},
+      {"label": "大体育室全面・夜間", "amount": 24800, "unit": "大体育室全面2時間30分", "conditions": "18:30～21:00。", "source_url": "https://spo.katsushika-web.net/group_guide/"},
+      {"label": "小体育室・午前", "amount": 5900, "unit": "小体育室2時間30分", "conditions": "9:00～11:30。利用可能種目と貸切枠を確認。", "source_url": "https://spo.katsushika-web.net/group_guide/"},
+      {"label": "小体育室・午後", "amount": 7700, "unit": "小体育室2時間30分", "conditions": "12:30～15:00または15:30～18:00。", "source_url": "https://spo.katsushika-web.net/group_guide/"},
+      {"label": "小体育室・夜間", "amount": 9200, "unit": "小体育室2時間30分", "conditions": "18:30～21:00。", "source_url": "https://spo.katsushika-web.net/group_guide/"}
+    ],
+    "fee_note": "屋内の大・小体育室の2時間30分貸切のみ。陸上競技場、全日、付帯設備は別区分。"
+  },
+  {
+    "id": "tokyo-venue-7d1c070c2f5e",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "夜間19～21時・区内チーム", "amount": 5200, "unit": "多目的広場全面2時間", "conditions": "区内チーム。照明料は点灯1時間あたり別途3,500円。営利目的利用不可。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-bunka/shisetsu-bunka-sprots/kouenhiroba/hpg000006487.html"},
+      {"label": "夜間19～21時・区外チーム／学校", "amount": 10400, "unit": "多目的広場全面2時間", "conditions": "区外チーム・学校。照明料は点灯1時間あたり別途3,500円。営利目的利用不可。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-bunka/shisetsu-bunka-sprots/kouenhiroba/hpg000006487.html"},
+      {"label": "午前8:30～12:30・区内チーム", "amount": 10400, "unit": "多目的広場全面4時間", "conditions": "区内チーム。営利目的利用不可。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-bunka/shisetsu-bunka-sprots/kouenhiroba/hpg000006487.html"},
+      {"label": "午前8:30～12:30・区外チーム／学校", "amount": 20800, "unit": "多目的広場全面4時間", "conditions": "区外チーム・学校。営利目的利用不可。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-bunka/shisetsu-bunka-sprots/kouenhiroba/hpg000006487.html"}
+    ],
+    "fee_note": "午前4時間枠と夜間2時間枠を別単位で表示。午後3時間・3時間30分枠は公式表を確認。"
+  },
+  {
+    "id": "tokyo-venue-74e266c5a64d",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "サッカー場・区内団体", "amount": 3000, "unit": "サッカー場1面2時間", "conditions": "天王洲公園の野球場AB面をサッカーに利用。照明料は別途1時間3,500円。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/sangyo/sangyo-bunka/sangyo-bunka-kakushisetsu/sangyo-bunka-kakushisetsu-kouen/hpg000006486.html"},
+      {"label": "サッカー場・区外団体", "amount": 6000, "unit": "サッカー場1面2時間", "conditions": "天王洲公園の野球場AB面をサッカーに利用。照明料は別途1時間3,500円。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/sangyo/sangyo-bunka/sangyo-bunka-kakushisetsu/sangyo-bunka-kakushisetsu-kouen/hpg000006486.html"},
+      {"label": "ミニサッカー場・区内団体", "amount": 1500, "unit": "ミニサッカー場1面2時間", "conditions": "天王洲公園の野球場C面。照明料は別途1時間3,500円。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/sangyo/sangyo-bunka/sangyo-bunka-kakushisetsu/sangyo-bunka-kakushisetsu-kouen/hpg000006486.html"},
+      {"label": "ミニサッカー場・区外団体", "amount": 3000, "unit": "ミニサッカー場1面2時間", "conditions": "天王洲公園の野球場C面。照明料は別途1時間3,500円。", "source_url": "https://www.city.shinagawa.tokyo.jp/PC/sangyo/sangyo-bunka/sangyo-bunka-kakushisetsu/sangyo-bunka-kakushisetsu-kouen/hpg000006486.html"}
+    ],
+    "fee_note": "野球場兼用のサッカー・ミニサッカー料金のみ。7～8月平日の早朝枠や少年優先期間は公式案内を確認。"
+  },
+  {
+    "id": "tokyo-venue-044e55492c4b",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "芝給水所公園サッカー場", "amount": 5200, "unit": "サッカー場1面2時間", "conditions": "港区の団体利用。照明料は別途1時間700円。予約資格と利用可能枠を確認。", "source_url": "https://www.city.minato.tokyo.jp/sports/ryoukin.html"}
+    ],
+    "fee_note": "港区の現行スポーツ施設料金表。照明料は別。"
+  },
+  {
+    "id": "tokyo-venue-b6af03861502",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "少年サッカー・フットサル場", "amount": 700, "unit": "少年サッカー／フットサル場1面1時間", "conditions": "港区の表の通常料金。少年団体の優先利用あり。区外一般団体は表の2倍。", "source_url": "https://www.city.minato.tokyo.jp/sports/ryoukin.html"},
+      {"label": "サッカー場・一般団体", "amount": 2100, "unit": "サッカー場1面1時間", "conditions": "港区の表の通常料金。区外一般団体は表の2倍。", "source_url": "https://www.city.minato.tokyo.jp/sports/ryoukin.html"},
+      {"label": "サッカー場・区外一般団体", "amount": 4200, "unit": "サッカー場1面1時間", "conditions": "港区の区外一般団体は通常表の2倍。利用資格と空き枠を確認。", "source_url": "https://www.city.minato.tokyo.jp/sports/ryoukin.html"}
+    ],
+    "fee_note": "少年サッカー／フットサル1面と一般サッカー場を別単位で表示。少年野球場は除外。"
+  },
+  {
+    "id": "tokyo-venue-7688aee9e7f7",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "主競技場全面・午前", "amount": 22000, "unit": "主競技場全面3時間", "conditions": "9:00～12:00。団体貸切の料金。", "source_url": "https://www.city.chiyoda.lg.jp/shisetsu/bunka/sportscenter.html"},
+      {"label": "主競技場全面・夜間", "amount": 42600, "unit": "主競技場全面3時間", "conditions": "18:00～21:00。団体貸切の料金。", "source_url": "https://www.city.chiyoda.lg.jp/shisetsu/bunka/sportscenter.html"},
+      {"label": "主競技場半面・午前", "amount": 11000, "unit": "主競技場半面3時間", "conditions": "9:00～12:00。団体貸切の料金。", "source_url": "https://www.city.chiyoda.lg.jp/shisetsu/bunka/sportscenter.html"},
+      {"label": "主競技場半面・夜間", "amount": 21300, "unit": "主競技場半面3時間", "conditions": "18:00～21:00。団体貸切の料金。", "source_url": "https://www.city.chiyoda.lg.jp/shisetsu/bunka/sportscenter.html"}
+    ],
+    "fee_note": "主競技場の午前・夜間3時間枠だけを比較。午後4時間・全日・個人利用は混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-e4038f2459a4",
+    "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "多目的広場インフィールド・一般団体", "amount": 2440, "unit": "多目的広場1面2時間", "conditions": "団体登録・事前予約が必要。抽選参加は区内登録。少年利用は免除、陸上競技場貸切は別途問合せ。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010435.html"}
+    ],
+    "fee_note": "サッカー等のインフィールド団体利用料金。少年免除と陸上トラックの個人料金を混ぜていません。"
   }
 ]

@@ -483,6 +483,33 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertEqual(row['cancellation']['checked_at'], '2026-10-15')
         self.assertNotIn('fee_options', rows['tokyo-venue-3de282b7fae3'])
 
+    def test_second_tokyo_followup_preserves_tariff_scope_and_unknowns(self):
+        rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}
+        expected = {
+            'tokyo-venue-f2d52ea48c01': ('運動場全面2時間', 1200, 1200),
+            'tokyo-venue-da052fe01f64': ('運動場全面2時間', 6600, 12600),
+            'tokyo-venue-58060c86dbf1': ('サッカー場1面2時間', 2400, 2400),
+            'tokyo-venue-7594d0210e7b': ('サッカー場1面2時間', 1150, 1150),
+            'tokyo-venue-577e7e506936': ('少年サッカー場1面2時間', 0, 0),
+            'tokyo-venue-acf6eedff95e': ('球技場1面2時間以内', 1200, 1200),
+            'tokyo-venue-e4038f2459a4': ('多目的広場1面2時間', 2440, 2440),
+        }
+        for ident, (unit, minimum, maximum) in expected.items():
+            with self.subTest(venue=ident):
+                row = rows[ident]
+                self.assertIsNone(row['price_from'])
+                group = next(item for item in row['fee_ranges'] if item['unit'] == unit)
+                self.assertEqual((group['minimum'], group['maximum']), (minimum, maximum))
+                self.assertEqual(row['fee_checked_at'], '2026-10-15')
+                self.assertTrue(all(p['source_url'].startswith('https://') for p in row['fee_options']))
+        takashimadaira = rows['tokyo-venue-d28e20b0de17']
+        self.assertEqual(len(takashimadaira['fee_ranges']), 3)
+        okudo = rows['tokyo-venue-48461c620190']
+        self.assertEqual(len(okudo['fee_ranges']), 2)
+        for ident in ('tokyo-venue-6ff79262c31f', 'tokyo-venue-555e53ea3e30'):
+            self.assertIsNone(rows[ident]['price_from'])
+            self.assertNotIn('fee_options', rows[ident])
+
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:
             for path in ('/?tab=venues', '/venues/', '/tennis'):
