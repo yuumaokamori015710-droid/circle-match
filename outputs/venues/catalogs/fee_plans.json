@@ -49211,5 +49211,86 @@
       {"label": "多目的広場インフィールド・一般団体", "amount": 2440, "unit": "多目的広場1面2時間", "conditions": "団体登録・事前予約が必要。抽選参加は区内登録。少年利用は免除、陸上競技場貸切は別途問合せ。", "source_url": "https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010435.html"}
     ],
     "fee_note": "サッカー等のインフィールド団体利用料金。少年免除と陸上トラックの個人料金を混ぜていません。"
+  },
+  {
+    "id": "tokyo-venue-f136cd6fc520", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "多目的運動場・一般", "amount": 300, "unit": "運動場1面2時間", "conditions": "少年野球・サッカー等の兼用面。月の前半は中学生以下の野球、後半はサッカーが予約対象。利用登録が必要。照明は別料金。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"}
+    ],
+    "fee_note": "区公式ガイドの大人欄に掲載された料金。中学生以下の料金は同じ表から確認できず未掲載。照明は別単位。"
+  },
+  {
+    "id": "tokyo-venue-a5eb0eeb5db6", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "多目的グラウンド・一般", "amount": 3000, "unit": "多目的グラウンド1面2時間", "conditions": "区の利用登録が必要。熱中症特別警戒アラート時は利用中止。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"},
+      {"label": "多目的グラウンド・中学生以下", "amount": 1200, "unit": "多目的グラウンド1面2時間", "conditions": "区の利用登録が必要。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"},
+      {"label": "小広場・一般", "amount": 1200, "unit": "小広場1面2時間", "conditions": "テニス・バスケット等に利用。区の利用登録が必要。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"},
+      {"label": "小広場・中学生以下", "amount": 600, "unit": "小広場1面2時間", "conditions": "テニス・バスケット等に利用。区の利用登録が必要。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"}
+    ],
+    "fee_note": "多目的グラウンドと小広場は異なる面として表示。1時間延長は2時間料金の半額。"
+  },
+  {
+    "id": "tokyo-venue-357a53525a36", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "大体育室全面・午前", "amount": 20400, "unit": "大体育室全面3時間", "conditions": "9:00～12:00、区内団体のスポーツ利用。区外団体は別料金。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"},
+      {"label": "大体育室半面・午前", "amount": 10200, "unit": "大体育室半面3時間", "conditions": "9:00～12:00、区内団体のスポーツ利用。区外団体は別料金。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"},
+      {"label": "小体育室・午前", "amount": 8100, "unit": "小体育室1室3時間", "conditions": "9:00～12:00、区内団体のスポーツ利用。区外団体は別料金。", "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"}
+    ],
+    "fee_note": "区公式ガイドの午前団体貸切。全面・半面・小体育室は別単位、午後・夜間・全日は別料金。"
+  },
+  {
+    "id": "tokyo-venue-554e93c69264", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "運動場", "amount": 7000, "unit": "運動場1面2時間", "conditions": "団体貸切。夜間照明は別途1時間4,000円。2025年7月から複数チームが参加する大会等の利用は制限。", "source_url": "https://www.city.toshima.lg.jp/501/2406251329.html"}
+    ],
+    "fee_note": "通常の団体貸切料金。金曜日の一般無料開放とは別。複数チーム大会等の利用制限を確認。"
+  },
+  {
+    "id": "tokyo-venue-fc31b1b81a63", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "競技場・午前", "amount": 8800, "unit": "競技場1面3時間", "conditions": "9:00～12:00。豊島区体育施設の予約ID登録が必要。営利・報酬・撮影目的の利用不可。", "source_url": "https://information.konamisportsclub.jp/trust/minaminagasaki-sp/pricing/"},
+      {"label": "競技場・午後", "amount": 11600, "unit": "競技場1面4時間", "conditions": "13:00～17:00。豊島区体育施設の予約ID登録が必要。", "source_url": "https://information.konamisportsclub.jp/trust/minaminagasaki-sp/pricing/"}
+    ],
+    "fee_note": "団体貸切の午前3時間と午後4時間を別単位で表示。個人開放・会議室・駐車場料金は除外。"
+  },
+  {
+    "id": "tokyo-venue-692ae63adef9", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "競技場・午前", "amount": 8800, "unit": "競技場1面3時間", "conditions": "9:00～12:00。利用者ID登録と施設予約が必要。付帯設備は別料金。", "source_url": "https://www.shisetsu-tds.jp/tokyo-toshima-sugamo-taiikukan/fee-2/"},
+      {"label": "競技場・午後", "amount": 11600, "unit": "競技場1面4時間", "conditions": "13:00～17:00。利用者ID登録と施設予約が必要。付帯設備は別料金。", "source_url": "https://www.shisetsu-tds.jp/tokyo-toshima-sugamo-taiikukan/fee-2/"}
+    ],
+    "fee_note": "団体貸切。午前・午後は時間長が異なるため別単位。個人利用と付帯設備は除外。"
+  },
+  {
+    "id": "tokyo-venue-a74e54348f42", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "アリーナ・午前", "amount": 8800, "unit": "アリーナ1面・午前枠", "conditions": "団体貸切。事前登録が必要。付帯設備は別料金。", "source_url": "https://toshima-gym.com/price/"},
+      {"label": "アリーナ・午後", "amount": 11600, "unit": "アリーナ1面・午後枠", "conditions": "団体貸切。事前登録が必要。付帯設備は別料金。", "source_url": "https://toshima-gym.com/price/"}
+    ],
+    "fee_note": "運営者の団体貸切枠料金。ページに各枠の時間長がないため時間換算せず、午前・午後の枠別に表示。"
+  },
+  {
+    "id": "tokyo-venue-933ef55fd937", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "競技場・午前", "amount": 8800, "unit": "競技場1面3時間", "conditions": "9:00～12:00。利用者ID登録が必要。付帯設備は別料金。", "source_url": "https://www.city.toshima.lg.jp/501/bunka/sports/sports/003418/003435.html"},
+      {"label": "競技場・午後", "amount": 11600, "unit": "競技場1面4時間", "conditions": "13:00～17:00。利用者ID登録が必要。付帯設備は別料金。", "source_url": "https://www.city.toshima.lg.jp/501/bunka/sports/sports/003418/003435.html"}
+    ],
+    "fee_note": "区の2026年4月更新料金。午前3時間と午後4時間を別単位。個人公開料金は除外。"
+  },
+  {
+    "id": "tokyo-gym-2bc89d47e515", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "体育館・一般団体会員", "amount": 3100, "unit": "体育館1室2時間", "conditions": "非営利5人以上、半数以上が中野区在住・在勤・在学。登録手数料1,000円は別。", "source_url": "https://www.nakano-sports-comm.net/central/group/"},
+      {"label": "体育館・全開放団体", "amount": 6200, "unit": "体育館1室2時間", "conditions": "区内・区外の全開放登録。抽選対象外で空き枠から予約。", "source_url": "https://www.nakano-sports-comm.net/central/group/"}
+    ],
+    "fee_note": "9:30～20:30の各2時間枠。会員資格と登録費は別途確認。"
+  },
+  {
+    "id": "tokyo-gym-ee6d6a06a544", "checked_at": "2026-10-15",
+    "fee_options": [
+      {"label": "体育館・一般団体会員", "amount": 4300, "unit": "体育館1室2時間", "conditions": "非営利5人以上、半数以上が中野区在住・在勤・在学。登録手数料1,000円は別。", "source_url": "https://www.nakano-sports-comm.net/southern/group/"},
+      {"label": "体育館・全開放団体", "amount": 8600, "unit": "体育館1室2時間", "conditions": "区内・区外の全開放登録。抽選対象外で空き枠から予約。", "source_url": "https://www.nakano-sports-comm.net/southern/group/"}
+    ],
+    "fee_note": "9:30～22:45の各2時間枠。会員資格と登録費は別途確認。"
   }
 ]

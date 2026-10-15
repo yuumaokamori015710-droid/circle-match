@@ -510,6 +510,38 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
             self.assertIsNone(rows[ident]['price_from'])
             self.assertNotIn('fee_options', rows[ident])
 
+    def test_third_tokyo_followup_uses_official_group_tariffs_only(self):
+        rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}
+        priced = (
+            'tokyo-venue-f136cd6fc520', 'tokyo-venue-a5eb0eeb5db6',
+            'tokyo-venue-357a53525a36', 'tokyo-venue-554e93c69264',
+            'tokyo-venue-fc31b1b81a63', 'tokyo-venue-692ae63adef9',
+            'tokyo-venue-a74e54348f42', 'tokyo-venue-933ef55fd937',
+            'tokyo-gym-2bc89d47e515', 'tokyo-gym-ee6d6a06a544',
+        )
+        for ident in priced:
+            with self.subTest(venue=ident):
+                row = rows[ident]
+                self.assertIsNone(row['price_from'])
+                self.assertEqual(row['fee_checked_at'], '2026-10-15')
+                self.assertTrue(row['fee_options'])
+                self.assertTrue(all(option['source_url'].startswith('https://') for option in row['fee_options']))
+        arakawa = rows['tokyo-venue-f136cd6fc520']
+        self.assertEqual(arakawa['fee_options'][0]['label'], '多目的運動場・一般')
+        self.assertEqual(arakawa['fee_ranges'][0]['minimum'], 300)
+        for ident, bounds in (
+            ('tokyo-gym-2bc89d47e515', (3100, 6200)),
+            ('tokyo-gym-ee6d6a06a544', (4300, 8600)),
+        ):
+            row = rows[ident]
+            self.assertEqual(len(row['fee_ranges']), 1)
+            self.assertEqual((row['fee_ranges'][0]['minimum'], row['fee_ranges'][0]['maximum']), bounds)
+            self.assertEqual(row['cancellation']['checked_at'], '2026-10-15')
+        for ident in ('tokyo-venue-933ef55fd937', 'tokyo-gym-07d760f3b816'):
+            self.assertEqual(rows[ident]['cancellation']['checked_at'], '2026-10-15')
+        for ident in ('tokyo-venue-71237581c393', 'tokyo-venue-2e14b39dc02c'):
+            self.assertNotIn('fee_options', rows[ident])
+
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:
             for path in ('/?tab=venues', '/venues/', '/tennis'):

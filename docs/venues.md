@@ -120,3 +120,9 @@ The 2026-10-15 Ota and Adachi follow-up is in
 `docs/venue-fee-followup-2026-10-15.md`. It adds seven source-matched tariffs
 and cancellation conditions while retaining unknown prices where the exact
 bookable facility tariff is unconfirmed.
+
+The second and third Tokyo batches are recorded in
+`docs/venue-fee-followup-2026-10-15-b.md` and
+`docs/venue-fee-followup-2026-10-15-c.md`. The third batch adds ten
+source-matched tariffs and four cancellation-policy records; it leaves
+sport-mismatched or currently closed facilities unpriced.
