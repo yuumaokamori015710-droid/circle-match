@@ -167,6 +167,21 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertRegex(page, r'href="/assets/venues/tennis\.css\?v=[0-9a-f]{12}"')
         self.assertRegex(page, r'src="/assets/venues/tennis\.js\?v=[0-9a-f]{12}"')
 
+    def test_registration_guides_link_all_wards_and_metropolitan_courts(self):
+        page = self.request('/venues?sport=%E3%83%86%E3%83%8B%E3%82%B9')[1].decode('utf-8')
+        guides = self.app.venues.REGISTRATION_GUIDES
+        self.assertEqual(len(guides), 24)
+        self.assertEqual(len({name for name, _, _ in guides}), 24)
+        self.assertEqual(page.count('class="venue-registration-guide-link"'), 24)
+        for name, url, note in guides:
+            with self.subTest(name=name):
+                self.assertIn(name, page)
+                self.assertIn(note, page)
+                self.assertIn('href="' + url + '"', page)
+                self.assertEqual(urlsplit(url).scheme, 'https')
+        self.assertIn('窓口予約の例外', page)
+        self.assertNotIn('__VENUE_REGISTRATION_GUIDES__', page)
+
     def test_public_catalog_keeps_all_curated_facilities_and_evidence(self):
         data = self.catalog()
         courts = data['courts']

@@ -57,6 +57,14 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-map-choice.is-disabled{color:#81909d;background:#f3f5f6}
 .venue-directory .venue-map-credit{font-size:10px;margin:8px 0 0;color:var(--muted)}
 .venue-directory .venue-filter-panel{margin:0 0 28px}
+.venue-directory .venue-registration-guides{margin:0 0 24px;border-block:1px solid var(--border)}
+.venue-directory .venue-registration-guides>summary{min-height:44px;padding:10px 0;cursor:pointer;font-weight:600;color:var(--green)}
+.venue-directory .venue-registration-guides>p{margin:4px 0 14px;font-size:12px;color:var(--muted)}
+.venue-directory .venue-registration-guides>ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 18px;list-style:none;margin:0 0 16px;padding:0}
+.venue-directory .venue-registration-guides li{display:flex;flex-direction:column;gap:2px;min-width:0;padding:12px 0;border-top:1px solid var(--border);font-size:12px}
+.venue-directory .venue-registration-guides li strong{font-size:13px}
+.venue-directory .venue-registration-guides li span{color:var(--muted)}
+.venue-directory .venue-registration-guide-link{display:inline-flex;align-items:center;min-height:44px;width:max-content;max-width:100%;font-weight:600}
 .venue-directory .venue-panel-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
 .venue-directory .venue-panel-heading h2{font-size:16px;margin:0}
 .venue-directory .venue-text-button{border:0;padding:4px 0;color:var(--green);font-size:12px;text-decoration:underline}
@@ -158,6 +166,7 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-spinner{display:inline-block;width:20px;height:20px;border:2px solid #d6e4e0;border-top-color:var(--green);border-radius:50%;animation:venue-spin .8s linear infinite}
 @keyframes venue-spin{to{transform:rotate(360deg)}}
 @media(max-width:900px){
+ .venue-directory .venue-registration-guides>ul{grid-template-columns:repeat(2,minmax(0,1fr))}
  .venue-directory .venue-table,.venue-directory .venue-table>tbody{display:block}
  .venue-directory .venue-table>thead{display:block;position:relative;width:auto;height:auto;overflow:visible;clip-path:none}
  .venue-directory .venue-table>thead>tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 8px;padding:4px 8px;background:#f0f4f5;border-block:1px solid var(--border)}
@@ -180,6 +189,7 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:640px){
+ .venue-directory .venue-registration-guides>ul{grid-template-columns:1fr}
  .venue-directory .venue-intro{margin:8px 0 16px}
  .venue-directory .venue-intro .venue-coverage-note,.venue-directory .venue-results-note{display:none}
  .venue-directory .venue-catalog-meta{gap:4px 12px;font-size:11px}

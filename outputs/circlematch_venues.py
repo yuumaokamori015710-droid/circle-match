@@ -39,6 +39,44 @@ ASSET_PATHS = {
 }
 ASSET_VERSIONS = {url: sha256(path.read_bytes()).hexdigest()[:12] for url, (path, _) in ASSET_PATHS.items()}
 
+REGISTRATION_GUIDES = (
+    ('千代田区', 'https://www.city.chiyoda.lg.jp/koho/bunka/sports/shisetsu/sotoborikoen-sogoground.html', '外濠公園は窓口で本登録。登録できる地域に制限があります。'),
+    ('中央区', 'https://www.city.chuo.lg.jp/a0015/faq/bunkakankou/sports/0003.html', '区立テニスコート等は団体登録。スポーツセンターは別扱いです。'),
+    ('港区', 'https://www.city.minato.tokyo.jp/sports/riyoutouroku.html', '区立テニスは個人登録。区内在住・在勤・在学の条件があります。'),
+    ('新宿区', 'https://www.city.shinjuku.lg.jp/reserve_facilities.html', '対象の屋外施設・スポーツセンターは事前登録が必要です。'),
+    ('文京区', 'https://www.city.bunkyo.lg.jp/b011/p006769.html', '予約システムとスポーツ施設の登録手続きを確認してください。'),
+    ('台東区', 'https://www.city.taito.lg.jp/kusei/online/yoyaku/riyousyatouroku2026.html', '個人・団体の登録区分があります。'),
+    ('墨田区', 'https://www.city.sumida.lg.jp/sisetu_info/riyousystem/online_touroku.html', '屋外スポーツ施設の登録・抽選条件を確認してください。'),
+    ('江東区', 'https://www.koto-hsc.or.jp/team/', 'テニスは個人登録。未登録団体の窓口予約には例外があります。'),
+    ('品川区', 'https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-bunka/shisetsuyoyaku/20181102093601.html', '公園運動施設と体育館では登録区分が異なります。'),
+    ('目黒区', 'https://www.city.meguro.tokyo.jp/sports/kusei/onlineservice/toroku.html', '庭球場などの貸切は団体登録です。'),
+    ('大田区', 'https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html', 'うぐいすネットの利用者登録を確認してください。'),
+    ('世田谷区', 'https://www.city.setagaya.lg.jp/01111/8105.html', 'けやきネット対象施設の登録手続きを確認してください。'),
+    ('渋谷区', 'https://www.city.shibuya.tokyo.jp/shisetsu/shisetsu-yoyaku/yoyaku-system/yoyaku_system2.html', '団体利用・ゲスト利用の登録区分があります。'),
+    ('中野区', 'https://www.city.tokyo-nakano.lg.jp/shisetsu/sisetuyoyaku/sisetuyoyakusystem.html', '新予約システムは旧登録者も再登録が必要です。'),
+    ('杉並区', 'https://www.city.suginami.tokyo.jp/s032/shinseisho/8761.html', 'さざんかねっとのスポーツ施設用登録。区外の人は空き枠から。'),
+    ('豊島区', 'https://www.city.toshima.lg.jp/501/2008071558.html', '貸切は団体または個人登録。当日の個人利用は別です。'),
+    ('北区', 'https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010407/1010408.html', 'テニスコート用の登録区分を確認してください。'),
+    ('荒川区', 'https://www.city.arakawa.tokyo.jp/a017/shisetsuannai/sisetuyoyaku/sportssihisetsu.html', '施設に応じた個人・団体登録が必要です。'),
+    ('板橋区', 'https://www.city.itabashi.tokyo.jp/kusei/joho/yoyaku/1010240.html', 'ITA-リザーブ対象施設の登録手続きを確認してください。'),
+    ('練馬区', 'https://www.city.nerima.tokyo.jp/kankomoyoshi/sports/riyou/siseturiyouannai.html', '庭球場とその他のスポーツ施設で登録区分が異なります。'),
+    ('足立区', 'https://www.city.adachi.tokyo.jp/sports/shisetsu/yoyaku/okuagaishisetsuyoyaku.html', 'ネット予約は登録が必要。一般受付の窓口・電話には例外があります。'),
+    ('葛飾区', 'https://www.city.katsushika.lg.jp/tourism/1002753/1030217/1003241.html', '貸切利用の登録区分を確認してください。'),
+    ('江戸川区', 'https://www.city.edogawa.tokyo.jp/e030/qa/kusejoho/onlineservice/shisetsu/touroku/004.html', 'えどねっと。区外の人も登録可能ですが、テニス抽選は対象外です。'),
+    ('都立公園', 'https://www.tokyo-park.or.jp/park/sports/h-reserv/', '区の登録とは別の予約システムです。'),
+)
+
+
+def _registration_guides():
+    items = ''.join(
+        '<li><strong>' + escape(name) + '</strong><span>' + escape(note) + '</span>'
+        + _link(url, '公式の登録案内', 'venue-registration-guide-link') + '</li>'
+        for name, url, note in REGISTRATION_GUIDES
+    )
+    return ('<details class="venue-registration-guides"><summary>東京23区・都立の利用者登録先</summary>'
+            '<p>公共施設の貸切・事前予約向けです。施設ごとの適用条件、区外利用、窓口予約の例外は公式案内で確認してください。</p>'
+            '<ul>' + items + '</ul></details>')
+
 
 def _selected(params, key: str) -> str:
     value = (params or {}).get(key, "")
@@ -187,6 +225,7 @@ def render_venue_body(params=None) -> str:
         order = selected(params, 'v_sort') or selected(params, 'sort') or 'available'
         sort_options = ''.join(f'<option value="{key}"' + (' selected' if key == order else '') + f'>{escape(label)}</option>' for key, label in SORTS)
         values = {'TITLE': escape(title), 'FILTERS': _filters(params, catalog), 'REGION_MAP': render_region_map(params, catalog['courts']),
+                  'REGISTRATION_GUIDES': _registration_guides(),
                   'SORT_OPTIONS': sort_options, 'COLUMN_HEADERS': _column_headers(params),
                   'HOURS_COUNT': str(catalog['meta']['hours_verified']),
                   'TOTAL': f"掲載 {catalog['meta']['total']:,} 施設", 'CHECKED': escape(catalog['meta']['checked_at']),

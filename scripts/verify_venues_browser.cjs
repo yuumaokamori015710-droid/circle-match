@@ -54,6 +54,14 @@ async function zoom(page,name,stage) {
           await page.screenshot({path:path.join(out,`football-results-${width}.png`)});
         }
       }
+      await page.goto(base+'/venues?'+new URLSearchParams({sport:'テニス'}));
+      const guides=page.locator('.venue-registration-guides');
+      await guides.locator('summary').click();
+      assert.equal(await guides.locator('a.venue-registration-guide-link').count(),24);
+      assert.equal(await guides.locator('ul').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),width<=640?1:width<=900?2:4);
+      assert((await guides.locator('a').first().getAttribute('href')).startsWith('https://'));
+      assert((await page.evaluate(()=>document.documentElement.scrollWidth))<=width+1);
+      if ([390,1440].includes(width)) await guides.screenshot({path:path.join(out,`registration-guides-${width}.png`)});
       for (const name of ['高円寺みんなの体育館','高円寺地域区民センター（セシオン杉並）','上高田運動施設庭球場','カラオケまねきねこ 経堂農大通り店']) {
         const row = catalog.courts.find(row=>row.name===name);
         assert(row && row.price_to !== undefined);
