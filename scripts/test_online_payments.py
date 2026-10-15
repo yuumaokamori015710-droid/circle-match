@@ -30,9 +30,11 @@ class FakeStripe:
         self.refund_failure = False
         self.on_create = None
         self.platform_id = "acct_platform"
+        self.charges_enabled = self.payouts_enabled = True
 
     def platform(self):
-        return {"id":self.platform_id,"country":"JP","default_currency":"jpy"}
+        return {"id":self.platform_id,"country":"JP","default_currency":"jpy",
+                "charges_enabled":self.charges_enabled,"payouts_enabled":self.payouts_enabled}
 
     def create_account(self,key):
         self.account_calls += 1
@@ -157,7 +159,7 @@ class PaymentTests(unittest.TestCase):
             src.backup(dst)
         self.app.DB_PATH=self.path
         self.mod=self.app.online_payments
-        self.config=self.mod.Config(True,"test","sk_test_local_mock","whsec_local_mock","acct_platform","http://127.0.0.1:8896")
+        self.config=self.mod.Config(True,"test","sk_test_local_mock","whsec_local_mock","acct_platform","http://127.0.0.1:8896",connect_webhook_secret="whsec_connect_mock")
         self.gateway=FakeStripe()
         self.service=self.mod.Payments(self.app.connect,self.app.add_event_notification,self.config,self.gateway)
         self.app._payments=self.service
@@ -482,6 +484,51 @@ class PaymentTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.mod.StripeGateway(config)
         with self.assertRaises(ValueError):replace(self.config,mode="live",key="sk_live_notreal").validate()
 
+    def test_missing_webhook_keys_block_checkout_before_creating_order(self):
+        eid=self.save();aid=self.apply(eid);data=self.quote_data(aid)
+        for changes in ({"webhook_secret":""},{"connect_webhook_secret":""},
+                        {"connect_webhook_secret":self.config.webhook_secret}):
+            self.service.config=replace(self.config,**changes)
+            with self.assertRaises(self.mod.Unavailable):self.service.checkout(aid,"person",data)
+        self.assertEqual(self.gateway.create_calls,0)
+        with self.app.connect() as conn:
+            self.assertEqual(conn.execute("select count(*) from payment_orders").fetchone()[0],0)
+
+    def test_platform_payment_pause_blocks_new_but_not_reconciliation_or_refund(self):
+        eid,aid,order=self.paid()
+        self.gateway.charges_enabled=False
+        self.service.reconcile(order["order_id"])
+        self.service.request_refund(order["order_id"],"host","中止",True)
+        self.service.refund_job()
+        self.assertEqual(self.service.order(order["order_id"],admin=True)["refund_state"],"succeeded")
+        eid=self.save();aid=self.apply(eid);data=self.quote_data(aid)
+        with self.assertRaisesRegex(self.mod.Unavailable,"停止中"):
+            self.service.checkout(aid,"person",data)
+        self.assertEqual(self.gateway.create_calls,1)
+
+    def test_connection_status_is_read_only_and_never_returns_secrets_or_provider_errors(self):
+        status=self.service.connection_status(check_stripe=True)
+        self.assertTrue(status["stripe_checked"])
+        self.assertTrue(all(c["ok"] for c in status["checks"]))
+        self.gateway.charges_enabled=False
+        status=self.service.connection_status(check_stripe=True)
+        self.assertFalse(next(c["ok"] for c in status["checks"] if c["label"]=="Stripe決済受付"))
+        with patch.object(self.gateway,"platform",side_effect=RuntimeError("secret="+self.config.key)):
+            status=self.service.connection_status(check_stripe=True)
+        self.assertFalse(all(c["ok"] for c in status["checks"]))
+        self.assertNotIn(self.config.key,json.dumps(status))
+        self.assertNotIn(self.config.webhook_secret,json.dumps(status))
+        self.assertEqual((self.gateway.create_calls,self.gateway.refund_calls,self.gateway.account_calls),(0,0,1))
+
+    def test_connection_url_and_live_approval_guard(self):
+        for url in ("https://user:pass@example.test","https://example.test/?key=secret","http://example.test","https://example.test/path","https://[broken"):
+            with self.assertRaises(self.mod.Unavailable):replace(self.config,base_url=url).validate_new_payments()
+        live=replace(self.config,mode="live",key="sk_live_local_mock",base_url="https://circle-match.jp")
+        with self.assertRaises(self.mod.Unavailable):live.validate_new_payments()
+        replace(live,live_approved=True).validate_new_payments()
+        unconfigured=self.mod.Payments(None,None,self.mod.Config())
+        self.assertFalse(unconfigured.connection_status(check_stripe=True)["stripe_checked"])
+
     def test_no_expired_idempotency_key_is_reused_for_create(self):
         eid=self.save();aid=self.apply(eid);self.gateway.timeout_create=True
         with self.assertRaises(TimeoutError):self.checkout(aid)
@@ -661,6 +708,20 @@ class PaymentTests(unittest.TestCase):
             self.assertEqual(request("/payments/orders/"+o["order_id"],sid=other)[0],403)
             self.assertEqual(request(path,"POST",{},headers={"X-CSRF-Token":csrf})[0],200)
             self.assertEqual(self.service.order(o["order_id"],admin=True)["state"],"paid")
+            admin_path="/api/payments/admin/connection-status"
+            with patch.object(self.app,"ADMIN_PASSWORD","local-admin-password"):
+                self.assertEqual(request(admin_path,"POST",{})[0],401)
+                auth="Basic "+self.app.base64.b64encode((self.app.ADMIN_USERNAME+":local-admin-password").encode()).decode()
+                admin_csrf=hmac.new(self.app.SESSION_SECRET.encode(),("payments:"+auth).encode(),hashlib.sha256).hexdigest()
+                self.assertEqual(request(admin_path,"POST",{},headers={"Authorization":auth})[0],403)
+                status,body=request(admin_path,"POST",{},headers={"Authorization":auth,"X-CSRF-Token":admin_csrf})
+                self.assertEqual(status,200)
+                self.assertTrue(json.loads(body)["connection_status"]["stripe_checked"])
+                self.assertNotIn(self.config.key,body)
+                self.assertNotIn(self.config.webhook_secret,body)
+                status,body=request("/admin/payments",headers={"Authorization":auth})
+                self.assertEqual(status,200)
+                self.assertIn("オンライン決済の接続確認",body)
         finally:
             server.shutdown();server.server_close();thread.join()
 

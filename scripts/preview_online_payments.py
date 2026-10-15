@@ -24,9 +24,13 @@ def main():
         sessions={uid:app.create_user_session(conn,uid) for uid in ("host","person")}
     links={"participant":"/payments/applications/"+aid,"receipt":"/payments/orders/"+paid["order_id"],
            "host":"/events/new?event_id="+eid,"connect":"/payments/connect","payments":"/payments",
-           "cancel":"/payments/cancel/"+paid["event_id"],"home":"/events"}
+           "cancel":"/payments/cancel/"+paid["event_id"],"home":"/events","admin":"/admin/payments"}
 
     class PreviewHandler(app.Handler):
+        def payment_admin(self):
+            # Only this loopback simulator uses fake admin access and disposable records.
+            return True
+
         def do_GET(self):
             parsed=urlparse(self.path)
             if parsed.path=="/preview":

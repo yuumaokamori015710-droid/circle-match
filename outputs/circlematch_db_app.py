@@ -5082,7 +5082,9 @@ class Handler(BaseHTTPRequestHandler):
         if admin:
             parts = parts[1:]
         result = {"ok":True}
-        if parts == ["connect","onboard"] and not admin:
+        if parts == ["connection-status"] and admin:
+            result["connection_status"] = service.connection_status(check_stripe=True)
+        elif parts == ["connect","onboard"] and not admin:
             result = service.onboard(uid)
         elif parts == ["connect","refresh"] and not admin:
             service.refresh_account(uid)

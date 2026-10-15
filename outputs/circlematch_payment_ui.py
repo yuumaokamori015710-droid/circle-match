@@ -53,7 +53,12 @@ document.querySelectorAll('form[data-pay]').forEach(form=>form.onsubmit=async e=
  form.dataset.busy='1';button.disabled=true;error.hidden=true;
  try{const response=await fetch(form.dataset.pay,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':__CSRF__},body:JSON.stringify(data)});
  const result=await response.json();if(!response.ok)throw Error(result.error||'通信に失敗しました。支払状態を再確認してください');
- if(result.url)location.assign(result.url);else location.reload();
+ if(result.connection_status){
+   const output=document.getElementById('payment-connection-status');output.replaceChildren();
+   result.connection_status.checks.forEach(check=>{const row=document.createElement('p');row.textContent=check.label+'：'+(check.ok?'確認済み':'未完了・要確認');output.append(row)});
+   if(!result.connection_status.stripe_checked){const row=document.createElement('p');row.textContent='Stripe APIの状態は未確認です。接続設定を完了して再確認してください。';output.append(row)}
+   delete form.dataset.busy;button.disabled=false;
+ }else if(result.url)location.assign(result.url);else location.reload();
  }catch(err){error.hidden=false;error.textContent=err.message;delete form.dataset.busy;button.disabled=false}
 });</script>'''.replace("__CSRF__", json.dumps(csrf))
 
@@ -141,6 +146,13 @@ def render(service, kind, identifier, user, page, csrf, admin=False):
     else:
         title = "決済運営管理" if admin else "オンライン決済"
         body += '<h1>'+title+'</h1>'
+        if admin:
+            status = service.connection_status()
+            body += '<h2>オンライン決済の接続確認</h2><p>新規受付：'+('有効' if status['enabled'] else '停止中')+'</p>'
+            body += '<div id="payment-connection-status" role="status">'+''.join('<p>'+esc(check['label'])+'：'+('設定済み' if check['ok'] else '未設定・要確認')+'</p>' for check in status['checks'])+'</div>'
+            body += action('/api/payments/admin/connection-status','Stripeの利用状態を確認する')
+            body += '<p>この確認では課金・送金は行いません。Webhookの実配信、主催者の受取設定、テスト決済の完了は別途確認が必要です。</p>'
+            body += '<p><a href="https://dashboard.stripe.com/account/status" target="_blank" rel="noopener noreferrer">Stripeの必須タスクを確認する</a></p>'
         if not admin:
             body += '<p><a class="button" href="/payments/connect">売上の受取設定</a></p>'
         with service.connect() as conn:

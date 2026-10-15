@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import logging
 import os
 import re
 import secrets
@@ -10,6 +11,7 @@ import time
 from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 
 API_VERSION = "2026-09-30.endive"
 FEE_BPS = 1000
@@ -91,6 +93,29 @@ class Config:
             raise Unavailable("Stripeのキーと動作モードが一致していません")
         if self.mode == "live" and (not self.live_approved or not self.base_url.startswith("https://")):
             raise Unavailable("本番決済は承認・設定されていません")
+
+    def connection_checks(self):
+        try:
+            url = urlparse(self.base_url)
+        except ValueError:
+            url = urlparse("")
+        return [
+            {"label": "決済モード", "ok": self.mode in {"test", "live"}},
+            {"label": "StripeアカウントID", "ok": bool(re.fullmatch(r"acct_[A-Za-z0-9]+", self.platform))},
+            {"label": "秘密鍵とモードの一致", "ok": bool(self.mode in {"test", "live"} and self.key.startswith("sk_"+self.mode+"_"))},
+            {"label": "決済Webhook署名鍵", "ok": self.webhook_secret.startswith("whsec_")},
+            {"label": "Connect Webhook署名鍵", "ok": self.connect_webhook_secret.startswith("whsec_")},
+            {"label": "2種類のWebhook署名鍵の分離", "ok": bool(self.webhook_secret and self.connect_webhook_secret and self.webhook_secret != self.connect_webhook_secret)},
+            {"label": "サイトURL", "ok": bool(url.hostname and not url.username and not url.password and not url.query and not url.fragment and url.path in {"", "/"} and
+                (url.scheme == "https" or (self.mode == "test" and url.scheme == "http" and url.hostname in {"localhost", "127.0.0.1", "::1"})))},
+            {"label": "本番有効化の承認", "ok": self.mode == "test" or self.live_approved},
+        ]
+
+    def validate_new_payments(self):
+        self.validate()
+        missing = [check["label"] for check in self.connection_checks() if not check["ok"]]
+        if missing:
+            raise Unavailable("オンライン決済の接続設定が未完了です：" + "、".join(missing))
 
 
 SCHEMA = [
@@ -281,14 +306,36 @@ class Payments:
             self._gateway = StripeGateway(self.config)
         return self._gateway
 
-    def platform_check(self):
+    def platform_check(self, accepting_payments=False):
         platform = self.gateway.platform()
         if platform.get("id") != self.config.platform or platform.get("country") != "JP" or platform.get("default_currency") != "jpy":
             raise Unavailable("Stripeプラットフォーム・日本円の設定が一致しません")
+        if accepting_payments and platform.get("charges_enabled") is not True:
+            raise Unavailable("Stripe側で決済が停止中または審査中です。運営が必須タスクを完了する必要があります")
+        return platform
+
+    def connection_status(self, check_stripe=False):
+        checks = self.config.connection_checks()
+        if check_stripe and all(check["ok"] for check in checks):
+            try:
+                platform = self.platform_check()
+                checks.extend([
+                    {"label": "Stripe API接続・日本円アカウント", "ok": True},
+                    {"label": "Stripe決済受付", "ok": platform.get("charges_enabled") is True},
+                    {"label": "運営の銀行入金設定", "ok": platform.get("payouts_enabled") is True},
+                ])
+            except Exception as exc:
+                # Provider errors may contain credentials or private account details.
+                logging.getLogger(__name__).warning("Stripe connection check failed (%s)", type(exc).__name__)
+                checks.append({"label": "Stripe API接続・日本円アカウント", "ok": False})
+        return {"mode": self.config.mode if self.config.mode in {"test", "live"} else "invalid",
+                "enabled": self.config.enabled, "stripe_checked": any(check["label"] == "Stripe API接続・日本円アカウント" for check in checks),
+                "checks": checks}
 
     def new_allowed(self):
         if not self.config.enabled:
             raise Unavailable("オンライン決済の新規受付は停止中です。既存の支払いは引き続き確認できます")
+        self.config.validate_new_payments()
 
     def audit(self, conn, order_id, action, actor="system", detail="", effect=None):
         return conn.execute("insert or ignore into payment_audit(order_id,effect_key,actor,action,detail,created_at) values(?,?,?,?,?,?)",
@@ -403,6 +450,7 @@ class Payments:
         if set(data) - {"accepted", "quote_token"} or data.get("accepted") is not True:
             raise PaymentError("支払内容とキャンセル条件の確認が必要です。金額・送金先は指定できません")
         self.new_allowed()
+        self.platform_check(accepting_payments=True)
         with self.connect() as conn:
             app,event = self.load_application(conn, app_id, user_id)
             old = conn.execute("select * from payment_orders where application_id=? and (active=1 or paid_at is not null) order by paid_at is not null desc", (app_id,)).fetchone()
@@ -499,6 +547,8 @@ class Payments:
             if order["session_id"]:
                 session = self.gateway.session(order["session_id"])
             else:
+                self.config.validate_new_payments()
+                self.platform_check(accepting_payments=True)
                 with self.connect() as conn:
                     attempt = dict(conn.execute("select * from payment_attempts where order_id=?",(order_id,)).fetchone())
                 # Stripe may prune idempotency keys after 24h: never create again after uncertainty.
@@ -513,6 +563,7 @@ class Payments:
                 order = self.order(order_id,admin=True)
             self.apply_session(order,session,token)
             if session.get("status") == "open" and session.get("url"):
+                self.platform_check(accepting_payments=True)
                 account = self.refresh_account(order["organizer_id"])
                 blocked = not self.config.enabled or not account or account["state"] != "ready" or account["account_id"] != order["destination"]
                 with self.connect() as conn:
