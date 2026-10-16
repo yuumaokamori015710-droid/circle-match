@@ -126,3 +126,9 @@ The second and third Tokyo batches are recorded in
 `docs/venue-fee-followup-2026-10-15-c.md`. The third batch adds ten
 source-matched tariffs and four cancellation-policy records; it leaves
 sport-mismatched or currently closed facilities unpriced.
+
+The 2026-10-16 review is recorded in `docs/venue-fee-followup-2026-10-16.md`:
+24 existing facilities reviewed, 22 newly priced, 15 cancellation checks,
+and Hanahata's official long-term closure recorded. The catalog has 1,206
+records, 664 with prices and 542 unpriced (including suspended records).
+Charging units, eligibility and conflicting-source holds remain explicit.

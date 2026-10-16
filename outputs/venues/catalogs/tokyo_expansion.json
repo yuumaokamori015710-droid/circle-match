@@ -30535,7 +30535,7 @@
     "booking_note": "団体貸切は施設ごとの事前登録・抽選・受付期間の確認が必要です。 利用条件：【個人利用】 ・どなたでも利用可 ・中学生以下の夜間利用は、16歳以上の保護者同伴が必要 【団体利用】 ・どなたでも利用可 ・中学生以下の団体は、16歳以上の保護者が必要 ※詳細は、ＵＲＬをご覧ください。 区市町村外からの利用条件：【個人利用】 ・特になし 【団体利用】 ・一般受付開始日より予約可能 最新条件と使用する体育室の対応競技は公式案内で確認してください。",
     "booking_url": "https://spopita.jp/%e8%8a%b1%e7%95%91%e5%9c%b0%e5%9f%9f%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e9%a4%a8/",
     "official_url": "https://spopita.jp/%e8%8a%b1%e7%95%91%e5%9c%b0%e5%9f%9f%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e9%a4%a8/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-16",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -30547,10 +30547,14 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e8%8a%b1%e7%95%91%e5%9c%b0%e5%9f%9f%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e4%bd%93%e8%82%b2%e9%a4%a8/"
+      },
+      {
+        "title": "足立区公式：花畑センター大規模改修に伴う長期休館",
+        "url": "https://www.city.adachi.tokyo.jp/sg-shien/hanahata.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": ""
+    "availability_status": "SUSPENDED",
+    "availability_note": "大規模改修のため2026年9月1日～2028年3月頃（予定）まで休館。再開時期は足立区公式案内を確認してください。"
   },
   {
     "id": "tokyo-gym-9df21a804b72",

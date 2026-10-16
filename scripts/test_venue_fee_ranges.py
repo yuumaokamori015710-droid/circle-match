@@ -9,7 +9,8 @@ from test_venues import IsolatedAppHttpCase
 
 class VenueFeeRangeTests(IsolatedAppHttpCase):
     def test_october_followup_keeps_units_sources_and_unknowns(self):
-        rows = {row['id']: row for row in json.loads(self.request('/api/venues')[1])['courts']}
+        catalog = json.loads(self.request('/api/venues')[1])
+        rows = {row['id']: row for row in catalog['courts']}
         expected = {
             'tokyo-venue-34caff76d086': [('球技場1面2時間', 2100, 2460)],
             'tokyo-venue-c8eeb7f64931': [('運動場1面2時間', 4000, 8000)],
@@ -35,7 +36,9 @@ class VenueFeeRangeTests(IsolatedAppHttpCase):
         for ident in ('tokyo-venue-8d267086196e', 'tokyo-venue-7f5f8dbd18bb',
                       'tokyo-venue-8e6c0f81a52c', 'tokyo-venue-5b81852866ce'):
             self.assertEqual(rows[ident]['fee_ranges'], [])
-        self.assertEqual(sum(bool(r['fee_ranges']) for r in rows.values()), 609)
+        priced = sum(bool(row['fee_ranges']) for row in rows.values())
+        self.assertGreaterEqual(priced, 609)
+        self.assertEqual(priced, catalog['meta']['prices_available'])
 
     def test_bounds_use_every_tariff_and_keep_billing_units_separate(self):
         from venues.fees import price_ranges

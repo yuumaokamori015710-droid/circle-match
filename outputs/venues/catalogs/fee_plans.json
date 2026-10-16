@@ -49292,5 +49292,1846 @@
       {"label": "体育館・全開放団体", "amount": 8600, "unit": "体育館1室2時間", "conditions": "区内・区外の全開放登録。抽選対象外で空き枠から予約。", "source_url": "https://www.nakano-sports-comm.net/southern/group/"}
     ],
     "fee_note": "9:30～22:45の各2時間枠。会員資格と登録費は別途確認。"
+  },
+  {
+    "id": "tokyo-venue-9b93d81ca10e",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/iko.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-8a96774363e5",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/touwa.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-84dbc0345777",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shisetsu/kouhoku.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-bc16a86706e5",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/chuouhonchou.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-dc5097408efb",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2200,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 3300,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1100,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 1650,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/sano.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-6a6bb1ea794a",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/umeda2.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-145a2b1e2fa3",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2200,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 3300,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1100,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 1650,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/okimoto.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-9df21a804b72",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切料金。学習室・レクホール・個人公開の料金ではありません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sg-shien/shikahama.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-573105da20a9",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 全面",
+        "amount": 2700,
+        "unit": "体育館全面・3時間",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 全面",
+        "amount": 3500,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 全面",
+        "amount": 4100,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "全日9:00～21:00 / 全面",
+        "amount": 13800,
+        "unit": "体育館全面・全日12時間",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "午前9:00～12:00 / 半面",
+        "amount": 1350,
+        "unit": "体育館半面・3時間",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "午後1 12:30～15:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "午後2 15:30～18:00 / 半面",
+        "amount": 1750,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "夜間18:30～21:00 / 半面",
+        "amount": 2050,
+        "unit": "体育館半面・2時間30分",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      },
+      {
+        "label": "全日9:00～21:00 / 半面",
+        "amount": 6900,
+        "unit": "体育館半面・全日12時間",
+        "conditions": "体育館の通常団体貸切。小体育室・プール・個人公開料金は含みません。Web予約は事前登録が必要。減免・付帯設備は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/swim.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-46bb4a7e287c",
+    "checked_at": "2026-10-16",
+    "fee_note": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+    "fee_options": [
+      {
+        "label": "大体育室全面 / 午前9:00～12:00",
+        "amount": 6600,
+        "unit": "大体育室全面・3時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室全面 / 午後1 12:30～15:00",
+        "amount": 7700,
+        "unit": "大体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室全面 / 午後2 15:30～18:00",
+        "amount": 7700,
+        "unit": "大体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室全面 / 夜間18:30～21:00",
+        "amount": 9200,
+        "unit": "大体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室全面 / 全日9:00～21:00",
+        "amount": 31200,
+        "unit": "大体育室全面・全日12時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室半面 / 午前9:00～12:00",
+        "amount": 3300,
+        "unit": "大体育室半面・3時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室半面 / 午後1 12:30～15:00",
+        "amount": 3850,
+        "unit": "大体育室半面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室半面 / 午後2 15:30～18:00",
+        "amount": 3850,
+        "unit": "大体育室半面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室半面 / 夜間18:30～21:00",
+        "amount": 4600,
+        "unit": "大体育室半面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室半面 / 全日9:00～21:00",
+        "amount": 15600,
+        "unit": "大体育室半面・全日12時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室4分の1面 / 午前9:00～12:00",
+        "amount": 1650,
+        "unit": "大体育室4分の1面・3時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室4分の1面 / 午後1 12:30～15:00",
+        "amount": 1920,
+        "unit": "大体育室4分の1面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室4分の1面 / 午後2 15:30～18:00",
+        "amount": 1920,
+        "unit": "大体育室4分の1面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室4分の1面 / 夜間18:30～21:00",
+        "amount": 2300,
+        "unit": "大体育室4分の1面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "大体育室4分の1面 / 全日9:00～21:00",
+        "amount": 7790,
+        "unit": "大体育室4分の1面・全日12時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "小体育室全面 / 午前9:00～12:00",
+        "amount": 2200,
+        "unit": "小体育室全面・3時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "小体育室全面 / 午後1 12:30～15:00",
+        "amount": 2700,
+        "unit": "小体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "小体育室全面 / 午後2 15:30～18:00",
+        "amount": 2700,
+        "unit": "小体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "小体育室全面 / 夜間18:30～21:00",
+        "amount": 3300,
+        "unit": "小体育室全面・2時間30分",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      },
+      {
+        "label": "小体育室全面 / 全日9:00～21:00",
+        "amount": 10900,
+        "unit": "小体育室全面・全日12時間",
+        "conditions": "大・小体育室の通常団体貸切。面積区分と利用時間ごとに表示。Web予約は事前登録が必要。減免・付帯設備・個人公開料金は別途。",
+        "source_url": "https://www.city.adachi.tokyo.jp/sports/shisetsu/sousupo-in.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-0cb647825898",
+    "checked_at": "2026-10-16",
+    "fee_note": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+    "fee_options": [
+      {
+        "label": "9:00～12:00 / 平日 / 半面",
+        "amount": 7830,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 平日 / 全面",
+        "amount": 15660,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 半面",
+        "amount": 9300,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 全面",
+        "amount": 18600,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 平日 / 半面",
+        "amount": 7830,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 平日 / 全面",
+        "amount": 15660,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 土日祝 / 半面",
+        "amount": 9300,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 土日祝 / 全面",
+        "amount": 18600,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "15:00～17:00 / 平日 / 半面",
+        "amount": 5220,
+        "unit": "体育館半面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "15:00～17:00 / 平日 / 全面",
+        "amount": 10440,
+        "unit": "体育館全面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "15:00～17:00 / 土日祝 / 半面",
+        "amount": 6200,
+        "unit": "体育館半面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "15:00～17:00 / 土日祝 / 全面",
+        "amount": 12400,
+        "unit": "体育館全面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "17:00～19:00 / 平日 / 半面",
+        "amount": 5220,
+        "unit": "体育館半面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "17:00～19:00 / 平日 / 全面",
+        "amount": 10440,
+        "unit": "体育館全面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "17:00～19:00 / 土日祝 / 半面",
+        "amount": 6200,
+        "unit": "体育館半面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "17:00～19:00 / 土日祝 / 全面",
+        "amount": 12400,
+        "unit": "体育館全面・2時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "19:00～22:00 / 平日 / 半面",
+        "amount": 7830,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "19:00～22:00 / 平日 / 全面",
+        "amount": 15660,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "19:00～22:00 / 土日祝 / 半面",
+        "amount": 9300,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "19:00～22:00 / 土日祝 / 全面",
+        "amount": 18600,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "全日9:00～22:00 / 平日 / 半面",
+        "amount": 29740,
+        "unit": "体育館半面・全日13時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "全日9:00～22:00 / 平日 / 全面",
+        "amount": 59480,
+        "unit": "体育館全面・全日13時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "全日9:00～22:00 / 土日祝 / 半面",
+        "amount": 35620,
+        "unit": "体育館半面・全日13時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      },
+      {
+        "label": "全日9:00～22:00 / 土日祝 / 全面",
+        "amount": 71250,
+        "unit": "体育館全面・全日13時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/okura-gym/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-4eb031276843",
+    "checked_at": "2026-10-16",
+    "fee_note": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+    "fee_options": [
+      {
+        "label": "9:00～12:00 / 平日 / 半面",
+        "amount": 8580,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 平日 / 全面",
+        "amount": 17160,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 半面",
+        "amount": 10260,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 全面",
+        "amount": 20550,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 平日 / 半面",
+        "amount": 8580,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 平日 / 全面",
+        "amount": 17160,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 土日祝 / 半面",
+        "amount": 10260,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "12:00～15:00 / 土日祝 / 全面",
+        "amount": 20550,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "15:00～18:00 / 平日 / 半面",
+        "amount": 8580,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "15:00～18:00 / 平日 / 全面",
+        "amount": 17160,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "15:00～18:00 / 土日祝 / 半面",
+        "amount": 10260,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "15:00～18:00 / 土日祝 / 全面",
+        "amount": 20550,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "18:00～21:00 / 平日 / 半面",
+        "amount": 8580,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "18:00～21:00 / 平日 / 全面",
+        "amount": 17160,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "18:00～21:00 / 土日祝 / 半面",
+        "amount": 10260,
+        "unit": "体育館半面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "18:00～21:00 / 土日祝 / 全面",
+        "amount": 20550,
+        "unit": "体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日 / 半面",
+        "amount": 29490,
+        "unit": "体育館半面・全日12時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日 / 全面",
+        "amount": 58990,
+        "unit": "体育館全面・全日12時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "全日9:00～21:00 / 土日祝 / 半面",
+        "amount": 35380,
+        "unit": "体育館半面・全日12時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      },
+      {
+        "label": "全日9:00～21:00 / 土日祝 / 全面",
+        "amount": 70760,
+        "unit": "体育館全面・全日12時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/sougou-gym/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-e9661f9d4b0f",
+    "checked_at": "2026-10-16",
+    "fee_note": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+    "fee_options": [
+      {
+        "label": "9:00～12:00 / 平日・土曜",
+        "amount": 7640,
+        "unit": "3階体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "9:00～12:00 / 日祝",
+        "amount": 9170,
+        "unit": "3階体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "12:00～15:00 / 平日・土曜",
+        "amount": 8550,
+        "unit": "3階体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "12:00～15:00 / 日祝",
+        "amount": 10260,
+        "unit": "3階体育館全面・3時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "16:00～18:30 / 平日・土曜",
+        "amount": 8550,
+        "unit": "3階体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "16:00～18:30 / 日祝",
+        "amount": 10260,
+        "unit": "3階体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "18:30～21:00 / 平日・土曜",
+        "amount": 9900,
+        "unit": "3階体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "18:30～21:00 / 日祝",
+        "amount": 11880,
+        "unit": "3階体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日・土曜",
+        "amount": 30200,
+        "unit": "3階体育館全面・全日枠",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      },
+      {
+        "label": "全日9:00～21:00 / 日祝",
+        "amount": 36240,
+        "unit": "3階体育館全面・全日枠",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。対象は3階体育館。15:00～16:00は個人利用時間で団体利用不可。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/kibougaoka-gym-3rd-floor/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-815e7ebed1c0",
+    "checked_at": "2026-10-16",
+    "fee_note": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+    "fee_options": [
+      {
+        "label": "第1・3・5日曜・祝日9:00～13:00",
+        "amount": 9140,
+        "unit": "体育館全面・4時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      },
+      {
+        "label": "第1・3・5日曜・祝日13:00～17:00",
+        "amount": 9960,
+        "unit": "体育館全面・4時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      },
+      {
+        "label": "第1・3・5日曜・祝日17:00～21:00",
+        "amount": 13890,
+        "unit": "体育館全面・4時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      },
+      {
+        "label": "第1・3・5日曜・祝日 全日9:00～21:00",
+        "amount": 25490,
+        "unit": "体育館全面・全日12時間",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      },
+      {
+        "label": "第1・2・3・5水曜16:00～18:30",
+        "amount": 6200,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      },
+      {
+        "label": "第1・2・3・5水曜18:30～21:00",
+        "amount": 7180,
+        "unit": "体育館全面・2時間30分",
+        "conditions": "通常の体育館団体貸切。原則けやきネット登録団体（5名以上・半数以上が区内在住在勤在学などの要件）が対象。個人利用・付帯設備・減免を除きます。2026年12月～2027年2月中旬は改修休館予定（https://www.se-sports.or.jp/news/22467/）。予約可能日は公式案内で確認。",
+        "source_url": "https://www.se-sports.or.jp/facilityinfo/oyamadai-gym/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-f4ecc307371e",
+    "checked_at": "2026-10-16",
+    "fee_note": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+    "fee_options": [
+      {
+        "label": "午前9:00～13:00",
+        "amount": 37800,
+        "unit": "屋内球技場全面・4時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      },
+      {
+        "label": "午後13:00～17:00",
+        "amount": 45100,
+        "unit": "屋内球技場全面・4時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      },
+      {
+        "label": "夜間17:00～21:00",
+        "amount": 65000,
+        "unit": "屋内球技場全面・4時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      },
+      {
+        "label": "午前・午後9:00～17:00",
+        "amount": 77500,
+        "unit": "屋内球技場全面・8時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      },
+      {
+        "label": "午後・夜間13:00～21:00",
+        "amount": 102800,
+        "unit": "屋内球技場全面・8時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      },
+      {
+        "label": "全日9:00～21:00",
+        "amount": 129900,
+        "unit": "屋内球技場全面・全日12時間（税込）",
+        "conditions": "屋内球技場のアマチュアスポーツ・入場料等なし・スタンド未使用の通常貸切料金。団体登録が必要。スタンド使用・入場料等あり・その他スポーツ等・付属設備は別料金で、表示幅には含みません。",
+        "source_url": "https://www.tef.or.jp/kopgp/ballgame-indoor/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-125683b2ea6c",
+    "checked_at": "2026-10-16",
+    "fee_note": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+    "fee_options": [
+      {
+        "label": "9:00～12:00 / 区外団体",
+        "amount": 6300,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 区外団体",
+        "amount": 8400,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 区外団体",
+        "amount": 8400,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 区外団体",
+        "amount": 10500,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 区外団体",
+        "amount": 33600,
+        "unit": "多目的ホール全面・全日13時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "9:00～12:00 / 区民団体",
+        "amount": 3150,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 区民団体",
+        "amount": 4200,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 区民団体",
+        "amount": 4200,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 区民団体",
+        "amount": 5250,
+        "unit": "多目的ホール全面・3時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 区民団体",
+        "amount": 16800,
+        "unit": "多目的ホール全面・全日13時間",
+        "conditions": "事前の団体登録が必要。区民団体は10名以上・過半数が新宿区在住・代表者も区内在住などの登録条件があり半額。会議室・音楽室・個人利用・付帯設備は含みません。",
+        "source_url": "https://yotsuya-sports-square.jp/yotsuyawp/wp-content/themes/twentytwentyone-child/pdf/price.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-5074f6b079ec",
+    "checked_at": "2026-10-16",
+    "fee_note": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+    "fee_options": [
+      {
+        "label": "9:00～12:00 / 平日 / 全面",
+        "amount": 35200,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "9:00～12:00 / 平日 / 半面",
+        "amount": 17600,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 全面",
+        "amount": 42000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "9:00～12:00 / 土日祝 / 半面",
+        "amount": 21000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 平日 / 全面",
+        "amount": 42000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 平日 / 半面",
+        "amount": 21000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 土日祝 / 全面",
+        "amount": 44000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "12:20～15:20 / 土日祝 / 半面",
+        "amount": 22000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 平日 / 全面",
+        "amount": 42000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 平日 / 半面",
+        "amount": 21000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 土日祝 / 全面",
+        "amount": 44000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "15:40～18:40 / 土日祝 / 半面",
+        "amount": 22000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 平日 / 全面",
+        "amount": 44000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 平日 / 半面",
+        "amount": 22000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 土日祝 / 全面",
+        "amount": 44000,
+        "unit": "大体育室全面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "19:00～22:00 / 土日祝 / 半面",
+        "amount": 22000,
+        "unit": "大体育室半面・3時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 平日 / 全面",
+        "amount": 163200,
+        "unit": "大体育室全面・全日13時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 平日 / 半面",
+        "amount": 81600,
+        "unit": "大体育室半面・全日13時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 土日祝 / 全面",
+        "amount": 174000,
+        "unit": "大体育室全面・全日13時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      },
+      {
+        "label": "全日9:00～22:00 / 土日祝 / 半面",
+        "amount": 87000,
+        "unit": "大体育室半面・全日13時間",
+        "conditions": "現行運営者の貸切案内（https://www.regasu-shinjuku.or.jp/?p=668）からリンクされる料金表。大体育室の通常団体貸切。区民・区外で料金の違いなし。子ども団体減額・個人公開・付帯設備を除きます。",
+        "source_url": "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2018/07/shisetsu-price.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-555e53ea3e30",
+    "checked_at": "2026-10-16",
+    "fee_note": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+    "fee_options": [
+      {
+        "label": "サッカー場全面 / 平日",
+        "amount": 7350,
+        "unit": "サッカー場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "サッカー場全面 / 土日祝",
+        "amount": 10050,
+        "unit": "サッカー場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "第1・第2運動場全面 / 平日",
+        "amount": 5450,
+        "unit": "第1・第2運動場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "第1・第2運動場全面 / 土日祝",
+        "amount": 7400,
+        "unit": "第1・第2運動場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "第1・第2運動場半面 / 平日",
+        "amount": 2700,
+        "unit": "第1・第2運動場半面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "第1・第2運動場半面 / 土日祝",
+        "amount": 3700,
+        "unit": "第1・第2運動場半面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "多目的運動広場全面 / 平日",
+        "amount": 1800,
+        "unit": "多目的運動広場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      },
+      {
+        "label": "多目的運動広場全面 / 土日祝",
+        "amount": 2400,
+        "unit": "多目的運動広場全面・2時間",
+        "conditions": "2025年4月1日利用承認分からの通常団体料金。サッカー場・第1/第2運動場・多目的広場の区画ごとに表示。サッカー場の照明は別途1時間5,150円で、2時間枠料金には加算していません。テニス・撮影利用は対象外。",
+        "source_url": "https://www.di-ksp.jp/wp/wp-content/uploads/R6%E5%88%A9%E7%94%A8%E6%96%99%E9%87%91%E6%94%B9%E8%A8%82%EF%BC%88%E6%96%B0%E7%A0%82%E9%81%8B%E5%8B%95%E5%A0%B4%EF%BC%89_202402HP%E5%91%A8%E7%9F%A5.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-01345ff23a1e",
+    "checked_at": "2026-10-16",
+    "fee_note": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00 / 平日",
+        "amount": 16250,
+        "unit": "大体育室全面・3時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午前9:00～12:00 / 土日祝",
+        "amount": 19250,
+        "unit": "大体育室全面・3時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午後13:00～17:00 / 平日",
+        "amount": 25900,
+        "unit": "大体育室全面・4時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午後13:00～17:00 / 土日祝",
+        "amount": 31050,
+        "unit": "大体育室全面・4時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "夜間18:00～21:30 / 平日",
+        "amount": 32250,
+        "unit": "大体育室全面・3時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "夜間18:00～21:30 / 土日祝",
+        "amount": 38900,
+        "unit": "大体育室全面・3時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 平日",
+        "amount": 38850,
+        "unit": "大体育室全面・8時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 土日祝",
+        "amount": 46500,
+        "unit": "大体育室全面・8時間",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午後・夜間13:00～21:30 / 平日",
+        "amount": 51800,
+        "unit": "大体育室全面・8時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "午後・夜間13:00～21:30 / 土日祝",
+        "amount": 61900,
+        "unit": "大体育室全面・8時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "全日9:00～21:30 / 平日",
+        "amount": 64800,
+        "unit": "大体育室全面・全日12時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      },
+      {
+        "label": "全日9:00～21:30 / 土日祝",
+        "amount": 77550,
+        "unit": "大体育室全面・全日12時間30分",
+        "conditions": "大体育室の通常団体全面貸切。団体登録・利用条件を確認。興行など入場料等を徴収する利用は150%。小体育室・個人公開・付帯設備を除く。半面は種目制限があるためこの表示幅には含めません。",
+        "source_url": "https://www.koto-hsc.or.jp/centerlist/sports_center3/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-598414cefd93",
+    "checked_at": "2026-10-16",
+    "fee_note": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+    "fee_options": [
+      {
+        "label": "午前9:00～13:00 / 平日 / 半面",
+        "amount": 9500,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前9:00～13:00 / 平日 / 全面",
+        "amount": 19000,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前9:00～13:00 / 平日以外 / 半面",
+        "amount": 11850,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前9:00～13:00 / 平日以外 / 全面",
+        "amount": 23700,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後13:00～17:00 / 平日 / 半面",
+        "amount": 9500,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後13:00～17:00 / 平日 / 全面",
+        "amount": 19000,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後13:00～17:00 / 平日以外 / 半面",
+        "amount": 11850,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後13:00～17:00 / 平日以外 / 全面",
+        "amount": 23700,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "夜間17:00～21:00 / 平日 / 半面",
+        "amount": 13250,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "夜間17:00～21:00 / 平日 / 全面",
+        "amount": 26500,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "夜間17:00～21:00 / 平日以外 / 半面",
+        "amount": 16550,
+        "unit": "サブアリーナ半面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "夜間17:00～21:00 / 平日以外 / 全面",
+        "amount": 33100,
+        "unit": "サブアリーナ全面・4時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 平日 / 半面",
+        "amount": 17200,
+        "unit": "サブアリーナ半面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 平日 / 全面",
+        "amount": 34400,
+        "unit": "サブアリーナ全面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 平日以外 / 半面",
+        "amount": 21500,
+        "unit": "サブアリーナ半面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午前・午後9:00～17:00 / 平日以外 / 全面",
+        "amount": 43000,
+        "unit": "サブアリーナ全面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後・夜間13:00～21:00 / 平日 / 半面",
+        "amount": 20650,
+        "unit": "サブアリーナ半面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後・夜間13:00～21:00 / 平日 / 全面",
+        "amount": 41300,
+        "unit": "サブアリーナ全面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後・夜間13:00～21:00 / 平日以外 / 半面",
+        "amount": 25800,
+        "unit": "サブアリーナ半面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "午後・夜間13:00～21:00 / 平日以外 / 全面",
+        "amount": 51600,
+        "unit": "サブアリーナ全面・8時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日 / 半面",
+        "amount": 25800,
+        "unit": "サブアリーナ半面・全日12時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日 / 全面",
+        "amount": 51600,
+        "unit": "サブアリーナ全面・全日12時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日以外 / 半面",
+        "amount": 32250,
+        "unit": "サブアリーナ半面・全日12時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      },
+      {
+        "label": "全日9:00～21:00 / 平日以外 / 全面",
+        "amount": 64500,
+        "unit": "サブアリーナ全面・全日12時間（税込）",
+        "conditions": "サブアリーナのアマチュアスポーツ・入場料等なし。団体登録が必要。半面は原則練習のみ、利用月の2か月前から受付。平日以外は土日祝・年末年始。観客の入場料等あり・その他スポーツ等・付属設備・メインアリーナ同時利用の別区分は含みません。",
+        "source_url": "https://www.tef.or.jp/tmg/subarena/subarena_fee02.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-ece12bfc054b",
+    "checked_at": "2026-10-16",
+    "fee_note": "練馬区公式案内からリンクされた指定管理者の2026年7月改定料金。体育室の団体貸切枠。施設予約システムで利用者・団体登録が必要。個人利用・減額免除・備品は対象外。",
+    "fee_options": [
+      {
+        "label": "午前9:00～12:00",
+        "amount": 5400,
+        "unit": "体育室全面・3時間",
+        "conditions": "練馬区公式案内からリンクされた指定管理者の2026年7月改定料金。体育室の団体貸切枠。施設予約システムで利用者・団体登録が必要。個人利用・減額免除・備品は対象外。",
+        "source_url": "https://sunlifenerima.sakura.ne.jp/riyoujikan.html"
+      },
+      {
+        "label": "午後13:00～17:00",
+        "amount": 7200,
+        "unit": "体育室全面・4時間",
+        "conditions": "練馬区公式案内からリンクされた指定管理者の2026年7月改定料金。体育室の団体貸切枠。施設予約システムで利用者・団体登録が必要。個人利用・減額免除・備品は対象外。",
+        "source_url": "https://sunlifenerima.sakura.ne.jp/riyoujikan.html"
+      },
+      {
+        "label": "夜間18:00～22:00",
+        "amount": 7200,
+        "unit": "体育室全面・4時間",
+        "conditions": "練馬区公式案内からリンクされた指定管理者の2026年7月改定料金。体育室の団体貸切枠。施設予約システムで利用者・団体登録が必要。個人利用・減額免除・備品は対象外。",
+        "source_url": "https://sunlifenerima.sakura.ne.jp/riyoujikan.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-24073ef2f004",
+    "checked_at": "2026-10-16",
+    "fee_note": "体育室の団体利用。地域集会施設登録団体は半額。特別施設体育団体は10名以上かつ半数以上が対象地域在住在勤在学などの条件。木金日祝等に団体利用できない時間帯があります。プール・個人利用は含みません。",
+    "fee_options": [
+      {
+        "label": "通常料金・全面",
+        "amount": 1600,
+        "unit": "体育室全面・1時間",
+        "conditions": "体育室の団体利用。地域集会施設登録団体は半額。特別施設体育団体は10名以上かつ半数以上が対象地域在住在勤在学などの条件。木金日祝等に団体利用できない時間帯があります。プール・個人利用は含みません。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/asahityouminami.html"
+      },
+      {
+        "label": "地域集会施設登録団体・全面",
+        "amount": 800,
+        "unit": "体育室全面・1時間",
+        "conditions": "体育室の団体利用。地域集会施設登録団体は半額。特別施設体育団体は10名以上かつ半数以上が対象地域在住在勤在学などの条件。木金日祝等に団体利用できない時間帯があります。プール・個人利用は含みません。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/asahityouminami.html"
+      },
+      {
+        "label": "通常料金・半面",
+        "amount": 800,
+        "unit": "体育室半面・1時間",
+        "conditions": "体育室の団体利用。地域集会施設登録団体は半額。特別施設体育団体は10名以上かつ半数以上が対象地域在住在勤在学などの条件。木金日祝等に団体利用できない時間帯があります。プール・個人利用は含みません。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/asahityouminami.html"
+      },
+      {
+        "label": "地域集会施設登録団体・半面",
+        "amount": 400,
+        "unit": "体育室半面・1時間",
+        "conditions": "体育室の団体利用。地域集会施設登録団体は半額。特別施設体育団体は10名以上かつ半数以上が対象地域在住在勤在学などの条件。木金日祝等に団体利用できない時間帯があります。プール・個人利用は含みません。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/asahityouminami.html"
+      }
+    ]
   }
 ]

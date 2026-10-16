@@ -282,7 +282,9 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 if row['price_from'] is not None:
                     self.assertGreaterEqual(row['price_to'], row['price_from'])
                     self.assertTrue(any('公式料金表' in s['title'] for s in row['sources']))
-                self.assertEqual(row['availability_status'], 'UNKNOWN')
+                self.assertIn(row['availability_status'], {'UNKNOWN', 'SUSPENDED'})
+                if row['availability_status'] == 'SUSPENDED':
+                    self.assertTrue(row['availability_note'])
         for sport in supported:
             with self.subTest(sport=sport):
                 self.assertGreaterEqual(catalog['meta']['sports'][sport], 130)
@@ -521,7 +523,7 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertEqual(len(takashimadaira['fee_ranges']), 3)
         okudo = rows['tokyo-venue-48461c620190']
         self.assertEqual(len(okudo['fee_ranges']), 2)
-        for ident in ('tokyo-venue-6ff79262c31f', 'tokyo-venue-555e53ea3e30'):
+        for ident in ('tokyo-venue-6ff79262c31f',):
             self.assertIsNone(rows[ident]['price_from'])
             self.assertNotIn('fee_options', rows[ident])
 
