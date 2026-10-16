@@ -3575,5 +3575,89 @@
     "source_url": "https://shinaso.com/toiawase",
     "purpose": "団体公式サイトの一般問い合わせフォーム。体験参加は別窓口。交流相談への返信・受付は未確認。",
     "checked_at": "2026-10-14"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_f_46f4ae1258",
+    "circle_name": "FC.サルミナート",
+    "circle_source_url": "https://www.net-menber.com/look/data/117668.html",
+    "email": "kazyusya@gmail.com",
+    "source_url": "https://kazyusya.wixsite.com/salminart/contact",
+    "purpose": "団体公式サイトの代表者宛て問い合わせ窓口。交流招待の受付可否・到達は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_p_76400d271d",
+    "circle_name": "paradox横浜",
+    "circle_source_url": "https://www.net-menber.com/look/data/116582.html",
+    "email": "kawakouya@yahoo.co.jp",
+    "source_url": "https://paradoxyokohama.iinaa.net/recruit.html",
+    "purpose": "団体公式サイトの入団・練習参加問い合わせ先。一般のイベント勧誘窓口とは確認できていません。用途を確認して連絡してください。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9__初_df73ebe5e6",
+    "circle_name": "【初心者歓迎・参加無料】オランダ発ニュースポーツ YOU.FO 体験会 in 台東区",
+    "circle_source_url": "https://www.net-menber.com/look/data/228470.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://youfo.or.jp/contact/",
+    "source_url": "https://youfo.or.jp/contact/",
+    "purpose": "掲載元が案内する日本YOU.FO協会公式の体験会・イベント・競技・パートナーシップ問い合わせフォーム。返信・招待受付は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_in_3fad40ad42",
+    "circle_name": "Internationl Basketball Club",
+    "circle_source_url": "https://www.net-menber.com/look/data/73444.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://internationalbasketballclub.jimdofree.com/お問合わせ/",
+    "source_url": "https://internationalbasketballclub.jimdofree.com/お問合わせ/",
+    "purpose": "団体公式サイトの参加・見学・質問を選べる問い合わせフォーム。交流相談への返信・受付は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_si_b5af1f131c",
+    "circle_name": "SITクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/120131.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://sit-rugby.club/お問い合わせ/",
+    "source_url": "https://sit-rugby.club/お問い合わせ/",
+    "purpose": "団体公式サイトの一般問い合わせフォーム。交流相談への返信・受付は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_m_4a6c8bd75b",
+    "circle_name": "MakeSmileフットサルクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/231798.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://npo-one.jp/info/",
+    "source_url": "https://npo-one.jp/info/",
+    "purpose": "Make Smileフットサルクラブ（NPO法人ONE）公式の派遣事業・イベント企画等の相談フォーム。返信・招待受付は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_re_6eb97ee474",
+    "circle_name": "RED Bein（レッドバイン）",
+    "circle_source_url": "https://www.net-menber.com/look/data/137339.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "http://redbein.net/page-401/",
+    "source_url": "http://redbein.net/page-401/",
+    "purpose": "団体公式サイトの一般問い合わせフォーム。公式リンクはHTTPで、HTTPS接続は確認できていません。入力情報に注意してください。交流相談への返信・受付は未確認。",
+    "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_ラ_cbc643846a",
+    "circle_name": "ラビサル神奈川",
+    "circle_source_url": "https://www.net-menber.com/look/data/213054.html",
+    "email": "",
+    "contact_method": "line",
+    "contact_url": "https://line.me/R/ti/p/@791eltqa",
+    "source_url": "https://kanagawa.rabisal.com/contact/",
+    "purpose": "団体公式問い合わせページが案内する運営スタッフ宛て公式LINE。質問・イベント・取材依頼用。友だち追加・送信は利用者自身の操作で、返信・招待受付は未確認。",
+    "checked_at": "2026-10-16"
   }
 ]

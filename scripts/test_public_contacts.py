@@ -131,6 +131,50 @@ class PublicContactTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         contacts.import_reviewed(self.conn)
 
+    def test_official_line_has_source_and_never_sends(self):
+        item = next(entry for entry in self.seed if entry.get('contact_method') == 'line')
+        target = dict(circle_id=item['circle_id'], circle_name=item['circle_name'],
+                      contact_method='line', contact_url=item['contact_url'],
+                      contact_source_url=item['source_url'], contact_purpose=item['purpose'],
+                      contact_checked_at=item['checked_at'])
+        markup, _ = ui.compose(target, [], {})
+        soup = BeautifulSoup(markup, 'html.parser')
+        link = soup.find('a', href=item['contact_url'])
+        self.assertIsNotNone(link)
+        self.assertIn('公式LINE', link.get_text())
+        self.assertIn('noopener', link.get('rel', []))
+        self.assertIn(item['source_url'], markup)
+        self.assertNotIn('mailto:', markup)
+        data = dict(invitation_id='line-test', subject='交流相談', target_circle_name=item['circle_name'],
+                    sender_label='招待側', body='日時を相談します。', status='pending', is_sender=True, contact=target)
+        detail, _ = ui.detail(data, {'authenticated': True}, 'https://circle-match.jp')
+        self.assertIn('この画面では送信されません', detail)
+
+    def test_latest_review_preserves_suppression_for_each_contact_method(self):
+        batch = [entry for entry in self.seed if entry['checked_at'] == '2026-10-16']
+        self.assertTrue({'email', 'form', 'line'}.issubset(
+            {entry.get('contact_method', 'email') for entry in batch}))
+        contacts.import_reviewed(self.conn)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                ident = entry['circle_id']
+                self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+                contacts.import_reviewed(self.conn)
+                row = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+                self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+                self.conn.execute('insert into circle_public_profiles values(?,0,1)', (ident,))
+                contacts.import_reviewed(self.conn)
+                row = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+
+    def test_scope_warning_is_preserved_for_recruitment_only_inbox(self):
+        entry = next(item for item in self.seed if item['circle_name'] == 'paradox横浜')
+        target = dict(circle_name=entry['circle_name'], public_contact_email=entry['email'],
+                      contact_source_url=entry['source_url'], contact_purpose=entry['purpose'])
+        markup, _ = ui.compose(target, [], {})
+        self.assertIn('一般のイベント勧誘窓口とは確認できていません', markup)
+
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
     def test_every_reviewed_contact_reaches_the_real_seeded_directory(self):
@@ -167,6 +211,18 @@ class PublicContactHttpTests(IsolatedAppHttpCase):
         html = self.request('/?tab=db&audience=social&q=FLAT9')[1].decode()
         self.assertIn('問い合わせフォーム', html)
         self.assertIn('roon01.jimdofree.com/', html)
+
+    def test_new_contact_channels_are_linked_in_initial_directory_html(self):
+        for name, label in [('SITクラブ', '問い合わせフォーム'), ('ラビサル神奈川', '公式LINE')]:
+            with self.subTest(circle=name):
+                entry = next(item for item in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+                             if item['circle_name'] == name)
+                markup = self.request('/?tab=db&audience=social&q=' + quote(name))[1].decode()
+                soup = BeautifulSoup(markup, 'html.parser')
+                link = soup.find('a', href=entry['contact_url'])
+                self.assertIsNotNone(link)
+                self.assertIn(label, link.get_text())
+                self.assertIn(name, soup.get_text())
 
     def test_cancellation_sources_and_unknown_state_in_ssr(self):
         rows = json.loads(self.request('/api/venues')[1])['courts']
