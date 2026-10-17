@@ -56,7 +56,7 @@ class AccountNavigationTest(unittest.TestCase):
                         self.assertIn('メールアドレスでログイン', page)
                         if urlparse(return_to).path == '/events/new':
                             self.assertIn('<h1>募集掲載の前に</h1>', page)
-                            self.assertIn('<p class="signin-lead">ログインすると、基本情報の登録が簡単になります。</p>', page)
+                            self.assertIn('<p class="signin-lead">掲載にはログインが必要です。登録済みの基本情報を再利用できます。</p>', page)
                             self.assertIn('class="hero hosting-intro"', page)
                         else:
                             self.assertNotIn('class="signin-lead"', page)
@@ -107,7 +107,7 @@ class AccountNavigationTest(unittest.TestCase):
                         self.assertEqual(destination.path, '/signin')
                         self.assertEqual(parse_qs(destination.query)['return_to'][0], path)
                         page = response.read().decode()
-                        self.assertIn('ログインすると、基本情報の登録が簡単になります。', page)
+                        self.assertIn('掲載にはログインが必要です。登録済みの基本情報を再利用できます。', page)
                         self.assertIn('Google でログイン', page)
                         self.assertIn('メールアドレスでログイン', page)
                         self.assertNotIn('id="eventForm"', page)

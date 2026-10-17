@@ -643,9 +643,12 @@ class PaymentTests(unittest.TestCase):
             self.assertNotIn("online_price_input",[r[1] for r in conn.execute("pragma table_info(event_posts)")])
 
     def test_operator_review_and_rate_limit(self):
-        for _ in range(15):self.service.rate_limit("person")
-        with self.assertRaises(ValueError):self.service.rate_limit("person")
-        self.service.rate_limit("host")
+        with patch.object(self.mod.time, "time", return_value=60_000):
+            for _ in range(15):self.service.rate_limit("person")
+            with self.assertRaises(ValueError):self.service.rate_limit("person")
+            self.service.rate_limit("host")
+        with patch.object(self.mod.time, "time", return_value=60_060):
+            self.service.rate_limit("person")
         eid=self.save();aid=self.apply(eid);o=self.checkout(aid)
         self.gateway.sessions[o["session_id"]]["amount_total"]=1
         with self.assertRaises(ValueError):self.service.reconcile(o["order_id"])
