@@ -19515,7 +19515,7 @@
     "booking_note": "都の公式施設案内に予約方法が掲載されています。利用者登録、区内・市内団体の要件、少年用の区分、最新の受付方法・利用できる競技を予約前にご確認ください。",
     "booking_url": "https://spopita.jp/%e7%a6%8f%e7%94%9f%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4/",
     "official_url": "https://spopita.jp/%e7%a6%8f%e7%94%9f%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-17",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -19527,10 +19527,14 @@
       {
         "title": "東京都のスポーツ施設案内・所在地・利用種目・予約方法",
         "url": "https://spopita.jp/%e7%a6%8f%e7%94%9f%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4/"
+      },
+      {
+        "title": "福生市公式：屋外体育施設の工事・休場案内（2026-10-17確認）",
+        "url": "https://www.city.fussa.tokyo.jp/education/sports/1002683.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "改修工事に伴い2026年7月～2027年5月（予定）まで休場。旧料金を予約可能な料金として表示せず、再開予定は福生市公式案内を確認してください。",
     "sports": [
       "野球",
       "サッカー・フットサル"
@@ -28403,7 +28407,7 @@
     "booking_note": "団体貸切は施設ごとの事前登録・抽選・受付期間の確認が必要です。 利用条件：■団体利用 （市内団体） 「構成員は１０名以上、かつ代表者は成人、かつ市内在住者のみ」又は「構成員は１０名以上、、かつ代表者は成人、かつ過半数の市内在住者、その他市内在勤者・在学者のみ」 ■個人利用 どなたでも利用可 区市町村外からの利用条件：■個人利用 料金/市外料金の適用 最新条件と使用する体育室の対応競技は公式案内で確認してください。",
     "booking_url": "https://spopita.jp/%e6%9c%ac%e5%ae%bf%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
     "official_url": "https://spopita.jp/%e6%9c%ac%e5%ae%bf%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-17",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -28415,10 +28419,14 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e6%9c%ac%e5%ae%bf%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/"
+      },
+      {
+        "title": "府中市公式：本宿体育館の工事・貸切休止案内（2026-10-17確認）",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/honshuku.html"
       }
     ],
     "availability_status": "UNKNOWN",
-    "availability_note": ""
+    "availability_note": "2026年10月・2027年3月は体育室の貸切予約を受け付けず一般公開のみの予定。2026年11月～2027年2月末は改修で完全休館予定（期間は前後あり）。貸切料金の掲載は保留しています。"
   },
   {
     "id": "tokyo-gym-426f334c2d57",

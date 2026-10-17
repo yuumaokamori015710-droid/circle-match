@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-15 second batch](venue-fee-followup-2026-10-15-b.md). It reviewed 24 previously unpriced records and attached source-matched tariffs to 16 while retaining unknown prices for the remainder.
+Latest official-price review: [2026-10-17](venue-fee-followup-2026-10-17.md). It reviewed 21 existing records, added 16 source-matched tariffs and 14 cancellation policies, and recorded a newly confirmed closure without replacing existing IDs or booking URLs.
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
@@ -132,3 +132,10 @@ The 2026-10-16 review is recorded in `docs/venue-fee-followup-2026-10-16.md`:
 and Hanahata's official long-term closure recorded. The catalog has 1,206
 records, 664 with prices and 542 unpriced (including suspended records).
 Charging units, eligibility and conflicting-source holds remain explicit.
+
+The 2026-10-17 review adds 16 tariffs and 14 cancellation policies across
+Fuchu, Komae, Fussa, Chuo, Shinagawa and Taito. Five research holds include
+restricted group hire and an officially closed field. The catalog remains
+1,206 records: 680 priced, 526 unpriced including suspended entries, and
+523 active unpriced. See `docs/venue-fee-followup-2026-10-17.md` for sources,
+same-unit ranges and closure dates.

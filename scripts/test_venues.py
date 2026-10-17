@@ -247,8 +247,15 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         new = [row for row in rows if row['id'].startswith('tokyo-venue-')]
         self.assertGreaterEqual(len(new), 550)
         for row in new:
-            self.assertEqual(row['checked_at'], '2026-10-12')
-            self.assertEqual(row['availability_status'], 'UNKNOWN')
+            if row['id'] == 'tokyo-venue-6b06aed3958d':
+                self.assertEqual(row['checked_at'], '2026-10-17')
+                self.assertEqual(row['availability_status'], 'SUSPENDED')
+                self.assertIn('2027年5月', row['availability_note'])
+                self.assertIn('https://www.city.fussa.tokyo.jp/education/sports/1002683.html',
+                              [source['url'] for source in row['sources']])
+            else:
+                self.assertEqual(row['checked_at'], '2026-10-12')
+                self.assertEqual(row['availability_status'], 'UNKNOWN')
             self.assertTrue(row['sources'])
             self.assertTrue(row['booking_url'])
             self.assertTrue(row['address'].startswith('東京都'))
