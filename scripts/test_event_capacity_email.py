@@ -36,6 +36,8 @@ class EventRegressionTests(unittest.TestCase):
 
     def make_event(self, mode="first_come", participation="team", capacity=2):
         data = event_payload(self.id() + participation, mode, participation, str(capacity))
+        if participation == 'both':
+            data.update(individual_fee_amount=1000, team_fee_amount=3000)
         with self.app.connect() as conn:
             return self.app.save_event_post(conn, data, self.host)
 

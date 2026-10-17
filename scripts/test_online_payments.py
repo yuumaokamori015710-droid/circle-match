@@ -176,11 +176,11 @@ class PaymentTests(unittest.TestCase):
         with self.app.connect() as conn:
             return self.app.save_event_post(conn,p,self.host)
 
-    def apply(self,eid,count=1,person=None):
+    def apply(self,eid,count=1,person=None,mode=None):
         person=person or self.person
         event=self.app.get_event(eid)
         with self.app.connect() as conn:
-            return self.app.submit_event_application(conn,eid,{"participation_type":event["participation_type"],"applicant_name":"参加者","team_name":"テストチーム","representative_name":"代表者","participant_count":count},person)["application_id"]
+            return self.app.submit_event_application(conn,eid,{"participation_type":mode or event["participation_type"],"applicant_name":"参加者","team_name":"テストチーム","representative_name":"代表者","participant_count":count},person)["application_id"]
 
     def quote_data(self,aid):
         with self.app.connect() as conn:
@@ -477,6 +477,60 @@ class PaymentTests(unittest.TestCase):
             self.assertEqual((event["payment_method"],event["fee_amount"]),(method,fee))
         eid=self.save(online_price_input=0)
         self.assertEqual(self.app.get_event(eid)["payment_method"],"free")
+
+    def test_dual_prices_checkout_correct_quantity_and_refund(self):
+        eid=self.save(participation_type='both',individual_fee_amount=2500,team_fee_amount=15000,online_pricing_mode='gross')
+        individual=self.apply(eid,count=2,mode='individual')
+        team=self.apply(eid,count=11,person=self.other,mode='team')
+        person_order=self.checkout(individual)
+        team_order=self.checkout(team,'other')
+        self.assertEqual((person_order['quantity'],person_order['gross']),(2,5000))
+        self.assertEqual((team_order['quantity'],team_order['gross']),(1,15000))
+        self.assertEqual(json.loads(team_order['snapshot_json'])['fee_unit'],'1チーム')
+        self.gateway.pay(team_order['session_id'])
+        self.service.reconcile(team_order['order_id'])
+        with self.app.connect() as conn:
+            self.mod.guard_mutation(conn,application_id=team,financial=False)
+        with self.assertRaises(ValueError),self.app.connect() as conn:
+            self.mod.guard_mutation(conn,application_id=team,financial=True)
+        self.service.request_refund(team_order['order_id'],'other','test')
+        self.service.request_refund(team_order['order_id'],'host','test',True)
+        self.service.refund_job()
+        result=self.service.order(team_order['order_id'],admin=True)
+        self.assertEqual((result['refund_state'],result['refund_amount']),('succeeded',15000))
+
+    def test_dual_net_prices_keep_source_inputs(self):
+        eid=self.save(participation_type='both',individual_fee_amount=2500,team_fee_amount=15000)
+        event=self.app.get_event(eid)
+        self.assertEqual((event['individual_fee_amount'],event['team_fee_amount']),(2778,16667))
+        person=self.apply(eid,count=2,mode='individual')
+        team=self.apply(eid,count=11,person=self.other,mode='team')
+        self.assertEqual(self.checkout(person)['gross'],5556)
+        self.assertEqual(self.checkout(team,'other')['gross'],16667)
+
+    def test_dual_online_edit_without_prices_does_not_reprice(self):
+        eid=self.save(participation_type='both',individual_fee_amount=2500,team_fee_amount=15000)
+        data=event_payload('Title edit',participation_type='both',capacity='20')
+        data.update(event_id=eid,payment_method='online')
+        with self.app.connect() as conn:
+            self.app.save_event_post(conn,data,self.host)
+        event=self.app.get_event(eid)
+        self.assertEqual((event['individual_fee_amount'],event['team_fee_amount']),(2778,16667))
+
+    def test_dual_free_individual_has_no_checkout_or_payment_button(self):
+        eid=self.save(participation_type='both',individual_fee_amount=0,team_fee_amount=15000,online_pricing_mode='gross')
+        aid=self.apply(eid,mode='individual')
+        result=self.service.checkout(aid,'person',self.quote_data(aid))
+        self.assertTrue(result['free'])
+        self.assertEqual(self.gateway.create_calls,0)
+        self.assertNotIn('/payments/applications/'+aid,self.app.render_mypage_html(self.person))
+
+    def test_dual_payment_blocked_preview_keeps_application_tariff(self):
+        eid=self.save(participation_type='both',individual_fee_amount=2500,team_fee_amount=15000,online_pricing_mode='gross',minimum_participants=1)
+        aid=self.apply(eid,count=11,mode='team')
+        page=self.app.payment_ui.render(self.service,'applications',aid,self.person,self.app.event_page,'test')
+        self.assertIn('15,000',page)
+        self.assertNotIn('165,000',page)
         self.assertEqual(self.gateway.create_calls,0)
 
     def test_no_sdk_configuration_does_not_fake_success(self):

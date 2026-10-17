@@ -120,11 +120,11 @@ class PricingNotificationTests(unittest.TestCase):
         command = r'''
 const assert=require('node:assert/strict'),vm=require('node:vm');
 const code=JSON.parse(require('node:fs').readFileSync(0,'utf8'));
-const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','minimum_participants','fee_amount','payment_method','paymentHelp'].map(id=>[id,{value:'',labels:[{textContent:''}]}]));
-const context=vm.createContext({$:id=>fields[id],persistedUnits:null});vm.runInContext(code,context);
+const fields=Object.fromEntries(['participation_type','capacity_unit','fee_unit','capacity','minimum_participants','fee_amount','individual_fee_amount','team_fee_amount','dualCapacityHelp','payment_method','paymentHelp'].map(id=>{const parent={hidden:false};return [id,{value:'',labels:[{textContent:''}],closest:()=>parent}]}));
+const context=vm.createContext({$:id=>fields[id],persistedUnits:null,initialEvent:{}});vm.runInContext(code,context);
 for(const type of ['individual','team','both']){
 fields.participation_type.value=type;fields.payment_method.value='free';vm.runInContext('syncCapacityUnit();syncPayment()',context);
-assert.equal(fields.capacity_unit.value,type==='team'?'チーム':'人');assert.equal(fields.fee_unit.value,type==='team'?'1チーム':'1人');assert.equal(fields.fee_amount.disabled,false);assert.equal(fields.fee_amount.required,true);
+assert.equal(fields.capacity_unit.value,type==='team'?'チーム':'人');assert.equal(fields.fee_unit.value,type==='team'?'1チーム':'1人');assert.equal(fields.fee_amount.disabled,type==='both');assert.equal(fields.fee_amount.required,type!=='both');assert.equal(fields.team_fee_amount.required,type==='both');assert.equal(fields.individual_fee_amount.closest().hidden,type!=='both');
 }
 context.persistedUnits={participation:'team',capacity:'人',fee:'1人'};fields.participation_type.value='team';vm.runInContext('syncCapacityUnit()',context);assert.equal(fields.capacity_unit.value,'人');assert.equal(fields.fee_unit.value,'1人');
 fields.fee_amount.value='０';fields.payment_method.value='bank_transfer';vm.runInContext('syncPayment()',context);assert.equal(fields.payment_method.disabled,true);assert.equal(fields.payment_method.value,'bank_transfer');assert.equal(fields.paymentHelp.hidden,true);

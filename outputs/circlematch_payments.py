@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
+import circlematch_event_pricing as event_pricing
 
 API_VERSION = "2026-09-30.endive"
 FEE_BPS = 1000
@@ -438,10 +439,12 @@ class Payments:
             raise PaymentError("定員の整合性確認が必要です")
         if event["payment_method"] != "online":
             raise PaymentError("この募集はオンライン決済ではありません")
-        quantity = 1 if event["fee_unit"] == "1チーム" else app["participant_count"]
-        amounts = quote_price(event["fee_amount"], quantity=quantity)
-        if event["online_price_input"] is not None:
-            expected = quote_price(event["online_price_input"], event["online_pricing_mode"])
+        amount, unit = event_pricing.tariff(event, app['participation_type'])
+        quantity = 1 if unit == "1チーム" else app["participant_count"]
+        amounts = quote_price(amount, quantity=quantity)
+        source = event.get(app['participation_type'] + '_online_price_input') if event_pricing.separate_rates(event) else event["online_price_input"]
+        if source is not None:
+            expected = quote_price(source, event["online_pricing_mode"])
             if expected["unit_amount"] != amounts["unit_amount"]:
                 raise PaymentError("保存された料金設定が一致しません")
         return amounts, int(datetime.strptime(deadline,"%Y-%m-%d %H:%M").replace(tzinfo=timezone(timedelta(hours=9))).timestamp())
@@ -500,6 +503,7 @@ class Payments:
     @staticmethod
     def snapshot(app,event,amounts):
         return {**amounts, **{k:event[k] for k in ("title","organizer_name","starts_at","location","prefecture","cancellation_policy","announcement_version","announcement_details","fee_unit","payment_deadline")},
+                "fee_unit":event_pricing.tariff(event, app['participation_type'])[1], "participation_type":app['participation_type'],
                 "application_revision":app["operation_revision"],"participant_count":app["participant_count"],
                 "fee_bps":FEE_BPS,"rounding":"ceil_order_total","refund_policy_version":"test-full-order-v1",
                 "refund_policy":"主催者都合の中止は利用料を含め全額返金。参加者都合は記載のキャンセル条件に基づき主催者が判断します。"}

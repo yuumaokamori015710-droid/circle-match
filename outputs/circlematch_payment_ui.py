@@ -5,6 +5,7 @@ import json
 from urllib.parse import quote
 
 from circlematch_payments import PaymentError, quote_price
+import circlematch_event_pricing as event_pricing
 
 STATES = {"creating":"決済画面を準備中", "open":"支払い待ち", "paid":"支払確認済み",
           "expired":"決済画面終了・未払い", "review":"要確認", "none":"なし",
@@ -92,7 +93,8 @@ def render(service, kind, identifier, user, page, csrf, admin=False):
                 amounts,_ = service.payable(conn,app,event)
                 error = ""
             except PaymentError as exc:
-                amounts = quote_price(event["fee_amount"] or 0,quantity=1 if event["fee_unit"]=="1チーム" else app["participant_count"])
+                amount, unit = event_pricing.tariff(event, app['participation_type'])
+                amounts = quote_price(amount or 0,quantity=1 if unit=="1チーム" else app["participant_count"])
                 error = str(exc)
         snap = service.snapshot(app,event,amounts)
         body += '<h1>'+title+'</h1>'+recap(snap)
