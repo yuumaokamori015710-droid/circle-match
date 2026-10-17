@@ -3659,5 +3659,63 @@
     "source_url": "https://kanagawa.rabisal.com/contact/",
     "purpose": "団体公式問い合わせページが案内する運営スタッフ宛て公式LINE。質問・イベント・取材依頼用。友だち追加・送信は利用者自身の操作で、返信・招待受付は未確認。",
     "checked_at": "2026-10-16"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9__皇_83fee039a2",
+    "circle_name": "【皇居ランニング】を始めよう♪",
+    "circle_source_url": "https://www.net-menber.com/look/data/139287.html",
+    "email": "info@view-running.com",
+    "source_url": "https://www.view-running.com/contact/",
+    "purpose": "掲載元が案内するVIEW RUNNING TEAM公式の一般問い合わせメール。掲載元は営業・宗教活動・ネットワークビジネス等を禁止しています。公開窓口は宣伝・一斉勧誘への同意ではなく、返信・交流招待受付は未確認。",
+    "checked_at": "2026-10-17"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_ピ_7f71e84e25",
+    "circle_name": "ピンクレディ",
+    "circle_source_url": "https://www.net-menber.com/look/data/194292.html",
+    "email": "pinkladyfc+KL@gmail.com",
+    "source_url": "https://sites.google.com/view/pinkladyfc/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B",
+    "purpose": "小田原の婦人サッカーチーム公式が質問・体験入部・試合の連絡用に案内するメール。問い合わせへの返信が2日以上ない場合の連絡先です。カレンダー所有者アドレスとは別。返信・招待受付は未確認。",
+    "checked_at": "2026-10-17"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_ラス_82bbff6f5e",
+    "circle_name": "ラスカルズ 卓球部",
+    "circle_source_url": "https://www.net-menber.com/look/data/127591.html",
+    "email": "rascals1995@yahoo.co.jp",
+    "source_url": "https://rascals-tabletennis.jimdofree.com/",
+    "purpose": "団体公式トップの「管理人へ問い合わせ」メール。公式サイト・掲載元ともに交流戦相手を募集しています。通常ブラウザで公開mailtoを確認。返信・個別の招待受付は未確認。",
+    "checked_at": "2026-10-17"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_埼玉県__社会人サークル_b349109b27_みや_4450b7b5b0",
+    "circle_name": "みやたまクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/48469.html",
+    "email": "miyatamaclub@miyatamaclub.sakura.ne.jp",
+    "source_url": "http://miyatamaclub.sakura.ne.jp/postmail/index.html",
+    "purpose": "団体公式お問い合わせページの、フォームを利用できない方のためのメール。体験・ビジター参加・その他の問い合わせ用で、公式はフォームを優先案内しています。掲載ページはHTTPでHTTPS接続は未確認。返信・交流招待受付は未確認。",
+    "checked_at": "2026-10-17"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_めぐ_2162e76df4",
+    "circle_name": "めぐろ山学クラブ・仲間",
+    "circle_source_url": "https://www.net-menber.com/look/data/199399.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://meguro-mc.com/inquiry/",
+    "source_url": "https://meguro-mc.com/inquiry/",
+    "purpose": "団体公式サイトの一般問い合わせ・見学相談フォーム。公開メールは今回の確認範囲で未発見。返信・交流招待受付は未確認。",
+    "checked_at": "2026-10-17"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_h_b23747b547",
+    "circle_name": "Hi-Five",
+    "circle_source_url": "https://www.net-menber.com/look/data/23537.html",
+    "email": "",
+    "contact_method": "form",
+    "contact_url": "https://www.tommys-basket.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B-%E5%8F%82%E5%8A%A0%E7%94%B3%E8%BE%BC%E3%81%BF/",
+    "source_url": "https://www.tommys-basket.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B-%E5%8F%82%E5%8A%A0%E7%94%B3%E8%BE%BC%E3%81%BF/",
+    "purpose": "横浜のHi-Five公式の問い合わせ・参加申込フォーム。公開メールは今回の確認範囲で未発見。返信・交流招待受付は未確認。",
+    "checked_at": "2026-10-17"
   }
 ]

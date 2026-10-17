@@ -175,6 +175,36 @@ class PublicContactTests(unittest.TestCase):
         markup, _ = ui.compose(target, [], {})
         self.assertIn('一般のイベント勧誘窓口とは確認できていません', markup)
 
+    def test_october_17_review_keeps_every_new_contact_private_when_opted_out(self):
+        batch = [entry for entry in self.seed if entry['checked_at'] == '2026-10-17']
+        self.assertEqual(len(batch), 6)
+        self.assertEqual(sum(bool(entry['email']) for entry in batch), 4)
+        contacts.import_reviewed(self.conn)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                ident = entry['circle_id']
+                self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+                contacts.import_reviewed(self.conn)
+                row = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+                self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+                self.conn.execute('insert into circle_public_profiles values(?,0,1)', (ident,))
+                contacts.import_reviewed(self.conn)
+                row = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+
+    def test_october_17_review_preserves_published_mail_aliases_and_scope(self):
+        pink = next(entry for entry in self.seed if entry['circle_name'] == 'ピンクレディ')
+        self.assertEqual(pink['email'], 'pinkladyfc+KL@gmail.com')
+        self.assertIn('2日以上', pink['purpose'])
+        running = next(entry for entry in self.seed if entry['circle_name'] == '【皇居ランニング】を始めよう♪')
+        self.assertIn('営業', running['purpose'])
+        miyatama = next(entry for entry in self.seed if entry['circle_name'] == 'みやたまクラブ')
+        self.assertIn('フォームを優先', miyatama['purpose'])
+        self.assertIn('HTTP', miyatama['purpose'])
+        rascals = next(entry for entry in self.seed if entry['circle_name'] == 'ラスカルズ 卓球部')
+        self.assertIn('交流戦', rascals['purpose'])
+
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
     def test_every_reviewed_contact_reaches_the_real_seeded_directory(self):
@@ -234,6 +264,30 @@ class PublicContactHttpTests(IsolatedAppHttpCase):
         html = self.request('/venues?v_q='+quote('高倉体育館'))[1].decode()
         self.assertIn('公式キャンセル規定',html)
         self.assertIn('13〜7日前50%',html)
+
+    def test_october_17_contacts_reach_directory_and_invitation_with_scope(self):
+        batch = [entry for entry in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+                 if entry['checked_at'] == '2026-10-17']
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                markup = self.request('/?tab=db&audience=social&q=' + quote(entry['circle_name']))[1].decode()
+                soup = BeautifulSoup(markup, 'html.parser')
+                self.assertIsNotNone(soup.find('a', href='/invitations/new?circle_id=' + quote(entry['circle_id'], safe='')))
+                if entry['email']:
+                    self.assertIn('公開メールあり', soup.get_text())
+                else:
+                    self.assertIsNotNone(soup.find('a', href=entry['contact_url']))
+                self.assertIn(entry['circle_name'], soup.get_text())
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + quote(entry['circle_name']))[1])
+                target = next(row for row in rows if row['circle_id'] == entry['circle_id'])
+                self.assertEqual(target['public_contact_email'], entry['email'])
+                self.assertEqual(target['contact_purpose'], entry['purpose'])
+                self.assertEqual(target['contact_source_url'], entry['source_url'])
+                invitation, _ = ui.compose(target, [], {'authenticated': True})
+                self.assertIn(entry['purpose'], BeautifulSoup(invitation, 'html.parser').get_text())
+                self.assertIn(entry['source_url'].replace('&', '&amp;'), invitation)
+                if entry['email']:
+                    self.assertIn(entry['email'], invitation)
 
 
 if __name__ == '__main__':
