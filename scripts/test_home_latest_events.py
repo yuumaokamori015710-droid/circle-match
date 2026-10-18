@@ -121,10 +121,12 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         self.assertIn('スポーツから探す', page)
         self.assertIn('目的から探す', page)
         self.assertIn('href="/events/new?custom=1">募集を作る', page)
-        self.assertIn('href="/events">現在募集中のイベントを見る', page)
+        self.assertIn('href="/events">すべて見る →', page)
         latest_section = re.search(r'<section\b[^>]*aria-labelledby="home-latest-heading"[^>]*>(.*?)</section>', page, re.S)
         self.assertIsNotNone(latest_section)
-        self.assertEqual(latest_section.group(1).count('募集を作る</a>'), 1)
+        self.assertEqual(latest_section.group(1).count('募集を作る</a>'), 0)
+        self.assertNotIn('home-latest-actions', latest_section.group(1))
+        self.assertIn('class="home-latest-more" href="/events"', latest_section.group(1))
 
     def test_home_journey_actions_preserve_sport_and_region(self):
         markup = unescape(self.app.render_home_journeys({
