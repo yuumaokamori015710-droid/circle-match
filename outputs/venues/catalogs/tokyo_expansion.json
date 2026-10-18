@@ -10762,7 +10762,7 @@
     "booking_note": "都の公式施設案内に予約方法が掲載されています。利用者登録、区内・市内団体の要件、少年用の区分、最新の受付方法・利用できる競技を予約前にご確認ください。",
     "booking_url": "https://spopita.jp/%e8%90%bd%e5%90%88%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e9%87%8e%e7%90%83%e5%a0%b4/",
     "official_url": "https://spopita.jp/%e8%90%bd%e5%90%88%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e9%87%8e%e7%90%83%e5%a0%b4/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-18",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -10774,10 +10774,14 @@
       {
         "title": "東京都のスポーツ施設案内・所在地・利用種目・予約方法",
         "url": "https://spopita.jp/%e8%90%bd%e5%90%88%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e9%87%8e%e7%90%83%e5%a0%b4%e8%bb%9f%e5%bc%8f%e9%87%8e%e7%90%83%e5%a0%b4-%e9%87%8e%e7%90%83%e5%a0%b4/"
+      },
+      {
+        "title": "公式休場案内（2026-10-18確認）・野球場のみ2027年3月末まで改修予定",
+        "url": "https://www.regasu-shinjuku.or.jp/?p=657"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "公式案内により野球場は照明LED化・人工芝改修で2027年3月末まで休場予定。野球・サッカー兼用の野球場が対象で、隣接庭球場とは区別。再開日・予約再開は公式発表を確認（2026-10-18確認）。",
     "sports": [
       "野球",
       "サッカー・フットサル"

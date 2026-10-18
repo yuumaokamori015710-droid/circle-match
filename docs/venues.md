@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-17](venue-fee-followup-2026-10-17.md). It reviewed 21 existing records, added 16 source-matched tariffs and 14 cancellation policies, and recorded a newly confirmed closure without replacing existing IDs or booking URLs.
+Latest official-price review: [2026-10-18](venue-fee-followup-2026-10-18.md). It reviewed 25 existing records, added 10 source-matched tariffs and 24 cancellation policies, and distinguished a closed Shinjuku baseball/soccer field from its adjacent tennis court without replacing existing IDs or booking URLs.
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
@@ -139,3 +139,10 @@ restricted group hire and an officially closed field. The catalog remains
 1,206 records: 680 priced, 526 unpriced including suspended entries, and
 523 active unpriced. See `docs/venue-fee-followup-2026-10-17.md` for sources,
 same-unit ranges and closure dates.
+
+The [2026-10-18 review](venue-fee-followup-2026-10-18.md) prioritizes Shinjuku
+tennis and adds Katsushika soccer/futsal and indoor hall tariffs. Ten new
+tariffs and 24 cancellation policies bring the unchanged 1,206-record catalog
+to 690 priced and 516 unpriced (512 active unpriced). The original tennis file
+and earlier fee/policy records are unchanged. Ochiai Chuo's baseball/soccer
+field closure is recorded without marking its adjacent tennis court closed.
