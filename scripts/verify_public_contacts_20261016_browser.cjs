@@ -6,9 +6,11 @@ const assert = require('node:assert/strict');
 
 const root = path.resolve(__dirname, '..');
 const base = process.env.CONTACT_TEST_URL || 'http://127.0.0.1:8908';
-const out = path.join(root, 'work/contact-review-20261016');
+const reviewDate = process.env.CONTACT_REVIEW_DATE || '2026-10-16';
+const out = path.join(root, 'work/contact-review-' + reviewDate.replaceAll('-', ''));
 const reviews = JSON.parse(fs.readFileSync(path.join(root, 'outputs/circle_public_contacts.json'), 'utf8'))
-  .filter(row => row.checked_at === '2026-10-16');
+  .filter(row => row.checked_at === reviewDate);
+assert(reviews.length > 0, 'No contacts found for the requested review date');
 fs.mkdirSync(out, {recursive: true});
 let server;
 
@@ -45,6 +47,8 @@ let server;
         assert((await response.text()).includes(review.circle_name), 'Missing initial HTML row');
         const row = page.locator('#dbList .circle-row').filter({has: page.getByText(review.circle_name, {exact: true})});
         assert.equal(await row.count(), 1);
+        assert.equal(await row.locator('a[href^="/invitations/new?"]').getAttribute('href'),
+          '/invitations/new?circle_id=' + encodeURIComponent(review.circle_id));
         if (review.contact_url) {
           assert.equal(await row.locator('a').filter({hasText: review.contact_method === 'line' ? '公式LINE' : '問い合わせフォーム'}).getAttribute('href'), review.contact_url);
         } else {
@@ -61,11 +65,15 @@ let server;
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow');
         await row.scrollIntoViewIfNeeded();
         assert(await row.isVisible());
-        if (['SITクラブ', 'FC.サルミナート', 'ラビサル神奈川'].includes(review.circle_name)) {
+        if (reviews.find(item => (item.contact_method || 'email') === (review.contact_method || 'email')) === review) {
           await page.screenshot({path: path.join(out, review.circle_id.split('_').at(-1) + '-' + width + '.png')});
         }
       }
-      results.push({width, directoryCases: reviews.length});
+      await page.locator('#dbFilters input[name="q"]').fill(reviews[0].circle_name);
+      await page.waitForURL(url => url.searchParams.get('q') === reviews[0].circle_name);
+      await page.locator('#dbList .circle-row').filter({has: page.getByText(reviews[0].circle_name, {exact: true})}).waitFor();
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+      results.push({width, directoryCases: reviews.length, interactiveSearch: true});
       await page.close();
     }
     const nojs = await browser.newContext({javaScriptEnabled: false, viewport: {width: 390, height: 1000}});
@@ -77,7 +85,7 @@ let server;
     }
     await nojs.close();
     assert.deepEqual(errors, []);
-    const report = {base, results, noJavaScriptCases: reviews.length, errors};
+    const report = {base, reviewDate, results, noJavaScriptCases: reviews.length, errors};
     fs.writeFileSync(path.join(out, process.env.CONTACT_TEST_URL ? 'production-results.json' : 'results.json'), JSON.stringify(report, null, 2));
     console.log(JSON.stringify(report));
   } finally {
