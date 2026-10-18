@@ -62,8 +62,8 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         result = self.app.latest_home_events()
         self.assertEqual([event['event_id'] for event in result], expected[:3])
         page = self.home('/?' + urlencode({'region':'kansai', 'prefecture':'大阪府'}))
+        self.assertLess(page.index('id="homeLatestEvents"'), page.index('id="home-journeys-heading"'))
         self.assertLess(page.index('id="home-journeys-heading"'), page.index('id="sports-list"'))
-        self.assertLess(page.index('id="sports-list"'), page.index('id="homeLatestEvents"'))
         rows = re.search(r'<ul[^>]*id="homeLatestEvents"[^>]*>(.*?)</ul>', page, re.S)
         self.assertIsNotNone(rows)
         row_ids = [unquote(value) for value in re.findall(r'href="/events/([^"]+)"', rows.group(1))]
@@ -125,6 +125,19 @@ class HomeLatestEventTests(IsolatedAppHttpCase):
         latest_section = re.search(r'<section\b[^>]*aria-labelledby="home-latest-heading"[^>]*>(.*?)</section>', page, re.S)
         self.assertIsNotNone(latest_section)
         self.assertEqual(latest_section.group(1).count('募集を作る</a>'), 1)
+
+    def test_home_journey_actions_preserve_sport_and_region(self):
+        markup = unescape(self.app.render_home_journeys({
+            'sport': ['テニス'], 'region': ['kanto'], 'prefecture': ['東京都'],
+        }, primary=True))
+        links = re.findall(r'<div class="home-journey-actions">(.*?)</div>', markup, re.S)
+        self.assertEqual(len(links), 2)
+        destinations = re.findall(r'href="([^"]+)"', ''.join(links))
+        self.assertEqual(len(destinations), 4)
+        for destination in destinations:
+            self.assertIn('sport=' + quote('テニス'), destination)
+            self.assertIn('region=kanto', destination)
+            self.assertIn('prefecture=' + quote('東京都'), destination)
 
     def test_failed_query_preserves_home_without_false_empty_or_private_error(self):
         with patch.object(self.app, 'connect', side_effect=RuntimeError('private-db-error')) as connection:

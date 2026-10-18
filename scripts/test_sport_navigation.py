@@ -116,7 +116,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 expected.update(tab='db', audience=audience)
             self.assertEqual(parse_qs(parts.query), {key: [value] for key, value in expected.items()})
 
-    def test_home_orders_purpose_then_sports_then_latest_without_active_feature(self):
+    def test_home_orders_latest_then_purpose_then_sports_without_active_feature(self):
         text, page = self.page('/')
         self.assertEqual(page.metadata.tabs, [])
         self.assertIn('スポーツ', page.visible)
@@ -126,8 +126,8 @@ class SportNavigationTests(IsolatedAppHttpCase):
         self.assertIn('home-journey-host-heading', page.ids)
         self.assertIn('home-journey-join-heading', page.ids)
         self.assertIn('sports-list', page.ids)
+        self.assertLess(text.index('id="homeLatestEvents"'), text.index('id="home-journeys-heading"'))
         self.assertLess(text.index('id="home-journeys-heading"'), text.index('id="sports-list"'))
-        self.assertLess(text.index('id="sports-list"'), text.index('id="homeLatestEvents"'))
         self.assertGreaterEqual(len(page.cards), len(self.app.POPULAR_SPORTS))
         self.assertIn('homeLatestEvents', page.ids)
         self.assertIn('最新の募集', page.visible)
