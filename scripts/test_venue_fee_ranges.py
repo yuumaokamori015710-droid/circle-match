@@ -33,9 +33,12 @@ class VenueFeeRangeTests(IsolatedAppHttpCase):
                 card = next(c for c in page.select('.venue-court-card') if c.h3.get_text() == row['name'])
                 self.assertEqual(card.select_one('.venue-fee-link')['href'], row['fee_options'][0]['source_url'])
                 self.assertNotIn('金額未取得', card.get_text())
-        for ident in ('tokyo-venue-8d267086196e', 'tokyo-venue-7f5f8dbd18bb',
-                      'tokyo-venue-8e6c0f81a52c', 'tokyo-venue-5b81852866ce'):
+        for ident in ('tokyo-venue-8e6c0f81a52c', 'tokyo-venue-5b81852866ce'):
             self.assertEqual(rows[ident]['fee_ranges'], [])
+        for ident, price in [('tokyo-venue-8d267086196e', 2900), ('tokyo-venue-7f5f8dbd18bb', 0)]:
+            self.assertEqual(rows[ident]['fee_checked_at'], '2026-10-19')
+            self.assertEqual(rows[ident]['fee_ranges'][0]['minimum'], price)
+            self.assertEqual(rows[ident]['fee_ranges'][0]['maximum'], price)
         priced = sum(bool(row['fee_ranges']) for row in rows.values())
         self.assertGreaterEqual(priced, 609)
         self.assertEqual(priced, catalog['meta']['prices_available'])

@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-18](venue-fee-followup-2026-10-18.md). It reviewed 25 existing records, added 10 source-matched tariffs and 24 cancellation policies, and distinguished a closed Shinjuku baseball/soccer field from its adjacent tennis court without replacing existing IDs or booking URLs.
+Latest official-price review: [2026-10-19](venue-fee-followup-2026-10-19.md). It reviewed 21 existing records, added 20 tariffs and 17 cancellation policies, flagged conflicting official cancellation guides for one existing policy, and recorded Kodaira Central Park's closure without replacing IDs or booking URLs.
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
@@ -146,3 +146,14 @@ tariffs and 24 cancellation policies bring the unchanged 1,206-record catalog
 to 690 priced and 516 unpriced (512 active unpriced). The original tennis file
 and earlier fee/policy records are unchanged. Ochiai Chuo's baseball/soccer
 field closure is recorded without marking its adjacent tennis court closed.
+
+The [2026-10-19 review](venue-fee-followup-2026-10-19.md) covers Tama and
+Kodaira outdoor fields plus Sumida, Nakano and Shinagawa sports halls.
+Twenty newly priced existing records bring the catalog to 710 priced and
+496 unpriced (491 active unpriced), still 1,206 records total. Seventeen
+cancellation policies are added; one earlier Heiwa no Mori policy now
+explicitly flags conflicting official guides, with the previous statement
+archived in the dated report. Kodaira Central Park is closed until March
+2027 (planned). Earlier tariffs, IDs, booking URLs and the legacy tennis
+file are preserved. Free Myoshojigawa hire is source-confirmed and retains
+Nakano group eligibility; it is not a placeholder zero.

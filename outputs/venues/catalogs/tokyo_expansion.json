@@ -8932,7 +8932,7 @@
     "booking_note": "都の公式施設案内に予約方法が掲載されています。利用者登録、区内・市内団体の要件、少年用の区分、最新の受付方法・利用できる競技を予約前にご確認ください。",
     "booking_url": "https://spopita.jp/%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9%e3%82%a6%e3%83%b3%e3%83%89%e5%a4%9a%e7%9b%ae%e7%9a%84%e9%81%8b%e5%8b%95%e5%ba%83%e5%a0%b4-%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9/",
     "official_url": "https://spopita.jp/%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9%e3%82%a6%e3%83%b3%e3%83%89%e5%a4%9a%e7%9b%ae%e7%9a%84%e9%81%8b%e5%8b%95%e5%ba%83%e5%a0%b4-%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-19",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -8944,10 +8944,14 @@
       {
         "title": "東京都のスポーツ施設案内・所在地・利用種目・予約方法",
         "url": "https://spopita.jp/%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9%e3%82%a6%e3%83%b3%e3%83%89%e5%a4%9a%e7%9b%ae%e7%9a%84%e9%81%8b%e5%8b%95%e5%ba%83%e5%a0%b4-%e4%b8%ad%e5%a4%ae%e5%85%ac%e5%9c%92%e3%82%b0%e3%83%a9/"
+      },
+      {
+        "title": "小平市公式：中央公園グラウンド改修休場・料金案内",
+        "url": "https://www.city.kodaira.tokyo.jp/kurashi/001/001348.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "中央公園グラウンド・陸上競技場は改修工事のため2026年4月1日～2027年3月末（予定）休場。工期は変更の場合あり。小平市公式案内で再開を確認するまで通常検索から除外します。",
     "sports": [
       "野球",
       "サッカー・フットサル"

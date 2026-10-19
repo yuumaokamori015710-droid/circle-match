@@ -259,6 +259,12 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertIn('2027年3月末', row['availability_note'])
                 self.assertIn('https://www.regasu-shinjuku.or.jp/?p=657',
                               [source['url'] for source in row['sources']])
+            elif row['id'] == 'tokyo-venue-d7b168f67c73':
+                self.assertEqual(row['checked_at'], '2026-10-19')
+                self.assertEqual(row['availability_status'], 'SUSPENDED')
+                self.assertIn('2027年3月末', row['availability_note'])
+                self.assertIn('https://www.city.kodaira.tokyo.jp/kurashi/001/001348.html',
+                              [source['url'] for source in row['sources']])
             else:
                 self.assertEqual(row['checked_at'], '2026-10-12')
                 self.assertEqual(row['availability_status'], 'UNKNOWN')
