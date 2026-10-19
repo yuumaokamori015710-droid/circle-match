@@ -3819,5 +3819,129 @@
     "source_url": "https://ciel-volley.jimdofree.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B-1/",
     "purpose": "ciel公式お問い合わせページの連絡先メール。フォームは休止中で直接メールを案内。公式の一般の部に40代以上の経験者男女を対象とした活動を確認し、ジュニア専用と混同していません。外部イベント招待受付・返信は未確認。カレンダー所有者メールは不採用。",
     "checked_at": "2026-10-18"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_サ_a2a8f52512",
+    "circle_name": "サルミナート",
+    "circle_source_url": "https://www.net-menber.com/look/data/67993.html",
+    "email": "kazyusya@gmail.com",
+    "source_url": "https://kazyusya.wixsite.com/salminart/contact",
+    "purpose": "サルミナート（FC.SALMINART）公式お問い合わせページの団体連絡メール。横浜の初心者向け男女ミックスフットサル、学生不可。既存のFC.サルミナート掲載と同じ団体・同じ窓口であることを公式名・2006年設立・活動地域で照合。外部イベント招待の同意・メール到達は未確認。",
+    "checked_at": "2026-10-19"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_田グ_21d7bb7a85",
+    "circle_name": "田グリバドミントン",
+    "circle_source_url": "https://www.net-menber.com/look/data/231718.html",
+    "email": "jimukyoku@den-green.com",
+    "source_url": "https://den-green.com/contact.shtml",
+    "purpose": "田グリバドミントンを運営する田園調布グリーンコミュニティ公式事務局のメール。公式プログラムページでバドミントンとの所属関係を確認。各種質問・連絡はフォーム優先、フォームが表示されない場合はメール・電話を案内。平日9～17時受付。交流招待の同意・到達は未確認。",
+    "checked_at": "2026-10-19"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_深川_343e2107f0",
+    "circle_name": "深川ランナーズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/100430.html",
+    "email": "knishi24@gmail.com",
+    "source_url": "https://runners116.webnode.jp/%e3%81%8a%e5%95%8f%e3%81%84%e5%90%88%e3%82%8f%e3%81%9b2/",
+    "purpose": "掲載元からリンクされた深川ランナーズ（スピンアウト版）公式お問い合わせの連絡メール。木場公園の練習参加・クラブに関する連絡窓口として公開されているもの。個人の電話番号は転載していません。一般のイベント勧誘窓口とは確認できていません。送信・到達は未確認。",
+    "checked_at": "2026-10-19"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_日本_e997bcdbe3",
+    "circle_name": "日本空手道錬聖会 東京道場",
+    "circle_source_url": "https://www.net-menber.com/look/data/219683.html",
+    "email": "renseikai_tokyo@yahoo.co.jp",
+    "source_url": "https://www.renseikai.org/%E6%9D%B1%E4%BA%AC%E9%81%93%E5%A0%B4-%E6%9D%B1%E4%BA%AC%E9%83%BD/",
+    "purpose": "日本空手道錬聖会公式の東京道場専用事務局メール。通常ブラウザの東京道場入会案内で公開表示を確認。大阪・奈良や大学空手道部の窓口とは分けています。見学前の日程・会場確認等を受け付ける窓口で、外部イベント招待の同意・到達は未確認。",
+    "checked_at": "2026-10-19"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_バド_a3a0ac2c26",
+    "circle_name": "バドミントンで遊ぶ会",
+    "circle_source_url": "https://www.net-menber.com/look/data/229735.html",
+    "email": "",
+    "source_url": "https://dospo.jp/contact",
+    "purpose": "バドミントンで遊ぶ会を直接運営するNPO法人ド素人スポーツの公式問い合わせフォーム。公式プログラムページからリンクされ、一般質問も受け付ける旨を確認。単なる募集プラットフォーム共通窓口ではありません。本文に対象種目・日時を明記。送信・返信・招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "https://dospo.jp/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_東京_fd435b528b",
+    "circle_name": "東京スポーツビレッジ",
+    "circle_source_url": "https://www.net-menber.com/look/data/221881.html",
+    "email": "",
+    "source_url": "https://www.c-sqr.net/c/cs152359/about",
+    "purpose": "東京スポーツビレッジが管理するサークルスクエア団体情報ページの問い合わせフォーム。団体固有のフォームで名前・メール・問い合わせ内容を確認。サークルスクエア運営会社の共通窓口とは別です。送信・返信・外部招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "https://www.c-sqr.net/c/cs152359/about"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ド素_7ffe11a106",
+    "circle_name": "ド素人バレー練習会",
+    "circle_source_url": "https://www.net-menber.com/look/data/167199.html",
+    "email": "",
+    "source_url": "https://dospo.jp/contact",
+    "purpose": "ド素人バレー練習会を直接運営するNPO法人ド素人スポーツの公式問い合わせフォーム。公式プログラムとの管理関係と、予約変更以外の一般質問も受け付けることを確認。本文にバレーの相談である旨を明記。送信・返信・招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "https://dospo.jp/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_翼篠_007c4353cb",
+    "circle_name": "翼篠会",
+    "circle_source_url": "https://www.net-menber.com/look/data/96674.html",
+    "email": "",
+    "source_url": "https://yokusho.grupo.jp/free131677",
+    "purpose": "翼篠会メインコート公式サイトの問い合わせフォーム。名前・メール・件名・本文を入力し、サイト管理者に連絡する窓口です。男女別6人制の一般バレーチームで、入部条件や他チームの選手登録制限は公式を確認してください。送信・返信・外部招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "https://yokusho.grupo.jp/free131677"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_新宿_cb6caa17fd",
+    "circle_name": "新宿スポーツ空手道クラブ（ＳＳＫＣ）",
+    "circle_source_url": "https://www.net-menber.com/look/data/9645.html",
+    "email": "",
+    "source_url": "https://sskckarate.wixsite.com/home/contact",
+    "purpose": "社会人伝統派の新宿スポーツ空手道クラブ（SSKC）公式お問い合わせフォーム。入会・体験に加えクラブに関する質問も受け付けます。キッズ教室とは別、見学不可。返信元のGmailを推測せずフォームだけを案内。送信・返信・外部招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "https://sskckarate.wixsite.com/home/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_有隣_c5c02ef67a",
+    "circle_name": "有隣空手倶楽部",
+    "circle_source_url": "https://www.net-menber.com/look/data/165785.html",
+    "email": "",
+    "source_url": "http://yurinkarate.club/contact/",
+    "purpose": "新宿区で活動する有隣空手倶楽部公式の一般質問フォーム。名前・メール・本文と画像認証欄を確認。掲載・送信先はHTTPのため個人情報を送る前に接続の安全性を確認してください。認証や送信は行っていません。返信・招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "form",
+    "contact_url": "http://yurinkarate.club/contact/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_オー_8190f8f94d",
+    "circle_name": "オールサンデー【All Sunday】",
+    "circle_source_url": "https://www.net-menber.com/look/data/231569.html",
+    "email": "",
+    "source_url": "https://all-sunday-0rbewh4.gamma.site/",
+    "purpose": "オールサンデー公式サイトが参加連絡先として案内する公式LINE。バドミントン参加・日程等の相談用であり、一般のイベント勧誘窓口とは確認できていません。友だち追加・送信・返信確認は行っていません。",
+    "checked_at": "2026-10-19",
+    "contact_method": "line",
+    "contact_url": "https://lin.ee/uxA0Gs3k"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_社会_18ac47f104",
+    "circle_name": "社会人サークルJOINT",
+    "circle_source_url": "https://www.net-menber.com/look/data/25365.html",
+    "email": "",
+    "source_url": "https://www.net-menber.com/look/data/25365.html",
+    "purpose": "社会人サークルJOINT自身の募集プロフィールが問い合わせ方法として案内する公式LINE。公式サイトとの同一性を確認。掲示板経由は返信不可、営業・勧誘・ネットワークビジネス目的は禁止。旧サイトの不具合フォームやログイン必須のサークルブック窓口とは区別。送信・招待の同意は未確認。",
+    "checked_at": "2026-10-19",
+    "contact_method": "line",
+    "contact_url": "https://lin.ee/FMeE9Ca"
   }
 ]
