@@ -3943,5 +3943,179 @@
     "checked_at": "2026-10-19",
     "contact_method": "line",
     "contact_url": "https://lin.ee/FMeE9Ca"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_山_992a18f887",
+    "circle_name": "山手クラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/226654.html",
+    "email": "tshirata@outlook.com",
+    "source_url": "https://yamateclub.jimdofree.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/",
+    "purpose": "山手クラブ公式お問い合わせページに、クラブへの連絡先として公開されたメールを通常ブラウザで確認。横浜のレディース・バドミントンクラブで、見学・ビジター相談が主用途です。男性参加は対象外。個人の電話番号や非公開情報は転載しません。一般のイベント勧誘窓口・招待同意・到達は未確認。",
+    "checked_at": "2026-10-20"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_re_6b8e9ad466",
+    "circle_name": "REF GYM（レフジム）",
+    "circle_source_url": "https://www.net-menber.com/look/data/232172.html",
+    "email": "",
+    "source_url": "https://ref-net.com/",
+    "purpose": "REF GYM公式CONTACTの問い合わせフォーム。体験日・希望店舗または問い合わせ内容を受け付けると明記。川崎2拠点・東京雑色の同一運営を確認。大会ボルテージや募集プラットフォームの共通窓口とは分けています。氏名・電話・メールの入力が必要。送信・返信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://ref-net.com/#contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_カポ_ad6f081a83",
+    "circle_name": "カポエイラ東京",
+    "circle_source_url": "https://www.net-menber.com/look/data/53252.html",
+    "email": "",
+    "source_url": "https://cdotokyo.com/aboutus/contact/",
+    "purpose": "カポエイラ東京の公式お問い合わせフォーム。名前・メール・タイトル・本文で団体へ連絡する窓口。体験予約専用の別画面や、過去の名古屋ワークショップ主催者メールとは区別。送信・返信・外部イベント招待の同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://cdotokyo.com/aboutus/contact/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_無外_d95f0df508",
+    "circle_name": "無外流居合兵道 眞傳會",
+    "circle_source_url": "https://www.net-menber.com/look/data/222955.html",
+    "email": "",
+    "source_url": "https://shindenkai.org/contact",
+    "purpose": "無外流眞傳會公式の問い合わせ・見学申込フォームを通常ブラウザで確認。氏名・年齢・電話・市区町村等の欄とひらがな画像認証があります。会員専用ページとは別の公開窓口。認証・送信・返信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://shindenkai.org/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_東京_87f3eed0b1",
+    "circle_name": "東京グラップラー",
+    "circle_source_url": "https://www.net-menber.com/look/data/225815.html",
+    "email": "",
+    "source_url": "https://tokyograppler.wordpress.com/contact/",
+    "purpose": "東京グラップラー公式「連絡/Contact」の名前・メール・メッセージフォーム。新宿で活動する組技サークルの参加相談・連絡用で、WordPress運営会社の窓口とは別。ページ末尾のhi@example.comはサイト雛形のため採用していません。送信・返信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://tokyograppler.wordpress.com/contact/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ｓｓ_3b83fa0c2d",
+    "circle_name": "ＳＳＫＣ文京",
+    "circle_source_url": "https://www.net-menber.com/look/data/80911.html",
+    "email": "",
+    "source_url": "https://sskckarate.wixsite.com/bunkyo/contact",
+    "purpose": "SSKC文京の公式問い合わせフォーム。体験入会に加えてスクールに関する質問も受付。新宿SSKCとは別の文京向け窓口で、年齢・性別・空手経験の入力欄があります。見学不可・体験条件は公式を確認。返信用Gmailの値は推測しません。送信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://sskckarate.wixsite.com/bunkyo/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_松濤_14a08b40d8",
+    "circle_name": "松濤館流 目黒空手同好会",
+    "circle_source_url": "https://www.net-menber.com/look/data/59940.html",
+    "email": "",
+    "source_url": "https://www.megurokaratedoukoukai.com/%E8%A6%8B%E5%AD%A6-%E5%85%A5%E4%BC%9A%E7%AD%89%E3%81%AE%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/",
+    "purpose": "松濤館流目黒空手同好会の公式「見学・体験等の問い合わせ」フォーム。氏名・メール・本文で連絡できますが、主用途は見学・入会相談で、稽古日の事前選択・連絡が必要。英語指導・短期間の体験は対象外。一般イベントの勧誘受付・送信・返信は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://www.megurokaratedoukoukai.com/%E8%A6%8B%E5%AD%A6-%E5%85%A5%E4%BC%9A%E7%AD%89%E3%81%AE%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ウィ_78b17d5adf",
+    "circle_name": "ウィッツ・スキークラブ(東京都スキー連盟所属)",
+    "circle_source_url": "https://www.net-menber.com/look/data/3361.html",
+    "email": "",
+    "source_url": "https://witz-sc.com/?page_id=437",
+    "purpose": "東京都スキー連盟所属ウィッツ・スキークラブ公式のお問合せフォーム。名前・メール・問い合わせ内容を受け付ける公開窓口。会員LOGINとは別です。送信・返信・外部イベント招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://witz-sc.com/?page_id=437"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_山の_b768e4c44a",
+    "circle_name": "山の会ぐるうぷむさしの",
+    "circle_source_url": "https://www.net-menber.com/look/data/87098.html",
+    "email": "",
+    "source_url": "https://www.mt-group-musashino.com/%E4%BC%9A%E5%93%A1%E5%8B%9F%E9%9B%86/",
+    "purpose": "山の会ぐるうぷむさしの公式「会員募集・お問い合わせ」の名前・メール・件名・本文フォーム。入会・山行の相談用。初参加は集会で説明後と案内され、集会会場の公民館への問い合わせは禁止。一般イベントの勧誘受付・送信・返信は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://www.mt-group-musashino.com/%E4%BC%9A%E5%93%A1%E5%8B%9F%E9%9B%86/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_東京_6f4fc69d8b",
+    "circle_name": "東京トレッキングクラブ",
+    "circle_source_url": "https://www.net-menber.com/look/data/202040.html",
+    "email": "",
+    "source_url": "https://tokyo-trekking-club.jp/contact/",
+    "purpose": "東京トレッキングクラブ公式お問い合わせフォーム。公式の「お問い合わせ、ご意見、ご感想」ページから連絡先としてリンクされ、名前・メール・本文を確認。会員専用情報には入りません。送信・返信・外部イベント招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://tokyo-trekking-club.jp/contact/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_登山_f9b74bfb65",
+    "circle_name": "登山サークル 関東しゃくなげ会",
+    "circle_source_url": "https://www.net-menber.com/look/data/19082.html",
+    "email": "",
+    "source_url": "https://www.hikingcircleshakunage.com/form.html",
+    "purpose": "関東しゃくなげ会公式CONTACTフォーム。問い合わせ内容欄がある団体窓口ですが、氏名・ふりがな・年齢・郵便番号・電話・メール等の必須欄と画像認証があります。参加資格は公式の条件を確認。送信・認証・返信・外部招待の同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://www.hikingcircleshakunage.com/form.html"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ファ_1f589c5725",
+    "circle_name": "ファインズ",
+    "circle_source_url": "https://www.net-menber.com/look/data/228069.html",
+    "email": "",
+    "source_url": "https://finesbaseball.jimdofree.com/%E3%81%8A%E5%95%8F%E5%90%88%E3%81%9B/",
+    "purpose": "草野球ファインズ公式お問合せフォーム。体験参加の専用ページとは別に「メールで連絡する」として名前・メール・メッセージを受付。公式LINEも案内されていますが、このレコードではフォームだけを採用。迷惑メールフォルダの確認を案内。送信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://finesbaseball.jimdofree.com/%E3%81%8A%E5%95%8F%E5%90%88%E3%81%9B/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ja_d9226a6364",
+    "circle_name": "JAY BLACKS（ジェイ ブラックス）",
+    "circle_source_url": "https://www.net-menber.com/look/data/225383.html",
+    "email": "",
+    "source_url": "https://bb.miguee.net/j-wings/contact",
+    "purpose": "JAY BLACKS公式のチーム固有問い合わせフォーム。「対戦問合せ」「入団問合せ」「その他の問合せ」を選択できます。公式トップの旧J-Wingsから2026年の改名告知を確認。チーム内の鍵付き連絡やサイト運営共通窓口は取得しません。送信・返信・招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://bb.miguee.net/j-wings/contact"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_プリ_8b73ca08db",
+    "circle_name": "プリヨシ",
+    "circle_source_url": "https://www.net-menber.com/look/data/178504.html",
+    "email": "",
+    "source_url": "https://puriyoshi.89dream.jp/modules/contact/",
+    "purpose": "プリヨシ公式「プリヨシへのお問い合わせ」フォーム。名前・メール・本文の団体固有窓口で、ページに併記された「夢野球」運営への問い合わせとは明確に別です。送信・返信・外部イベント招待同意は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://puriyoshi.89dream.jp/modules/contact/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_座_3a4ae19b28",
+    "circle_name": "座間パピオン",
+    "circle_source_url": "https://www.net-menber.com/look/data/102379.html",
+    "email": "",
+    "source_url": "https://zama-papion.jimdofree.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/",
+    "purpose": "座間パピオン公式お問い合わせフォーム。名前・メール・メッセージでクラブへ連絡する窓口。体験希望時は会場変更もあるため事前連絡を案内しています。外部イベント招待受付・送信・返信は未確認。",
+    "checked_at": "2026-10-20",
+    "contact_method": "form",
+    "contact_url": "https://zama-papion.jimdofree.com/%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_東京都__社会人サークル_3885b36aa9_ab_6c061aba5f",
+    "circle_name": "Abendrot(登山サークル、東京支部)",
+    "circle_source_url": "https://www.net-menber.com/look/data/230774.html",
+    "email": "",
+    "source_url": "https://sites.google.com/view/abendrot/%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E5%8B%9F%E9%9B%86",
+    "purpose": "Abendrot公式メンバー募集ページが案内する公式LINE。大阪・東京共通の募集ページで東京支部の条件も確認。初心者不可・50歳までの社会人・禁煙・首都圏在住等の条件と規約確認後の入会相談用です。一般のイベント勧誘窓口とは未確認。友だち追加・送信・返信確認は行っていません。",
+    "checked_at": "2026-10-20",
+    "contact_method": "line",
+    "contact_url": "https://lin.ee/T51LLK0"
   }
 ]

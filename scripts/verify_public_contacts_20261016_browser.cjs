@@ -11,6 +11,9 @@ const out = path.join(root, 'work/contact-review-' + reviewDate.replaceAll('-', 
 const reviews = JSON.parse(fs.readFileSync(path.join(root, 'outputs/circle_public_contacts.json'), 'utf8'))
   .filter(row => row.checked_at === reviewDate);
 assert(reviews.length > 0, 'No contacts found for the requested review date');
+const rowFor = (page, review) => page.locator('#dbList .circle-row').filter({
+  has: page.locator('a[href=' + JSON.stringify('/invitations/new?circle_id=' + encodeURIComponent(review.circle_id)) + ']'),
+});
 fs.mkdirSync(out, {recursive: true});
 let server;
 
@@ -42,10 +45,10 @@ let server;
       page.on('pageerror', error => errors.push(error.message));
       for (const review of reviews) {
         const query = new URLSearchParams({tab: 'db', audience: 'social', q: review.circle_name});
-        const response = await page.goto(base + '/?' + query, {waitUntil: 'networkidle'});
+        const response = await page.goto(base + '/?' + query, {waitUntil: 'domcontentloaded'});
         assert.equal(response.status(), 200);
         assert((await response.text()).includes(review.circle_name), 'Missing initial HTML row');
-        const row = page.locator('#dbList .circle-row').filter({has: page.getByText(review.circle_name, {exact: true})});
+        const row = rowFor(page, review);
         assert.equal(await row.count(), 1);
         assert.equal(await row.locator('a[href^="/invitations/new?"]').getAttribute('href'),
           '/invitations/new?circle_id=' + encodeURIComponent(review.circle_id));
@@ -71,7 +74,7 @@ let server;
       }
       await page.locator('#dbFilters input[name="q"]').fill(reviews[0].circle_name);
       await page.waitForURL(url => url.searchParams.get('q') === reviews[0].circle_name);
-      await page.locator('#dbList .circle-row').filter({has: page.getByText(reviews[0].circle_name, {exact: true})}).waitFor();
+      await rowFor(page, reviews[0]).waitFor();
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
       results.push({width, directoryCases: reviews.length, interactiveSearch: true});
       await page.close();
@@ -80,7 +83,7 @@ let server;
     const page = await nojs.newPage();
     for (const review of reviews) {
       await page.goto(base + '/?' + new URLSearchParams({tab: 'db', audience: 'social', q: review.circle_name}));
-      assert.equal(await page.locator('#dbList .circle-row').filter({has: page.getByText(review.circle_name, {exact: true})}).count(), 1);
+      assert.equal(await rowFor(page, review).count(), 1);
       if (review.contact_url) assert(await page.locator('#dbList a').evaluateAll((links, href) => links.some(link => link.getAttribute('href') === href), review.contact_url));
     }
     await nojs.close();
