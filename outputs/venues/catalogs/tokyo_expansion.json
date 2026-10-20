@@ -29987,7 +29987,7 @@
     "booking_note": "団体貸切は施設ごとの事前登録・抽選・受付期間の確認が必要です。 利用条件：■団体利用 １名以上 ■個人利用 どなたでも利用可 区市町村外からの利用条件：■団体利用 区内団体の抽選申込開始翌日から申込可(抽選申込不可) ■個人利用 特になし 最新条件と使用する体育室の対応競技は公式案内で確認してください。",
     "booking_url": "https://spopita.jp/%e8%8d%92%e5%b7%9d%e9%81%8a%e5%9c%92%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e3%83%8f%e3%82%a6%e3%82%b9%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
     "official_url": "https://spopita.jp/%e8%8d%92%e5%b7%9d%e9%81%8a%e5%9c%92%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e3%83%8f%e3%82%a6%e3%82%b9%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-20",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -29999,10 +29999,14 @@
       {
         "title": "東京都公式施設案内：所在地・体育館区分・利用可能種目・予約方法",
         "url": "https://spopita.jp/%e8%8d%92%e5%b7%9d%e9%81%8a%e5%9c%92%e3%82%b9%e3%83%9d%e3%83%bc%e3%83%84%e3%83%8f%e3%82%a6%e3%82%b9%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/"
+      },
+      {
+        "title": "公式運営者・自治体の休館／営業終了案内",
+        "url": "https://www.city.arakawa.tokyo.jp/a017/sport/shisetsuriyou/s-houseriyou.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": ""
+    "availability_status": "SUSPENDED",
+    "availability_note": "荒川遊園スポーツハウスは大規模改修のため2025年3月31日～2027年3月下旬（予定）休館。公式ページの料金表は改修前の金額と明記されているため現行料金として採用せず、再開確認まで通常検索から除外します。"
   },
   {
     "id": "tokyo-gym-8661317f0c40",

@@ -566,7 +566,7 @@
     "booking_note": "公式予約カレンダーから予約。会員種別・予約可能時期は施設規約に従う。",
     "booking_url": "https://labola.jp/reserve/shop/2082/calendar_week",
     "official_url": "https://www.futsal-tokyo.co.jp/nantoyo/",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-20",
     "operator_type": "PRIVATE",
     "courts_count": null,
     "surface": null,
@@ -578,10 +578,14 @@
       {
         "title": "施設の公式案内",
         "url": "https://www.futsal-tokyo.co.jp/nantoyo/"
+      },
+      {
+        "title": "公式運営者・自治体の休館／営業終了案内",
+        "url": "https://www.futsal-tokyo.co.jp/"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "南豊ヶ丘フィールドは施設老朽化により2026年8月6日で営業終了。運営者の2026年8月7日告知による（契約期間満了は2026年9月）。再開確認まで通常検索から除外します。",
     "sports": [
       "サッカー・フットサル"
     ]

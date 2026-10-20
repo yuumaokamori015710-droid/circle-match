@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-19](venue-fee-followup-2026-10-19.md). It reviewed 21 existing records, added 20 tariffs and 17 cancellation policies, flagged conflicting official cancellation guides for one existing policy, and recorded Kodaira Central Park's closure without replacing IDs or booking URLs.
+Latest official-price review: [2026-10-20](venue-fee-followup-2026-10-20.md). It reviewed 23 existing records, added 19 tariffs and 15 cancellation policies, recorded two closures and held two unmatched-sport tariffs. The catalog remains 1,206 records: 729 priced, 477 unpriced (470 active). Existing IDs and booking URLs are retained. [Previous review: 2026-10-19](venue-fee-followup-2026-10-19.md).
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity

@@ -517,7 +517,13 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertIn('2時間', row['fee_ranges'][0]['unit'])
                 self.assertEqual(row['fee_checked_at'], '2026-10-15')
                 self.assertEqual(row['cancellation']['checked_at'], '2026-10-15')
-        self.assertNotIn('fee_options', rows['tokyo-venue-3de282b7fae3'])
+        hockey = rows['tokyo-venue-3de282b7fae3']
+        self.assertIsNone(hockey['price_from'])
+        if hockey.get('fee_checked_at', '') <= '2026-10-19':
+            self.assertNotIn('fee_options', hockey)
+        else:
+            self.assertTrue(all('サブピッチ' in p['unit'] and 'oi-hockey-price' in p['source_url']
+                                for p in hockey['fee_options']))
 
     def test_second_tokyo_followup_preserves_tariff_scope_and_unknowns(self):
         rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}
@@ -544,7 +550,11 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         self.assertEqual(len(okudo['fee_ranges']), 2)
         for ident in ('tokyo-venue-6ff79262c31f',):
             self.assertIsNone(rows[ident]['price_from'])
-            self.assertNotIn('fee_options', rows[ident])
+            if rows[ident].get('fee_checked_at', '') <= '2026-10-19':
+                self.assertNotIn('fee_options', rows[ident])
+            else:
+                self.assertEqual([(p['amount'], p['unit']) for p in rows[ident]['fee_options']],
+                                 [(2600, 'フットサルコート1面・2時間')])
 
     def test_third_tokyo_followup_uses_official_group_tariffs_only(self):
         rows = {r['id']: r for r in json.loads(self.request('/api/venues')[1])['courts']}

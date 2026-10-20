@@ -74,7 +74,13 @@ class OfficialTariffReviewTests(unittest.TestCase):
     def test_conflicting_edogawa_price_is_not_published_as_a_range(self):
         row = self.rows['tokyo-sports-038']
         self.assertIsNone(row['price_from'])
-        self.assertFalse(row.get('fee_options'))
+        if row.get('fee_checked_at', '') <= '2026-10-19':
+            self.assertFalse(row.get('fee_options'))
+        else:
+            # The later official June guide resolves the old 630/670 conflict.
+            self.assertEqual({p['amount'] for p in row['fee_options']}, {670})
+            self.assertTrue(all('edonet-riyoguide_ver31_2.pdf' in p['source_url']
+                                for p in row['fee_options']))
 
     def test_closed_hanahata_record_and_original_links_are_preserved(self):
         row = self.rows['tokyo-gym-e4c214671936']

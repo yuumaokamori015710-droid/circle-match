@@ -36,10 +36,14 @@ class OfficialVenueReviewTests(unittest.TestCase):
             self.assertTrue(all(p['amount'] >= 0 and p['conditions'] and p['source_url'].startswith('https://')
                                 for p in row['fee_options']))
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 710)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 496)
+        later_priced = sum(has_price(r) and r.get('fee_checked_at', '') > '2026-10-19'
+                           for r in self.rows.values())
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED'
+                             and r['checked_at'] > '2026-10-19' for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later_priced, 710)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later_priced, 496)
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()), 491)
+                             for r in self.rows.values()) + later_priced + later_closures, 491)
 
     def test_tama_city_only_baseball_and_duplicate_field_identity(self):
         self.assertEqual(self.ranges(TAMA_IDS[0]), {'球技場1面・2時間': (730, 1460)})
