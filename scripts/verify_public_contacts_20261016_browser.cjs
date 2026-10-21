@@ -47,7 +47,9 @@ let server;
         const query = new URLSearchParams({tab: 'db', audience: 'social', q: review.circle_name});
         const response = await page.goto(base + '/?' + query, {waitUntil: 'domcontentloaded'});
         assert.equal(response.status(), 200);
-        assert((await response.text()).includes(review.circle_name), 'Missing initial HTML row');
+        const initialText = await page.evaluate(markup =>
+          new DOMParser().parseFromString(markup, 'text/html').body.textContent, await response.text());
+        assert(initialText.includes(review.circle_name), 'Missing initial HTML row: ' + review.circle_name);
         const row = rowFor(page, review);
         assert.equal(await row.count(), 1);
         assert.equal(await row.locator('a[href^="/invitations/new?"]').getAttribute('href'),
