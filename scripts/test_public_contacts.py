@@ -305,6 +305,43 @@ class PublicContactTests(unittest.TestCase):
         self.assertTrue(all(r['circle_source_url'] and r['source_url'] and r['purpose']
                             and '社会人サークル' in r['circle_id'] for r in batch))
 
+    def test_october_22_contacts_preserve_opt_outs_and_organizational_scope(self):
+        batch = [row for row in self.seed if row['checked_at'] == '2026-10-22']
+        self.assertEqual(len(batch), 9)
+        self.assertEqual(sum(bool(row['email']) for row in batch), 1)
+        self.assertEqual(sum(row.get('contact_method') == 'form' for row in batch), 6)
+        self.assertEqual(sum(row.get('contact_method') == 'line' for row in batch), 2)
+        by_source = {row['circle_source_url']: row for row in batch}
+        nexus = by_source['https://www.net-menber.com/look/data/127659.html']
+        self.assertEqual(nexus['email'], '2020yokosukabbc@gmail.com')
+        self.assertIn('中学生', nexus['purpose'])
+        self.assertIn('成人向け大会の参加先とは扱いません', nexus['purpose'])
+        girasol = by_source['https://www.net-menber.com/look/data/208946.html']
+        self.assertIn('チーム交流希望', girasol['purpose'])
+        self.assertIn('新規個人参加は停止中', girasol['purpose'])
+        turtles = by_source['https://www.net-menber.com/look/data/137689.html']
+        self.assertEqual(turtles['contact_url'], 'https://lin.ee/WQmUTkKI')
+        self.assertIn('勧誘は禁止', turtles['purpose'])
+        one = by_source['https://www.net-menber.com/look/data/194975.html']
+        self.assertIn('出演依頼・指導支援', one['purpose'])
+        self.assertIn('全社の共通窓口ではありません', one['purpose'])
+        dance = by_source['https://www.net-menber.com/look/data/49094.html']
+        self.assertIn('営利目的での参加は禁止', dance['purpose'])
+        self.assertEqual(dance['source_url'], 'https://lah731.wixsite.com/chimpanzee731')
+        contacts.import_reviewed(self.conn)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                ident = entry['circle_id']
+                self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+                contacts.import_reviewed(self.conn)
+                target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+                self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+                self.conn.execute('insert into circle_public_profiles values(?,0,1)', (ident,))
+                contacts.import_reviewed(self.conn)
+                target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+
     def test_october_21_contacts_preserve_both_suppression_settings(self):
         batch = [row for row in self.seed if row['checked_at'] == '2026-10-21']
         self.assertEqual(len(batch), 8)
@@ -416,6 +453,31 @@ class PublicContactHttpTests(IsolatedAppHttpCase):
         html = self.request('/venues?v_q='+quote('高倉体育館'))[1].decode()
         self.assertIn('公式キャンセル規定',html)
         self.assertIn('13〜7日前50%',html)
+
+    def test_october_22_contacts_reach_real_seed_api_html_and_invitation(self):
+        batch = [row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+                 if row['checked_at'] == '2026-10-22']
+        self.assertEqual(len(batch), 9)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                query = quote(entry['circle_name'])
+                soup = BeautifulSoup(self.request('/?tab=db&audience=social&q=' + query)[1].decode(), 'html.parser')
+                self.assertIn(entry['circle_name'], soup.get_text())
+                self.assertIsNotNone(soup.find('a', href='/invitations/new?circle_id=' + quote(entry['circle_id'], safe='')))
+                if entry['email']:
+                    self.assertIn('公開メールあり', soup.get_text())
+                else:
+                    self.assertIsNotNone(soup.find('a', href=entry['contact_url']))
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + query)[1])
+                target = next(row for row in rows if row['circle_id'] == entry['circle_id'])
+                for key, value in [('public_contact_email', entry['email']), ('contact_source_url', entry['source_url']),
+                                   ('contact_purpose', entry['purpose']), ('contact_checked_at', entry['checked_at'])]:
+                    self.assertEqual(target[key], value)
+                self.assertNotIn('claimant_email', target)
+                self.assertNotIn('user_id', target)
+                markup, _ = ui.compose(target, [], {'authenticated': True})
+                self.assertIn(entry['purpose'], BeautifulSoup(markup, 'html.parser').get_text())
+                self.assertIn(entry['source_url'].replace('&', '&amp;'), markup)
 
     def test_october_21_contacts_reach_real_seed_and_invitation_with_scope(self):
         batch = [row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
