@@ -4298,5 +4298,45 @@
     "checked_at": "2026-10-22",
     "contact_method": "form",
     "contact_url": "https://www.hikingcircleshakunage.com/form.html"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_c_a47918fa92",
+    "circle_name": "CLUB ROAD-RO",
+    "circle_source_url": "https://www.net-menber.com/look/data/145847.html",
+    "email": "roadro.common@gmail.com",
+    "source_url": "https://sites.google.com/view/club-road-ro/%E9%80%A3%E7%B5%A1%E5%85%88",
+    "purpose": "CLUB ROAD-RO公式の参加・連絡窓口。公式表記「roadro.commonあっとまーくgmail.com」の明示的な「あっとまーく」を@に置換したもので、推測ではありません。連絡時は年齢・ロードバイク歴・ブランド・最長距離・主要区間タイムの記載を案内。加入は20歳以上、事前にゲストライドへの参加が必要です。交流招待の受入・返信・送信同意は未確認。",
+    "checked_at": "2026-10-23"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_s_d33430a979",
+    "circle_name": "Stellar Cycling Club(ステラサイクリングクラブ)",
+    "circle_source_url": "https://www.net-menber.com/look/data/227308.html",
+    "email": "stellarcyclingclub@gmail.com",
+    "source_url": "https://sites.google.com/view/stellar-cycling-club/%E5%8F%82%E5%8A%A0%E6%96%B9%E6%B3%95",
+    "purpose": "Stellar Cycling Club公式の事前質問・参加相談メール。体験参加の申込は別フォームで、このメールは事前の質問等を受け付ける団体窓口として掲載。参加は18歳以上・自転車保険加入・整備済み自転車等の条件あり。交流招待の受入・返信・送信同意は未確認。",
+    "checked_at": "2026-10-23"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_s_0771fd442d",
+    "circle_name": "SeaCats",
+    "circle_source_url": "https://www.net-menber.com/look/data/197244.html",
+    "email": "",
+    "source_url": "https://seacats.vercel.app/contact?tab=game",
+    "purpose": "SeaCats公式の「対戦申し込み・その他」フォーム。対戦申し込み・取材・その他を選択でき、メンバー加入申込のタブとは別窓口。名前・メール・メッセージが必須です。横浜・川崎・大田区周辺で活動する草野球チームの掲載元と照合。送信・返信・招待受信同意は未確認。",
+    "checked_at": "2026-10-23",
+    "contact_method": "form",
+    "contact_url": "https://seacats.vercel.app/contact?tab=game"
+  },
+  {
+    "circle_id": "c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_キ_30a51c6054",
+    "circle_name": "キックボクシング ミット ＿横浜",
+    "circle_source_url": "https://www.net-menber.com/look/data/18669.html",
+    "email": "",
+    "source_url": "https://dcbsky2010.wixsite.com/mysite/contact",
+    "purpose": "掲載元が直接リンクするDCBミットネス サークル横浜の一般お問い合わせフォーム。横浜の西地区センター・西スポーツセンター、月1回のミット運動・交流を照合。名前・メールは必須、自由メッセージ欄あり。会場予約フォームではありません。送信・返信・招待受信同意は未確認。",
+    "checked_at": "2026-10-23",
+    "contact_method": "form",
+    "contact_url": "https://dcbsky2010.wixsite.com/mysite/contact"
   }
 ]

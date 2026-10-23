@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
 import sys
 import unittest
 from unittest.mock import patch
@@ -305,6 +306,56 @@ class PublicContactTests(unittest.TestCase):
         self.assertTrue(all(r['circle_source_url'] and r['source_url'] and r['purpose']
                             and '社会人サークル' in r['circle_id'] for r in batch))
 
+    def test_october_23_contacts_keep_exact_sources_and_prior_reviews(self):
+        batch = [row for row in self.seed if row['checked_at'] == '2026-10-23']
+        self.assertEqual(len(batch), 4)
+        self.assertEqual(sum(bool(row['email']) for row in batch), 2)
+        self.assertEqual(sum(row.get('contact_method') == 'form' for row in batch), 2)
+        by_source = {row['circle_source_url']: row for row in batch}
+        roadro = by_source['https://www.net-menber.com/look/data/145847.html']
+        self.assertEqual(roadro['email'], 'roadro.common@gmail.com')
+        self.assertIn('あっとまーく', roadro['purpose'])
+        self.assertIn('20歳以上', roadro['purpose'])
+        stellar = by_source['https://www.net-menber.com/look/data/227308.html']
+        self.assertEqual(stellar['email'], 'stellarcyclingclub@gmail.com')
+        self.assertIn('別フォーム', stellar['purpose'])
+        self.assertIn('事前質問', stellar['purpose'])
+        sea = by_source['https://www.net-menber.com/look/data/197244.html']
+        self.assertEqual(sea['contact_url'], 'https://seacats.vercel.app/contact?tab=game')
+        self.assertIn('取材・その他', sea['purpose'])
+        mitt = by_source['https://www.net-menber.com/look/data/18669.html']
+        self.assertEqual(mitt['contact_url'], 'https://dcbsky2010.wixsite.com/mysite/contact')
+        self.assertIn('西スポーツセンター', mitt['purpose'])
+        self.assertNotIn('info@bubble-web.work', {row['email'] for row in batch})
+        self.assertTrue(all(row['circle_source_url'] and row['source_url'] and row['purpose']
+                            and '社会人サークル' in row['circle_id'] for row in batch))
+        root = contacts.SEED_PATH.parents[1]
+        baseline = json.loads(subprocess.check_output(
+            ['git', 'show', 'f2d0f21124bad1854d3cdd6a2f515fcda44ad983:outputs/circle_public_contacts.json'], cwd=root))
+        self.assertEqual(len(baseline), 469)
+        self.assertEqual(self.seed[:len(baseline)], baseline)
+        self.assertEqual(self.seed[len(baseline):], batch)
+
+    def test_october_23_disabled_and_both_profile_privacy_flags_survive_reimport(self):
+        batch = [row for row in self.seed if row['checked_at'] == '2026-10-23']
+        self.assertEqual(len(batch), 4)
+        contacts.import_reviewed(self.conn)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                ident = entry['circle_id']
+                self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+                contacts.import_reviewed(self.conn)
+                target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+                self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+                for consent, published in [(0, 1), (1, 0), (0, 0)]:
+                    self.conn.execute('insert into circle_public_profiles values(?,?,?)', (ident, consent, published))
+                    contacts.import_reviewed(self.conn)
+                    target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                    self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+                    self.assertEqual(tuple(self.conn.execute('select public_contact_consent,is_published from circle_public_profiles where circle_id=?', (ident,)).fetchone()), (consent, published))
+                    self.conn.execute('delete from circle_public_profiles where circle_id=?', (ident,))
+
     def test_october_22_contacts_preserve_opt_outs_and_organizational_scope(self):
         batch = [row for row in self.seed if row['checked_at'] == '2026-10-22']
         self.assertEqual(len(batch), 9)
@@ -453,6 +504,32 @@ class PublicContactHttpTests(IsolatedAppHttpCase):
         html = self.request('/venues?v_q='+quote('高倉体育館'))[1].decode()
         self.assertIn('公式キャンセル規定',html)
         self.assertIn('13〜7日前50%',html)
+
+    def test_october_23_contacts_reach_real_seed_api_html_and_invitation(self):
+        batch = [row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+                 if row['checked_at'] == '2026-10-23']
+        self.assertEqual(len(batch), 4)
+        for entry in batch:
+            with self.subTest(circle=entry['circle_name']):
+                query = quote(entry['circle_name'])
+                soup = BeautifulSoup(self.request('/?tab=db&audience=social&q=' + query)[1].decode(), 'html.parser')
+                self.assertIn(entry['circle_name'], soup.get_text())
+                self.assertIsNotNone(soup.find('a', href='/invitations/new?circle_id=' + quote(entry['circle_id'], safe='')))
+                if entry['email']:
+                    self.assertIn('公開メールあり', soup.get_text())
+                else:
+                    self.assertIsNotNone(soup.find('a', href=entry['contact_url']))
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + query)[1])
+                target = next(row for row in rows if row['circle_id'] == entry['circle_id'])
+                for key, value in [('public_contact_email', entry['email']), ('contact_source_url', entry['source_url']),
+                                   ('contact_purpose', entry['purpose']), ('contact_checked_at', entry['checked_at']),
+                                   ('contact_method', entry.get('contact_method', 'email')), ('contact_url', entry.get('contact_url', ''))]:
+                    self.assertEqual(target[key], value)
+                self.assertNotIn('claimant_email', target)
+                self.assertNotIn('user_id', target)
+                markup, _ = ui.compose(target, [], {'authenticated': True})
+                self.assertIn(entry['purpose'], BeautifulSoup(markup, 'html.parser').get_text())
+                self.assertIn(entry['source_url'].replace('&', '&amp;'), markup)
 
     def test_october_22_contacts_reach_real_seed_api_html_and_invitation(self):
         batch = [row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
