@@ -140,7 +140,23 @@ class October22VenueReviewTests(unittest.TestCase):
         for name in ['tokyo_tennis.json', 'tokyo_sports.json', 'tokyo_expansion.json']:
             relative = 'outputs/venues/catalogs/' + name
             previous = subprocess.check_output(['git', 'show', base + ':' + relative], cwd=ROOT)
-            self.assertEqual(json.loads(previous), json.loads((ROOT / relative).read_bytes()))
+            current = {r['id']: r for r in json.loads((ROOT / relative).read_bytes())}
+            corrections = {'tokyo-venue-ec7d0ac023ca': {'checked_at', 'availability_status', 'availability_note', 'sources'},
+                           'tokyo-venue-a2d6191898f8': {'checked_at', 'booking_note', 'sources'}}
+            for before in json.loads(previous):
+                after = current[before['id']]
+                allowed = corrections.get(before['id'], set()) if name == 'tokyo_expansion.json' else set()
+                for field in set(before) - allowed:
+                    self.assertEqual(before[field], after[field], (before['id'], field))
+                if allowed:
+                    self.assertEqual(after['checked_at'], '2026-10-23')
+                    self.assertEqual(after['sources'][:len(before['sources'])], before['sources'])
+                    if before['id'] == 'tokyo-venue-ec7d0ac023ca':
+                        self.assertEqual(after['availability_status'], 'SUSPENDED')
+                        self.assertIn('2026年3月31日', after['availability_note'])
+                    else:
+                        self.assertTrue(after['booking_note'].startswith(before['booking_note']))
+                        self.assertIn('第一体育室', after['booking_note'])
         for name in ['fee_plans.json', 'cancellation_policies.json']:
             relative = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', base + ':' + relative], cwd=ROOT))

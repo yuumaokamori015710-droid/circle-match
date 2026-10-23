@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-22](venue-fee-followup-2026-10-22.md). It reviewed 20 existing records, added 20 tariff sets and 16 cancellation-condition records, preserving area, duration, resident eligibility and surcharge conditions. The catalog remains 1,206 records: 749 priced, 457 unpriced (450 active). Existing IDs, booking URLs and previous reviews are retained. [Previous review: 2026-10-20](venue-fee-followup-2026-10-20.md).
+Latest official-price review: [2026-10-23](venue-fee-followup-2026-10-23.md). It reviewed 20 existing records, added 18 tariff sets and 13 cancellation-condition records, preserving area, duration, resident eligibility and surcharge conditions. The catalog remains 1,206 records: 767 priced, 439 unpriced (431 active). The abolished Seibu field is excluded from normal search; Hikari's first-gym-only suspension does not close the whole center. Existing IDs, booking URLs and previous reviews are retained. [Previous review: 2026-10-22](venue-fee-followup-2026-10-22.md).
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
