@@ -35,10 +35,12 @@ class October23VenueReviewTests(unittest.TestCase):
         for entry in review.reviewed_policies():
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 767)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 439)
+        later_priced = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED
+                           for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later_priced, 767)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later_priced, 439)
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()), 431)
+                             for r in self.rows.values()) + later_priced, 431)
 
     def test_higashi_ground_rental_not_lighting_or_closed_west(self):
         self.assertEqual(self.ranges(review.HIGASHI[0]), {'グラウンド全面・1時間': (1200, 1200)})
