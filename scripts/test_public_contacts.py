@@ -365,7 +365,7 @@ class PublicContactTests(unittest.TestCase):
             ['git', 'show', 'f6fa710bcb4fb71c0c993b4ff680c0ec0b17b684:outputs/circle_public_contacts.json'], cwd=root))
         self.assertEqual(len(baseline), 473)
         self.assertEqual(self.seed[:len(baseline)], baseline)
-        self.assertEqual(self.seed[len(baseline):], batch)
+        self.assertEqual(self.seed[len(baseline):len(baseline) + len(batch)], batch)
 
     def test_october_24_opt_outs_and_profile_privacy_survive_reimport(self):
         batch = [row for row in self.seed if row['checked_at'] == '2026-10-24']
@@ -386,6 +386,46 @@ class PublicContactTests(unittest.TestCase):
                     self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
                     self.assertEqual(tuple(self.conn.execute('select public_contact_consent,is_published from circle_public_profiles where circle_id=?', (ident,)).fetchone()), (consent, published))
                     self.conn.execute('delete from circle_public_profiles where circle_id=?', (ident,))
+
+    def test_october_25_email_preserves_identity_scope_and_previous_480_contacts(self):
+        batch = [row for row in self.seed if row['checked_at'] == '2026-10-25']
+        self.assertEqual(len(batch), 1)
+        entry = batch[0]
+        self.assertEqual(entry['circle_id'], 'c_u_社会人サークル_神奈川県__社会人サークル_30f6e9306e_横_bbece2815e')
+        self.assertEqual(entry['circle_name'], '横浜湘南ツーリングクラブ(YSTC)')
+        self.assertEqual(entry['circle_source_url'], 'https://www.net-menber.com/look/data/21273.html')
+        self.assertEqual(entry['email'], 'info@ys-tc.net')
+        self.assertEqual(entry['source_url'], 'https://ys-tc.net/outline.htm')
+        self.assertIn('メンバー募集', entry['purpose'])
+        self.assertIn('お問い合わせ', entry['purpose'])
+        self.assertIn('他クラブへの勧誘・引き抜き', entry['purpose'])
+        self.assertIn('禁止', entry['purpose'])
+        self.assertIn('招待受信同意は未確認', entry['purpose'])
+        baseline = json.loads(subprocess.check_output(
+            ['git', 'show', 'f804cec6d3be12d45737c5a475905638c14c4d70:outputs/circle_public_contacts.json'],
+            cwd=contacts.SEED_PATH.parents[1]))
+        self.assertEqual(len(baseline), 480)
+        self.assertEqual(self.seed[:len(baseline)], baseline)
+        self.assertEqual(self.seed[len(baseline):len(baseline) + len(batch)], batch)
+
+    def test_october_25_email_opt_out_and_profile_privacy_survive_reimport(self):
+        entry = next(row for row in self.seed if row['checked_at'] == '2026-10-25')
+        ident = entry['circle_id']
+        contacts.import_reviewed(self.conn)
+        self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+        contacts.import_reviewed(self.conn)
+        target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+        self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+        self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+        for consent, published in [(0, 1), (1, 0), (0, 0)]:
+            with self.subTest(consent=consent, published=published):
+                self.conn.execute('insert into circle_public_profiles values(?,?,?)', (ident, consent, published))
+                contacts.import_reviewed(self.conn)
+                target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+                flags = self.conn.execute('select public_contact_consent,is_published from circle_public_profiles where circle_id=?', (ident,)).fetchone()
+                self.assertEqual(tuple(flags), (consent, published))
+                self.conn.execute('delete from circle_public_profiles where circle_id=?', (ident,))
 
     def test_october_23_disabled_and_both_profile_privacy_flags_survive_reimport(self):
         batch = [row for row in self.seed if row['checked_at'] == '2026-10-23']
@@ -555,6 +595,28 @@ class PublicContactHttpTests(IsolatedAppHttpCase):
         html = self.request('/venues?v_q='+quote('高倉体育館'))[1].decode()
         self.assertIn('公式キャンセル規定',html)
         self.assertIn('13〜7日前50%',html)
+
+    def test_october_25_email_reaches_real_seed_api_html_and_invitation(self):
+        entry = next(row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+                     if row['checked_at'] == '2026-10-25')
+        query = quote(entry['circle_name'])
+        rows = json.loads(self.request('/api/circles?audience=social&q=' + query)[1])
+        target = next(row for row in rows if row['circle_id'] == entry['circle_id'])
+        self.assertEqual(target['source_url'], entry['circle_source_url'])
+        for key, value in [('public_contact_email', entry['email']), ('contact_source_url', entry['source_url']),
+                           ('contact_purpose', entry['purpose']), ('contact_checked_at', entry['checked_at'])]:
+            self.assertEqual(target[key], value)
+        self.assertNotIn('claimant_email', target)
+        self.assertNotIn('user_id', target)
+        soup = BeautifulSoup(self.request('/?tab=db&audience=social&q=' + query)[1].decode(), 'html.parser')
+        self.assertIn(entry['circle_name'], soup.get_text())
+        self.assertIn('公開メールあり', soup.get_text())
+        self.assertIsNotNone(soup.find('a', href='/invitations/new?circle_id=' + quote(entry['circle_id'], safe='')))
+        markup, _ = ui.compose(target, [], {'authenticated': True})
+        self.assertIn(entry['email'], markup)
+        self.assertIn(entry['source_url'], markup)
+        self.assertIn(entry['checked_at'], markup)
+        self.assertIn(entry['purpose'], BeautifulSoup(markup, 'html.parser').get_text())
 
     def test_october_24_contacts_reach_real_seed_api_html_and_invitation(self):
         batch = [row for row in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
