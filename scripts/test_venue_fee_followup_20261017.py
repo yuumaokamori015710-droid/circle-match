@@ -80,10 +80,13 @@ class OfficialTariffReviewTests(unittest.TestCase):
         self.assertIn('185日超', self.rows['tokyo-gym-48e959a72b2e']['cancellation']['summary'])
 
     def test_closed_and_restricted_facilities_are_not_given_guessed_prices(self):
-        for ident in ['tokyo-venue-6b06aed3958d', 'tokyo-gym-aa77f48e78d0',
-                      'tokyo-gym-efd5e350238b', 'tokyo-gym-e6782f27b40b', 'tokyo-venue-205d87234dd3']:
+        for ident in ['tokyo-venue-6b06aed3958d', 'tokyo-gym-aa77f48e78d0', 'tokyo-venue-205d87234dd3']:
             self.assertFalse(self.rows[ident]['fee_ranges'])
             self.assertIsNone(self.rows[ident]['price_from'])
+        self.assertEqual(self.ranges('tokyo-gym-efd5e350238b'), {'第1体育室・1人90分': (70, 150)})
+        self.assertIn('通常貸切なし', self.rows['tokyo-gym-efd5e350238b']['fee_note'])
+        self.assertEqual(self.ranges('tokyo-gym-e6782f27b40b'), {'第2体育室・1時間': (400, 2400)})
+        self.assertIn('第1体育室は通常貸切なし', self.rows['tokyo-gym-e6782f27b40b']['fee_note'])
         row = self.rows['tokyo-venue-6b06aed3958d']
         self.assertEqual(row['availability_status'], 'SUSPENDED')
         self.assertIn('2027年5月', row['availability_note'])

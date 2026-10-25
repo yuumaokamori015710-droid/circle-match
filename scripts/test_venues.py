@@ -594,7 +594,11 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         for ident in ('tokyo-venue-933ef55fd937', 'tokyo-gym-07d760f3b816'):
             self.assertEqual(rows[ident]['cancellation']['checked_at'], '2026-10-15')
         for ident in ('tokyo-venue-71237581c393', 'tokyo-venue-2e14b39dc02c'):
-            self.assertNotIn('fee_options', rows[ident])
+            self.assertEqual(rows[ident]['fee_checked_at'], '2026-10-25')
+            self.assertTrue(all(p['source_url'] == rows[ident]['official_url'] for p in rows[ident]['fee_options']))
+        self.assertTrue(all(p['unit'].startswith('武道場') for p in rows['tokyo-venue-71237581c393']['fee_options']))
+        self.assertEqual(rows['tokyo-venue-2e14b39dc02c']['fee_ranges'], [
+            {'unit': '庭球場1面・1時間（単価）', 'minimum': 1000, 'maximum': 1000, 'tariff_count': 1}])
 
     def test_aliases_redirect_to_the_native_directory(self):
         with patch.object(self.app, 'connect', side_effect=AssertionError('Redirect must not open SQLite')) as connect:

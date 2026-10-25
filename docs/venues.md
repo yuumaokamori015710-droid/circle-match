@@ -157,3 +157,11 @@ archived in the dated report. Kodaira Central Park is closed until March
 2027 (planned). Earlier tariffs, IDs, booking URLs and the legacy tennis
 file are preserved. Free Myoshojigawa hire is source-confirmed and retains
 Nakano group eligibility; it is not a placeholder zero.
+
+The [2026-10-25 review](venue-fee-followup-2026-10-25.md) covers 21 physical
+facilities represented by 22 existing records, adding 16 tariff records and
+13 cancellation records. The unchanged 1,206-record catalog has 801 priced,
+405 unpriced (397 active unpriced). Six holds remain unknown. Existing aliases,
+source catalogs, booking links and prior reviews are preserved. Room closures,
+personal-use-only fees, sport mismatches and seasonal three-hour slots are
+qualified explicitly rather than implying unrestricted group hire.

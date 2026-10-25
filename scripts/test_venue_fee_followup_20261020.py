@@ -122,7 +122,12 @@ class OfficialVenueReviewTests(unittest.TestCase):
             self.assertEqual(filter_catalog([row], {}), [])
             self.assertEqual(len(filter_catalog([row], {'show_suspended': '1'})), 1)
         for ident in review.HELD:
-            self.assertFalse(has_price(self.rows[ident]))
+            self.assertEqual(self.rows[ident]['fee_checked_at'], '2026-10-25')
+            self.assertTrue(all(p['unit'].startswith('武道場') if ident == review.HELD[0]
+                                else p['unit'] == '庭球場1面・1時間（単価）'
+                                for p in self.rows[ident]['fee_options']))
+            self.assertIn('球技コート' if ident == review.HELD[0] else 'フットサル',
+                          self.rows[ident]['fee_note'])
 
     def test_preflight_refuses_overwrite_and_append_is_idempotent(self):
         with tempfile.TemporaryDirectory(dir=ROOT / 'work') as temporary:

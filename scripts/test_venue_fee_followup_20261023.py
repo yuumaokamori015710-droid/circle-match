@@ -121,7 +121,9 @@ class October23VenueReviewTests(unittest.TestCase):
 
     def test_kokubunji_partial_closure_not_entire_site_or_old_gym_rate(self):
         hikari = self.rows[review.KOKUBUNJI[0]]
-        self.assertFalse(has_price(hikari))
+        self.assertEqual(hikari['fee_checked_at'], '2026-10-25')
+        self.assertEqual(self.ranges(review.KOKUBUNJI[0]), {'第二体育室・2時間30分': (1000, 2000)})
+        self.assertTrue(all(p['unit'].startswith('第二体育室') for p in hikari['fee_options']))
         self.assertNotEqual(hikari['availability_status'], 'SUSPENDED')
         self.assertIn('第一体育室', hikari['booking_note'])
         self.assertIn('第二体育室・フィットネスルームは利用可能', hikari['booking_note'])

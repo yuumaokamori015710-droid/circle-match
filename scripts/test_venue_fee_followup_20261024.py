@@ -34,10 +34,12 @@ class October24VenueReviewTests(unittest.TestCase):
         for entry in review.reviewed_policies():
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 785)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 421)
+        later_priced = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED
+                           for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later_priced, 785)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later_priced, 421)
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()), 413)
+                             for r in self.rows.values()) + later_priced, 413)
 
     def test_unknown_not_zero_and_public_opening_not_private_hire(self):
         for ident in review.HOLDS:
