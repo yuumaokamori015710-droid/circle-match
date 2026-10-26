@@ -42,6 +42,10 @@ class October25VenueReviewTests(unittest.TestCase):
 
     def test_holds_unknown_not_zero_or_restricted_hire(self):
         for ident in review.HOLDS:
+            if ident in ['tokyo-venue-f403faf4f42f', 'tokyo-venue-5b81852866ce']:
+                self.assertEqual(self.rows[ident]['fee_checked_at'], '2026-10-26')
+                self.assertTrue(has_price(self.rows[ident]))
+                continue
             self.assertFalse(has_price(self.rows[ident]))
             self.assertEqual(self.rows[ident]['fee_ranges'], [])
         self.assertTrue(all(p['amount'] > 0 for r in review.reviewed_fees() for p in r['fee_options']))

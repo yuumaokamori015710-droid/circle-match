@@ -1,6 +1,6 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-24](venue-fee-followup-2026-10-24.md). It reviewed 20 existing records and added 18 tariff sets and 17 cancellation-condition records. The catalog remains 1,206 records: 785 priced, 421 unpriced (413 active). Nonstandard time units, resident eligibility, restricted sports and partial closures stay explicit. Akirudai and Koganei remain unpriced without guessing. Existing IDs, booking URLs, original catalog fields and previous reviews are retained. [Previous review: 2026-10-23](venue-fee-followup-2026-10-23.md).
+Latest official-price review: [2026-10-26](venue-fee-followup-2026-10-26.md). It reviewed 22 existing facilities and added 15 tariff sets and six cancellation/interruption records. The catalog remains 1,206 records: 816 priced, 390 unpriced (382 active). Exact spaces, time units, town-lodging and resident conditions, restricted sports and closures stay explicit. Only officially confirmed free group use is zero; seven reviewed tariff holds remain unknown. Existing IDs, booking URLs, original catalog fields and previous reviews are retained. [Previous review: 2026-10-25](venue-fee-followup-2026-10-25.md).
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
