@@ -1505,7 +1505,27 @@ def format_event_datetime(value):
 
 
 def event_payment_label(value):
-    return {"free": "-", "on_site": "現地払い", "bank_transfer": "口座振込", "online": "オンラインカード決済"}.get(value, "主催者へ確認")
+    return {"free": "-", "on_site": "現地払い", "bank_transfer": "口座振込", "online": "オンラインカード決済",
+            "on_site_or_bank_transfer": "現地払い・口座振込（参加者が選択）"}.get(value, "主催者へ確認")
+
+
+def event_payment_methods(event):
+    event = dict(event)
+    if event.get("payment_method") == "bank_transfer" and event.get("allow_on_site_payment"):
+        return ("on_site", "bank_transfer")
+    return (event.get("payment_method") or "free",)
+
+
+def application_payment_method(event, application=None):
+    methods = event_payment_methods(event)
+    chosen = dict(application or {}).get("selected_payment_method")
+    return chosen if chosen in methods else dict(event).get("payment_method", "free")
+
+
+def event_payment_text(event, application=None):
+    if application:
+        return event_payment_label(application_payment_method(event, application))
+    return event_payment_label("on_site_or_bank_transfer" if len(event_payment_methods(event)) > 1 else dict(event).get("payment_method"))
 
 
 def event_fee_text(event, participation_type=None):
@@ -1971,7 +1991,7 @@ def render_event_detail_html(event_id, user=None, params=None):
     fee = html.escape(event_fee_text(event))
     payment_html = ""
     if event.get("fee_amount") != 0:
-        payment_html = '<div><span>支払方法</span><strong>' + html.escape(event_payment_label(event.get("payment_method"))) + '</strong>'
+        payment_html = '<div><span>支払方法</span><strong>' + html.escape(event_payment_text(event)) + '</strong>'
         if event.get("payment_method") == "bank_transfer":
             payment_html += '<small>参加確定後、主催者が振込先・期限を案内します。入金確認は主催者が行います。</small>'
         payment_html += '</div>'
@@ -2033,6 +2053,10 @@ def render_event_apply_html(event_id, user, params=None):
     full_recap = recap
     recap = event_application_brief(event)
     body = f'''<section class="form-shell"><h1>参加申込</h1>{recap}<section class="panel"><form id="applicationForm" data-event-id="{html.escape(event_id, quote=True)}"><div id="applicationInput" class="form-section active"><fieldset><legend>参加単位</legend><div id="participationChoices" class="card-actions">{radio}</div></fieldset><div id="individualFields" class="field"><label for="applicant_name">申込代表者名（必須）</label><input id="applicant_name" maxlength="80" value="{default_name}" autocomplete="name"></div><div id="teamFields" class="field-grid" hidden><div class="field full"><button class="button" id="reuseTeam" type="button" {"" if saved else "hidden"}>前回のチーム情報を使う</button></div><div class="field"><label for="team_name">チーム名（必須）</label><input id="team_name" maxlength="100"></div><div class="field"><label for="representative_name">代表者名（必須）</label><input id="representative_name" maxlength="80" value="{default_name}"></div></div><div class="field"><label for="participant_count">参加人数（本人・友達を含む合計）</label><input id="participant_count" type="number" min="1" max="100000" value="1" required><span class="help" id="groupHelp">友達の分もまとめて申し込めます。連絡・取り消しは申込代表者が行い、取り消しは申込全員分に適用されます。</span></div><div class="field full"><label for="applicant_message">主催者への連絡（任意）</label><textarea id="applicant_message" maxlength="1200"></textarea></div></div><section id="applicationReview" class="form-section" tabindex="-1"><h2>申込内容の確認</h2><dl id="reviewAnswers"></dl><p id="applicationFeeTotal"></p><p>{"主催者の承認後に参加確定します。" if event.get("acceptance_mode") == "approval" else "定員内であれば、この送信で参加が確定します。"}</p><p>上記の参加費・参加条件・キャンセル条件をご確認ください。</p></section><div class="form-actions"><a class="button" id="detailBack" href="{detail_url}">募集詳細へ戻る</a><button class="button" id="editApplication" type="button" hidden>入力に戻る</button><div class="application-action-buttons">{event_share_button()}<button class="button primary" type="submit" id="applicationSubmit">申込内容を確認する</button></div></div></form></section><div id="applicationStatus" class="error-box" role="alert" tabindex="-1" hidden></div></section>'''
+    if len(event_payment_methods(event)) > 1:
+        bank_expired = bool(event.get("announcement_version") and event.get("payment_deadline") and event["payment_deadline"] <= event_local_now())
+        choices = ''.join(f'<label><input type="radio" name="payment_method" value="{method}" required' + (' disabled' if method == 'bank_transfer' and bank_expired else '') + f'> {event_payment_label(method)}' + ('（振込受付終了）' if method == 'bank_transfer' and bank_expired else '') + '</label>' for method in event_payment_methods(event))
+        body = body.replace('<div class="field full"><label for="applicant_message">', '<fieldset id="applicationPaymentChoices"><legend>支払方法（必須）</legend><div class="card-actions">' + choices + '</div></fieldset><div class="field full"><label for="applicant_message">')
     body = body.replace('<p>上記の参加費・参加条件・キャンセル条件をご確認ください。</p>', full_recap + '<label class="application-consent"><input type="checkbox" id="applicationConditions" required disabled> 参加費・参加条件・キャンセル条件を確認しました。</label>')
     if event.get("minimum_participants"):
         body = body.replace("主催者の承認後に参加確定します。", "主催者の承認後に受付確定となります。開催決定後、別途最終参加確認が必要です。")
@@ -2044,7 +2068,7 @@ def render_event_apply_html(event_id, user, params=None):
 
 
 def event_application_recap(event, application=None):
-    fields = [("開催日時", format_event_datetime(event.get("starts_at"))), ("会場", (event.get("prefecture") or "") + " / " + (event.get("location") or "")), ("参加費", event_fee_text(event, application.get('participation_type') if application else None)), ("支払方法", event_payment_label(event.get("payment_method"))), ("受付方式", event_acceptance_label(event.get("acceptance_mode"))), ("参加条件", event.get("eligibility") or "特に設定されていません"), ("キャンセル・中止条件", event.get("cancellation_policy") or "主催者へご確認ください")]
+    fields = [("開催日時", format_event_datetime(event.get("starts_at"))), ("会場", (event.get("prefecture") or "") + " / " + (event.get("location") or "")), ("参加費", event_fee_text(event, application.get('participation_type') if application else None)), ("支払方法", event_payment_text(event, application)), ("受付方式", event_acceptance_label(event.get("acceptance_mode"))), ("参加条件", event.get("eligibility") or "特に設定されていません"), ("キャンセル・中止条件", event.get("cancellation_policy") or "主催者へご確認ください")]
     if (event_pricing.amount_due(event, application) == 0 if application else event_pricing.is_free(event)):
         fields = [(label, value) for label, value in fields if label != "支払方法"]
     return '<section class="application-recap"><h2>' + html.escape(event.get("title") or "") + '</h2><dl>' + ''.join('<dt>' + label + '</dt><dd>' + html.escape(str(value)) + '</dd>' for label, value in fields) + '</dl></section>'
@@ -2072,13 +2096,15 @@ let reviewing=false,payload;
 function currentFee(){return applicationFee[form.querySelector('[name=participation_type]:checked').value]}
 function sync(){const team=form.querySelector('[name=participation_type]:checked').value==='team';$('teamFields').hidden=!team;$('individualFields').hidden=team;['team_name','representative_name'].forEach(id=>{$(id).disabled=!team;$(id).required=team});$('applicant_name').disabled=team;$('applicant_name').required=!team;$('participant_count').labels[0].textContent=team?'参加予定人数（チーム全体）':'参加人数（本人・友達を含む合計）';$('groupHelp').hidden=team;const price=currentFee();$('applicationUnitFee').textContent=price.amount===null?'料金は主催者へ確認':Number(price.amount).toLocaleString()+'円 / '+price.unit}
 function review(value){reviewing=value;$('applicationInput').hidden=value;$('applicationReview').classList.toggle('active',value);$('applicationConditions').disabled=!value;$('applicationConditions').checked=false;$('editApplication').hidden=!value;$('detailBack').hidden=value;$('applicationSubmit').textContent=value?submitLabel:'申込内容を確認する';if(value)$('applicationReview').focus()}
-form.addEventListener('change',sync);sync();
+function syncPaymentChoice(){const field=$('applicationPaymentChoices');if(!field)return;const free=currentFee().amount===0;field.hidden=free;field.disabled=free}
+form.addEventListener('change',()=>{sync();syncPaymentChoice()});sync();syncPaymentChoice();
 $('reuseTeam').onclick=()=>{if(savedTeam)for(const key of ['team_name','representative_name','participant_count'])$(key).value=savedTeam[key]||''};
 $('editApplication').onclick=()=>review(false);
 form.onsubmit=async e=>{e.preventDefault();statusBox.hidden=true;
  if(!reviewing){if(!form.reportValidity())return;const mode=form.querySelector('[name=participation_type]:checked').value;payload={participation_type:mode};for(const key of ['applicant_name','team_name','representative_name','participant_count','applicant_message'])payload[key]=$(key).value.trim();
- const labels={participation_type:'参加単位',applicant_name:'申込代表者名',team_name:'チーム名',representative_name:'代表者名',participant_count:'参加予定人数',applicant_message:'主催者への連絡'};
- $('reviewAnswers').innerHTML=Object.entries(payload).filter(([k])=>mode==='team'?k!=='applicant_name':!['team_name','representative_name'].includes(k)).map(([k,v])=>`<dt>${labels[k]}</dt><dd>${esc(k==='participation_type'?(v==='team'?'チーム参加':'個人参加'):v)||'なし'}</dd>`).join('');const price=currentFee();$('applicationFeeTotal').textContent=price.amount===null?'参加費は主催者へご確認ください。':'参加費合計：'+(price.amount*(price.unit==='1チーム'?1:Number(payload.participant_count))).toLocaleString()+'円';review(true);return}
+ const payment=form.querySelector('[name=payment_method]:checked');if(payment)payload.payment_method=payment.value;
+ const labels={participation_type:'参加単位',applicant_name:'申込代表者名',team_name:'チーム名',representative_name:'代表者名',participant_count:'参加予定人数',applicant_message:'主催者への連絡',payment_method:'支払方法'};
+ $('reviewAnswers').innerHTML=Object.entries(payload).filter(([k])=>mode==='team'?k!=='applicant_name':!['team_name','representative_name'].includes(k)).map(([k,v])=>`<dt>${labels[k]}</dt><dd>${esc(k==='participation_type'?(v==='team'?'チーム参加':'個人参加'):k==='payment_method'?({on_site:'現地払い',bank_transfer:'口座振込'})[v]:v)||'なし'}</dd>`).join('');const price=currentFee();$('applicationFeeTotal').textContent=price.amount===null?'参加費は主催者へご確認ください。':'参加費合計：'+(price.amount*(price.unit==='1チーム'?1:Number(payload.participant_count))).toLocaleString()+'円';review(true);return}
  if(!form.reportValidity())return;const button=$('applicationSubmit');button.disabled=true;
  try{const r=await fetch('/api/events/'+encodeURIComponent(form.dataset.eventId)+'/applications',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await r.json();if(!r.ok)throw new Error(data.error||'申込に失敗しました');location.assign(resultUrl)}
  catch(err){statusBox.hidden=false;statusBox.textContent=err.message;statusBox.focus();button.disabled=false}
@@ -2120,6 +2146,8 @@ def render_event_form_html(params, user):
     presets = [item[0] for item in POPULAR_SPORTS]
     if initial.get("payment_method") == "free":
         initial["payment_method"] = "on_site"
+    if initial.get("payment_method") == "bank_transfer" and initial.get("allow_on_site_payment"):
+        initial["payment_method"] = "on_site_or_bank_transfer"
     if not initial.get("minimum_participants"):
         initial["minimum_participants"] = ""
     custom = params.get("custom", [""])[0] == "1" or bool(initial.get("sport_category") and initial["sport_category"] not in presets)
@@ -2129,6 +2157,7 @@ def render_event_form_html(params, user):
     category_input = ('<input id="sport_category" type="text" maxlength="100" placeholder="例：ボードゲーム・ハイキング">'
                       if custom else f'<select id="sport_category"><option value="">選択してください</option>{sport_choices}</select>')
     body = f'''<section class="form-shell"><section class="intro"><div><p class="eyebrow">HOST AN EVENT</p><h1>{"募集を編集する" if event_id else "大会・イベントを掲載する"}</h1><p>個人、即席チーム、サークル、大会運営団体のどなたでも掲載できます。団体の詳細紹介や画像は任意です。</p></div></section><section class="panel"><div class="stepper"><span class="active" data-step-label="0">1. 開催内容</span><span data-step-label="1">2. 募集条件</span><span data-step-label="2">3. 公開確認</span></div><form id="eventForm"><section class="form-section active" data-step="0"><div class="field-grid"><div class="field"><label>募集種別</label><select id="event_type">{''.join(f'<option value="{v}">{v}</option>' for v in EVENT_TYPES)}</select></div><div class="field"><label>{"競技・ジャンル" if custom else "競技"}</label>{category_input}</div><div class="field full"><label>タイトル</label><input id="title" maxlength="120" placeholder="例：秋の3x3バスケットボール交流大会"></div><div class="field"><label>開催日時</label><input id="starts_at" type="datetime-local"></div><input id="ends_at" type="hidden"><div class="field"><label>都道府県</label><select id="prefecture"><option value="">選択してください</option>{''.join(f'<option value="{p}">{p}</option>' for p in PREFECTURES)}</select></div><div class="field"><label>会場・地域</label><input id="location" maxlength="250" placeholder="例：代々木公園 バスケットボールコート"></div><div class="field full"><label>説明</label><textarea id="description" maxlength="5000" placeholder="大会・イベントの内容、当日の流れ、持ち物などを記載してください"></textarea></div></div></section><section class="form-section" data-step="1"><div class="field-grid"><div class="field"><label>参加単位</label><select id="participation_type"><option value="individual">個人参加</option><option value="team">チーム参加</option><option value="both">個人・チーム参加</option></select></div><div class="field"><label>定員 [人]（任意）</label><input id="capacity" type="number" min="1" placeholder="例：30"><input id="capacity_unit" type="hidden"></div><div class="field"><label>最低開催人数 [人]</label><input id="minimum_participants" type="number" min="1" max="100000" placeholder="未設定"><span class="help">受付確定数が達すると、主催者へ仮成立を通知します。</span></div><div class="field"><label>1人当たりの参加費 [円]</label><input id="fee_amount" type="text" inputmode="numeric" maxlength="20" placeholder="例：1,500"><input id="fee_unit" type="hidden"><span class="help">参加費なしの場合は0円</span></div><div class="field"><label>損益分岐点 [円]（任意）</label><input id="target_total_amount" type="text" inputmode="numeric" maxlength="20" placeholder="例：30000" aria-describedby="targetTotalHelp"><span class="help" id="targetTotalHelp">主催者にのみ表示されます。</span></div><div class="field"><label>支払方法</label><select id="payment_method"><option value="on_site">現地払い</option><option value="bank_transfer">口座振込</option></select><span class="help" id="paymentHelp">口座は最低開催数に達した後、開催案内で登録します。参加者の最終確認後に振込先を表示します。</span></div><div class="field"><label>受付方式</label><select id="acceptance_mode"><option value="first_come">先着順</option><option value="approval">主催者承認制</option></select></div><div class="field"><label>応募締切（任意）</label><input id="application_deadline" type="datetime-local"></div><div class="field full"><label>参加条件（任意）</label><textarea id="eligibility" maxlength="1200" placeholder="例：大学生・社会人どちらも参加可。初心者歓迎。"></textarea></div></div></section><section class="form-section" data-step="2"><div class="field-grid"><div class="field"><label>主催者の表示名</label><input id="organizer_name" maxlength="80" placeholder="例：Circle Match運営チーム"></div><div class="field"><label>主催者連絡先</label><input id="organizer_contact_email" type="email" maxlength="255" placeholder="メールアドレス"></div><div class="field full"><label>確認済みの主催団体に紐付け（任意）</label><select id="linked_circle_id"><option value="">団体に紐付けない</option></select><span class="help">DBへの掲載だけでは主催権限になりません。確認済みの代表者だけが紐付けできます。</span></div><div class="field full"><label>キャンセル・中止条件</label><textarea id="cancellation_policy" maxlength="1600" placeholder="例：開催3日前までキャンセル可。荒天時は前日18時までに連絡します。"></textarea></div><div class="field full"><label>公開前プレビュー</label><div id="eventPreview" class="preview">入力内容を確認してください。</div></div></div></section><div class="form-actions"><button id="backStep" class="button" type="button">戻る</button><div class="card-actions"><button id="saveDraft" class="button" type="button">下書き保存</button><button id="nextStep" class="button secondary" type="button">次へ</button><button id="publishEvent" class="button primary" type="button" hidden>公開する</button></div></div></form></section><div id="eventFormStatus" class="notice" hidden></div></section>'''
+    body = body.replace('<option value="bank_transfer">口座振込</option>', '<option value="bank_transfer">口座振込</option><option value="on_site_or_bank_transfer">現地払い・口座振込（参加者が選択）</option>')
     online_fields = ('<div class="field full" id="onlinePricing" hidden><label for="online_pricing_mode">オンライン参加費の設定</label>'
         '<select id="online_pricing_mode"><option value="net">受取希望額から設定する</option><option value="gross">参加者の支払額から設定する</option></select>'
         '<label for="online_price_input" id="onlinePriceLabel">1人当たりの受取希望額 [円]</label>'
@@ -2183,7 +2212,7 @@ function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??''
 function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').hidden=step===0;$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
 function payload(status){syncOnlinePrice();const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);for(const key of ['fee_amount','target_total_amount','online_price_input','individual_fee_amount','team_fee_amount'])obj[key]=normalizeFee(obj[key]);if(usesDualPricing()){for(const kind of ['individual','team']){const key=kind+'_fee_amount',raw=obj[key];if(obj.payment_method==='online'){obj[kind+'_online_price_input']=raw;obj[key]=/^\d+$/.test(raw)?String(onlineGross(raw,obj.online_pricing_mode)):''}}const values=[obj.individual_fee_amount,obj.team_fee_amount];obj.fee_amount=values.every(v=>/^\d+$/.test(v))?String(Math.max(...values.map(Number))):''}else{delete obj.individual_fee_amount;delete obj.team_fee_amount}if(obj.fee_amount==='0')obj.payment_method='free';return obj}
 function previewFee(p){const suffix=p.payment_method==='online'?'（サービス利用料込み・追加手数料なし）':'';if(p.individual_fee_amount!=null&&p.team_fee_amount!=null)return '個人：'+Number(p.individual_fee_amount).toLocaleString()+'円 / 1人、チーム：'+Number(p.team_fee_amount).toLocaleString()+'円 / 1チーム'+suffix;return Number(p.fee_amount)===0?'無料':Number(p.fee_amount).toLocaleString()+'円 / '+p.fee_unit+suffix}
-function preview(){const p=payload('published');const fields=[['募集種別・競技',p.event_type+' / '+p.sport_category],['開催日時',p.starts_at.replace('T',' ')],['会場',p.prefecture+' / '+p.location],['参加単位',({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]],['定員',p.capacity?p.capacity+p.capacity_unit:'定員なし'],['最低開催数',p.minimum_participants?p.minimum_participants+p.capacity_unit:'未設定（従来の受付）'],['参加費',previewFee(p)],['支払方法',({free:'-',on_site:'現地払い',bank_transfer:'口座振込',online:'オンラインカード決済'})[p.payment_method]],['受付方式',p.acceptance_mode==='approval'?'主催者承認制':'先着順'],['応募締切',p.application_deadline.replace('T',' ')||'開催日時まで'],['主催者',p.organizer_name],['内容',p.description],['参加条件',p.eligibility||'特に設定されていません'],['キャンセル・中止条件',p.cancellation_policy]];$('eventPreview').innerHTML=`<h3>${esc(p.title||'タイトル未入力')}</h3><dl>${fields.filter(([k])=>k!=='支払方法'||Number(p.fee_amount)!==0).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v||'未入力')}</dd>`).join('')}</dl>`}
+function preview(){const p=payload('published');const fields=[['募集種別・競技',p.event_type+' / '+p.sport_category],['開催日時',p.starts_at.replace('T',' ')],['会場',p.prefecture+' / '+p.location],['参加単位',({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]],['定員',p.capacity?p.capacity+p.capacity_unit:'定員なし'],['最低開催数',p.minimum_participants?p.minimum_participants+p.capacity_unit:'未設定（従来の受付）'],['参加費',previewFee(p)],['支払方法',({free:'-',on_site:'現地払い',bank_transfer:'口座振込',on_site_or_bank_transfer:'現地払い・口座振込（参加者が選択）',online:'オンラインカード決済'})[p.payment_method]],['受付方式',p.acceptance_mode==='approval'?'主催者承認制':'先着順'],['応募締切',p.application_deadline.replace('T',' ')||'開催日時まで'],['主催者',p.organizer_name],['内容',p.description],['参加条件',p.eligibility||'特に設定されていません'],['キャンセル・中止条件',p.cancellation_policy]];$('eventPreview').innerHTML=`<h3>${esc(p.title||'タイトル未入力')}</h3><dl>${fields.filter(([k])=>k!=='支払方法'||Number(p.fee_amount)!==0).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v||'未入力')}</dd>`).join('')}</dl>`}
 async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
 const required=['sport_category','title','starts_at','prefecture','location','description','organizer_name','organizer_contact_email','cancellation_policy'];
 if(initialEvent.minimum_participants)required.push('minimum_participants');
@@ -2214,7 +2243,7 @@ function syncOnlinePrice(){
  $('fee_amount').value=String(gross);
  $('onlinePricePreview').textContent=`公開する参加費：${gross.toLocaleString()}円 / ${unit}、サービス利用料：${fee.toLocaleString()}円、受取見込額：${(gross-fee).toLocaleString()}円`;
 }
-function syncPayment(){syncOnlinePrice();const both=usesDualPricing();$('fee_amount').disabled=both;$('fee_amount').required=!both;const values=(both?['individual_fee_amount','team_fee_amount']:['fee_amount']).map(id=>normalizeFee($(id).value)),free=values.every(raw=>/^\d+$/.test(raw)&&Number(raw)===0);$('payment_method').disabled=(free&&$('payment_method').value!=='online')||!!(typeof initialEvent!=='undefined'&&initialEvent.formation_locked);if(!['on_site','bank_transfer','online'].includes($('payment_method').value))$('payment_method').value='on_site';$('paymentHelp').hidden=free||$('payment_method').value!=='bank_transfer'}
+function syncPayment(){syncOnlinePrice();const both=usesDualPricing();$('fee_amount').disabled=both;$('fee_amount').required=!both;const values=(both?['individual_fee_amount','team_fee_amount']:['fee_amount']).map(id=>normalizeFee($(id).value)),free=values.every(raw=>/^\d+$/.test(raw)&&Number(raw)===0);$('payment_method').disabled=(free&&$('payment_method').value!=='online')||!!(typeof initialEvent!=='undefined'&&initialEvent.formation_locked);if(!['on_site','bank_transfer','on_site_or_bank_transfer','online'].includes($('payment_method').value))$('payment_method').value='on_site';$('paymentHelp').hidden=free||!['bank_transfer','on_site_or_bank_transfer'].includes($('payment_method').value)}
 async function save(status){if(status==='published'){for(const section of form.querySelectorAll('[data-step]'))if(!validate(section))return}else if(!$('title').value.trim())return error('下書きのタイトルを入力してください',$('title'));const buttons=[$('publishEvent'),$('saveDraft')];buttons.forEach(b=>b.disabled=true);statusBox.hidden=true;remember();try{const r=await fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(status))});const data=await r.json();if(r.status===401){location.assign('/signin?return_to='+encodeURIComponent(returnTo));return}if(!r.ok)throw new Error(data.error||'保存に失敗しました');try{sessionStorage.removeItem(draftKey)}catch(_){}location.assign(status==='published'?`/events/${encodeURIComponent(data.event_id)}?published=1`:`/events/new?event_id=${encodeURIComponent(data.event_id)}&saved=1`)}catch(err){error(err.message);buttons.forEach(b=>b.disabled=false)}}
 fill();try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){Object.assign(initialEvent,saved);fill()}}catch(_){}
 if(initialEvent.formation_locked){for(const id of ['starts_at','prefecture','location','description','eligibility','fee_amount','payment_method','cancellation_policy','minimum_participants','participation_type']){$(id).readOnly=true;if($(id).tagName==='SELECT')$(id).disabled=true;}const note=document.createElement('p');note.className='notice';note.textContent='開催決定後の料金・参加条件は変更できません。日時・会場の変更は「開催案内」から行ってください。';const link=document.createElement('a');link.href='/events/'+encodeURIComponent(initialEvent.event_id)+'/organize';link.textContent=' 開催案内へ';note.append(link);form.before(note)}
@@ -2299,7 +2328,7 @@ def render_event_attendance_html(event_id, user):
         due = event_pricing.amount_due(event, application)
         if confirmed and due == 0:
             body += '<p>参加費は無料です。支払いはありません。</p>'
-        elif confirmed and event["payment_method"] == "bank_transfer" and due:
+        elif confirmed and application_payment_method(event, application) == "bank_transfer" and due:
             total = due
             body += (f'<section class="application-recap"><h2>振込案内</h2><p>お支払額：{total:,}円</p><p>振込期限：{format_event_datetime(event["payment_deadline"])}</p>'
                      '<p style="white-space:pre-wrap">' + html.escape(event["bank_transfer_details"]) + '</p>'
@@ -3981,6 +4010,35 @@ def migrate_event_formation(conn):
         raise
 
 
+def migrate_event_payment_choices(conn):
+    additions = {
+        "event_posts": {"allow_on_site_payment": "integer not null default 0 check(allow_on_site_payment in (0,1))"},
+        "event_applications": {"selected_payment_method": "text check(selected_payment_method in ('free','on_site','bank_transfer','online'))"},
+    }
+    missing = [(table, name, definition) for table, fields in additions.items()
+               for name, definition in fields.items()
+               if name not in {row["name"] for row in conn.execute(f"pragma table_info({table})")}]
+    if not missing:
+        return
+    if conn.in_transaction:
+        raise RuntimeError("Payment choices migration must precede startup data changes")
+    path = DB_PATH.with_name(DB_PATH.name + ".pre-payment-choices-" + datetime.now().strftime("%Y%m%d%H%M%S%f") + ".sqlite")
+    backup = sqlite3.connect(path)
+    try:
+        conn.backup(backup)
+    finally:
+        backup.close()
+    log(f"event payment choices migration backup: {path}")
+    conn.execute("begin immediate")
+    try:
+        for table, name, definition in missing:
+            conn.execute(f"alter table {table} add column {name} {definition}")
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+
+
 def migrate_event_operations(conn):
     additions = {
         "event_posts": {"attendance_deadline": "text"},
@@ -4309,6 +4367,7 @@ def init_db():
         contact_research.ensure_tables(conn)
         online_payments.migrate(conn, DB_PATH)
         migrate_event_dual_pricing(conn)
+        migrate_event_payment_choices(conn)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -6765,7 +6824,7 @@ def confirm_event_attendance(conn, event_id, data, user):
     version = event["announcement_version"]
     if not version or event_expected_version(data) != version:
         raise ValueError("最新の開催案内を再読み込みして確認してください")
-    if event["payment_method"] == "bank_transfer" and event_pricing.amount_due(event, application) and event["payment_deadline"] <= event_local_now():
+    if application_payment_method(event, application) == "bank_transfer" and event_pricing.amount_due(event, application) and event["payment_deadline"] <= event_local_now():
         raise ValueError("振込期限を過ぎています。主催者へ連絡してください")
     if event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
         raise ValueError("最終参加確認の期限を過ぎています。主催者へ連絡してください")
@@ -6839,8 +6898,16 @@ def event_payload_from_data(conn, data, user, event_id=""):
     if acceptance_mode not in EVENT_ACCEPTANCE_MODES:
         raise ValueError("受付方式が正しくありません")
     payment_method = event_form_value(data, "payment_method", "支払方法", required=True, max_length=30)
-    if payment_method not in {"free", "on_site", "bank_transfer", "online"}:
+    if payment_method not in {"free", "on_site", "bank_transfer", "on_site_or_bank_transfer", "online"}:
         raise ValueError("支払方法は現地払い・口座振込から選択してください")
+    allow_on_site = payment_method == "on_site_or_bank_transfer"
+    if payment_method == "bank_transfer":
+        flag = data.get("allow_on_site_payment", existing["allow_on_site_payment"] if existing else 0)
+        if flag not in (False, True, 0, 1):
+            raise ValueError("支払方法の選択設定が正しくありません")
+        allow_on_site = bool(flag)
+    if allow_on_site:
+        payment_method = "bank_transfer"
     status = str(data.get("status") or "draft").strip()
     if status not in {"draft", "published"}:
         raise ValueError("保存状態が正しくありません")
@@ -6875,6 +6942,7 @@ def event_payload_from_data(conn, data, user, event_id=""):
         "target_total_amount": (event_fee_value(data, "target_total_amount", "損益分岐点", 1000000000)
                                 if "target_total_amount" in data else (existing["target_total_amount"] if existing else None)),
         "payment_method": payment_method,
+        "allow_on_site_payment": int(allow_on_site),
         "application_deadline": deadline or None,
         "acceptance_mode": acceptance_mode,
         "cancellation_policy": event_form_value(data, "cancellation_policy", "キャンセル・中止条件", required=publishing, max_length=1600),
@@ -6928,6 +6996,7 @@ def event_payload_from_data(conn, data, user, event_id=""):
         payload["fee_amount"] = 0
     if payload["fee_amount"] == 0:
         payload["payment_method"] = "free"
+        payload["allow_on_site_payment"] = 0
     payload["minimum_participants"] = (event_fee_value(data, "minimum_participants", "最低開催人数・チーム数", 100000)
                                        if "minimum_participants" in data else (existing["minimum_participants"] if existing else 0)) or 0
     if "minimum_participants" in data and payload["minimum_participants"] < 1 and not (existing and existing["minimum_participants"] == 0):
@@ -6943,7 +7012,7 @@ def event_public_select(where="", params=()):
           e.title, e.starts_at, e.ends_at, e.prefecture, e.location, e.description,
           e.participation_type, e.capacity, e.capacity_unit, e.eligibility, e.fee_amount,
           e.individual_fee_amount, e.team_fee_amount,
-          e.fee_unit, e.payment_method, e.application_deadline, e.acceptance_mode,
+          e.fee_unit, e.payment_method, e.allow_on_site_payment, e.application_deadline, e.acceptance_mode,
           e.cancellation_policy, e.status, e.published_at, e.created_at, e.updated_at,
           e.minimum_participants, e.announcement_version, e.announcement_details, e.announced_at, e.payment_deadline, e.attendance_deadline,
           c.circle_name as linked_circle_name, cp.profile_slug as linked_circle_profile_slug,
@@ -7065,6 +7134,8 @@ def confirmed_application_notification_body(event, application):
     due = event_pricing.amount_due(event, application)
     if due is not None:
         lines.append(f"参加費合計：{due:,}円")
+    if due:
+        lines.append("支払方法：" + event_payment_text(event, application))
     details = event.get("announcement_details") if announced else event.get("description")
     lines += [
         "", "開催案内・集合場所・持ち物" if announced else "募集時の案内・持ち物",
@@ -7085,7 +7156,7 @@ def confirmed_application_notification_body(event, application):
         next_url = f"{base}/payments/applications/{quote(application['application_id'], safe='')}"
     elif application.get("payment_status", "unpaid") != "unpaid":
         lines.append("申込画面で精算状況をご確認ください。すでに支払済みの場合は再度支払わず、不明点は主催者へお問い合わせください。")
-    elif event.get("payment_method") == "bank_transfer":
+    elif application_payment_method(event, application) == "bank_transfer":
         if announced:
             lines.append("開催案内ページで振込先・期限を確認してください。口座情報はアプリ内でのみ表示します。すでに振込済みの場合は再度振り込まないでください。")
             next_url = event_url + "/attendance"
@@ -7258,15 +7329,15 @@ def save_event_post(conn, data, user):
     if event_id:
         existing = event_owner(conn, event_id, user["user_id"])
         online_payments.guard_mutation(conn, event_id=event_id,
-            financial=any(payload[key] != existing[key] for key in ("fee_amount", "fee_unit", "payment_method", "cancellation_policy", "individual_fee_amount", "team_fee_amount")))
+            financial=any(payload[key] != existing[key] for key in ("fee_amount", "fee_unit", "payment_method", "allow_on_site_payment", "cancellation_policy", "individual_fee_amount", "team_fee_amount")))
         has_payment = conn.execute("select 1 from event_applications where event_id=? and payment_status!='unpaid' limit 1", (event_id,)).fetchone()
-        if has_payment and any(payload[key] != existing[key] for key in ("fee_amount", "fee_unit", "payment_method", "cancellation_policy", "individual_fee_amount", "team_fee_amount")):
+        if has_payment and any(payload[key] != existing[key] for key in ("fee_amount", "fee_unit", "payment_method", "allow_on_site_payment", "cancellation_policy", "individual_fee_amount", "team_fee_amount")):
             raise ValueError("入金・精算の記録があるため料金・支払方法・キャンセル条件は変更できません")
         if existing["status"] == "cancelled":
             raise ValueError("中止した募集は再公開できません。複製して新しい募集を作成してください")
         if existing["announcement_version"] and any(payload[key] != existing[key] for key in (
                 "starts_at", "ends_at", "prefecture", "location", "description", "eligibility", "fee_amount", "fee_unit",
-                "payment_method", "cancellation_policy", "minimum_participants", "individual_fee_amount", "team_fee_amount")):
+                "payment_method", "allow_on_site_payment", "cancellation_policy", "minimum_participants", "individual_fee_amount", "team_fee_amount")):
             raise ValueError("開催決定後の日時・会場変更はマイページの開催案内から行ってください。料金・参加条件・振込方法は変更できません")
         if existing["minimum_participants"] and not payload["minimum_participants"]:
             raise ValueError("最低開催人数・チーム数は1以上にしてください")
@@ -7274,6 +7345,8 @@ def save_event_post(conn, data, user):
             "select 1 from event_applications where event_id=? and status in ('pending','confirmed') limit 1", (event_id,)
         ).fetchone()
         if has_applications:
+            if payload["allow_on_site_payment"] != existing["allow_on_site_payment"] or payload["payment_method"] != existing["payment_method"]:
+                raise ValueError("申込受付後は支払方法を変更できません。別の募集を作成してください")
             if any(payload[key] != existing[key] for key in ('individual_fee_amount', 'team_fee_amount')):
                 raise ValueError('申込受付後は個人・チーム料金を変更できません。別の募集を作成してください')
             if any(payload[key] != existing[key] for key in ("participation_type", "capacity_unit", "acceptance_mode")):
@@ -7317,9 +7390,58 @@ def save_event_post(conn, data, user):
                  (payload["online_pricing_mode"], payload["online_price_input"], event_id))
     conn.execute('update event_posts set individual_fee_amount=?,team_fee_amount=?,individual_online_price_input=?,team_online_price_input=? where event_id=?',
                  (payload['individual_fee_amount'], payload['team_fee_amount'], payload['individual_online_price_input'], payload['team_online_price_input'], event_id))
+    conn.execute("update event_posts set allow_on_site_payment=? where event_id=?", (payload["allow_on_site_payment"], event_id))
     update_event_formation(conn, event_id)
     audit(conn, "event_save", "event_post", event_id, {"status": payload["status"], "organizer_user_id": user["user_id"]})
     return event_id
+
+
+def repair_requested_komazawa_admission():
+    # Operator-authorized, release-scoped repair; never an alternate owner HTTP path.
+    event_id = "event_user_supabase_fe23d660_0d10_49cc_ae6_f42c6bd8fd"
+    action = "komazawa_admission_20261028"
+    expected = {"status": "published", "participation_type": "individual", "fee_amount": 2500,
+                "fee_unit": "1人", "capacity": None, "capacity_unit": "人", "payment_method": "on_site",
+                "individual_fee_amount": None, "team_fee_amount": None,
+                "allow_on_site_payment": 0, "announcement_version": 0}
+    def eligible(conn):
+        event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
+        if not event:
+            return False
+        if any(event[key] != value for key, value in expected.items()):
+            return False
+        return not conn.execute("select 1 from event_applications where event_id=? limit 1", (event_id,)).fetchone()
+    with connect() as conn:
+        if conn.execute("select 1 from audit_logs where action=? and entity_id=?", (action, event_id)).fetchone():
+            return "already_applied"
+        if not eligible(conn):
+            return "not_eligible"
+        path = DB_PATH.with_name(DB_PATH.name + ".pre-komazawa-admission-" + datetime.now().strftime("%Y%m%d%H%M%S%f") + ".sqlite")
+        backup = sqlite3.connect(path)
+        try:
+            conn.backup(backup)
+        finally:
+            backup.close()
+        conn.execute("begin immediate")
+        if not eligible(conn):
+            conn.rollback()
+            return "not_eligible"
+        try:
+            online_payments.guard_mutation(conn, event_id=event_id, financial=True)
+        except online_payments.PaymentError:
+            conn.rollback()
+            log(f"operator event admission correction skipped: protected payment for {event_id}")
+            return "protected_payment"
+        changes = {"participation_type": "both", "individual_fee_amount": 2500, "team_fee_amount": 15000,
+                   "fee_amount": 15000, "payment_method": "bank_transfer", "allow_on_site_payment": 1}
+        conn.execute("""update event_posts set participation_type='both', individual_fee_amount=2500,
+                     team_fee_amount=15000, fee_amount=15000, payment_method='bank_transfer',
+                     allow_on_site_payment=1, updated_at=? where event_id=?""", (now(), event_id))
+        audit(conn, action, "event_post", event_id,
+              {"actor": "operator_release", "reason": "Requested admission/payment correction; preserve owner, capacity and existing content",
+               "before": expected, "after": changes})
+        log(f"operator event admission correction applied: {event_id}; backup: {path}")
+        return "applied"
 
 
 def event_is_open_for_application(event):
@@ -7330,7 +7452,7 @@ def event_is_open_for_application(event):
         raise ValueError("応募締切を過ぎています")
     if event["starts_at"] <= event_local_now():
         raise ValueError("開催日時を過ぎています")
-    if event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
+    if event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now() and len(event_payment_methods(event)) == 1:
         raise ValueError("振込期限を過ぎているため申し込めません。主催者へお問い合わせください")
     if event["announcement_version"] and event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
         raise ValueError("最終参加確認の期限を過ぎているため申し込めません")
@@ -7351,7 +7473,7 @@ def event_availability(event):
         return "開催済み", False
     if event.get("application_deadline") and event["application_deadline"] < current:
         return "応募締切", False
-    if event.get("announcement_version") and event.get("payment_deadline") and event["payment_deadline"] <= current:
+    if event.get("announcement_version") and event.get("payment_deadline") and event["payment_deadline"] <= current and len(event_payment_methods(event)) == 1:
         return "振込期限終了", False
     if event.get("announcement_version") and event.get("attendance_deadline") and event["attendance_deadline"] <= current:
         return "参加確認期限終了", False
@@ -7418,6 +7540,17 @@ def submit_event_application(conn, event_id, data, user):
         raise ValueError("参加予定人数は整数で入力してください") from exc
     if participant_count < 1 or participant_count > 100000:
         raise ValueError("参加予定人数は1から100000の範囲で入力してください")
+    method = event_form_value(data, "payment_method", "支払方法", max_length=30)
+    if event_pricing.amount_due(event, {"participation_type": participation_type, "participant_count": participant_count}) == 0:
+        method = "free"
+    else:
+        methods = event_payment_methods(event)
+        if not method and len(methods) == 1:
+            method = methods[0]
+        if method not in methods:
+            raise ValueError("この募集で利用できる支払方法を選択してください")
+        if method == "bank_transfer" and event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
+            raise ValueError("振込期限を過ぎています。現地払いを選ぶか主催者へお問い合わせください")
     if event["capacity"]:
         if application_capacity_cost(event, participant_count) > int(event["capacity"]):
             raise ValueError("参加予定人数が募集の定員を超えています")
@@ -7436,13 +7569,14 @@ def submit_event_application(conn, event_id, data, user):
         """
         insert into event_applications(application_id, event_id, applicant_user_id, participation_type,
           applicant_name, team_name, representative_name, participant_count, answers_json, applicant_message,
-          status, created_at, updated_at)
-        values(?,?,?,?,?,?,?,?,?,?,?,?,?)
+          status, created_at, updated_at, selected_payment_method)
+        values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         on conflict(event_id, applicant_user_id) do update set
           participation_type=excluded.participation_type, applicant_name=excluded.applicant_name,
           team_name=excluded.team_name, representative_name=excluded.representative_name,
           participant_count=excluded.participant_count, answers_json=excluded.answers_json,
           applicant_message=excluded.applicant_message, status=excluded.status, organizer_note=null,
+          selected_payment_method=excluded.selected_payment_method,
           created_at=excluded.created_at, updated_at=excluded.updated_at,
           attendance_version=0, attendance_confirmed_at=null,
           payment_status='unpaid',payment_note='',payment_updated_at=null,
@@ -7453,7 +7587,7 @@ def submit_event_application(conn, event_id, data, user):
             team_name or None, representative_name or None, participant_count,
             json.dumps(data.get("answers") or {}, ensure_ascii=False),
             event_form_value(data, "applicant_message", "主催者への連絡", max_length=1200) or None,
-            status, now(), now(),
+            status, now(), now(), method,
         ),
     )
     add_event_notification(
@@ -7490,7 +7624,7 @@ def set_event_application_status(conn, event_id, application_id, action, user, o
         raise ValueError("処理内容が正しくありません")
     next_status = "confirmed" if action == "confirm" else "declined"
     if next_status == "confirmed":
-        if event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
+        if application_payment_method(event, application) != "on_site" and event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
             raise ValueError("振込期限を過ぎています。開催案内の期限をご確認ください")
         if event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now():
             raise ValueError("最終参加確認の期限を過ぎています。開催案内の期限をご確認ください")
@@ -7586,7 +7720,7 @@ def event_applications_for_owner(event_id, user):
             select a.application_id, a.applicant_user_id, a.participation_type, a.applicant_name, a.team_name, a.representative_name,
               a.participant_count, a.applicant_message, a.status, a.created_at, a.updated_at,
               a.attendance_version, a.attendance_confirmed_at, a.payment_status, a.payment_note,
-              a.payment_updated_at, a.operation_revision, a.requested_participant_count,
+              a.payment_updated_at, a.operation_revision, a.requested_participant_count, a.selected_payment_method,
               u.display_name as account_name
             from event_applications a join user_accounts u on u.user_id=a.applicant_user_id
             where a.event_id=? order by a.created_at desc
@@ -7644,7 +7778,7 @@ def event_my_page(user):
               e.starts_at, e.location, e.status, e.capacity, e.capacity_unit, e.application_deadline,
               e.minimum_participants, e.announcement_version, e.payment_deadline, e.attendance_deadline, a.attendance_version,
               e.fee_amount, e.fee_unit, e.individual_fee_amount, e.team_fee_amount,
-              e.participation_type as event_participation_type, e.payment_method, a.payment_status, a.requested_participant_count,
+              e.participation_type as event_participation_type, e.payment_method, e.allow_on_site_payment, a.selected_payment_method, a.payment_status, a.requested_participant_count,
               (select coalesce(sum(case when e.participation_type='team' and e.capacity_unit='チーム'
                 then 1 else confirmed.participant_count end),0)
                from event_applications confirmed where confirmed.event_id=e.event_id
@@ -7776,7 +7910,7 @@ def application_payment_label(event, application):
         return '受付未確定・支払対象外'
     if event.get('fee_amount') is None:
         return '料金は主催者へ確認'
-    if event.get('payment_method') == 'on_site':
+    if application_payment_method(event, application) == 'on_site':
         return '現地払い予定'
     if event.get('minimum_participants') and not event.get('announcement_version'):
         return '開催決定待ち・支払案内前'
@@ -7833,6 +7967,8 @@ def change_application_count(conn, event_id, application_id, data, user, decisio
         raise ValueError("最終参加確認の期限を過ぎています。主催者へ連絡してください")
     if count > previous:
         event_is_open_for_application(event)
+        if application_payment_method(event, application) == "bank_transfer" and event["announcement_version"] and event["payment_deadline"] and event["payment_deadline"] <= event_local_now():
+            raise ValueError("振込期限を過ぎています。人数変更は主催者へご相談ください")
     new_cost = application_capacity_cost(event, count)
     if event["capacity"]:
         used = active_confirmed_capacity(conn, event_id)
@@ -8226,6 +8362,7 @@ def main():
         if not is_local_host() and not admin_auth_enabled():
             raise RuntimeError("CIRCLEMATCH_ADMIN_PASSWORD is required when HOST is not local")
         init_db()
+        repair_requested_komazawa_admission()
         if len(sys.argv) > 1 and sys.argv[1] == "--init-only":
             print(json.dumps({"db": str(DB_PATH), **summary()}, ensure_ascii=False, indent=2))
             return

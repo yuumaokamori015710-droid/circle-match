@@ -30,7 +30,7 @@ Published mixed tariffs have both amount columns set. The online input columns r
 
 Existing rows remain null in the new columns. Their original `fee_amount` and `fee_unit` are not reinterpreted or backfilled. Existing shared-price mixed events can retain their old pricing while editing; an explicit checkbox switches to separate rates, subject to the application/payment locks. New events, copies and transitions from single-type to mixed admission require explicit separate rates.
 
-The existing Komazawa listing is not automatically rewritten from its free-text description. Its registered organizer can change its participation setting to both and enter the intended individual/team prices if there are no protected admissions. If admissions or payments prevent a change, use a new event rather than retroactively repricing participants. No ownership checks are bypassed.
+The 2026-10-17 release did not automatically rewrite the existing Komazawa listing from its free-text description. The explicitly requested, guarded operator correction in the 2026-10-28 release is documented in [EVENT_PAYMENT_CHOICES.md](EVENT_PAYMENT_CHOICES.md). Normal organizer ownership checks remain unchanged; protected admissions are never retroactively repriced.
 
 ## Migration and Recovery
 
