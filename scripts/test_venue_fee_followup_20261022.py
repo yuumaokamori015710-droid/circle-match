@@ -142,6 +142,7 @@ class October22VenueReviewTests(unittest.TestCase):
             previous = subprocess.check_output(['git', 'show', base + ':' + relative], cwd=ROOT)
             current = {r['id']: r for r in json.loads((ROOT / relative).read_bytes())}
             corrections = {'tokyo-venue-ec7d0ac023ca': {'checked_at', 'availability_status', 'availability_note', 'sources'},
+                           'tokyo-venue-3df7eec0d53c': {'checked_at', 'availability_status', 'availability_note', 'sources'},
                            'tokyo-venue-a2d6191898f8': {'checked_at', 'booking_note', 'sources'}}
             for before in json.loads(previous):
                 after = current[before['id']]
@@ -149,6 +150,11 @@ class October22VenueReviewTests(unittest.TestCase):
                 for field in set(before) - allowed:
                     self.assertEqual(before[field], after[field], (before['id'], field))
                 if allowed:
+                    if before['id'] == 'tokyo-venue-3df7eec0d53c':
+                        self.assertEqual(after['checked_at'], '2026-10-27')
+                        self.assertEqual(after['availability_status'], 'SUSPENDED')
+                        self.assertEqual(after['sources'][:len(before['sources'])], before['sources'])
+                        continue
                     self.assertEqual(after['checked_at'], '2026-10-23')
                     self.assertEqual(after['sources'][:len(before['sources'])], before['sources'])
                     if before['id'] == 'tokyo-venue-ec7d0ac023ca':

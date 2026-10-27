@@ -15646,7 +15646,7 @@
     "booking_note": "団体利用は事前登録（テニスは個人登録）。亀戸野球場・庭球場は令和7年4月1日から休場中。",
     "booking_url": "https://yoyaku.koto-sports.net/",
     "official_url": "https://www.city.koto.lg.jp/104010/bunkasports/sports/torikumi/6384.html",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-10-27",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -15658,10 +15658,14 @@
       {
         "title": "屋内・屋外スポーツ施設 - 江東区",
         "url": "https://www.city.koto.lg.jp/104010/bunkasports/sports/torikumi/6384.html"
+      },
+      {
+        "title": "公式の休場・再開未定案内",
+        "url": "https://www.city.koto.lg.jp/104010/bunkasports/sports/torikumi/6384.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "亀戸野球場・庭球場は老朽化による解体・撤去工事のため2025年4月1日から休場、再開日は未定。2026年10月7日更新の江東区公式案内で確認。野球場・庭球場とも対象で、通常検索から除外します。",
     "sports": [
       "野球",
       "テニス"

@@ -36,8 +36,10 @@ class October26VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(self.rows), 1206)
         self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 816)
         self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 390)
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED'
+                             and r['checked_at'] > review.CHECKED for r in self.rows.values())
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()) + later, 382)
+                             for r in self.rows.values()) + later + later_closures, 382)
 
     def test_holds_not_fabricated(self):
         for ident in review.HOLDS:
@@ -99,6 +101,11 @@ class October26VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', base + ':' + rel], cwd=ROOT))
             current = json.loads((ROOT / rel).read_bytes())
+            if name == 'tokyo_expansion.json':
+                for before, after in zip(previous, current):
+                    if before['id'] == 'tokyo-venue-3df7eec0d53c':
+                        for key in ['availability_status', 'availability_note', 'checked_at', 'sources']:
+                            after[key] = before[key]
             self.assertEqual(previous, current if name.startswith('tokyo_') else current[:len(previous)])
 
     def test_idempotency_and_preflight_conflicts(self):

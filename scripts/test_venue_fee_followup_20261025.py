@@ -37,8 +37,10 @@ class October25VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(self.rows), 1206)
         self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later_priced, 801)
         self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later_priced, 405)
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED'
+                             and r['checked_at'] > review.CHECKED for r in self.rows.values())
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()) + later_priced, 397)
+                             for r in self.rows.values()) + later_priced + later_closures, 397)
 
     def test_holds_unknown_not_zero_or_restricted_hire(self):
         for ident in review.HOLDS:
@@ -106,6 +108,11 @@ class October25VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', base + ':' + rel], cwd=ROOT))
             current = json.loads((ROOT / rel).read_bytes())
+            if name == 'tokyo_expansion.json':
+                for before, after in zip(previous, current):
+                    if before['id'] == 'tokyo-venue-3df7eec0d53c':
+                        for key in ['availability_status', 'availability_note', 'checked_at', 'sources']:
+                            after[key] = before[key]
             self.assertEqual(previous, current if name.startswith('tokyo_') else current[:len(previous)])
 
     def test_import_idempotent_and_no_partial_writes_on_conflict(self):

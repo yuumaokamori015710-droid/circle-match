@@ -1,6 +1,8 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-10-26](venue-fee-followup-2026-10-26.md). It reviewed 22 existing facilities and added 15 tariff sets and six cancellation/interruption records. The catalog remains 1,206 records: 816 priced, 390 unpriced (382 active). Exact spaces, time units, town-lodging and resident conditions, restricted sports and closures stay explicit. Only officially confirmed free group use is zero; seven reviewed tariff holds remain unknown. Existing IDs, booking URLs, original catalog fields and previous reviews are retained. [Previous review: 2026-10-25](venue-fee-followup-2026-10-25.md).
+Latest official-price review: [2026-10-27](venue-fee-followup-2026-10-27.md). It checked 26 existing records, added 14 tariff sets and 15 cancellation/weather records, and aligned Kameido's structured status with its official closure. The unchanged 1,206-record inventory now has 830 priced and 376 unpriced records (367 active). Junior-only exemptions, personal versus group hire, lighting and separate time units remain explicit. IDs, booking links, prior reviews and unrelated contact work are preserved. [Previous review: 2026-10-26](venue-fee-followup-2026-10-26.md).
+
+The [2026-10-26 review](venue-fee-followup-2026-10-26.md) reviewed 22 existing facilities and added 15 tariff sets and six cancellation/interruption records. At that release the catalog had 1,206 records: 816 priced, 390 unpriced (382 active). Exact spaces, time units, town-lodging and resident conditions, restricted sports and closures stay explicit. Only officially confirmed free group use is zero; seven reviewed tariff holds remain unknown. Existing IDs, booking URLs, original catalog fields and previous reviews are retained. [Previous review: 2026-10-25](venue-fee-followup-2026-10-25.md).
 
 `/venues` is a native public Circle Match page alongside the events and circle
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity

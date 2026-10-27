@@ -273,6 +273,10 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertEqual(row['checked_at'], '2026-10-23')
                 self.assertEqual(row['availability_status'], 'UNKNOWN')
                 self.assertIn('第一体育室', row['booking_note'])
+            elif row['id'] == 'tokyo-venue-3df7eec0d53c':
+                self.assertEqual(row['checked_at'], '2026-10-27')
+                self.assertEqual(row['availability_status'], 'SUSPENDED')
+                self.assertIn('再開日は未定', row['availability_note'])
             else:
                 self.assertEqual(row['checked_at'], '2026-10-12')
                 self.assertEqual(row['availability_status'], 'UNKNOWN')

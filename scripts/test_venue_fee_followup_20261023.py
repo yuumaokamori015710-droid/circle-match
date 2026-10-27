@@ -39,8 +39,10 @@ class October23VenueReviewTests(unittest.TestCase):
                            for r in self.rows.values())
         self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later_priced, 767)
         self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later_priced, 439)
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED'
+                             and r['checked_at'] > review.CHECKED for r in self.rows.values())
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()) + later_priced, 431)
+                             for r in self.rows.values()) + later_priced + later_closures, 431)
 
     def test_higashi_ground_rental_not_lighting_or_closed_west(self):
         self.assertEqual(self.ranges(review.HIGASHI[0]), {'グラウンド全面・1時間': (1200, 1200)})
@@ -133,6 +135,7 @@ class October23VenueReviewTests(unittest.TestCase):
     def test_all_original_fields_and_prior_reviews_preserved_except_documented_metadata(self):
         base = '9bea74907fed9d66b553b76ce803cfbfe312ef8f'
         permitted = {review.HIGASHI[3]: {'availability_status', 'availability_note', 'checked_at', 'sources'},
+                     'tokyo-venue-3df7eec0d53c': {'availability_status', 'availability_note', 'checked_at', 'sources'},
                      review.KOKUBUNJI[0]: {'booking_note', 'checked_at', 'sources'}}
         for name in ['tokyo_tennis.json', 'tokyo_sports.json', 'tokyo_expansion.json',
                      'fee_plans.json', 'cancellation_policies.json']:
@@ -147,7 +150,7 @@ class October23VenueReviewTests(unittest.TestCase):
                     self.assertEqual(before[key], after[key], (before['id'], key))
                 if allowed:
                     self.assertEqual(after['sources'][:len(before['sources'])], before['sources'])
-                    self.assertEqual(after['checked_at'], review.CHECKED)
+                    self.assertEqual(after['checked_at'], '2026-10-27' if before['id'] == 'tokyo-venue-3df7eec0d53c' else review.CHECKED)
                     if before['id'] == review.KOKUBUNJI[0]:
                         self.assertTrue(after['booking_note'].startswith(before['booking_note']))
 
