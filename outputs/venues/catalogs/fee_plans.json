@@ -58154,5 +58154,740 @@
         "source_url": "https://www.di-ksp.jp/facility/shiomi"
       }
     ]
+  },
+  {
+    "id": "tokyo-venue-fb993a9bd6f1",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "会議室 / 一般",
+        "amount": 200,
+        "unit": "会議室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "会議室 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "会議室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "多目的室 / 一般",
+        "amount": 100,
+        "unit": "多目的室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "多目的室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "多目的室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "大広間 / 一般",
+        "amount": 300,
+        "unit": "大広間・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "大広間 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "大広間・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "和室 / 一般",
+        "amount": 200,
+        "unit": "和室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "和室 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "和室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "音楽室 / 一般",
+        "amount": 300,
+        "unit": "音楽室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "音楽室 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "音楽室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 400,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 200,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/kitamachi.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-f9757579e50e",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "大広間 / 一般",
+        "amount": 400,
+        "unit": "大広間・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "大広間 / 地域集会施設登録団体",
+        "amount": 200,
+        "unit": "大広間・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "和室 / 一般",
+        "amount": 100,
+        "unit": "和室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "和室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "和室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "会議室（1階） / 一般",
+        "amount": 200,
+        "unit": "会議室（1階）・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "会議室（1階） / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "会議室（1階）・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "会議室（2階） / 一般",
+        "amount": 200,
+        "unit": "会議室（2階）・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "会議室（2階） / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "会議室（2階）・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 400,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 200,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "多目的室 / 一般",
+        "amount": 300,
+        "unit": "多目的室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      },
+      {
+        "label": "多目的室 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "多目的室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hayamiya.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-88a2836410aa",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "大広間 / 一般",
+        "amount": 300,
+        "unit": "大広間・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "大広間 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "大広間・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "和室 / 一般",
+        "amount": 100,
+        "unit": "和室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "和室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "和室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "会議室 / 一般",
+        "amount": 200,
+        "unit": "会議室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "会議室 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "会議室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "音楽室 / 一般",
+        "amount": 100,
+        "unit": "音楽室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "音楽室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "音楽室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "多目的室 / 一般",
+        "amount": 100,
+        "unit": "多目的室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "多目的室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "多目的室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 300,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/sakuradai.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-18ca308ccdfb",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "大広間 / 一般",
+        "amount": 400,
+        "unit": "大広間・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "大広間 / 地域集会施設登録団体",
+        "amount": 200,
+        "unit": "大広間・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "和室 / 一般",
+        "amount": 100,
+        "unit": "和室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "和室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "和室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 600,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 300,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "会議室 / 一般",
+        "amount": 100,
+        "unit": "会議室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "会議室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "会議室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "音楽室 / 一般",
+        "amount": 300,
+        "unit": "音楽室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "音楽室 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "音楽室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "多目的室 / 一般",
+        "amount": 200,
+        "unit": "多目的室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      },
+      {
+        "label": "多目的室 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "多目的室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/hikawadai.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-e50943c53e95",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "大広間 / 一般",
+        "amount": 300,
+        "unit": "大広間・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "大広間 / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "大広間・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室2 / 一般",
+        "amount": 100,
+        "unit": "会議室2・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室2 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "会議室2・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室1 / 一般",
+        "amount": 200,
+        "unit": "会議室1・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室1 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "会議室1・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室3 / 一般",
+        "amount": 100,
+        "unit": "会議室3・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "会議室3 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "会議室3・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "おやこ広場 / 一般",
+        "amount": 200,
+        "unit": "おやこ広場・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "おやこ広場 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "おやこ広場・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 300,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "図書室 / 一般",
+        "amount": 100,
+        "unit": "図書室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      },
+      {
+        "label": "図書室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "図書室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/toyotama.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-4d2338f59594",
+    "checked_at": "2026-10-28",
+    "fee_note": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+    "fee_options": [
+      {
+        "label": "多目的室 / 一般",
+        "amount": 200,
+        "unit": "多目的室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "多目的室 / 地域集会施設登録団体",
+        "amount": 100,
+        "unit": "多目的室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "レクルーム / 一般",
+        "amount": 300,
+        "unit": "レクルーム・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "レクルーム / 地域集会施設登録団体",
+        "amount": 150,
+        "unit": "レクルーム・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "集会室 / 一般",
+        "amount": 100,
+        "unit": "集会室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "集会室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "集会室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "図書・会議室 / 一般",
+        "amount": 100,
+        "unit": "図書・会議室・1時間（一般）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      },
+      {
+        "label": "図書・会議室 / 地域集会施設登録団体",
+        "amount": 50,
+        "unit": "図書・会議室・1時間（地域集会施設登録団体）",
+        "conditions": "区公式の各室1時間料金。一般の施設利用登録と、5名以上・半数以上が区内在住在勤在学等を要件とする地域集会施設団体登録を区別。後者は通常料金の半額。適用条件ごとに単位を分離し、75歳以上団体等の個別免除は料金範囲に含めません。2026年7月以降の新システムで再登録が必要。営利利用・不特定多数募集不可。児童・敬老・子育て開放中は貸切不可、室別用途・定員・防音制限に従います。無料の個人開放や学童・ロビーを貸切の無料枠とは扱いません。減額根拠：https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/1119.html",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/community/chikukuminkan/takamatsu.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-caef0b487244",
+    "checked_at": "2026-10-28",
+    "fee_note": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 午前9～12時",
+        "amount": 5400,
+        "unit": "多目的ホール・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "多目的ホール / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 7200,
+        "unit": "多目的ホール・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室1 / 午前9～12時",
+        "amount": 1800,
+        "unit": "集会室1・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室1 / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 2400,
+        "unit": "集会室1・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室2 / 午前9～12時",
+        "amount": 1800,
+        "unit": "集会室2・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室2 / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 2400,
+        "unit": "集会室2・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室1・2併用 / 午前9～12時",
+        "amount": 3300,
+        "unit": "集会室1・2併用・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "集会室1・2併用 / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 4400,
+        "unit": "集会室1・2併用・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "会議室1 / 午前9～12時",
+        "amount": 2100,
+        "unit": "会議室1・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "会議室1 / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 2800,
+        "unit": "会議室1・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "会議室2 / 午前9～12時",
+        "amount": 1800,
+        "unit": "会議室2・3時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      },
+      {
+        "label": "会議室2 / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 2400,
+        "unit": "会議室2・4時間",
+        "conditions": "光が丘区民ホールの明示した6室のみの通常料金。3時間と4時間、単室と併用を区別。会議室1は2026年8月1日利用再開。事前利用登録と用途審査が必要。飲食目的不可、会議室2はダンス不可。保育専用室、音楽室、美術工芸室、和室、心身障害者福祉集会所と付帯設備は今回の料金範囲に含みません。区公式ページの予約日程と新システムの現行案内を併せて確認してください。",
+        "source_url": "https://www.city.nerima.tokyo.jp/shisetsu/bunka/kuminhall/hikarigaokakuminnhor.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-b87866a9fdd9",
+    "checked_at": "2026-10-28",
+    "fee_note": "指定管理者の2026年8月7日発行案内10頁を確認。多目的ホールは午前3時間、午後・夜間4時間、リハーサル室は新システムで1時間単位。旧3区分のリハーサル料金へ転用しません。はつらつセンター目的外利用室・設備は範囲外。営利利用不可、不特定多数を集める利用不可、用途ごとの制限あり。多目的ホールは2週間前までの事前打合せが必要で2週間を切ると予約・延長不可。",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 午前9～12時",
+        "amount": 5400,
+        "unit": "多目的ホール・3時間",
+        "conditions": "指定管理者の2026年8月7日発行案内10頁を確認。多目的ホールは午前3時間、午後・夜間4時間、リハーサル室は新システムで1時間単位。旧3区分のリハーサル料金へ転用しません。はつらつセンター目的外利用室・設備は範囲外。営利利用不可、不特定多数を集める利用不可、用途ごとの制限あり。多目的ホールは2週間前までの事前打合せが必要で2週間を切ると予約・延長不可。",
+        "source_url": "https://www.nerima-swf.jp/datas/seki_hol/pdf/020260815111033_SJE3r.pdf"
+      },
+      {
+        "label": "多目的ホール / 午後13～17時・夜間17時30分～21時30分",
+        "amount": 7200,
+        "unit": "多目的ホール・4時間",
+        "conditions": "指定管理者の2026年8月7日発行案内10頁を確認。多目的ホールは午前3時間、午後・夜間4時間、リハーサル室は新システムで1時間単位。旧3区分のリハーサル料金へ転用しません。はつらつセンター目的外利用室・設備は範囲外。営利利用不可、不特定多数を集める利用不可、用途ごとの制限あり。多目的ホールは2週間前までの事前打合せが必要で2週間を切ると予約・延長不可。",
+        "source_url": "https://www.nerima-swf.jp/datas/seki_hol/pdf/020260815111033_SJE3r.pdf"
+      },
+      {
+        "label": "リハーサル室 / 時間貸し",
+        "amount": 400,
+        "unit": "リハーサル室・1時間",
+        "conditions": "指定管理者の2026年8月7日発行案内10頁を確認。多目的ホールは午前3時間、午後・夜間4時間、リハーサル室は新システムで1時間単位。旧3区分のリハーサル料金へ転用しません。はつらつセンター目的外利用室・設備は範囲外。営利利用不可、不特定多数を集める利用不可、用途ごとの制限あり。多目的ホールは2週間前までの事前打合せが必要で2週間を切ると予約・延長不可。",
+        "source_url": "https://www.nerima-swf.jp/datas/seki_hol/pdf/020260815111033_SJE3r.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-sports-031",
+    "checked_at": "2026-10-28",
+    "fee_note": "新河岸陸上競技場の団体貸切のみ、1時間3,600円。団体登録必要。個人利用30～180円は団体占有不可なので別です。既存レコード名にある多目的運動場や、荒川戸田橋のフィールドの料金を含みません。器具・駐車場別。季節別開場時間あり。",
+    "fee_options": [
+      {
+        "label": "団体貸切",
+        "amount": 3600,
+        "unit": "新河岸陸上競技場・1時間",
+        "conditions": "新河岸陸上競技場の団体貸切のみ、1時間3,600円。団体登録必要。個人利用30～180円は団体占有不可なので別です。既存レコード名にある多目的運動場や、荒川戸田橋のフィールドの料金を含みません。器具・駐車場別。季節別開場時間あり。",
+        "source_url": "https://www.shisetsu-tds.jp/tokyo-itabashi-shingashi-rikujou/fee/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-c698a2f4c1f9",
+    "checked_at": "2026-10-28",
+    "fee_note": "武蔵野軟式野球場1面2時間、市内2,000円・市外団体倍額4,000円。参加料等を徴収しない通常貸切の範囲。参加料徴収時は別途3倍額の規定があり、市外割増との併用額は未確認のため採用しません。夏季最終枠も2時間。事前利用者登録・予約が必要。高反発複合バット不可。個人利用・他施設の料金は含みません。",
+    "fee_options": [
+      {
+        "label": "市内・参加料等の徴収なし",
+        "amount": 2000,
+        "unit": "軟式野球場1面・2時間（市内・参加料なし）",
+        "conditions": "武蔵野軟式野球場1面2時間、市内2,000円・市外団体倍額4,000円。参加料等を徴収しない通常貸切の範囲。参加料徴収時は別途3倍額の規定があり、市外割増との併用額は未確認のため採用しません。夏季最終枠も2時間。事前利用者登録・予約が必要。高反発複合バット不可。個人利用・他施設の料金は含みません。",
+        "source_url": "https://www.musashino.or.jp/_res/projects/default_project/_page_/001/001/568/1001568-02.pdf"
+      },
+      {
+        "label": "市外・参加料等の徴収なし",
+        "amount": 4000,
+        "unit": "軟式野球場1面・2時間（市外・参加料なし）",
+        "conditions": "武蔵野軟式野球場1面2時間、市内2,000円・市外団体倍額4,000円。参加料等を徴収しない通常貸切の範囲。参加料徴収時は別途3倍額の規定があり、市外割増との併用額は未確認のため採用しません。夏季最終枠も2時間。事前利用者登録・予約が必要。高反発複合バット不可。個人利用・他施設の料金は含みません。",
+        "source_url": "https://www.musashino.or.jp/_res/projects/default_project/_page_/001/001/568/1001568-02.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-294da8909003",
+    "checked_at": "2026-10-28",
+    "fee_note": "市民西町野球場1面、9～11・11～13・13～15・15～17時の各2時間枠3,000円。市民西町少年野球場・都立公園一般野球場とは別施設。事前団体登録が必要。当日現地でカード提示・支払い、駐車場有料。1・2月等は休場。市外別単価は当該案内に明記がなく推測しません。",
+    "fee_options": [
+      {
+        "label": "通常貸切",
+        "amount": 3000,
+        "unit": "野球場1面・2時間",
+        "conditions": "市民西町野球場1面、9～11・11～13・13～15・15～17時の各2時間枠3,000円。市民西町少年野球場・都立公園一般野球場とは別施設。事前団体登録が必要。当日現地でカード提示・支払い、駐車場有料。1・2月等は休場。市外別単価は当該案内に明記がなく推測しません。",
+        "source_url": "https://www.city.chofu.lg.jp/040070/p026093.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-6832b2db0714",
+    "checked_at": "2026-10-28",
+    "fee_note": "市民野球場の団体貸切。通常2時間と18～21時の3時間を区別、市外は各倍額。照明は別途30分2,000円。事前団体登録必要。11・3月は16時以降使用不可、1・2月等休場。個人用シルバー割引等を団体料金に混ぜません。",
+    "fee_options": [
+      {
+        "label": "市内・通常枠",
+        "amount": 1200,
+        "unit": "野球場1面・2時間（市内）",
+        "conditions": "市民野球場の団体貸切。通常2時間と18～21時の3時間を区別、市外は各倍額。照明は別途30分2,000円。事前団体登録必要。11・3月は16時以降使用不可、1・2月等休場。個人用シルバー割引等を団体料金に混ぜません。",
+        "source_url": "https://www.city.chofu.lg.jp/040070/p026082.html"
+      },
+      {
+        "label": "市外・通常枠",
+        "amount": 2400,
+        "unit": "野球場1面・2時間（市外）",
+        "conditions": "市民野球場の団体貸切。通常2時間と18～21時の3時間を区別、市外は各倍額。照明は別途30分2,000円。事前団体登録必要。11・3月は16時以降使用不可、1・2月等休場。個人用シルバー割引等を団体料金に混ぜません。",
+        "source_url": "https://www.city.chofu.lg.jp/040070/p026082.html"
+      },
+      {
+        "label": "市内・18～21時",
+        "amount": 1800,
+        "unit": "野球場1面・3時間（市内・照明別）",
+        "conditions": "市民野球場の団体貸切。通常2時間と18～21時の3時間を区別、市外は各倍額。照明は別途30分2,000円。事前団体登録必要。11・3月は16時以降使用不可、1・2月等休場。個人用シルバー割引等を団体料金に混ぜません。",
+        "source_url": "https://www.city.chofu.lg.jp/040070/p026082.html"
+      },
+      {
+        "label": "市外・18～21時",
+        "amount": 3600,
+        "unit": "野球場1面・3時間（市外・照明別）",
+        "conditions": "市民野球場の団体貸切。通常2時間と18～21時の3時間を区別、市外は各倍額。照明は別途30分2,000円。事前団体登録必要。11・3月は16時以降使用不可、1・2月等休場。個人用シルバー割引等を団体料金に混ぜません。",
+        "source_url": "https://www.city.chofu.lg.jp/040070/p026082.html"
+      }
+    ]
   }
 ]

@@ -33,10 +33,11 @@ class October27VenueReviewTests(unittest.TestCase):
         for entry in review.reviewed_policies():
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 830)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 376)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 830)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 376)
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()), 367)
+                             for r in self.rows.values()) + later, 367)
 
     def test_holds_not_free_or_legacy_tariffs(self):
         for ident in review.HOLDS:
