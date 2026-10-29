@@ -576,6 +576,34 @@ class PublicContactTests(unittest.TestCase):
 
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_october_29_unverified_listings_keep_identity_without_invented_contacts(self):
+        cases = [('50barセルフダイビング', 99029), ('Baddys', 215976), ('Bar Ma Cachette', 220148),
+                 ('CHARAA', 205855), ('CLASS', 212059), ('CLIONE', 88734), ('CUBE.inc', 46265),
+                 ('Chapaにーず', 175730), ('Crack UP', 150176), ('DAWN', 158435), ('DECOBOCO', 125965),
+                 ('DRIVE', 128452), ('EVA 部活経験者', 80909), ('EVOLS', 195368), ('EVOLVE', 227283),
+                 ('Erangel', 103813), ('EzBad', 210538), ('FATZ', 179321), ('FC.NEW TRIBE', 85111),
+                 ('FCT', 223359), ('FCバルボア', 38515), ('FIREFLOWERS', 87448), ("FOC'S TOKYO", 229156),
+                 ('FUNバドミントン', 195993), ('G.O.A.T', 114106), ('GMバレー', 219838)]
+        seed = {r['circle_id']: r for r in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))}
+        self.assertEqual(len(cases), 26)
+        for query, number in cases:
+            source = f'https://www.net-menber.com/look/data/{number}.html'
+            with self.subTest(source=source):
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + quote(query))[1])
+                row = next(r for r in rows if r['source_url'] == source)
+                self.assertNotIn('claimant_email', row)
+                self.assertNotIn('user_id', row)
+                later = seed.get(row['circle_id'])
+                if later and later['checked_at'] > '2026-10-29':
+                    self.assertEqual(row['public_contact_email'], later['email'])
+                else:
+                    self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+        root = contacts.SEED_PATH.parents[1]
+        previous = json.loads(subprocess.check_output(
+            ['git', 'show', '82d7749b44c0b827e70250f9d2712f527276b54c:outputs/circle_public_contacts.json'], cwd=root))
+        self.assertEqual(len(previous), 482)
+        self.assertEqual(list(seed.values())[:482], previous)
+
     def test_every_reviewed_contact_reaches_the_real_seeded_directory(self):
         expected = {r['circle_id']:r for r in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))}
         found = {}
