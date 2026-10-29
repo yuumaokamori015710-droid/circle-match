@@ -43,6 +43,9 @@ class October26VenueReviewTests(unittest.TestCase):
 
     def test_holds_not_fabricated(self):
         for ident in review.HOLDS:
+            if self.rows[ident].get('fee_checked_at', '') > review.CHECKED:
+                self.assertTrue(has_price(self.rows[ident]))
+                continue
             self.assertFalse(has_price(self.rows[ident]))
             self.assertEqual(self.rows[ident]['fee_ranges'], [])
 

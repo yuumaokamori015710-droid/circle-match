@@ -33,12 +33,16 @@ class October28VenueReviewTests(unittest.TestCase):
         for entry in review.reviewed_policies():
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 842)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 364)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 355)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 842)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 364)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later, 355)
 
     def test_holds_never_zero_or_unbookable_old_tariffs(self):
         for ident in review.HOLDS:
+            if self.rows[ident].get('fee_checked_at', '') > review.CHECKED:
+                self.assertTrue(has_price(self.rows[ident]))
+                continue
             self.assertFalse(has_price(self.rows[ident]))
             self.assertEqual(self.rows[ident]['fee_ranges'], [])
         self.assertIn('貸切受付停止', self.rows['tokyo-gym-aa77f48e78d0']['cancellation']['summary'])

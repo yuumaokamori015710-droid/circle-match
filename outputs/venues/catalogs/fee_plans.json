@@ -58889,5 +58889,1300 @@
         "source_url": "https://www.city.chofu.lg.jp/040070/p026082.html"
       }
     ]
+  },
+  {
+    "id": "tokyo-venue-23fcab1795a5",
+    "checked_at": "2026-10-29",
+    "fee_note": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 2200,
+        "unit": "101集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2700,
+        "unit": "101集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3100,
+        "unit": "101集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4100,
+        "unit": "101集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 8000,
+        "unit": "101集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 8600,
+        "unit": "101集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "101集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 4050,
+        "unit": "101集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4650,
+        "unit": "101集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6150,
+        "unit": "101集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 12000,
+        "unit": "101集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "101集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 12900,
+        "unit": "101集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "101集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-a86a7eeb46ef",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 4000,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 11900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 12800,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 4950,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 6000,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 6900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 9150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 17850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 19200,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-3d417eb9ddb1",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 6600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 8100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 9200,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 12200,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 23900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 25700,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 9900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 12150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 13800,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 18300,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 35850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 38550,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-5ec0f9351274",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 4000,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 11900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 12800,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 4950,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 6000,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 6900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 9150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 17850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 19200,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-cbb9e4c8e623",
+    "checked_at": "2026-10-29",
+    "fee_note": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 1800,
+        "unit": "201集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2400,
+        "unit": "201集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 2500,
+        "unit": "201集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 3300,
+        "unit": "201集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 6700,
+        "unit": "201集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 7500,
+        "unit": "201集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 2700,
+        "unit": "201集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 3600,
+        "unit": "201集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3750,
+        "unit": "201集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4950,
+        "unit": "201集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 10050,
+        "unit": "201集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "201集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 11250,
+        "unit": "201集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "201集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-cf98941c1c06",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 4000,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 11900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 12800,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 4950,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 6000,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 6900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 9150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 17850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 19200,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-170c5d6244ec",
+    "checked_at": "2026-10-29",
+    "fee_note": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 1800,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2400,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 2500,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 3300,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 6700,
+        "unit": "第1集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 7500,
+        "unit": "第1集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 2700,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 3600,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3750,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4950,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 10050,
+        "unit": "第1集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 11250,
+        "unit": "第1集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-4d06f7493e0d",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 4000,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 11900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 12800,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 4950,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 6000,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 6900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 9150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 17850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 19200,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-64365e822422",
+    "checked_at": "2026-10-29",
+    "fee_note": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 2200,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2700,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3100,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4100,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 8000,
+        "unit": "第1集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 8600,
+        "unit": "第1集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 4050,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4650,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6150,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 12000,
+        "unit": "第1集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 12900,
+        "unit": "第1集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-63761c552a29",
+    "checked_at": "2026-10-29",
+    "fee_note": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 3300,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 4000,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 4600,
+        "unit": "多目的ホール・3時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 6100,
+        "unit": "多目的ホール・4時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 11900,
+        "unit": "多目的ホール・12時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 12800,
+        "unit": "多目的ホール・13時間（区内・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 4950,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 6000,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 6900,
+        "unit": "多目的ホール・3時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 9150,
+        "unit": "多目的ホール・4時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 17850,
+        "unit": "多目的ホール・12時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "多目的ホール / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 19200,
+        "unit": "多目的ホール・13時間（区外・入場料徴収なし）",
+        "conditions": "多目的ホールのみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-6c212c96a582",
+    "checked_at": "2026-10-29",
+    "fee_note": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 1800,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2400,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 2500,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 3300,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 6700,
+        "unit": "第1集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 7500,
+        "unit": "第1集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 2700,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 3600,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3750,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4950,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 10050,
+        "unit": "第1集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 11250,
+        "unit": "第1集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-a6105bfc30dc",
+    "checked_at": "2026-10-29",
+    "fee_note": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+    "fee_options": [
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午前9～12時",
+        "amount": 1800,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 午後13～17時",
+        "amount": 2400,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間1・18～21時",
+        "amount": 2500,
+        "unit": "第1集会室・3時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 夜間2・18～22時",
+        "amount": 3300,
+        "unit": "第1集会室・4時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日1・9～21時",
+        "amount": 6700,
+        "unit": "第1集会室・12時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区内・入場料徴収なし / 全日2・9～22時",
+        "amount": 7500,
+        "unit": "第1集会室・13時間（区内・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kunai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午前9～12時",
+        "amount": 2700,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 午後13～17時",
+        "amount": 3600,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間1・18～21時",
+        "amount": 3750,
+        "unit": "第1集会室・3時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 夜間2・18～22時",
+        "amount": 4950,
+        "unit": "第1集会室・4時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日1・9～21時",
+        "amount": 10050,
+        "unit": "第1集会室・12時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      },
+      {
+        "label": "第1集会室 / 区外・入場料徴収なし / 全日2・9～22時",
+        "amount": 11250,
+        "unit": "第1集会室・13時間（区外・入場料徴収なし）",
+        "conditions": "第1集会室のみの貸切料金。施設全室の最低・最高料金ではありません。入場料等の徴収なしに限定し、徴収あり・付帯設備料金は範囲外。区内は個人が在住在勤在学、団体は代表者が該当かつ構成員5割以上が該当する2人以上、その他は区外。事前窓口登録必要、原則登録構成員以外の使用不可。午前・夜間1の3時間、午後・夜間2の4時間、全日12・13時間を別単位で表示。営利、飲食主体、配信目的、不特定多数募集等の制限あり。2026年1月利用案内と区公式から現行リンクされた区内・区外料金表を照合。利用条件：https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kuminkanriyoannai202601.pdf",
+        "source_url": "https://www.city.taito.lg.jp/kusei/shisetsu/hall/kuminkan/kuminkanriyouannai1.files/kugai0712.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-94d304f25f14",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2200,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 3200,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 4500,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-324fe306c335",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2300,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 3300,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 4100,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-8fcfaf7a6e48",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2500,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 3400,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 5100,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-a0077c4ae3c9",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2100,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 2800,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 4200,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-95936f605ea9",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2500,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 3400,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 5100,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-7229daa1f48e",
+    "checked_at": "2026-10-29",
+    "fee_note": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+    "fee_options": [
+      {
+        "label": "洋室A / 午前9～12時",
+        "amount": 2400,
+        "unit": "洋室A・3時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 午後13～17時",
+        "amount": 3300,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      },
+      {
+        "label": "洋室A / 夜間18～22時",
+        "amount": 4900,
+        "unit": "洋室A・4時間（一般団体）",
+        "conditions": "洋室A単室の通常料金のみ。全室最安値や併用額ではありません。一般団体は構成員半数以上が区内在住在勤在学、利用者登録・名簿審査が必要。名簿外の方は利用不可。NPO・企業等の別要件、個別減免はこの料金範囲の対象外。営利利用不可、準備撤収込み。午前3時間と午後・夜間4時間を区別し、時間単価へ換算しません。条件根拠：https://www.city.chiyoda.lg.jp/shisetsu/kuyakusho/riyoannai.html",
+        "source_url": "https://www.city.chiyoda.lg.jp/documents/6859/ryokinichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-gym-d56f81f38406",
+    "checked_at": "2026-10-29",
+    "fee_note": "体育室の団体利用のみ。平日と土日祝、各4時間枠を区別。トレーニング室の個人500円や他室の料金は含みません。半数以上が障害者の団体によるスポーツ等の使用は当面料金免除、該当確認・事前団体登録が必要。個別減免は通常料金範囲へ混ぜず条件として記録。承認通知の到着で予約確定、抽選結果確認が必要。現地券売機で支払い、クレジットカード不可。利用条件：https://tokyo-ptc.jp/guide/",
+    "fee_options": [
+      {
+        "label": "平日・午前9～13時／午後13～17時",
+        "amount": 7000,
+        "unit": "体育室・4時間（平日・通常団体）",
+        "conditions": "体育室の団体利用のみ。平日と土日祝、各4時間枠を区別。トレーニング室の個人500円や他室の料金は含みません。半数以上が障害者の団体によるスポーツ等の使用は当面料金免除、該当確認・事前団体登録が必要。個別減免は通常料金範囲へ混ぜず条件として記録。承認通知の到着で予約確定、抽選結果確認が必要。現地券売機で支払い、クレジットカード不可。利用条件：https://tokyo-ptc.jp/guide/",
+        "source_url": "https://tokyo-ptc.jp/wp-content/themes/tokyo-ptc/files/%E6%96%99%E9%87%91%E8%A1%A8.pdf"
+      },
+      {
+        "label": "平日・夜間17～21時",
+        "amount": 8800,
+        "unit": "体育室・4時間（平日・通常団体）",
+        "conditions": "体育室の団体利用のみ。平日と土日祝、各4時間枠を区別。トレーニング室の個人500円や他室の料金は含みません。半数以上が障害者の団体によるスポーツ等の使用は当面料金免除、該当確認・事前団体登録が必要。個別減免は通常料金範囲へ混ぜず条件として記録。承認通知の到着で予約確定、抽選結果確認が必要。現地券売機で支払い、クレジットカード不可。利用条件：https://tokyo-ptc.jp/guide/",
+        "source_url": "https://tokyo-ptc.jp/wp-content/themes/tokyo-ptc/files/%E6%96%99%E9%87%91%E8%A1%A8.pdf"
+      },
+      {
+        "label": "土日祝・午前9～13時／午後13～17時",
+        "amount": 8800,
+        "unit": "体育室・4時間（土日祝・通常団体）",
+        "conditions": "体育室の団体利用のみ。平日と土日祝、各4時間枠を区別。トレーニング室の個人500円や他室の料金は含みません。半数以上が障害者の団体によるスポーツ等の使用は当面料金免除、該当確認・事前団体登録が必要。個別減免は通常料金範囲へ混ぜず条件として記録。承認通知の到着で予約確定、抽選結果確認が必要。現地券売機で支払い、クレジットカード不可。利用条件：https://tokyo-ptc.jp/guide/",
+        "source_url": "https://tokyo-ptc.jp/wp-content/themes/tokyo-ptc/files/%E6%96%99%E9%87%91%E8%A1%A8.pdf"
+      },
+      {
+        "label": "土日祝・夜間17～21時",
+        "amount": 11000,
+        "unit": "体育室・4時間（土日祝・通常団体）",
+        "conditions": "体育室の団体利用のみ。平日と土日祝、各4時間枠を区別。トレーニング室の個人500円や他室の料金は含みません。半数以上が障害者の団体によるスポーツ等の使用は当面料金免除、該当確認・事前団体登録が必要。個別減免は通常料金範囲へ混ぜず条件として記録。承認通知の到着で予約確定、抽選結果確認が必要。現地券売機で支払い、クレジットカード不可。利用条件：https://tokyo-ptc.jp/guide/",
+        "source_url": "https://tokyo-ptc.jp/wp-content/themes/tokyo-ptc/files/%E6%96%99%E9%87%91%E8%A1%A8.pdf"
+      }
+    ]
   }
 ]
