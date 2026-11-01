@@ -10,7 +10,7 @@
 
 ## 事前案内と適用範囲
 
-- CIRCLEMATCH_HOST_FEES_ENABLED は既定false。本番環境変数は今回変更しない。
+- CIRCLEMATCH_HOST_FEES_ENABLED は既定false。本人の本番有効化指示により2026-11-01にtrueへ変更した。
 - 導入後の新規募集のみ対象。導入前の既存募集は編集・再案内でも自動加入させない。
 - 有料募集の公開前に料金・発生条件を表示し、同意をサーバーでも必須にする。
 - イベントID、本人ID、条件の版、10%、同意日時を保存し、監査記録も残す。
@@ -52,7 +52,8 @@
 
 機能有効時だけ整合バックアップ <DB>.pre-host-fees-<timestamp>.sqlite を作り、
 host_fee_agreements と host_fee_orders、索引、不変トリガーを原子的・冪等に追加する。
-既存イベントや参加費注文の列・値を置換しない。本番DB、会場/連絡先データは今回変更しない。
+既存イベントや参加費注文の列・値を置換しない。会場/連絡先データは変更しない。
+本番有効化時は起動処理で整合バックアップ後、新しい利用料用テーブルだけを追加する。
 ロールバックで新規の支払記録を失わないよう、過去のバックアップで稼働DBを上書きしない。
 
 python -m unittest discover -s scripts -p "test_host_success_fees.py"
@@ -68,3 +69,13 @@ python scripts/preview_host_fees.py は8930番で使い捨てDB・架空アカ�
 本番化には本人のプレビュー/反映承認と、Stripe事業者確認・接続、テストカード、
 Webhook実配信、入金/返金運用の確認が必要。この変更だけで本番課金を開始しない。
 既存Renderサービス・料金プラン・本番環境変数は勝手に変更しない。
+
+## 2026-11-01の本番反映
+
+- 本人から「有効にしてください」と指示を受け、料金案内・同意・主催者限定の利用料管理を本番へ反映した。
+- GitHub main: 500ece3be1361ffcd02cf4849c24b9486e32bad2。Render: dep-dbjj5592tl4s73eiciug、21:39 JSTにLive。
+- 既存サービスsrv-d9378v67r5hc73bmv3cgのCIRCLEMATCH_HOST_FEES_ENABLED=trueだけをマージ更新。既存環境変数の一括置換・料金プラン変更はしない。
+- 全550テスト成功。公開のhealthz、募集詳細、会場、サークルDBは200。主催者利用料APIは匿名401でno-store。公開ページに利用料の非公開データが含まれないことを確認した。
+- 主催者本人での本番画面確認、Stripeの現状確認と実決済接続はログイン待ち。Stripe/Renderの管理画面を引き継いだ。
+- ONLINE_PAYMENTS_ENABLED、STRIPE_MODE、STRIPE_LIVE_APPROVED、秘密鍵、署名鍵は変更していない。実カード集金まで有効化済みとは表現しない。
+- 本番の申込み・決済・送金・返金・本人確認の代理回答は行っていない。
