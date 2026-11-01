@@ -122,7 +122,7 @@ def render(service, kind, identifier, user, page, csrf, admin=False):
             body += '<p>返金申請と返金完了は異なります。カード明細への反映にはカード会社側の時間がかかります。</p>'
         if order["dispute_state"] != "none":
             body += '<p class="error-box">カード支払いの異議申立てあり。通常の返金は停止しています。</p>'
-        body += recap(snap)
+        body += recap(snap,owner=admin or uid == order['organizer_id'])
         prefix = "/api/payments/"+("admin/" if admin else "")+"orders/"+quote(identifier)
         body += action(prefix+"/reconcile","支払・返金状態を更新する")
         if order["state"] in {"creating","open"} and not order["paid_at"]:
@@ -209,14 +209,14 @@ def render(service, kind, identifier, user, page, csrf, admin=False):
     return page(title,'<section class="payment-shell">'+body+'</section>',script(csrf))
 
 
-def recap(snap):
+def recap(snap, owner=False):
     return ('<h2>'+esc(snap["title"])+'</h2>'+details([
         ("主催者",snap["organizer_name"]),("開催日時",snap["starts_at"]),("会場",snap["prefecture"]+" / "+snap["location"]),
         ("参加費単価",money(snap["unit_amount"])+" / "+snap["fee_unit"]),
         ("課金数量",str(snap["quantity"])+("チーム" if snap["fee_unit"]=="1チーム" else "人")),
         ("単価 × 数量",money(snap["unit_amount"])+" × "+str(snap["quantity"])),
         ("支払期限",snap["payment_deadline"] or snap["starts_at"])])+
-        '<p class="payment-total">お支払総額：'+money(snap["gross"])+'</p><p>サービス利用料込み・追加手数料なし</p>'+
-        '<details><summary>サービス利用料について</summary><p>参加費総額の10％（1円未満切り上げ）を主催者への分配前に控除します。決済処理費とサイト利用料に係る消費税を含み、別途の追加請求はありません。</p></details>'+
+        '<p class="payment-total">お支払総額：'+money(snap["gross"])+'</p><p>表示された総額以外に追加手数料はかかりません。</p>'+
+        ('<details><summary>主催者向け利用料の内訳</summary><p>参加費総額の10％（1円未満切り上げ）を主催者への分配前に控除します。決済処理費とサイト利用料に係る消費税を含み、別途の追加請求はありません。</p></details>' if owner else '')+
         '<h2>キャンセル・返金条件</h2><p style="white-space:pre-wrap">'+esc(snap["cancellation_policy"])+
         '</p><p>'+esc(snap["refund_policy"])+'</p>')

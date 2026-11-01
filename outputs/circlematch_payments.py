@@ -296,10 +296,11 @@ class StripeGateway:
 
 
 class Payments:
-    def __init__(self, connect, notify, config=None, gateway=None):
+    def __init__(self, connect, notify, config=None, gateway=None, unmatched_webhook=None):
         self.connect, self.notify = connect, notify
         self.config = config or Config.env()
         self._gateway = gateway
+        self.unmatched_webhook = unmatched_webhook
 
     @property
     def gateway(self):
@@ -934,6 +935,10 @@ class Payments:
                     order = conn.execute("select order_id from payment_orders where session_id=? or intent_id=? or charge_id=? or charge_id=? or intent_id=?",
                                          (job["object_id"],job["object_id"],job["object_id"],job["related_id"],job["related_id"])).fetchone()
                 if not order:
+                    if self.unmatched_webhook and self.unmatched_webhook(job):
+                        with self.connect() as conn:
+                            conn.execute("update payment_webhooks set state='done',lease_until=0,last_error='' where event_id=?",(job['event_id'],))
+                        return True
                     raise PaymentError("注文が未照合です。決済作成の復旧後に再処理します")
                 self.reconcile(order[0])
                 if kind.startswith("refund."):

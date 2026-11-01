@@ -34,6 +34,10 @@ import circlematch_public_contacts as public_contacts
 import circlematch_payments as online_payments
 import circlematch_payment_ui as payment_ui
 import circlematch_event_pricing as event_pricing
+import circlematch_host_fees as host_fees
+import circlematch_host_billing as host_billing
+
+HOST_FEES_ENABLED = os.environ.get('CIRCLEMATCH_HOST_FEES_ENABLED', 'false') == 'true'
 
 _payments = None
 
@@ -41,8 +45,13 @@ _payments = None
 def payment_service():
     global _payments
     if _payments is None:
-        _payments = online_payments.Payments(connect, add_event_notification)
+        _payments = online_payments.Payments(connect, add_event_notification,
+            unmatched_webhook=lambda job: HOST_FEES_ENABLED and host_fee_service().webhook_job(job))
     return _payments
+
+
+def host_fee_service():
+    return host_billing.Billing(connect, payment_service(), add_event_notification)
 
 
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
@@ -2180,6 +2189,18 @@ def render_event_form_html(params, user):
     context = {key: params[key][0] for key in ("sport", "region", "prefecture", "event_id", "copy", "custom") if params.get(key) and params[key][0]}
     return_to = "/events/new" + (("?" + urlencode(context)) if context else "")
     script = EVENT_FORM_SCRIPT.replace("__INITIAL_EVENT__", script_json(initial)).replace("__DEFAULT_EMAIL__", script_json(user.get("email") or "")).replace("__RETURN_TO__", script_json(return_to)).replace("__DRAFT_KEY__", script_json("circle-match:event-draft:" + user["user_id"] + ":" + (event_id or copy_id or ("custom" if custom else "new"))))
+    if HOST_FEES_ENABLED:
+        with connect() as conn:
+            agreement = host_billing.agreement(conn, event_id) if event_id else None
+        require_consent = not event_id or bool(agreement and not agreement['accepted_at'])
+        fee_help = ('この募集は利用料導入前のため対象外です。新しい利用料は遡及適用しません。'
+                    if event_id and not agreement else
+                    '成立した有料大会には、参加費売上の10%の主催者利用料がかかります。発生条件は「公開確認」で確認できます。')
+        body = body.replace('<span class="help" id="targetTotalHelp">主催者にのみ表示されます。</span>',
+                            '<span class="help" id="targetTotalHelp">主催者にのみ表示されます。</span><p class="help">' + fee_help + '</p>')
+        body = body.replace('<div class="field full"><label>公開前プレビュー</label>',
+                            '<div class="field full">' + host_fees.form_notice(require_consent=require_consent,legacy=bool(event_id and not agreement)) + '</div><div class="field full"><label>公開前プレビュー</label>')
+        script += host_fees.FORM_SCRIPT
     return event_page("募集を掲載する", body, script, post_url=return_to)
 
 
@@ -2210,7 +2231,7 @@ function syncCapacityUnit(){
 function usesDualPricing(){return $('participation_type').value==='both'&&(!initialEvent.legacy_shared_pricing||$('upgradeDualPricing').checked)}
 function fill(){ids.forEach(id=>{if(!$(id))return;let value=initialEvent[id]??'';if(initialEvent.payment_method==='online'&&['individual_fee_amount','team_fee_amount'].includes(id))value=initialEvent[id.replace('_fee_amount','_online_price_input')]??value;if(['starts_at','ends_at','application_deadline'].includes(id))value=toInput(value);$(id).value=value});if($('upgradeDualPricing'))$('upgradeDualPricing').checked=initialEvent.individual_fee_amount!=null&&initialEvent.team_fee_amount!=null;if(!$('organizer_contact_email').value)$('organizer_contact_email').value=defaultEmail||''}
 function showStep(next){step=Math.max(0,Math.min(2,next));document.querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));document.querySelectorAll('[data-step-label]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stepLabel)===step));$('backStep').hidden=step===0;$('nextStep').hidden=step===2;$('publishEvent').hidden=step!==2;if(step===2)preview()}
-function payload(status){syncOnlinePrice();const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);for(const key of ['fee_amount','target_total_amount','online_price_input','individual_fee_amount','team_fee_amount'])obj[key]=normalizeFee(obj[key]);if(usesDualPricing()){for(const kind of ['individual','team']){const key=kind+'_fee_amount',raw=obj[key];if(obj.payment_method==='online'){obj[kind+'_online_price_input']=raw;obj[key]=/^\d+$/.test(raw)?String(onlineGross(raw,obj.online_pricing_mode)):''}}const values=[obj.individual_fee_amount,obj.team_fee_amount];obj.fee_amount=values.every(v=>/^\d+$/.test(v))?String(Math.max(...values.map(Number))):''}else{delete obj.individual_fee_amount;delete obj.team_fee_amount}if(obj.fee_amount==='0')obj.payment_method='free';return obj}
+function payload(status){syncOnlinePrice();const obj={event_id:initialEvent.event_id||'',status};ids.forEach(id=>obj[id]=$(id).value);for(const key of ['fee_amount','target_total_amount','online_price_input','individual_fee_amount','team_fee_amount'])obj[key]=normalizeFee(obj[key]);if(usesDualPricing()){for(const kind of ['individual','team']){const key=kind+'_fee_amount',raw=obj[key];if(obj.payment_method==='online'){obj[kind+'_online_price_input']=raw;obj[key]=/^\d+$/.test(raw)?String(onlineGross(raw,obj.online_pricing_mode)):''}}const values=[obj.individual_fee_amount,obj.team_fee_amount];obj.fee_amount=values.every(v=>/^\d+$/.test(v))?String(Math.max(...values.map(Number))):''}else{delete obj.individual_fee_amount;delete obj.team_fee_amount}if(obj.fee_amount==='0')obj.payment_method='free';if($('hostFeeConsent')){obj.host_fee_accepted=$('hostFeeConsent').checked;obj.host_fee_policy_version=$('hostFeeConsent').dataset.policyVersion}return obj}
 function previewFee(p){const suffix=p.payment_method==='online'?'（サービス利用料込み・追加手数料なし）':'';if(p.individual_fee_amount!=null&&p.team_fee_amount!=null)return '個人：'+Number(p.individual_fee_amount).toLocaleString()+'円 / 1人、チーム：'+Number(p.team_fee_amount).toLocaleString()+'円 / 1チーム'+suffix;return Number(p.fee_amount)===0?'無料':Number(p.fee_amount).toLocaleString()+'円 / '+p.fee_unit+suffix}
 function preview(){const p=payload('published');const fields=[['募集種別・競技',p.event_type+' / '+p.sport_category],['開催日時',p.starts_at.replace('T',' ')],['会場',p.prefecture+' / '+p.location],['参加単位',({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[p.participation_type]],['定員',p.capacity?p.capacity+p.capacity_unit:'定員なし'],['最低開催数',p.minimum_participants?p.minimum_participants+p.capacity_unit:'未設定（従来の受付）'],['参加費',previewFee(p)],['支払方法',({free:'-',on_site:'現地払い',bank_transfer:'口座振込',on_site_or_bank_transfer:'現地払い・口座振込（参加者が選択）',online:'オンラインカード決済'})[p.payment_method]],['受付方式',p.acceptance_mode==='approval'?'主催者承認制':'先着順'],['応募締切',p.application_deadline.replace('T',' ')||'開催日時まで'],['主催者',p.organizer_name],['内容',p.description],['参加条件',p.eligibility||'特に設定されていません'],['キャンセル・中止条件',p.cancellation_policy]];$('eventPreview').innerHTML=`<h3>${esc(p.title||'タイトル未入力')}</h3><dl>${fields.filter(([k])=>k!=='支払方法'||Number(p.fee_amount)!==0).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v||'未入力')}</dd>`).join('')}</dl>`}
 async function loadOrganizations(){try{const orgs=await (await fetch('/api/my-organizations')).json();if(!Array.isArray(orgs))return;const select=$('linked_circle_id');const current=initialEvent.linked_circle_id||'';orgs.forEach(o=>{const op=document.createElement('option');op.value=o.circle_id;op.textContent=`${o.circle_name}（${o.university_name||o.prefecture||''}）`;if(o.circle_id===current)op.selected=true;select.append(op)})}catch(_){}}
@@ -2261,6 +2282,7 @@ def render_event_organize_html(event_id, user):
     with connect() as conn:
         event = dict(event_owner(conn, event_id, user["user_id"]))
         count = active_confirmed_capacity(conn, event_id)
+        fee_agreement = host_billing.agreement(conn,event_id) if HOST_FEES_ENABLED else None
     event["confirmed_count"] = count
     back = '<a class="button" href="/mypage?tab=hosted">マイページへ戻る</a>'
     if (not event["minimum_participants"] or event["status"] not in {"published", "closed"}
@@ -2299,7 +2321,24 @@ def render_event_organize_html(event_id, user):
             f'<p>{html.escape(event_formation_label(event))} / 受付数：{count}{html.escape(event["capacity_unit"])}</p>'
             + event_formation_warning(event) + '<p>受付確定済みの参加者に通知します。' + payment_note + '案内を更新した場合は再確認を依頼します。未確認・未入金の自動取消は行いません。</p>'
             f'<form id="formationForm"><div class="field-grid">{fields}</div><div class="card-actions">{back}<button class="button primary" type="submit">{label}</button></div></form><p id="formationError" class="error-box" role="alert" hidden></p></section>')
+    if HOST_FEES_ENABLED:
+        fee_notice = host_fees.notice(event_id=event_id) if fee_agreement else host_fees.legacy_notice(event_id)
+        body = body.replace('<form id="formationForm">', host_fees.STYLE + fee_notice + '<form id="formationForm">')
     return event_page("開催案内", body, formation_form_script(event, "announce", "/mypage?tab=hosted"))
+
+
+def host_fee_estimate(event_id, user):
+    if not HOST_FEES_ENABLED:
+        raise ValueError('ページが見つかりません')
+    if not user.get('authenticated'):
+        raise PermissionError('ログインが必要です')
+    with connect() as conn:
+        return host_fee_service().balance(conn, event_id, user['user_id'])
+
+
+def render_host_fee_html(event_id, user, csrf=''):
+    event, estimate = host_fee_estimate(event_id, user)
+    return event_page('大会成立時の利用料（主催者）', host_fees.render(event, estimate), payment_ui.script(csrf))
 
 
 def render_event_attendance_html(event_id, user):
@@ -2393,6 +2432,10 @@ def render_mypage_html(user):
     if not user.get("authenticated"):
         return None
     data = event_my_page(user)
+    fee_events = set()
+    if HOST_FEES_ENABLED:
+        with connect() as conn:
+            fee_events = {row['event_id'] for row in conn.execute('select event_id from host_fee_agreements where organizer_id=?',(user['user_id'],))}
     hosted = []
     for event in data["hosted"]:
         eid, url_id = html.escape(event["event_id"], quote=True), quote(event["event_id"])
@@ -2419,6 +2462,8 @@ def render_mypage_html(user):
         target_total = owner_financial_summary(event)
         if target_total:
             target_total = '<details class="host-financial"><summary>収支の見込み</summary>' + target_total + '</details>'
+        if HOST_FEES_ENABLED:
+            target_total += host_fees.notice(event_id=event['event_id'], compact=True) if event['event_id'] in fee_events else host_fees.legacy_notice(event['event_id'])
         if event.get("minimum_participants"):
             formation_text = '' if event_formation_warning(event) else html.escape(event_formation_label(event)) + f' / 最低開催数：{event["minimum_participants"]}{html.escape(event["capacity_unit"])} / '
             target_total += f'<p>{formation_text}最終参加確認済み：{event.get("final_attendance_count", 0)}{html.escape(event["capacity_unit"])}</p>'
@@ -2463,6 +2508,8 @@ def render_mypage_html(user):
     body += '<section class="panel"><div class="panel-head"><div><h2>交流招待</h2><p>作成した招待と、受け取って回答した相談を確認できます。</p></div><a class="button" href="/invitations">交流招待を開く</a></div></section>'
     if payment_service().config.enabled or payment_history:
         body = '<p class="card-actions"><a class="button" href="/payments">オンライン決済・返金</a><a class="button" href="/payments/connect">売上の受取設定</a></p>' + body
+    if HOST_FEES_ENABLED:
+        body = host_fees.STYLE + body
     return event_page("マイページ", body, MYPAGE_SCRIPT)
 
 
@@ -4368,6 +4415,8 @@ def init_db():
         online_payments.migrate(conn, DB_PATH)
         migrate_event_dual_pricing(conn)
         migrate_event_payment_choices(conn)
+        if HOST_FEES_ENABLED:
+            host_billing.migrate(conn, DB_PATH)
         for column, definition in _CIRCLE_RUNTIME_COLUMNS:
             ensure_column(conn, "circles", column, definition)
         ensure_column(conn, "circle_claims", "university_email_domain_checked", "integer not null default 0")
@@ -5313,6 +5362,20 @@ class Handler(BaseHTTPRequestHandler):
             service.refresh_account(uid)
         elif len(parts)==3 and parts[0]=="applications" and parts[2]=="checkout" and not admin:
             result = service.checkout(parts[1],uid,data)
+        elif len(parts)==3 and parts[0]=='host-fees' and not admin:
+            if not HOST_FEES_ENABLED:
+                raise ValueError('ページが見つかりません')
+            if parts[2]=='checkout':
+                result = host_fee_service().checkout(parts[1],uid,data)
+            elif parts[2]=='reconcile':
+                with connect() as conn:
+                    _, balance = host_fee_service().balance(conn,parts[1],uid)
+                    orders = conn.execute('select order_id from host_fee_orders where event_id=? and organizer_id=? and mode=? and platform=?',
+                                          (parts[1],uid,service.config.mode,service.config.platform)).fetchall()
+                for order in orders:
+                    host_fee_service().resume(order['order_id'],uid,create=False)
+            else:
+                raise ValueError('操作が見つかりません')
         elif len(parts)==3 and parts[0]=="orders":
             order_id,operation = parts[1:]
             service.order(order_id,uid,admin)
@@ -5459,7 +5522,16 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_html(event_page("ログインが必要です", '<div class="error-box">編集するにはログインしてください。</div>').encode("utf-8"), 401)
             elif parsed.path.startswith("/events/"):
                 parts = [unquote(part) for part in parsed.path.strip("/").split("/")]
-                if len(parts) in {3, 4} and parts[2] in {"applications", "contact"}:
+                if len(parts) == 3 and parts[2] == 'host-fee':
+                    if not HOST_FEES_ENABLED:
+                        self.send_json({'error': 'not found'}, 404)
+                        return
+                    user = current_user(self.cookie_value('cm_session'))
+                    if not user.get('authenticated'):
+                        self.redirect('/signin?' + urlencode({'return_to': safe_return_path(self.path, '/mypage')}))
+                        return
+                    self.send_html(render_host_fee_html(parts[1], user, self.payment_csrf()).encode('utf-8'))
+                elif len(parts) in {3, 4} and parts[2] in {"applications", "contact"}:
                     user = current_user(self.cookie_value("cm_session"))
                     if not user.get("authenticated"):
                         self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
@@ -5682,6 +5754,15 @@ class Handler(BaseHTTPRequestHandler):
                 if len(parts) == 3:
                     event = get_event(parts[2])
                     self.send_json(event if event else {"error": "not found"}, 200 if event else 404)
+                elif len(parts) == 4 and parts[3] == 'host-fee':
+                    if not HOST_FEES_ENABLED:
+                        self.send_json({'error': 'not found'}, 404)
+                        return
+                    if not user.get('authenticated'):
+                        self.send_json({'error': 'login required'}, 401)
+                        return
+                    _, estimate = host_fee_estimate(parts[2], user)
+                    self.send_json(estimate)
                 elif len(parts) == 4 and parts[3] == "applications":
                     if not user.get("authenticated"):
                         self.send_json({"error": "login required"}, 401)
@@ -6806,6 +6887,11 @@ def announce_event(conn, event_id, data, user):
         add_event_notification(conn, application["applicant_user_id"], event_id, "event_announced",
                                "開催が決定しました・最終参加確認のお願い" if version == 1 else "開催案内が変更されました・再確認のお願い",
                                f"{event['title']}\n開催日時: {starts_at}\n会場: {event['prefecture']} / {location}\n{details}\n最終参加確認の期限: {attendance_deadline}\n\nマイページから開催内容・キャンセル条件を確認し、参加する旨をお知らせください。{payment_note}")
+    if HOST_FEES_ENABLED and version == 1:
+        fee_agreement = host_billing.agreement(conn,event_id)
+        if fee_agreement and fee_agreement['accepted_at'] and not event_pricing.is_free(event):
+            add_event_notification(conn,user['user_id'],event_id,'host_fee_eligible','主催者利用料の対象になりました',
+                                   '開催を確定したため、入金確認済み参加費売上の10%が利用料の対象です。未入金分は含めず、オンラインで控除済みの利用料を差し引きます。支払額は主催者の利用料画面で確認できます。自動引落しは行いません。')
     audit(conn, "event_announce", "event_post", event_id, {"version": version})
     return version
 
@@ -7300,6 +7386,8 @@ def start_event_email_worker():
                 if time.monotonic() >= next_payment_check:
                     next_payment_check = time.monotonic() + 15
                     payment_service().tick()
+                    if HOST_FEES_ENABLED:
+                        host_fee_service().tick()
             except Exception as exc:
                 log(f"event email worker failed: {type(exc).__name__}")
                 processed = False
@@ -7317,6 +7405,11 @@ def save_event_post(conn, data, user):
         conn.execute("begin immediate")
     event_id = event_form_value(data, "event_id", "募集ID", max_length=120)
     payload = event_payload_from_data(conn, data, user, event_id)
+    is_new = not event_id
+    if HOST_FEES_ENABLED:
+        if event_id:
+            event_owner(conn, event_id, user['user_id'])
+        host_billing.validate_consent(conn, event_id, payload, data)
     timestamp = now()
     values = (
         payload["linked_circle_id"], payload["organizer_name"], payload["organizer_contact_email"],
@@ -7391,6 +7484,9 @@ def save_event_post(conn, data, user):
     conn.execute('update event_posts set individual_fee_amount=?,team_fee_amount=?,individual_online_price_input=?,team_online_price_input=? where event_id=?',
                  (payload['individual_fee_amount'], payload['team_fee_amount'], payload['individual_online_price_input'], payload['team_online_price_input'], event_id))
     conn.execute("update event_posts set allow_on_site_payment=? where event_id=?", (payload["allow_on_site_payment"], event_id))
+    if HOST_FEES_ENABLED:
+        if host_billing.enroll(conn,event_id,user['user_id'],data,is_new=is_new):
+            audit(conn,'host_fee_consent','event_post',event_id,{'policy_version':host_fees.POLICY_VERSION,'fee_bps':host_fees.FEE_BPS,'organizer_id':user['user_id']})
     update_event_formation(conn, event_id)
     audit(conn, "event_save", "event_post", event_id, {"status": payload["status"], "organizer_user_id": user["user_id"]})
     return event_id
