@@ -22,7 +22,7 @@ def decorate(body):
 def render_body(return_to='/'):
     return f'''<div class="cm-preferences">
 <a class="cm-settings-back" href="{escape(return_to, quote=True)}">← 元の画面へ戻る</a>
-<h1>設定</h1><p class="cm-settings-note">このブラウザに保存されます。他の端末やアカウント設定には影響しません。</p>
+<h1>設定</h1><nav><a href="/settings/security">ログインとセキュリティ</a></nav><p class="cm-settings-note">このブラウザに保存されます。他の端末やアカウント設定には影響しません。</p>
 <form id="cm-preferences-form"><fieldset disabled><legend>画面表示</legend>
 <div class="cm-view-options">
 <label><input type="radio" name="view" value="auto" checked><span>自動</span></label>

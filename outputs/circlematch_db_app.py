@@ -36,6 +36,7 @@ import circlematch_payment_ui as payment_ui
 import circlematch_event_pricing as event_pricing
 import circlematch_host_fees as host_fees
 import circlematch_host_billing as host_billing
+import circlematch_login_security as login_security
 
 HOST_FEES_ENABLED = os.environ.get('CIRCLEMATCH_HOST_FEES_ENABLED', 'false') == 'true'
 
@@ -2407,6 +2408,8 @@ def render_notifications_html(user, page=0):
             link = '<a href="/mypage">マイページで申込状況を確認する</a>'
         if note.get("notification_type") == "circle_invitation":
             link = '<a href="/invitations">交流招待を確認する</a>'
+        if note.get('notification_type') in {'login_success','login_security_alert'}:
+            link = '<a href="/settings/security">ログイン状況を確認する</a>'
         unread = not note.get("read_at")
         rendered.append(f'<article class="notification {"unread" if unread else ""}" data-notification="{html.escape(note["notification_id"], quote=True)}"><strong>{html.escape(note.get("title") or "")}</strong><p>{html.escape(note.get("body") or "")}</p><small>{format_event_datetime(note.get("created_at"))} / メール通知: {html.escape(email_delivery_label(note.get("email_status")))}</small>{link}</article>')
     previous = f'<a class="button" href="/notifications?page={page-1}">前へ</a>' if page else ''
@@ -5402,6 +5405,16 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError("未対応の決済操作です")
         self.send_json(result)
 
+    def record_auth_failure(self, method):
+        try:
+            with connect() as conn:
+                conn.execute('begin immediate')
+                detected = login_security.record_failure(conn,SESSION_SECRET,self.client_address[0],method,audit)
+            if detected:
+                log('login security: repeated authentication failures; see /admin/security')
+        except Exception as exc:
+            log('login security observation failed: '+type(exc).__name__)
+
     def handle_google_callback(self, query):
         if not google_oauth_enabled():
             self.send_html(render_signin_html(), 503)
@@ -5409,6 +5422,7 @@ class Handler(BaseHTTPRequestHandler):
         code = (query.get("code", [""])[0] or "").strip()
         state = (query.get("state", [""])[0] or "").strip()
         if not code or not state or not verify_oauth_state(state) or state != self.cookie_value("cm_oauth_state"):
+            self.record_auth_failure('google')
             self.send_json({"error": "invalid oauth state"}, 400)
             return
         token = post_form("https://oauth2.googleapis.com/token", {
@@ -5422,6 +5436,8 @@ class Handler(BaseHTTPRequestHandler):
         with connect() as conn:
             user_id = upsert_oauth_user(conn, profile)
             session_id = create_user_session(conn, user_id)
+            login_security.observe_login(conn,user_id,'google',code,SESSION_SECRET,add_event_notification,audit,log,
+                                         email_allowed=profile.get('email_verified') is True)
             conn.commit()
         self.redirect("/", [
             "cm_oauth_state=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax",
@@ -5470,6 +5486,24 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_html(render_public_html(query))
             elif parsed.path == "/venues":
                 self.send_html(render_venues_html(query))
+            elif parsed.path == '/settings/security':
+                user = current_user(self.cookie_value('cm_session'))
+                if not user.get('authenticated'):
+                    self.redirect('/signin?return_to=%2Fsettings%2Fsecurity')
+                    return
+                with connect() as conn:
+                    events = login_security.recent_events(conn,user['user_id'])
+                    active = conn.execute("select count(*) from user_sessions where user_id=? and datetime(expires_at)>datetime('now')",(user['user_id'],)).fetchone()[0]
+                self.send_html(event_page('ログインとセキュリティ',login_security.render(events,active,email_notifications_ready())).encode('utf-8'))
+            elif parsed.path == '/admin/security':
+                if not admin_auth_enabled():
+                    self.send_json({'error':'管理者認証の設定が必要です'},503)
+                    return
+                if not self.require_admin():
+                    return
+                with connect() as conn:
+                    body = login_security.render(login_security.recent_events(conn),0,email_notifications_ready(),admin=True)
+                self.send_html(event_page('ログインの検知記録',body).encode('utf-8'))
             elif parsed.path == '/settings':
                 return_to = safe_return_path(query.get('return_to', ['/'])[0], '/')
                 self.send_html(event_page('設定', settings_ui.render_body(return_to)).encode('utf-8'))
@@ -5863,12 +5897,23 @@ class Handler(BaseHTTPRequestHandler):
                 data = self.read_json()
                 access_token = (data.get("access_token") or "").strip()
                 if not access_token:
+                    self.record_auth_failure('supabase')
                     self.send_json({"error": "access_token is required"}, 400)
                     return
-                profile = fetch_supabase_user(access_token)
+                try:
+                    profile = fetch_supabase_user(access_token)
+                except HTTPError as exc:
+                    if exc.code in {400,401,403}:
+                        self.record_auth_failure('supabase')
+                    raise
                 with connect() as conn:
                     user_id = upsert_supabase_user(conn, profile)
                     session_id = create_user_session(conn, user_id)
+                    metadata = profile.get('app_metadata')
+                    provider = metadata.get('provider') if isinstance(metadata,dict) else None
+                    method = {'email':'supabase_email','google':'supabase_google'}.get(provider,'supabase') if isinstance(provider,str) else 'supabase'
+                    proof = profile.get('last_sign_in_at') or access_token
+                    login_security.observe_login(conn,user_id,method,str(proof),SESSION_SECRET,add_event_notification,audit,log)
                     conn.commit()
                 self.send_json({"ok": True, "user": current_user(session_id)}, 200, [
                     f"cm_session={session_id}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax{secure_cookie_suffix()}"
@@ -7260,18 +7305,22 @@ def confirmed_application_notification_body(event, application):
     return "\n".join(lines)
 
 
-def add_event_notification(conn, recipient_user_id, event_id, notification_type, title, body):
+def add_event_notification(conn, recipient_user_id, event_id, notification_type, title, body, *, dedupe_key=None, email_allowed=True):
     """The notification and its email job commit with the application change."""
     notification_id = slug("notification", f"{recipient_user_id}:{event_id}:{notification_type}:{now()}:{secrets.token_hex(4)}")
-    conn.execute(
+    if dedupe_key is not None:
+        notification_id = 'notification_' + hashlib.sha256((recipient_user_id+':'+dedupe_key).encode()).hexdigest()
+    inserted = conn.execute(
         """
         insert into event_notifications(notification_id, recipient_user_id, event_id, notification_type,
           title, body, email_status, created_at)
-        values(?,?,?,?,?,?, 'not_configured', ?)
+        values(?,?,?,?,?,?, 'not_configured', ?) on conflict(notification_id) do nothing
         """,
         (notification_id, recipient_user_id, event_id, notification_type, title, body, now()),
-    )
-    if email_notifications_ready():
+    ).rowcount
+    if not inserted:
+        return notification_id
+    if email_allowed and email_notifications_ready():
         account = conn.execute("select email from user_accounts where user_id=?", (recipient_user_id,)).fetchone()
         email = (account["email"] or "").strip() if account else ""
         if not re.fullmatch(r"[^@\s\r\n]+@[^@\s\r\n]+\.[^@\s\r\n]+", email):
@@ -7281,7 +7330,7 @@ def add_event_notification(conn, recipient_user_id, event_id, notification_type,
             payload = {
                 "from": EMAIL_FROM, "to": [email], "subject": f"Circle Match | {title}",
                 "text": f"{title}\n\n{body}\n\n通知の詳細はCircle Matchでご確認ください。\n"
-                        f"{SITE_BASE_URL.rstrip('/')}/notifications\n\n"
+                        f"{SITE_BASE_URL.rstrip('/')}" + ('/settings/security' if notification_type in {'login_success','login_security_alert'} else '/notifications') + "\n\n"
                         "Circle Matchからの自動通知です。このメールには返信できません。",
             }
             conn.execute("insert into event_email_outbox(notification_id,payload_json) values(?,?)",
@@ -7377,8 +7426,13 @@ def start_event_email_worker():
     def run():
         next_reminder_check = 0
         next_payment_check = 0
+        next_security_cleanup = 0
         while not stop.is_set():
             try:
+                if time.monotonic() >= next_security_cleanup:
+                    with connect() as conn:
+                        login_security.prune(conn)
+                    next_security_cleanup = time.monotonic() + 3600
                 if time.monotonic() >= next_reminder_check:
                     process_attendance_reminders()
                     next_reminder_check = time.monotonic() + 60
