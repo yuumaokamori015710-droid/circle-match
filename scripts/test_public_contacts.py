@@ -576,6 +576,37 @@ class PublicContactTests(unittest.TestCase):
 
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_november_1_unverified_listings_keep_source_identity_and_existing_contacts(self):
+        cases = [('LaQua94', 171340), ('LaQua94', 199763), ('Lasucre', 173808),
+                 ('Luca', 4703), ('Luce', 230353), ('Lulu', 221072), ('MAKES', 97349),
+                 ('MDN', 229598), ('MJT', 211153), ('MMBC', 30927), ('MOTOKINGS', 225006),
+                 ('MTC', 175670), ('Maverick', 175861), ('Miya', 215626), ('NB', 202726),
+                 ('NEKOBOX', 31904), ('NEO PRO', 222863), ('NEXT', 145144), ('NEXUS', 105434),
+                 ('OAD', 178068), ('ONEPACK', 151007), ('OWL', 209801), ('Outcasts', 176090),
+                 ('PICKLE CREW TOKYO', 229632), ('PREDATOR', 184891), ('PRELUCA', 150709)]
+        seed = {r['circle_id']: r for r in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))}
+        self.assertEqual(len(cases), 26)
+        identifiers = set()
+        for query, number in cases:
+            source = f'https://www.net-menber.com/look/data/{number}.html'
+            with self.subTest(source=source):
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + quote(query))[1])
+                row = next(r for r in rows if r['source_url'] == source)
+                self.assertNotIn(row['circle_id'], identifiers)
+                identifiers.add(row['circle_id'])
+                self.assertNotIn('claimant_email', row)
+                self.assertNotIn('user_id', row)
+                later = seed.get(row['circle_id'])
+                if later and later['checked_at'] > '2026-11-01':
+                    self.assertEqual(row['public_contact_email'], later['email'])
+                else:
+                    self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+        root = contacts.SEED_PATH.parents[1]
+        previous = json.loads(subprocess.check_output(
+            ['git', 'show', '4681049fa401254ac450ee5e26c638cbbe45bbae:outputs/circle_public_contacts.json'], cwd=root))
+        self.assertEqual(len(previous), 482)
+        self.assertEqual(list(seed.values())[:482], previous)
+
     def test_october_30_unverified_listings_preserve_exact_seed_identity(self):
         cases = [('GO-KU', 216517), ('GOAT', 197789), ('GRACE GROUP', 230487),
                  ('GROOVE.C.F.', 231814), ('H.B', 146099), ('HAPPYバドミントン', 162515),
