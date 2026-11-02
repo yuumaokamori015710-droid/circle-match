@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 import circlematch_seo as seo
 import circlematch_venues as venues
 import circlematch_settings as settings_ui
+import circlematch_club_ui as club_ui
 import circlematch_regions as circle_regions
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
@@ -1267,7 +1268,7 @@ EVENT_BASE_CSS = """
 def event_shell(title, body, script=""):
     page = f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(title)} | __SITE_NAME__</title><style>{EVENT_BASE_CSS}{EVENT_UX_CSS}</style></head><body>
+<title>{html.escape(title)} | __SITE_NAME__</title><style>{EVENT_BASE_CSS}{EVENT_UX_CSS}</style></head><body class="cm-club">
 <header class="site-header"><div class="site-nav"><a class="brand" href="/">__SITE_NAME__</a><nav class="main-nav"><a class="tab-link __EVENT_TAB__" href="__EVENT_TAB_URL__">大会・イベント</a><a class="tab-link db-label __DB_TAB__" href="__DB_TAB_URL__">サークルDB</a><a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a></nav></div></header>
 <main class="container">{body}</main>{script}</body></html>"""
     return with_adsense(page).replace("__SITE_NAME__", SITE_NAME)
@@ -1587,7 +1588,7 @@ def render_event_cards(events, params=None):
         if event.get("capacity"):
             remaining = f"定員 {event.get('confirmed_count', 0)}/{event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
         rendered.append(
-            f'<article class="event-card" id="event-{html.escape(str(event["event_id"]), quote=True)}"><div><span class="badge {status_class}">{html.escape(status)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div>'
+            f'<article class="event-card" id="event-{html.escape(str(event["event_id"]), quote=True)}">' + club_ui.media(event.get('sport_category')) + f'<div><span class="badge {status_class}">{html.escape(status)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div>'
             f'<h3><a href="{detail_url}">{html.escape(event.get("title") or "")}</a></h3>'
             f'<p>{html.escape(event.get("sport_category") or "")} / {organizer}</p>'
             f'<div class="card-meta"><span>{format_event_datetime(event.get("starts_at"))}</span><span>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "会場未定")}</span><span>{html.escape(event_fee_text(event))} / {html.escape(event_participation_label(event.get("participation_type") or ""))}</span><span>{remaining}</span></div>'
@@ -1762,37 +1763,34 @@ def render_home_journeys(params, primary=False):
 
 
 def render_sports_home_html(params):
-    cards = []
-    for name, label, _code, _color, image in POPULAR_SPORTS:
-        href = directory_url(params, "events", sport=name)
-        cards.append(f'<a data-directory-link class="sport-card" href="{html.escape(href, quote=True)}"><img src="/assets/sports/{image}?v=20260713v1" alt=""><span class="sport-copy"><strong>{html.escape(name)}</strong><span>{html.escape(label)}</span><em>探す →</em></span></a>')
     try:
         latest = latest_home_events()
         rows = []
         for event in latest:
             start = event.get("starts_at") or ""
-            date = format_event_datetime(start)
-            date = date[5:10] if len(date) >= 10 else date
             rows.append('<li class="home-latest-item"><a class="home-latest-link" href="/events/'
-                        + quote(str(event["event_id"]), safe="") + '"><span class="home-latest-title">'
+                        + quote(str(event["event_id"]), safe="") + '">' + club_ui.media(event.get('sport_category')) + '<span class="home-latest-title">'
                         + html.escape(event.get("title") or "募集の詳細") + '</span><time class="home-latest-date" datetime="'
                         + html.escape(str(start).replace(" ", "T"), quote=True) + '" aria-label="開催日 '
-                        + html.escape(format_event_datetime(start), quote=True) + '">' + html.escape(date) + '</time></a></li>')
+                        + html.escape(format_event_datetime(start), quote=True) + '">' + format_event_datetime(start) + '</time>'
+                        + '<span class="club-latest-location">' + html.escape((event.get('prefecture') or '') + ' / ' + (event.get('location') or '会場未定')) + '</span>'
+                        + '<span class="club-latest-fee">' + html.escape(event_fee_text(event)) + '</span></a></li>')
         latest_markup = '<ul id="homeLatestEvents" class="home-latest-list">' + ''.join(rows) + '</ul>' if latest else '<div id="homeLatestEvents" class="empty">現在、募集中の大会・イベントはありません。</div>'
     except Exception as exc:
         log(f"sports home latest events failed: {type(exc).__name__}")
         latest_markup = '<div id="homeLatestEvents" class="error-box" role="status">最新の募集を取得できませんでした。</div>'
-    body = '<div class="compact-sports-home">'
+    body = ('<div class="compact-sports-home"><div class="club-page-heading"><div><p>Circle Match</p><h1>大会・イベント</h1></div>'
+            '<a href="/events">' + html.escape(params.get('prefecture', ['全国'])[0]) + 'の募集</a></div>'
+            + club_ui.search(params) + club_ui.sport_rail({key: params[key] for key in ('sport', 'region', 'prefecture') if key in params}))
     body += ('<section class="section panel home-latest-events" aria-labelledby="home-latest-heading">'
              '<div class="panel-head"><h2 id="home-latest-heading"><svg class="home-latest-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 14-5v14L3 14zM17 9l4-1v8l-4-1M6 15l2 6h4l-2-5"/></svg>最新の募集</h2><a class="home-latest-more" href="/events">すべて見る →</a></div>' + latest_markup + '</section>')
-    body += render_home_journeys(params, primary=True)
-    body += '<section id="sports-list" class="section sports-home" aria-labelledby="home-sports-heading"><h2 id="home-sports-heading" class="home-heading">スポーツから探す</h2><div class="sport-grid">' + ''.join(cards) + '</div></section>'
+    body += render_home_journeys(params, primary=False)
     return event_page("スポーツから探す", body + '</div>', tab="home").encode("utf-8")
 
 
 def render_venues_html(params=None):
     params = params or {}
-    body = render_directory_context(params, "venues") + render_directory_tabs("venues", params) + venues.render_venue_body(params)
+    body = render_directory_context(params, "venues") + render_directory_tabs("venues", params) + club_ui.sport_rail(params, 'venues') + venues.render_venue_body(params)
     page = event_page("会場予約", body, DIRECTORY_CONTEXT_SCRIPT, tab="venues")
     return page.replace("</head>", venues.render_venue_head(params) + "</head>", 1).encode("utf-8")
 
@@ -1825,13 +1823,14 @@ def render_public_html(params=None, event_listing=False):
             event_markup = '<div class="error-box">募集データを取得できませんでした。時間をおいて再度お試しください。</div>'
             initial_error = "イベントデータを取得できませんでした"
         type_options = ''.join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in EVENT_TYPES)
-        introduction = render_directory_context(params, tab) + tabs
+        introduction = render_directory_context(params, tab) + tabs + club_ui.sport_rail(params, tab)
         if not initial_events and not initial_error:
             event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
         result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
         body = introduction + f'''<div class="event-publish"><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div><section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div></div>
-<form id="eventFilters" class="filter-grid">{directory_hidden_context(params)}<label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
+<form id="eventFilters" class="filter-grid">{directory_hidden_context(params)}<input type="hidden" name="q" value="{html.escape(params.get('q', [''])[0], quote=True)}"><label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
 <div id="eventList" class="event-grid">{event_markup}</div></section><section class="about"><h2>Circle Matchとは</h2><p>Circle Matchは、大学・社会人を問わずスポーツ活動の情報を集め、参加できる大会・イベントと、活動団体の情報を見つけやすくするサービスです。団体DBへの掲載と、主催者としての募集管理の権限は分けて扱います。</p></section>'''
+        body = body.replace('<form id="eventFilters"', club_ui.search(params) + '<form id="eventFilters"', 1)
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", script_json(initial_events)).replace("__INITIAL_ERROR__", script_json(initial_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience))
     else:
         shared_head = render_directory_context(params, tab)
@@ -1859,8 +1858,10 @@ def render_public_html(params=None, event_listing=False):
         body = circle_regions.RESOURCES + body
         script = EVENT_HOME_SCRIPT.replace("__INITIAL_EVENTS__", "[]").replace("__INITIAL_ERROR__", script_json(db_error)).replace("__TAB__", script_json(tab)).replace("__AUDIENCE__", script_json(audience)).replace("__INITIAL_CIRCLES__", script_json(initial_circles)).replace("__INITIAL_DB_STATS__", script_json(db_stats))
     if tab == "db":
+        body = body.replace(tabs, tabs + club_ui.sport_rail(params, tab), 1)
         body = body.replace('<div class="db-summary">', '<p class="context-notice">交流したい団体に、イベントへの招待や練習試合の相談を渡せます。<a href="/invitations">自分の交流招待を確認する</a></p><div class="db-summary">', 1)
     page_title = (sport + "の" if sport else "") + ("大会・イベント" if tab == "events" else "サークルDB")
+    script = script.replace('__CLUB_SPORTS__', script_json({name: image for name, _label, image in club_ui.SPORTS[1:]}))
     page = event_shell(page_title, body, DIRECTORY_CONTEXT_SCRIPT + script)
     return (page.replace("__EVENT_TAB__", "active" if tab == "events" else "").replace("__DB_TAB__", "active" if tab == "db" else "").replace("__EVENT_TAB_URL__", html.escape(event_url, quote=True)).replace("__DB_TAB_URL__", html.escape(db_url, quote=True)).replace("__POST_URL__", html.escape(post_url, quote=True))).encode("utf-8")
 
@@ -1875,7 +1876,9 @@ EVENT_HOME_SCRIPT = r"""
   const formatDate=v=>v?esc(String(v).replaceAll('-','/')):'日時未定';
   function fee(e){if(e.participation_type==='both'&&e.individual_fee_amount!=null&&e.team_fee_amount!=null)return `個人：${Number(e.individual_fee_amount).toLocaleString()}円 / 1人、チーム：${Number(e.team_fee_amount).toLocaleString()}円 / 1チーム${e.payment_method==='online'?'（サービス利用料込み・追加手数料なし）':''}`;return e.fee_amount===null||e.fee_amount===undefined?(e.payment_method==='free'?'無料':`${e.payment_method==='bank_transfer'?'口座振込':'現地払い'}（料金は主催者へ確認）`):`${Number(e.fee_amount).toLocaleString()}円 / ${esc(e.fee_unit||'1人')}${e.payment_method==='online'?'（サービス利用料込み・追加手数料なし）':''}`}
   const status=e=>[e.availability_label||'受付終了',e.can_apply?'open':(e.status==='cancelled'?'cancelled':'closed')];
-  function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者';const id=encodeURIComponent(e.event_id),back=location.pathname+location.search+'#event-'+id,href='/events/'+id+'?'+new URLSearchParams({return_to:back}); const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card" id="event-${esc(e.event_id)}"><div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="${esc(href)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="${esc(href)}">詳細・申込</a></div></article>`}
+  const clubSports=__CLUB_SPORTS__;
+  function clubPhoto(sport){const key=Object.keys(clubSports).find(name=>String(sport||'').includes(name)),image=key?clubSports[key]:'other';return `<figure class="club-event-photo"><img src="/assets/club/${image}.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><figcaption>競技イメージ</figcaption></figure>`}
+  function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者';const id=encodeURIComponent(e.event_id),back=location.pathname+location.search+'#event-'+id,href='/events/'+id+'?'+new URLSearchParams({return_to:back}); const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card" id="event-${esc(e.event_id)}">${clubPhoto(e.sport_category)}<div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="${esc(href)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="${esc(href)}">詳細・申込</a></div></article>`}
   function circleRow(c){let source=false,contact=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}try{contact=['https:','http:'].includes(new URL(c.contact_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';const channel=contact&&['form','line'].includes(c.contact_method)?`<a href="${esc(c.contact_url)}" target="_blank" rel="noopener noreferrer">${c.contact_method==='form'?'問い合わせフォーム':'公式LINE案内'} ↗</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}${channel}<small>${c.public_contact_email?'公開メールあり':channel?'公式窓口あり':'連絡方法は掲載元で確認'}</small></div></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
@@ -2014,6 +2017,8 @@ def render_event_detail_html(event_id, user=None, params=None):
     capacity = "定員なし" if not event.get("capacity") else f"{event.get('confirmed_count', 0)} / {event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
     body = f'''<section class="intro"><div><p class="eyebrow">EVENT DETAIL</p><p><a href="{html.escape(return_to, quote=True)}">大会・イベント一覧</a> / {html.escape(event.get("sport_category") or "")}</p></div></section>
 <section class="detail"><article class="detail-main"><div><span class="badge {state_class}">{html.escape(state)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div><h1>{html.escape(event.get("title") or "")}</h1><p>{html.escape(event.get("sport_category") or "")}</p><div class="detail-meta"><div><span>開催日時</span><strong>{format_event_datetime(event.get("starts_at"))}{(" 〜 " + format_event_datetime(event.get("ends_at"))) if event.get("ends_at") else ""}</strong></div><div><span>会場</span><strong>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "")}</strong></div><div><span>参加費</span><strong>{fee}</strong></div>{payment_html}<div><span>参加単位・定員</span><strong>{html.escape(event_participation_label(event.get("participation_type") or ""))} / {capacity}</strong></div><div><span>受付方式</span><strong>{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</strong></div><div><span>応募締切</span><strong>{format_event_datetime(event.get("application_deadline")) if event.get("application_deadline") else "開催日時まで"}</strong></div></div><h2>内容</h2><p>{html.escape(event.get("description") or "").replace(chr(10), '<br>')}</p><h2>参加条件</h2><p>{html.escape(event.get("eligibility") or "特に設定されていません").replace(chr(10), '<br>')}</p><h2>キャンセル・中止条件</h2><p>{html.escape(event.get("cancellation_policy") or "主催者へご確認ください").replace(chr(10), '<br>')}</p><h2>主催者</h2><p>{organizer}<br><small>連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。</small></p></article><aside class="detail-side"><h2>参加受付</h2><p>{"この募集は現在受付中です。" if event_availability(event)[1] else "この募集は現在受け付けていません。"}</p>{f'<a class="button primary" href="{html.escape(application_url, quote=True)}">{apply_label}</a>' if can_apply else f'<span class="badge {state_class}">{html.escape(state)}</span>'}<p class="help">{"先着順は定員内で参加確定します。" if event.get("acceptance_mode") == "first_come" else "主催者承認制です。申請後、主催者の承認で参加確定します。"}</p></aside></section>{f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>' if can_apply else ""}'''
+    body = body.replace('<article class="detail-main">', '<article class="detail-main">' + club_ui.media(event.get('sport_category'), detail=True), 1)
+    body = body.replace('<aside class="detail-side">', '<aside class="detail-side"><p class="club-side-fee">' + fee + '</p>', 1)
     if can_apply and not (user or {}).get('authenticated') and event['payment_method'] != 'online' and email_notifications_ready():
         guest_url = guests.path(event_id)
         body = body.replace('<h2>参加受付</h2>', '<h2 id="entry-options">参加受付</h2>')
@@ -5311,6 +5316,7 @@ class Handler(BaseHTTPRequestHandler):
     def send_html(self, body, status=200):
         body = personalize_navigation(body, self.cookie_value("cm_session"), self.path)
         body = settings_ui.decorate(body)
+        body = club_ui.decorate(body, self.path)
         event = None
         event_path = urlparse(self.path).path
         if status == 200 and re.fullmatch(r'/events/[^/]+', event_path) and event_path != '/events/new':
@@ -5696,6 +5702,9 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path in settings_ui.ASSET_PATHS:
                 path, content_type = settings_ui.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)
+            elif parsed.path in club_ui.ASSET_PATHS:
+                path, content_type = club_ui.ASSET_PATHS[parsed.path]
+                self.send_file(path, content_type)
             elif parsed.path in circle_regions.ASSET_PATHS:
                 path, content_type = circle_regions.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)
@@ -6035,7 +6044,7 @@ class Handler(BaseHTTPRequestHandler):
             handle_http(self)
             return
         parsed = urlparse(self.path)
-        if parsed.path in {"/settings", "/venues", "/venues/", "/tennis", "/api/tennis-courts", "/api/venues"} or parsed.path in venues.ASSET_PATHS or parsed.path in settings_ui.ASSET_PATHS:
+        if parsed.path in {"/settings", "/venues", "/venues/", "/tennis", "/api/tennis-courts", "/api/venues"} or parsed.path in venues.ASSET_PATHS or parsed.path in settings_ui.ASSET_PATHS or parsed.path in club_ui.ASSET_PATHS:
             self.send_response(405)
             self.send_header("Allow", "GET")
             self.send_header("Content-Length", "0")
@@ -7355,6 +7364,10 @@ def event_query_conditions(params, include_all_statuses=False):
     date_to = (params.get("date_to", [""])[0] or "").strip()
     where = [] if include_all_statuses else ["e.status='published'", "e.starts_at>=?"]
     args = [] if include_all_statuses else [event_local_now()]
+    query = (params.get('q', [''])[0] or '').strip()[:200]
+    if query:
+        where.append('(e.title like ? or e.location like ? or e.organizer_name like ?)')
+        args.extend(['%' + query + '%'] * 3)
     if sport:
         where.append("e.sport_category like ?")
         args.append(f"%{sport}%")

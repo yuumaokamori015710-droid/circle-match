@@ -40,7 +40,7 @@ class NavigationPage(HTMLParser):
             self._select = {**attrs, 'form': self._form, 'options': []}
         if tag == 'option' and self._select is not None:
             self._option = {**attrs, 'text': ''}
-        if tag == 'a' and 'sport-card' in attrs.get('class', '').split():
+        if tag == 'a' and {'sport-card', 'club-sport'} & set(attrs.get('class', '').split()):
             self._anchor = {**attrs, 'text': ''}
 
     def handle_data(self, data):
@@ -116,7 +116,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 expected.update(tab='db', audience=audience)
             self.assertEqual(parse_qs(parts.query), {key: [value] for key, value in expected.items()})
 
-    def test_home_orders_latest_then_purpose_then_sports_without_active_feature(self):
+    def test_home_orders_sports_then_latest_then_purpose_without_active_feature(self):
         text, page = self.page('/')
         self.assertEqual(page.metadata.tabs, [])
         self.assertIn('スポーツ', page.visible)
@@ -127,7 +127,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
         self.assertIn('home-journey-join-heading', page.ids)
         self.assertIn('sports-list', page.ids)
         self.assertLess(text.index('id="homeLatestEvents"'), text.index('id="home-journeys-heading"'))
-        self.assertLess(text.index('id="home-journeys-heading"'), text.index('id="sports-list"'))
+        self.assertLess(text.index('id="sports-list"'), text.index('id="homeLatestEvents"'))
         self.assertGreaterEqual(len(page.cards), len(self.app.POPULAR_SPORTS))
         self.assertIn('homeLatestEvents', page.ids)
         self.assertIn('最新の募集', page.visible)
@@ -194,7 +194,7 @@ class SportNavigationTests(IsolatedAppHttpCase):
     def test_home_cards_choose_sport_once_and_preserve_only_shared_area(self):
         context = {'region': 'kanto', 'prefecture': '東京都'}
         _, page = self.page('/?' + urlencode(dict(context, q='not-for-cards', v_q='not-for-cards')))
-        sports = {item[0] for item in self.app.POPULAR_SPORTS}
+        sports = {item[0] for item in self.app.club_ui.SPORTS if item[0]}
         cards = [card for card in page.cards if parse_qs(urlsplit(card['href']).query).get('sport', [''])[0] in sports]
         self.assertEqual(len(cards), len(sports))
         for card in cards:
@@ -205,7 +205,8 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 self.assertEqual(set(query), {'sport', 'region', 'prefecture'})
                 self.assertEqual(query['region'], ['kanto'])
                 self.assertEqual(query['prefecture'], ['東京都'])
-                self.assertIn('探す', card['text'])
+                labels = {item[0]: item[1] for item in self.app.club_ui.SPORTS}
+                self.assertEqual(card['text'], labels[query['sport'][0]])
                 self.assertNotIn('募集を見る', card['text'])
 
     def test_global_context_crosses_tabs_without_feature_filters(self):
@@ -221,13 +222,15 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 else:
                     self.assert_shared_context(parsed, 'テニス', 'prefecture:東京都')
 
-    def test_selected_sport_db_keeps_audience_and_does_not_repeat_cards(self):
+    def test_selected_sport_db_keeps_audience_and_one_compact_rail(self):
         for audience in ['university', 'social']:
             with self.subTest(audience=audience):
                 _, parsed = self.page('/?' + urlencode(dict(self.GLOBAL, tab='db', audience=audience)))
                 self.assert_shared_tabs(parsed, 'サークルDB', self.GLOBAL, audience)
                 self.assert_shared_context(parsed, 'テニス', 'prefecture:東京都')
-                self.assertEqual(parsed.cards, [])
+                self.assertEqual(len(parsed.cards), len(self.app.club_ui.SPORTS))
+                active = [item for item in parsed.cards if item.get('aria-current') == 'true']
+                self.assertEqual([item['text'] for item in active], ['テニス'])
                 self.assertIn('dbList', parsed.ids)
 
     def test_direct_all_events_and_legacy_event_tab_remain_lists(self):
@@ -239,7 +242,8 @@ class SportNavigationTests(IsolatedAppHttpCase):
                 self.assertIn('eventList', parsed.ids)
         _, regional = self.page('/events?' + urlencode({'sport': 'テニス', 'region': 'kanto'}))
         self.assert_shared_context(regional, 'テニス', 'region:kanto')
-        self.assertEqual(regional.cards, [])
+        self.assertEqual(len(regional.cards), len(self.app.club_ui.SPORTS))
+        self.assertEqual(sum(item.get('aria-current') == 'true' for item in regional.cards), 1)
 
     def test_public_custom_sport_remains_discoverable_and_selected_without_exposing_drafts(self):
         host = user('navigation-host', 'navigation-host@example.test', '導線テスト主催者')
