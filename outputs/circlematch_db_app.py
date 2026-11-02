@@ -36,6 +36,7 @@ import circlematch_payment_ui as payment_ui
 import circlematch_event_pricing as event_pricing
 import circlematch_host_fees as host_fees
 import circlematch_host_billing as host_billing
+import circlematch_event_guests as guests
 import circlematch_login_security as login_security
 
 HOST_FEES_ENABLED = os.environ.get('CIRCLEMATCH_HOST_FEES_ENABLED', 'false') == 'true'
@@ -2008,6 +2009,14 @@ def render_event_detail_html(event_id, user=None, params=None):
     capacity = "定員なし" if not event.get("capacity") else f"{event.get('confirmed_count', 0)} / {event['capacity']}{html.escape(event.get('capacity_unit') or '')}"
     body = f'''<section class="intro"><div><p class="eyebrow">EVENT DETAIL</p><p><a href="{html.escape(return_to, quote=True)}">大会・イベント一覧</a> / {html.escape(event.get("sport_category") or "")}</p></div></section>
 <section class="detail"><article class="detail-main"><div><span class="badge {state_class}">{html.escape(state)}</span> <span class="badge">{html.escape(event.get("event_type") or "")}</span></div><h1>{html.escape(event.get("title") or "")}</h1><p>{html.escape(event.get("sport_category") or "")}</p><div class="detail-meta"><div><span>開催日時</span><strong>{format_event_datetime(event.get("starts_at"))}{(" 〜 " + format_event_datetime(event.get("ends_at"))) if event.get("ends_at") else ""}</strong></div><div><span>会場</span><strong>{html.escape(event.get("prefecture") or "地域未定")} / {html.escape(event.get("location") or "")}</strong></div><div><span>参加費</span><strong>{fee}</strong></div>{payment_html}<div><span>参加単位・定員</span><strong>{html.escape(event_participation_label(event.get("participation_type") or ""))} / {capacity}</strong></div><div><span>受付方式</span><strong>{html.escape(event_acceptance_label(event.get("acceptance_mode") or ""))}</strong></div><div><span>応募締切</span><strong>{format_event_datetime(event.get("application_deadline")) if event.get("application_deadline") else "開催日時まで"}</strong></div></div><h2>内容</h2><p>{html.escape(event.get("description") or "").replace(chr(10), '<br>')}</p><h2>参加条件</h2><p>{html.escape(event.get("eligibility") or "特に設定されていません").replace(chr(10), '<br>')}</p><h2>キャンセル・中止条件</h2><p>{html.escape(event.get("cancellation_policy") or "主催者へご確認ください").replace(chr(10), '<br>')}</p><h2>主催者</h2><p>{organizer}<br><small>連絡先メールアドレスは、参加申込後にアプリ内メッセージで扱います。</small></p></article><aside class="detail-side"><h2>参加受付</h2><p>{"この募集は現在受付中です。" if event_availability(event)[1] else "この募集は現在受け付けていません。"}</p>{f'<a class="button primary" href="{html.escape(application_url, quote=True)}">{apply_label}</a>' if can_apply else f'<span class="badge {state_class}">{html.escape(state)}</span>'}<p class="help">{"先着順は定員内で参加確定します。" if event.get("acceptance_mode") == "first_come" else "主催者承認制です。申請後、主催者の承認で参加確定します。"}</p></aside></section>{f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>' if can_apply else ""}'''
+    if can_apply and not (user or {}).get('authenticated') and event['payment_method'] != 'online' and email_notifications_ready():
+        guest_url = guests.path(event_id)
+        body = body.replace('<h2>参加受付</h2>', '<h2 id="entry-options">参加受付</h2>')
+        member_cta = f'<a class="button primary" href="{html.escape(application_url, quote=True)}">{apply_label}</a>'
+        body = body.replace(member_cta, f'<div class="card-actions"><a class="button primary" href="{guest_url}">会員登録なしで申し込む</a>'
+                            + member_cta.replace('button primary','button') + '</div>')
+        body = body.replace(f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>',
+                            '<a class="button primary mobile-apply" href="#entry-options">参加方法を選ぶ</a>')
     if application:
         label = event_admission_label(event, application)
         body = body.replace('<h2>参加受付</h2>', '<h2>参加受付</h2><p>あなたの申込: ' + html.escape(label) + '</p><a class="button" href="/mypage?tab=attending">申込状況・主催者への連絡</a>')
@@ -2029,7 +2038,7 @@ def render_event_detail_html(event_id, user=None, params=None):
     return event_page(event.get("title") or "大会・イベント詳細", body, share_script)
 
 
-def render_event_apply_html(event_id, user, params=None):
+def render_event_apply_html(event_id, user, params=None, *, guest=False):
     event = get_event(event_id)
     if not event:
         return None
@@ -2072,7 +2081,9 @@ def render_event_apply_html(event_id, user, params=None):
         body = body.replace("主催者の承認後に参加確定します。", "主催者の承認後に受付確定となります。開催決定後、別途最終参加確認が必要です。")
         body = body.replace("定員内であれば、この送信で参加が確定します。", "定員内であれば受付確定となります。開催決定後、別途最終参加確認が必要です。")
     fee_data = {kind: dict(zip(('amount', 'unit'), event_pricing.tariff(event, kind))) for kind in ('individual', 'team')}
-    script = APPLICATION_SCRIPT.replace("__SUBMIT_LABEL__", script_json(apply_label)).replace("__SAVED_TEAM__", script_json(dict(saved) if saved else None)).replace("__APPLICATION_RESULT__", script_json('/events/' + quote(str(event_id)) + '/apply' + context_query)).replace("__APPLICATION_FEE__", script_json(fee_data))
+    endpoint = (guests.path(event_id)+'/apply') if guest else ('/api/events/'+quote(event_id, safe='')+'/applications')
+    result_url = guests.path(event_id) if guest else '/events/' + quote(str(event_id)) + '/apply' + context_query
+    script = APPLICATION_SCRIPT.replace("__APPLICATION_ENDPOINT__",script_json(endpoint)).replace("__SUBMIT_LABEL__", script_json(apply_label)).replace("__SAVED_TEAM__", script_json(dict(saved) if saved else None)).replace("__APPLICATION_RESULT__", script_json(result_url)).replace("__APPLICATION_FEE__", script_json(fee_data))
     share_markup, share_script = event_share_dialog(event)
     return event_page("参加申込", body + share_markup, script + share_script)
 
@@ -2082,6 +2093,35 @@ def event_application_recap(event, application=None):
     if (event_pricing.amount_due(event, application) == 0 if application else event_pricing.is_free(event)):
         fields = [(label, value) for label, value in fields if label != "支払方法"]
     return '<section class="application-recap"><h2>' + html.escape(event.get("title") or "") + '</h2><dl>' + ''.join('<dt>' + label + '</dt><dd>' + html.escape(str(value)) + '</dd>' for label, value in fields) + '</dl></section>'
+
+
+def guest_entry_html(event):
+    eid = event['event_id']
+    url = guests.path(eid)
+    signin = '/signin?' + urlencode({'return_to':'/events/'+quote(eid)+'/apply'})
+    body = f"""<section class="form-shell"><p><a href="/events/{quote(eid)}">{html.escape(event['title'])}</a></p>
+<h1>ゲスト申込</h1><form id="guestEmail" method="post" action="{url}/request">
+<label class="field">メールアドレス<input type="email" name="email" required maxlength="254" autocomplete="email"></label>
+<p>この大会の申込・出欠確認に使うリンクをお送りします。会員登録は不要です。</p>
+<button class="button primary">確認メールを受け取る</button></form><p role="status" id="guestStatus"></p>
+<p><a href="{html.escape(signin,quote=True)}">会員の方はログインして申し込む</a></p></section>"""
+    script = """<script>const form=document.querySelector('#guestEmail'),out=document.querySelector('#guestStatus');
+form.onsubmit=async e=>{e.preventDefault();const b=form.querySelector('button');if(b.disabled)return;b.disabled=true;
+try{const r=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.elements.email.value})});
+const data=await r.json();if(!r.ok)throw Error(data.error||'メールを送信できませんでした');
+out.textContent='受付可能な場合、確認メールが届きます。20分以内にメールのリンクを開いてください。まだ申込みは確定していません。';}
+catch(e){out.textContent=e.message}finally{b.disabled=false}}</script>"""
+    return event_page('ゲスト申込',body,script)
+
+
+def render_guest_management(event, application):
+    url = guests.path(event['event_id'])
+    body = '<section class="form-shell"><h2>ゲスト申込の管理</h2><p>' + html.escape(application['team_name'] or application['applicant_name'] or '') + f' / {application["participant_count"]}名</p><p>参加費合計：' + html.escape(event_application_total(event,application)) + '</p>'
+    body += '<p>受付状況：' + html.escape(event_admission_label(event, application)) + '</p><p>支払状況：' + html.escape(application_payment_label(event, application)) + '</p>'
+    body += f'<p><a class="button" href="{url}/contact">主催者とのメッセージ</a></p>'
+    if application['status'] in {'pending','confirmed'}:
+        body += operation_form(url+'/cancel','<label><input type="checkbox" name="accept" value="yes" required>キャンセル条件を確認し、この申込全員分を取り消します。</label><button class="button">申込を取り消す</button>')
+    return body + '</section>'
 
 
 def event_application_brief(event):
@@ -2116,7 +2156,7 @@ form.onsubmit=async e=>{e.preventDefault();statusBox.hidden=true;
  const labels={participation_type:'参加単位',applicant_name:'申込代表者名',team_name:'チーム名',representative_name:'代表者名',participant_count:'参加予定人数',applicant_message:'主催者への連絡',payment_method:'支払方法'};
  $('reviewAnswers').innerHTML=Object.entries(payload).filter(([k])=>mode==='team'?k!=='applicant_name':!['team_name','representative_name'].includes(k)).map(([k,v])=>`<dt>${labels[k]}</dt><dd>${esc(k==='participation_type'?(v==='team'?'チーム参加':'個人参加'):k==='payment_method'?({on_site:'現地払い',bank_transfer:'口座振込'})[v]:v)||'なし'}</dd>`).join('');const price=currentFee();$('applicationFeeTotal').textContent=price.amount===null?'参加費は主催者へご確認ください。':'参加費合計：'+(price.amount*(price.unit==='1チーム'?1:Number(payload.participant_count))).toLocaleString()+'円';review(true);return}
  if(!form.reportValidity())return;const button=$('applicationSubmit');button.disabled=true;
- try{const r=await fetch('/api/events/'+encodeURIComponent(form.dataset.eventId)+'/applications',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await r.json();if(!r.ok)throw new Error(data.error||'申込に失敗しました');location.assign(resultUrl)}
+ try{const r=await fetch(__APPLICATION_ENDPOINT__,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,conditions_accepted:$('applicationConditions').checked})});const data=await r.json();if(!r.ok)throw new Error(data.error||'申込に失敗しました');location.assign(resultUrl)}
  catch(err){statusBox.hidden=false;statusBox.textContent=err.message;statusBox.focus();button.disabled=false}
 };
 </script>'''
@@ -2345,7 +2385,7 @@ def render_host_fee_html(event_id, user, csrf=''):
     return event_page('大会成立時の利用料（主催者）', host_fees.render(event, estimate), payment_ui.script(csrf))
 
 
-def render_event_attendance_html(event_id, user):
+def render_event_attendance_html(event_id, user, *, guest=False):
     with connect() as conn:
         event = conn.execute("select * from event_posts where event_id=?", (event_id,)).fetchone()
         application = conn.execute("select * from event_applications where event_id=? and applicant_user_id=?",
@@ -2365,7 +2405,8 @@ def render_event_attendance_html(event_id, user):
         expired = bool(event["attendance_deadline"] and event["attendance_deadline"] <= event_local_now())
         if not confirmed and event["starts_at"] > event_local_now() and not expired:
             body += f'<form id="formationForm"><p>この確認は申込全員（{application["participant_count"]}名）に適用されます。</p><label><input type="checkbox" required> 最新の開催内容・料金・キャンセル条件を確認し、参加します。</label><p><button type="submit" class="button primary">最終参加を確認する</button></p></form><p id="formationError" class="error-box" role="alert" hidden></p>'
-            script = formation_form_script(event, "attendance", "/events/" + quote(event_id) + "/attendance")
+            script = formation_form_script(event, "attendance", guests.path(event_id) if guest else "/events/" + quote(event_id) + "/attendance",
+                                          endpoint=guests.path(event_id)+'/attendance' if guest else None)
         elif not confirmed:
             body += f'<p>確認期限または開催日時を過ぎています。<a href="/events/{quote(event_id)}/contact">主催者へお問い合わせください。</a></p>'
         due = event_pricing.amount_due(event, application)
@@ -2382,12 +2423,16 @@ def render_event_attendance_html(event_id, user):
             body += '<p>参加費は当日、現地でお支払いください。</p>'
     else:
         body += '<p>開催決定と受付確定後に、こちらで最終参加確認ができます。</p>'
-    body += '<a class="button" href="/mypage?tab=attending">申込管理・主催者への連絡</a></section>'
+    body += '</section>' if guest else '<a class="button" href="/mypage?tab=attending">申込管理・主催者への連絡</a></section>'
+    if guest:
+        body = body.replace(f'/events/{quote(event_id)}/contact"', f'{guests.path(event_id)}/contact"')
+        body += render_guest_management(event, application)
+        script += EVENT_OPERATIONS_SCRIPT
     return event_page("開催案内・参加確認", body, script)
 
 
-def formation_form_script(event, action, destination):
-    data = {"endpoint": "/api/events/" + quote(event["event_id"]) + "/" + action,
+def formation_form_script(event, action, destination, endpoint=None):
+    data = {"endpoint": endpoint or "/api/events/" + quote(event["event_id"]) + "/" + action,
             "version": event["announcement_version"], "destination": destination}
     return r'''<script>(()=>{const data=__DATA__,form=document.getElementById('formationForm'),error=document.getElementById('formationError');
 form.onsubmit=async e=>{e.preventDefault();if(!form.reportValidity())return;const button=form.querySelector('button[type=submit]');button.disabled=true;error.hidden=true;
@@ -2677,7 +2722,7 @@ def render_event_application_operations(event_id, user, application_id=""):
     return event_page(title, body, EVENT_OPERATIONS_SCRIPT)
 
 
-def render_event_contact_html(event_id, user, peer_user_id=""):
+def render_event_contact_html(event_id, user, peer_user_id="", *, guest=False):
     if not user.get("authenticated"):
         raise PermissionError("ログインが必要です")
     with connect() as conn:
@@ -2703,7 +2748,9 @@ def render_event_contact_html(event_id, user, peer_user_id=""):
         body += '<div class="message"><strong>' + html.escape(message["sender_name"] or "利用者") + '</strong><small> ' + format_event_datetime(message["created_at"]) + '</small><p style="white-space:pre-wrap">' + html.escape(message["body"]) + '</p></div>'
     body += ('' if messages else '<p>まだメッセージはありません。</p>') + '</div>'
     fields = f'<input type="hidden" name="recipient_user_id" value="{html.escape(peer_user_id, quote=True) if owner else ""}"><div class="field"><label for="body">メッセージ</label><textarea id="body" name="body" maxlength="2000" required></textarea></div><button class="button primary">送信する</button>'
-    body += operation_form('/api' + prefix + '/messages', fields) + '</section>'
+    if guest:
+        body = body.replace('<a href="/mypage">マイページ</a>', f'<a href="{guests.path(event_id)}">ゲスト申込へ</a>')
+    body += operation_form(guests.path(event_id)+'/message' if guest else '/api' + prefix + '/messages', fields) + '</section>'
     return event_page("質問・連絡", body, EVENT_OPERATIONS_SCRIPT)
 
 
@@ -5307,7 +5354,8 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def read_json(self):
-        event_request = urlparse(self.path).path.startswith(('/api/events', '/api/invitations', '/api/payments'))
+        path = urlparse(self.path).path
+        event_request = path.startswith(('/api/events', '/api/invitations', '/api/payments')) or bool(guests.ROUTE.fullmatch(path))
         contact_request = urlparse(self.path).path == '/api/admin/contact-research/import'
         if event_request or contact_request:
             origin = self.headers.get('Origin', '')
@@ -5453,6 +5501,108 @@ class Handler(BaseHTTPRequestHandler):
             f"cm_session={session_id}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax{secure_cookie_suffix()}",
         ])
 
+    def guest_route(self, eid, action, *, post):
+        eid = unquote(eid)
+        if not re.fullmatch(r'[\w-]{1,200}',eid):
+            raise ValueError('募集IDが正しくありません')
+        event = get_event(eid)
+        if not event:
+            self.send_json({'error':'募集が見つかりません'},404)
+            return
+        url = guests.path(eid)
+        cookie = self.cookie_value(guests.COOKIE)
+        if not post and action == 'verify':
+            # Never run third-party content on the page that receives the email fragment.
+            body = guests.VERIFY_HTML.encode('utf-8')
+            self.send_response(200)
+            for key,value in [('Content-Type','text/html; charset=utf-8'),('Cache-Control','no-store'),
+                              ('Referrer-Policy','no-referrer'),('X-Robots-Tag','noindex, nofollow'),
+                              ('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"),
+                              ('Content-Length',str(len(body)))]:
+                self.send_header(key,value)
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        if post:
+            host = self.headers.get('Host','')
+            if self.headers.get('Origin') not in {'https://'+host,'http://'+host}:
+                raise PermissionError('大会ページから操作してください')
+            data = self.read_json()
+            if not isinstance(data,dict):
+                raise ValueError('入力形式が正しくありません')
+            attr = f'; Path={url}; HttpOnly; SameSite=Lax'+secure_cookie_suffix()
+            if action == 'request':
+                if not email_notifications_ready():
+                    self.send_json({'error':'確認メールを送信できません。ログインしてお申し込みください'},503)
+                    return
+                email = guests.email_address(data.get('email'))
+                available = event_availability(event)[1] and event['payment_method'] != 'online'
+                with connect() as conn:
+                    token = guests.reserve_link(conn,eid,email,self.client_address[0],SESSION_SECRET,available)
+                if token:
+                    link = SITE_BASE_URL.rstrip('/')+url+'/verify#'+token
+                    mail = {'from':EMAIL_FROM,'to':[email],'subject':'Circle Match | ゲスト申込のメール確認',
+                            'text':f"{event['title']}\n\nこの大会の申込・管理はこちら（20分間・1回限り）：\n{link}\n\n心当たりがなければ開かずに破棄してください。"}
+                    try:
+                        send_notification_email('guest-'+guests.digest(token),json.dumps(mail,ensure_ascii=False))
+                    except Exception:
+                        self.send_json({'error':'確認メールを送信できませんでした。時間を空けてお試しください'},503)
+                        return
+                self.send_json({'ok':True})
+                return
+            if action == 'redeem':
+                with connect() as conn:
+                    session = guests.redeem(conn,eid,data.get('token'))
+                self.send_json({'ok':True},cookies=[guests.COOKIE+'='+session+f'; Max-Age={guests.SESSION_TTL}'+attr])
+                return
+        with connect() as conn:
+            user = guests.actor(conn,eid,cookie)
+        if not user:
+            if post:
+                self.send_json({'error':'確認期限が切れました。ゲスト申込ページでメールを再確認してください'},401)
+            else:
+                self.send_html(guest_entry_html(event).encode('utf-8'))
+            return
+        application = user_event_application(eid,user)
+        if post:
+            with connect() as conn:
+                if action == 'apply':
+                    if data.get('conditions_accepted') is not True:
+                        raise ValueError('申込条件をご確認ください')
+                    submit_event_application(conn,eid,data,user)
+                elif action == 'attendance' and application:
+                    confirm_event_attendance(conn,eid,data,user)
+                elif action == 'cancel' and application and data.get('accept') == 'yes':
+                    cancel_event_application(conn,eid,application['application_id'],user)
+                elif action == 'message' and application:
+                    send_event_message(conn,eid,data,user)
+                elif action == 'exit':
+                    conn.execute('delete from app_state where state_key=?',(guests.PREFIX+'session:'+guests.digest(cookie),))
+                else:
+                    raise ValueError('この操作はできません')
+            self.send_json({'ok':True},cookies=[guests.COOKIE+'=; Max-Age=0'+attr] if action=='exit' else None)
+            return
+        if action == 'contact' and application:
+            page = render_event_contact_html(eid,user,guest=True)
+        elif action:
+            self.send_json({'error':'not found'},404)
+            return
+        elif application and (application['status']!='cancelled' or application['payment_status'] in {'paid','refund_pending'} or not event_availability(event)[1] or event['payment_method']=='online'):
+            page = render_event_attendance_html(eid,user,guest=True)
+        elif event_availability(event)[1] and event['payment_method'] != 'online':
+            page = render_event_apply_html(eid,user,guest=True)
+            if application:
+                page = page.replace('<h1>参加申込</h1>','<h1>再申込</h1><p>前回の申込は取消済みです。</p>')
+        else:
+            page = event_page('ゲスト申込','<h1>ゲスト申込</h1><p>現在、新規のゲスト申込は受け付けていません。</p>')
+        # The address is displayed only after verification and never in the public event listing.
+        footer = '<div class="form-shell"><p>確認済み：'+html.escape(user['email'])+'</p>'
+        footer += operation_form(url+'/exit','<button class="button">この端末でのゲスト利用を終了</button>')+'</div>'
+        page = page.replace('</body>',footer+EVENT_OPERATIONS_SCRIPT+'</body>')
+        if ADSENSE_HEAD:
+            page = page.replace(ADSENSE_HEAD,'')
+        self.send_html(page.encode('utf-8'))
+
     def do_GET(self):
         if self.path.startswith("/_tweet-bot/"):
             from chatgpt_bridge import handle_http
@@ -5461,6 +5611,9 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
         try:
+            if match := guests.ROUTE.fullmatch(parsed.path):
+                self.guest_route(match[1],match[2],post=False)
+                return
             if parsed.path == "/payments" or parsed.path.startswith("/payments/") or parsed.path == "/admin/payments" or parsed.path.startswith("/admin/payments/"):
                 admin = parsed.path.startswith("/admin/")
                 if admin and not self.payment_admin():
@@ -5596,6 +5749,10 @@ class Handler(BaseHTTPRequestHandler):
                 elif len(parts) == 3 and parts[2] == "apply":
                     user = current_user(self.cookie_value("cm_session"))
                     if not user.get("authenticated"):
+                        event = get_event(parts[1])
+                        if email_notifications_ready() and event and event['payment_method'] != 'online' and event_availability(event)[1]:
+                            self.redirect('/events/'+quote(parts[1],safe='')+'#entry-options')
+                            return
                         self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
                         return
                     page = render_event_apply_html(parts[1], user, query)
@@ -5871,6 +6028,9 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             return
         try:
+            if match := guests.ROUTE.fullmatch(parsed.path):
+                self.guest_route(match[1],match[2],post=True)
+                return
             if parsed.path.startswith("/api/payments/"):
                 try:
                     self.payment_post(parsed.path)
@@ -6669,7 +6829,7 @@ def current_user(session_id):
             """
             select u.user_id, u.email, u.display_name, u.picture_url
             from user_sessions s join user_accounts u on u.user_id=s.user_id
-            where s.session_id=? and datetime(s.expires_at) > datetime('now')
+            where s.session_id=? and datetime(s.expires_at) > datetime('now') and u.provider!='event_guest'
             """,
             (session_id,),
         ).fetchone()
@@ -7330,7 +7490,7 @@ def add_event_notification(conn, recipient_user_id, event_id, notification_type,
     if not inserted:
         return notification_id
     if email_allowed and email_notifications_ready():
-        account = conn.execute("select email from user_accounts where user_id=?", (recipient_user_id,)).fetchone()
+        account = conn.execute("select email,provider from user_accounts where user_id=?", (recipient_user_id,)).fetchone()
         email = (account["email"] or "").strip() if account else ""
         if not re.fullmatch(r"[^@\s\r\n]+@[^@\s\r\n]+\.[^@\s\r\n]+", email):
             conn.execute("update event_notifications set email_status='failed',email_error='invalid_recipient' where notification_id=?", (notification_id,))
@@ -7342,6 +7502,10 @@ def add_event_notification(conn, recipient_user_id, event_id, notification_type,
                         f"{SITE_BASE_URL.rstrip('/')}" + ('/settings/security' if notification_type in {'login_success','login_security_alert'} else '/notifications') + "\n\n"
                         "Circle Matchからの自動通知です。このメールには返信できません。",
             }
+            if account['provider'] == guests.PROVIDER:
+                payload['text'] = (f'{title}\n\nゲスト申込の状況・開催案内・主催者からの連絡はこちらで確認できます。\n'
+                                   + SITE_BASE_URL.rstrip('/') + guests.path(event_id)
+                                   + '\n別の端末では申込時のメールアドレスを確認してください。')
             conn.execute("insert into event_email_outbox(notification_id,payload_json) values(?,?)",
                          (notification_id, json.dumps(payload, ensure_ascii=False)))
     return notification_id
@@ -7675,6 +7839,18 @@ def submit_event_application(conn, event_id, data, user):
     event_is_open_for_application(event)
     if event["organizer_user_id"] == user["user_id"]:
         raise ValueError("主催者本人はこの募集に申し込めません")
+    if user.get('guest'):
+        if event['payment_method'] == 'online':
+            raise ValueError('オンライン決済の大会はログインしてお申し込みください')
+        if conn.execute("select 1 from user_accounts where user_id=? and lower(email)=?",
+                        (event['organizer_user_id'],user['email'].lower())).fetchone():
+            raise ValueError("主催者本人はこの募集に申し込めません")
+    if conn.execute("""select 1 from event_applications a join user_accounts u on u.user_id=a.applicant_user_id
+                       where a.event_id=? and a.applicant_user_id!=? and lower(u.email)=?
+                       and (a.status!='cancelled' or a.payment_status in ('paid','refund_pending'))
+                       and (u.provider=? or ?=1) limit 1""",
+                    (event_id,user['user_id'],(user.get('email') or '').lower(),guests.PROVIDER,int(bool(user.get('guest'))))).fetchone():
+        raise ValueError('このメールアドレスには既存の申込があります。元の申込方法で確認してください')
     existing = conn.execute(
         "select * from event_applications where event_id=? and applicant_user_id=?",
         (event_id, user["user_id"]),
