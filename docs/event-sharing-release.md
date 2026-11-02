@@ -38,6 +38,17 @@
 
 ## Release Safety
 
+### Known Incomplete Shared URL (2026-11-02 JST)
+
+The shared public detail URL ending in
+`event_user_supabase_fe23d660_0d10_49cc_ae6_` is an exact, allowlisted alias for
+`event_user_supabase_fe23d660_0d10_49cc_ae6_f42c6bd8fd`. Anonymous GET requests
+redirect to the canonical public detail URL while preserving query context.
+No general ID-prefix matching is performed. Draft or missing targets remain
+unavailable; actions and POST routes do not resolve aliases. Canonical event
+IDs, pricing, reservations, account access, payment configuration and sharing
+URL generation are unchanged. Covered by `scripts/test_event_public_urls.py`.
+
 No database schema or seed-data changes are required. Existing event and circle
 records are preserved. All test event creation and application actions used an
 isolated local database with outgoing notifications disabled. No posts were sent

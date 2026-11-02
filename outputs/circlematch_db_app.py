@@ -179,6 +179,11 @@ EVENT_ACCEPTANCE_MODES = {"first_come", "approval"}
 EVENT_PARTICIPATION_TYPES = {"individual", "team", "both"}
 EVENT_STATUSES = {"draft", "published", "closed", "cancelled"}
 APPLICATION_STATUSES = {"pending", "confirmed", "declined", "cancelled"}
+# Repair only known shared links; never infer an event from an arbitrary ID prefix.
+PUBLIC_EVENT_URL_ALIASES = {
+    "event_user_supabase_fe23d660_0d10_49cc_ae6_":
+        "event_user_supabase_fe23d660_0d10_49cc_ae6_f42c6bd8fd",
+}
 ADSENSE_HEAD = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5276152865683531" crossorigin="anonymous"></script>'
 ADSENSE_ADS_TXT = b"google.com, pub-5276152865683531, DIRECT, f08c47fec0942fa0\n"
 BRAND_WORDMARK = '<span class="brand-wordmark"><span class="brand-word-circle">Circle</span><span class="brand-word-match">Match</span></span>'
@@ -5611,6 +5616,15 @@ class Handler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
         try:
+            public_parts = parsed.path.strip('/').split('/')
+            if len(public_parts) == 2 and public_parts[0] == 'events':
+                canonical_id = PUBLIC_EVENT_URL_ALIASES.get(unquote(public_parts[1]))
+                if canonical_id and get_event(canonical_id):
+                    location = '/events/' + quote(canonical_id, safe='')
+                    if query:
+                        location += '?' + urlencode(query, doseq=True)
+                    self.redirect(location)
+                    return
             if match := guests.ROUTE.fullmatch(parsed.path):
                 self.guest_route(match[1],match[2],post=False)
                 return
