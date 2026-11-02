@@ -576,6 +576,44 @@ class PublicContactTests(unittest.TestCase):
 
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_november_2_unverified_listings_keep_source_identity_and_existing_contacts(self):
+        circle_book = [('1/12卓球交流会', 11783), ('51basketball2', 66103),
+                       ('バドミントン民族', 21119), ('Angriff', 5426), ('ARC', 2079),
+                       ('BADMO', 9706), ('bbs', 9033), ('BCとち', 3760), ('BLOWING', 18159),
+                       ('BLUE', 12274), ('C4lloN', 23098), ('CAPRISE', 4991), ('CC Club', 72845),
+                       ('civaula', 11613), ('COLOR', 19210), ('CS', 71138), ('Cupid', 17668),
+                       ('DD.D', 14696), ('Denpro Technologies', 67177)]
+        net_member = [('C.B.Gym', 172051), ('anchor', 227624), ('aube', 171552),
+                      ('blast_', 228595), ('cedar', 165368), ('drop', 106643), ('ducks', 227569)]
+        cases = [(query, f'https://circle-book.com/circles/{number}')
+                 for query, number in circle_book]
+        cases += [(query, f'https://www.net-menber.com/look/data/{number}.html')
+                  for query, number in net_member]
+        seed = {r['circle_id']: r for r in json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))}
+        self.assertEqual(len(cases), 26)
+        identifiers = set()
+        for query, source in cases:
+            with self.subTest(source=source):
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + quote(query))[1])
+                row = next(r for r in rows if r['source_url'] == source)
+                self.assertNotIn(row['circle_id'], identifiers)
+                identifiers.add(row['circle_id'])
+                self.assertEqual(row['organization_type'], '社会人サークル')
+                self.assertNotIn('claimant_email', row)
+                self.assertNotIn('user_id', row)
+                later = seed.get(row['circle_id'])
+                if later and later['checked_at'] > '2026-11-02':
+                    self.assertEqual(row['public_contact_email'], later.get('email', ''))
+                    self.assertEqual(row['contact_url'], later.get('contact_url', ''))
+                    self.assertEqual(row['contact_source_url'], later['source_url'])
+                else:
+                    self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+        root = contacts.SEED_PATH.parents[1]
+        previous = json.loads(subprocess.check_output(
+            ['git', 'show', '42ff982965193d32ee8f3e31afd9b3e061ca3b00:outputs/circle_public_contacts.json'], cwd=root))
+        self.assertEqual(len(previous), 482)
+        self.assertEqual(list(seed.values())[:482], previous)
+
     def test_november_1_unverified_listings_keep_source_identity_and_existing_contacts(self):
         cases = [('LaQua94', 171340), ('LaQua94', 199763), ('Lasucre', 173808),
                  ('Luca', 4703), ('Luce', 230353), ('Lulu', 221072), ('MAKES', 97349),
