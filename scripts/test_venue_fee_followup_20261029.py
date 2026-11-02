@@ -33,9 +33,10 @@ class October29VenueReviewTests(unittest.TestCase):
         for entry in review.reviewed_policies():
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 861)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 345)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 336)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 861)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 345)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later, 336)
 
     def test_taito_room_duration_and_eligibility_not_combined(self):
         for ident, room, inside, outside in review.TAITO_ROOMS:
@@ -92,7 +93,8 @@ class October29VenueReviewTests(unittest.TestCase):
                 self.assertEqual(old, new)
             else:
                 self.assertEqual(old, new[:len(old)])
-                self.assertEqual(len(new) - len(old), 19)
+                self.assertEqual(sum(r['checked_at'] == review.CHECKED for r in new[len(old):]), 19)
+                self.assertTrue(all(r['checked_at'] >= review.CHECKED for r in new[len(old):]))
 
     def test_idempotence_and_conflict_no_write(self):
         paths = [review.CATALOGS / p for p in ['fee_plans.json', 'cancellation_policies.json']]

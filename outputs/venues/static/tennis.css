@@ -149,6 +149,7 @@ body.venue-modal-open{overflow:hidden}
 .venue-directory .venue-detail-content dd{margin:0;overflow-wrap:anywhere}
 .venue-directory .venue-court-note,.venue-directory .venue-opening-hours{font-size:12px;line-height:1.8;margin:8px 0;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
 .venue-directory .venue-court-note:empty{display:none}
+.venue-directory .venue-cancellation{overflow-wrap:anywhere}
 .venue-directory .venue-source-list{padding-left:18px;margin:6px 0;font-size:12px}
 .venue-directory .venue-source-list li{margin:5px 0;overflow-wrap:anywhere}
 .venue-directory .venue-tariff{border-collapse:collapse;width:100%;font-size:12px}
@@ -185,7 +186,7 @@ body.venue-modal-open{overflow:hidden}
  .venue-directory .venue-fee-link{min-height:36px}
  .venue-directory .venue-details-row,.venue-directory .venue-details-row>td{display:block}
  .venue-directory .venue-details-row>td{padding:0 12px}
- .venue-directory .venue-detail-content{grid-template-columns:1fr;gap:16px}
+ .venue-directory .venue-detail-content{grid-template-columns:minmax(0,1fr);gap:16px}
  .venue-directory .venue-map-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:640px){
