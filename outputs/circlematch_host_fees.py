@@ -85,8 +85,8 @@ def notice(*, event_id='', heading='大会成立時の主催者利用料', compa
 
 
 def legacy_notice(event_id=''):
-    link = f'<p><a href="/events/{quote(event_id,safe="")}/host-fee">利用料の適用状況を確認する</a></p>' if event_id else ''
-    return '<section class="host-fee-note" data-host-fee-private><h3>主催者利用料は対象外</h3><p>この募集は利用料の導入前に作成されています。新しい利用料は遡及適用しません。複製して新しく作成する募集には、公開前に利用料の条件を案内します。</p>' + link + '</section>'
+    link = f'<p><a href="/events/{quote(event_id,safe="")}/host-fee">利用料の条件と適用可否を確認する</a></p>' if event_id else ''
+    return '<section class="host-fee-note" data-host-fee-private><h3>主催者利用料は未適用</h3><p>この募集に利用料は自動で適用されません。開催決定前・入金前に限り、主催者がこの大会だけに適用できます。</p>' + link + '</section>'
 
 
 def form_notice(*, require_consent=True, legacy=False):
@@ -128,9 +128,18 @@ def render(event, estimate):
     if estimate['mode'] == 'test':
         actions += '<p class="host-fee-note">テストモードです。実際の請求・送金は行いません。</p>'
     if estimate['legacy_event']:
-        actions += '<p>この募集は導入前のため利用料の対象外です。無断で遡及適用しません。</p>'
+        actions += '<h3>この大会への適用は任意です</h3><p>同意しなくても、今の募集・受付はそのまま続けられます。</p>'
+        if estimate['opt_in_blocker']:
+            actions += '<p>' + html.escape(estimate['opt_in_blocker']) + '</p>'
+        else:
+            actions += payment_ui.action('/api/payments/host-fees/'+event_id+'/opt-in', 'この大会に利用料を適用する',
+                fields='<label class="payment-consent"><input type="checkbox" name="accepted" required>参加費はまだ受け取っていません。開催を決定した場合、入金確認済みの参加費売上の10%を主催者として支払うことに同意します。</label>',
+                values={'policy_version':POLICY_VERSION})
+            actions += '<p>この操作では決済・引き落としは行いません。</p>'
     elif not estimate['agreement_accepted']:
         actions += '<p>公開前の主催者利用料への同意待ちです。</p>'
+    else:
+        actions += '<p>主催者利用料の条件に同意済みです。</p>'
     if estimate['refund_review_amount']:
         actions += '<p class="host-fee-note">利用料の返金・精算確認が必要です：' + money(estimate['refund_review_amount']) + '。重ねて支払わず、運営へ連絡してください。自動返金の完了を示すものではありません。</p>'
     if not estimate['billing_enabled']:

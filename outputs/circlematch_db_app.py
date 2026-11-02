@@ -2334,7 +2334,10 @@ def host_fee_estimate(event_id, user):
     if not user.get('authenticated'):
         raise PermissionError('ログインが必要です')
     with connect() as conn:
-        return host_fee_service().balance(conn, event_id, user['user_id'])
+        event, estimate = host_fee_service().balance(conn, event_id, user['user_id'])
+        if estimate['legacy_event']:
+            estimate['opt_in_blocker'] = host_billing.legacy_opt_in_blocker(conn, event, event_local_now())
+        return event, estimate
 
 
 def render_host_fee_html(event_id, user, csrf=''):
@@ -5368,7 +5371,13 @@ class Handler(BaseHTTPRequestHandler):
         elif len(parts)==3 and parts[0]=='host-fees' and not admin:
             if not HOST_FEES_ENABLED:
                 raise ValueError('ページが見つかりません')
-            if parts[2]=='checkout':
+            if parts[2]=='opt-in':
+                with connect() as conn:
+                    if host_billing.opt_in_legacy(conn, parts[1], uid, data, event_local_now()):
+                        audit(conn, 'host_fee_consent', 'event_post', parts[1], {
+                            'policy_version':host_fees.POLICY_VERSION, 'fee_bps':host_fees.FEE_BPS,
+                            'organizer_id':uid, 'source':'legacy_opt_in'})
+            elif parts[2]=='checkout':
                 result = host_fee_service().checkout(parts[1],uid,data)
             elif parts[2]=='reconcile':
                 with connect() as conn:

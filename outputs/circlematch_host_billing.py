@@ -85,6 +85,42 @@ def enroll(conn, event_id, user_id, data, *, is_new):
     return False
 
 
+def legacy_opt_in_blocker(conn, event, local_now):
+    if event['status'] not in {'published', 'closed'} or event['starts_at'] <= local_now or event['announcement_version']:
+        return '開催決定前の、開催予定の公開大会だけが対象です。'
+    if pricing.is_free(event):
+        return '無料大会の利用料は0円です。'
+    eid = event['event_id']
+    if (conn.execute("select 1 from event_applications where event_id=? and payment_status!='unpaid' limit 1", (eid,)).fetchone()
+            or conn.execute('select 1 from payment_orders where event_id=? limit 1', (eid,)).fetchone()):
+        return '入金・決済の記録があるため、後から利用料を適用できません。'
+    return ''
+
+
+def opt_in_legacy(conn, event_id, user_id, data, local_now):
+    # Serialize consent with formation and payment writes: a previously shown form may be stale.
+    conn.execute('begin immediate')
+    event = conn.execute('select * from event_posts where event_id=? and organizer_user_id=?',
+                         (event_id, user_id)).fetchone()
+    if not event:
+        raise PermissionError('この大会の主催者本人だけが同意できます')
+    if set(data) != {'accepted', 'policy_version'} or data['accepted'] is not True or data['policy_version'] != policy.POLICY_VERSION:
+        raise PaymentError('最新の主催者利用料の条件を確認し、明示的に同意してください')
+    existing = agreement(conn, event_id)
+    if existing:
+        if existing['accepted_at'] and existing['policy_version'] == policy.POLICY_VERSION and existing['organizer_id'] == user_id:
+            return False
+        raise PaymentError('この大会は既存募集の任意適用の対象ではありません')
+    blocker = legacy_opt_in_blocker(conn, event, local_now)
+    if blocker:
+        raise PaymentError(blocker)
+    now = stamp()
+    conn.execute('''insert into host_fee_agreements
+                    (event_id,organizer_id,policy_version,fee_bps,accepted_at,created_at)
+                    values(?,?,?,?,?,?)''', (event_id, user_id, policy.POLICY_VERSION, policy.FEE_BPS, now, now))
+    return True
+
+
 class Billing:
     def __init__(self, connect, payments, notify):
         self.connect, self.payments, self.notify = connect, payments, notify

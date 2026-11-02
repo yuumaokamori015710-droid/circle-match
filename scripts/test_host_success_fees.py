@@ -42,8 +42,8 @@ class HostSuccessFeeTests(unittest.TestCase):
         cls.thread.join()
         cls.temp.cleanup()
 
-    def event(self):
-        payload = event_payload(self.id(), capacity='')
+    def event(self, prefix=''):
+        payload = event_payload(prefix+self.id(), capacity='')
         payload.update(participation_type='both', individual_fee_amount=2500, team_fee_amount=15000,
                        minimum_participants=2, payment_method='on_site',
                        host_fee_accepted=True, host_fee_policy_version=self.app.host_fees.POLICY_VERSION)
@@ -294,6 +294,83 @@ class HostSuccessFeeTests(unittest.TestCase):
         self.assertEqual(gateway.created,1)
         with self.app.connect() as conn:
             self.assertEqual(conn.execute('select count(*) from host_fee_orders where event_id=?',(eid,)).fetchone()[0],1)
+
+    def test_legacy_opt_in_requires_owner_csrf_and_current_explicit_consent(self):
+        eid = self.event()
+        with self.app.connect() as conn:
+            conn.execute('delete from host_fee_agreements where event_id=?', (eid,))
+        path = f'/events/{eid}/host-fee'
+        with self.get(path, self.host) as response:
+            page = response.read().decode()
+        self.assertIn('この大会への適用は任意', page)
+        self.assertIn('type="checkbox" name="accepted" required', page)
+        self.assertNotIn(' checked', page.split('data-pay=')[-1].split('</form>')[0])
+        data = dict(accepted=True, policy_version=self.app.host_fees.POLICY_VERSION)
+
+        def post(account, payload, csrf=True):
+            cookie = 'cm_session=' + self.sessions[account['user_id']] if account else ''
+            headers = {'Cookie':cookie, 'Content-Type':'application/json'}
+            if csrf:
+                import hmac, hashlib
+                identity = self.sessions[account['user_id']] if account else ''
+                headers['X-CSRF-Token'] = hmac.new(self.app.SESSION_SECRET.encode(),
+                    ('payments:'+identity).encode(), hashlib.sha256).hexdigest()
+            req = Request(self.base+f'/api/payments/host-fees/{eid}/opt-in',
+                          data=json.dumps(payload).encode(),headers=headers)
+            try:
+                with urlopen(req,timeout=10) as response:
+                    return response.status
+            except HTTPError as error:
+                error.close()
+                return error.code
+
+        self.assertEqual(post(None,data),401)
+        self.assertEqual(post(self.other,data),403)
+        self.assertEqual(post(self.host,data,False),403)
+        for invalid in [dict(data,accepted=False), dict(data,accepted=1),
+                        dict(data,policy_version='old'), dict(data,amount=0)]:
+            self.assertEqual(post(self.host,invalid),400)
+        with self.app.connect() as conn:
+            self.assertIsNone(self.app.host_billing.agreement(conn,eid))
+        self.assertEqual(post(self.host,data),200)
+        with self.app.connect() as conn:
+            accepted = self.app.host_billing.agreement(conn,eid)
+        self.assertEqual(post(self.host,data),200)
+        with self.app.connect() as conn:
+            self.assertEqual(accepted,self.app.host_billing.agreement(conn,eid))
+            self.assertEqual(accepted['organizer_id'],self.host['user_id'])
+            self.assertTrue(accepted['accepted_at'])
+            self.assertEqual(conn.execute('select count(*) from host_fee_orders where event_id=?',(eid,)).fetchone()[0],0)
+        self.assertNotIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
+        self.assertNotIn('/opt-in',self.app.render_event_detail_html(eid,self.guest))
+        self.apply(eid)
+        self.announce(eid)
+        self.assertEqual(self.app.host_fee_estimate(eid,self.host)[1]['charge_due'],0)
+        with self.app.connect() as conn:
+            conn.execute("update event_applications set payment_status='paid' where event_id=?", (eid,))
+        self.assertEqual(self.app.host_fee_estimate(eid,self.host)[1]['charge_due'],500)
+
+    def test_legacy_consent_rechecks_formation_and_existing_payments(self):
+        for reason in ['announced','paid','cancelled','past','free']:
+            with self.subTest(reason=reason):
+                eid = self.event(reason)
+                self.apply(eid)
+                with self.app.connect() as conn:
+                    conn.execute('delete from host_fee_agreements where event_id=?',(eid,))
+                self.assertIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
+                with self.app.connect() as conn:
+                    if reason == 'paid':
+                        conn.execute("update event_applications set payment_status='paid' where event_id=?",(eid,))
+                    else:
+                        update = {'announced':'announcement_version=1', 'cancelled':"status='cancelled'",
+                                  'past':"starts_at='2020-01-01T09:00'", 'free':'individual_fee_amount=0,team_fee_amount=0'}[reason]
+                        conn.execute('update event_posts set '+update+' where event_id=?',(eid,))
+                self.assertNotIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
+                with self.assertRaises(ValueError), self.app.connect() as conn:
+                    self.app.host_billing.opt_in_legacy(conn,eid,self.host['user_id'],
+                        dict(accepted=True,policy_version=self.app.host_fees.POLICY_VERSION),self.app.event_local_now())
+                with self.app.connect() as conn:
+                    self.assertIsNone(self.app.host_billing.agreement(conn,eid))
 
     def test_uncertain_creation_beyond_idempotency_window_requires_review(self):
         eid = self.paid_event()
