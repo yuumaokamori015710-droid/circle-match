@@ -277,6 +277,12 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
                 self.assertEqual(row['checked_at'], '2026-10-27')
                 self.assertEqual(row['availability_status'], 'SUSPENDED')
                 self.assertIn('再開日は未定', row['availability_note'])
+            elif row['id'] == 'tokyo-venue-5fe09db3d869':
+                self.assertEqual(row['checked_at'], '2026-11-03')
+                self.assertEqual(row['availability_status'], 'SUSPENDED')
+                self.assertIn('2027年2月16日', row['availability_note'])
+                self.assertIn('https://www.city.sumida.lg.jp/sisetu_info/tamokuteki/communitykaikan/index.html',
+                              [source['url'] for source in row['sources']])
             else:
                 self.assertEqual(row['checked_at'], '2026-10-12')
                 self.assertEqual(row['availability_status'], 'UNKNOWN')

@@ -34,10 +34,11 @@ class October27VenueReviewTests(unittest.TestCase):
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
         later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED' and r['checked_at'] > review.CHECKED for r in self.rows.values())
         self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 830)
         self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 376)
         self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED'
-                             for r in self.rows.values()) + later, 367)
+                             for r in self.rows.values()) + later + later_closures, 367)
 
     def test_holds_not_free_or_legacy_tariffs(self):
         for ident in review.HOLDS:
@@ -104,6 +105,8 @@ class October27VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', review.BASE + ':' + rel], cwd=ROOT))
             current = json.loads((ROOT / rel).read_bytes())
+            from venue_review_test_helpers import before_november3_closure
+            current = before_november3_closure(current, previous)
             if not name.startswith('tokyo_'):
                 self.assertEqual(previous, current[:len(previous)])
                 continue

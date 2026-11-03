@@ -34,9 +34,10 @@ class October29VenueReviewTests(unittest.TestCase):
             self.assertEqual(self.rows[entry['id']]['cancellation'], entry)
         self.assertEqual(len(self.rows), 1206)
         later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED' and r['checked_at'] > review.CHECKED for r in self.rows.values())
         self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 861)
         self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 345)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later, 336)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later + later_closures, 336)
 
     def test_taito_room_duration_and_eligibility_not_combined(self):
         for ident, room, inside, outside in review.TAITO_ROOMS:
@@ -89,6 +90,8 @@ class October29VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             old = json.loads(subprocess.check_output(['git', 'show', review.BASE + ':' + rel], cwd=ROOT))
             new = json.loads((ROOT / rel).read_text(encoding='utf-8'))
+            from venue_review_test_helpers import before_november3_closure
+            new = before_november3_closure(new, old)
             if name.startswith('tokyo_'):
                 self.assertEqual(old, new)
             else:

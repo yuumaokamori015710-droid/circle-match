@@ -140,7 +140,8 @@ class October22VenueReviewTests(unittest.TestCase):
         for name in ['tokyo_tennis.json', 'tokyo_sports.json', 'tokyo_expansion.json']:
             relative = 'outputs/venues/catalogs/' + name
             previous = subprocess.check_output(['git', 'show', base + ':' + relative], cwd=ROOT)
-            current = {r['id']: r for r in json.loads((ROOT / relative).read_bytes())}
+            from venue_review_test_helpers import before_november3_closure
+            current = {r['id']: r for r in before_november3_closure(json.loads((ROOT / relative).read_bytes()), json.loads(previous))}
             corrections = {'tokyo-venue-ec7d0ac023ca': {'checked_at', 'availability_status', 'availability_note', 'sources'},
                            'tokyo-venue-3df7eec0d53c': {'checked_at', 'availability_status', 'availability_note', 'sources'},
                            'tokyo-venue-a2d6191898f8': {'checked_at', 'booking_note', 'sources'}}

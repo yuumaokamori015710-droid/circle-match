@@ -26,9 +26,11 @@ class November2VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(review.reviewed_fees()), 17)
         self.assertEqual(len(review.reviewed_policies()), 17)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 878)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 328)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 319)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED' and r['checked_at'] > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 878)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 328)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later + later_closures, 319)
         for fee in review.reviewed_fees():
             row = self.rows[fee['id']]
             self.assertEqual(row['fee_options'], fee['fee_options'])
@@ -120,11 +122,13 @@ class November2VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             old = json.loads(subprocess.check_output(['git', 'show', review.BASE + ':' + rel], cwd=ROOT))
             new = json.loads((ROOT / rel).read_text(encoding='utf-8'))
+            from venue_review_test_helpers import before_november3_closure
+            new = before_november3_closure(new, old)
             if name.startswith('tokyo_'):
                 self.assertEqual(old, new)
             else:
                 self.assertEqual(old, new[:len(old)])
-                self.assertEqual(len(new) - len(old), 17)
+                self.assertEqual(sum(r['checked_at'] == review.CHECKED for r in new[len(old):]), 17)
 
     def test_idempotence_and_conflict_refusal_before_any_write(self):
         paths = [review.CATALOGS / p for p in ['fee_plans.json', 'cancellation_policies.json']]

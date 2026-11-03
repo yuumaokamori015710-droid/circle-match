@@ -7110,7 +7110,7 @@
     "booking_note": "イベント用途のみ。地域集会室の利用には平日等の学童クラブ運営による時間制限がある。スポーツ施設としては扱わない。",
     "booking_url": "https://www.city.sumida.lg.jp/sisetu_info/tamokuteki/communitykaikan/higashikomagata/chiikisyukaishiyo.html",
     "official_url": "https://www.city.sumida.lg.jp/sisetu_info/tamokuteki/communitykaikan/higashikomagata/gaiyou.html",
-    "checked_at": "2026-10-12",
+    "checked_at": "2026-11-03",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -7126,10 +7126,14 @@
       {
         "title": "地域集会室",
         "url": "https://www.city.sumida.lg.jp/sisetu_info/tamokuteki/communitykaikan/higashikomagata/chiikisyukaishiyo.html"
+      },
+      {
+        "title": "墨田区公式：東駒形コミュニティ会館の大規模修繕休館",
+        "url": "https://www.city.sumida.lg.jp/sisetu_info/tamokuteki/communitykaikan/index.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "",
+    "availability_status": "SUSPENDED",
+    "availability_note": "東駒形コミュニティ会館は修繕工事で2026年10月10日～12月20日全館休館。集会室・図書室は2027年2月16日まで、体育室は2月28日まで休室予定。工事状況により変更あり。旧集会室料金を現在予約可能な料金として追加せず、通常検索から除外します。",
     "sports": [
       "イベント"
     ]

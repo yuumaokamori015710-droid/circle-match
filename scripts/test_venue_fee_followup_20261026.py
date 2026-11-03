@@ -104,6 +104,8 @@ class October26VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', base + ':' + rel], cwd=ROOT))
             current = json.loads((ROOT / rel).read_bytes())
+            from venue_review_test_helpers import before_november3_closure
+            current = before_november3_closure(current, previous)
             if name == 'tokyo_expansion.json':
                 for before, after in zip(previous, current):
                     if before['id'] == 'tokyo-venue-3df7eec0d53c':

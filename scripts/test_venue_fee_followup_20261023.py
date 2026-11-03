@@ -141,7 +141,8 @@ class October23VenueReviewTests(unittest.TestCase):
                      'fee_plans.json', 'cancellation_policies.json']:
             rel = 'outputs/venues/catalogs/' + name
             previous = json.loads(subprocess.check_output(['git', 'show', base + ':' + rel], cwd=ROOT))
-            current = {r['id']: r for r in json.loads((ROOT / rel).read_bytes())}
+            from venue_review_test_helpers import before_november3_closure
+            current = {r['id']: r for r in before_november3_closure(json.loads((ROOT / rel).read_bytes()), previous)}
             for before in previous:
                 after = current[before['id']]
                 allowed = permitted.get(before['id'], set()) if name == 'tokyo_expansion.json' else set()
