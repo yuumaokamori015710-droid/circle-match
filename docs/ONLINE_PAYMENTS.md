@@ -145,7 +145,7 @@ loopback以外へ公開しない。`participant / host / receipt / cancel / paym
 |---|---|
 | CIRCLEMATCH_ONLINE_PAYMENTS_ENABLED | デフォルトfalse。新規受付だけ制御 |
 | CIRCLEMATCH_STRIPE_MODE | test / live、デフォルトtest |
-| CIRCLEMATCH_STRIPE_SECRET_KEY | 対応モードのサーバー秘密鍵 |
+| CIRCLEMATCH_STRIPE_SECRET_KEY | 対応モードのサーバー秘密鍵（sk_test_/sk_live_）または制限付きキー（rk_test_/rk_live_） |
 | CIRCLEMATCH_STRIPE_PLATFORM_ACCOUNT | 接続すべき日本のacct_ ID |
 | CIRCLEMATCH_STRIPE_WEBHOOK_SECRET | プラットフォーム用Webhook署名鍵 |
 | CIRCLEMATCH_STRIPE_CONNECT_WEBHOOK_SECRET | Connect用Webhook署名鍵（別エンドポイント） |
@@ -153,6 +153,11 @@ loopback以外へ公開しない。`participant / host / receipt / cancel / paym
 | CIRCLEMATCH_SITE_BASE_URL | テストサイトの正規URL、本番はhttps必須 |
 | CIRCLEMATCH_SESSION_SECRET | 既存の推測不可能なサーバー秘密値を維持 |
 | CIRCLEMATCH_ADMIN_PASSWORD | 既存の運営管理用認証。空なら決済管理拒否 |
+
+制限付きキーを優先し、実際に有効化する機能に必要な権限だけを付与する。
+主催者利用料の直接決済用キーと、参加費のConnect分配に必要な権限は同じではない。
+キーの形式が有効でも権限・審査・実Stripe試験の完了は別途必要であり、
+モード一致・本番承認・Webhookのチェックを省略して受付を有効にしない。
 
 1. 専用テスト環境・独立DB・テストユーザーを作成。StripeのテストモードでConnect設定を確認。
 2. APIキーとプラットフォームIDが同じテスト環境であることを確認。

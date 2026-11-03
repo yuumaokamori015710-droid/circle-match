@@ -6,13 +6,14 @@ from pathlib import Path
 import sys
 import time
 import unittest
+from dataclasses import replace
 from unittest.mock import patch
 from urllib.parse import parse_qs
 
 import stripe
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"outputs"))
-from circlematch_payments import API_VERSION, Config, StripeGateway
+from circlematch_payments import API_VERSION, Config, StripeGateway, Unavailable
 
 
 class Transport(stripe.HTTPClient):
@@ -49,6 +50,35 @@ class SDKTests(unittest.TestCase):
         self.assertEqual(data["payment_intent_data[transfer_data][destination]"],["acct_host"])
         self.assertEqual(data["line_items[0][quantity]"],["3"])
         self.assertFalse(any("on_behalf_of" in k for k in data))
+
+    def test_restricted_keys_preserve_mode_and_live_approval_guards(self):
+        for mode in ("test", "live"):
+            for prefix in ("sk_", "rk_"):
+                config=replace(self.config,mode=mode,key=prefix+mode+"_local_contract",
+                               base_url="https://circle-match.jp",live_approved=True)
+                config.validate_new_payments()
+                self.assertTrue(config.key_matches_mode())
+                opposite="test" if mode=="live" else "live"
+                with self.assertRaises(Unavailable):replace(config,key=prefix+opposite+"_local_contract").validate()
+                if mode=="live":
+                    with self.assertRaises(Unavailable):replace(config,live_approved=False).validate()
+                    with self.assertRaises(Unavailable):replace(config,base_url="http://example.test").validate()
+        for key in ("pk_test_local", "rk_invalid_local", "", "not_a_key"):
+            config=replace(self.config,key=key)
+            self.assertFalse(config.key_matches_mode())
+            self.assertFalse(next(c["ok"] for c in config.connection_checks() if c["label"]=="秘密鍵とモードの一致"))
+            with self.assertRaises(Unavailable):config.validate()
+
+    def test_restricted_key_is_passed_to_sdk_without_extra_permissions(self):
+        config=replace(self.config,key="rk_test_local_contract")
+        with patch.object(stripe,"RequestsClient",return_value=self.transport):
+            gateway=StripeGateway(config)
+        gateway.platform()
+        method,url,headers,data=self.transport.calls[-1]
+        self.assertEqual(method.lower(),"get")
+        self.assertTrue(url.endswith("/v1/account"))
+        self.assertEqual({k.lower():v for k,v in headers.items()}["authorization"],"Bearer rk_test_local_contract")
+        self.assertEqual(data,{})
 
     def test_hosted_account_and_refund_contract(self):
         self.gateway.create_account("account-key")

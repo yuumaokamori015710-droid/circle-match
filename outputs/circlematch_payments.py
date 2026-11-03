@@ -90,10 +90,13 @@ class Config:
     def validate(self):
         if self.mode not in {"test", "live"} or not self.platform.startswith("acct_"):
             raise Unavailable("Stripeの接続設定が未完了です")
-        if not self.key.startswith("sk_"+self.mode+"_"):
+        if not self.key_matches_mode():
             raise Unavailable("Stripeのキーと動作モードが一致していません")
         if self.mode == "live" and (not self.live_approved or not self.base_url.startswith("https://")):
             raise Unavailable("本番決済は承認・設定されていません")
+
+    def key_matches_mode(self):
+        return self.mode in {"test", "live"} and self.key.startswith(("sk_"+self.mode+"_", "rk_"+self.mode+"_"))
 
     def connection_checks(self):
         try:
@@ -103,7 +106,7 @@ class Config:
         return [
             {"label": "決済モード", "ok": self.mode in {"test", "live"}},
             {"label": "StripeアカウントID", "ok": bool(re.fullmatch(r"acct_[A-Za-z0-9]+", self.platform))},
-            {"label": "秘密鍵とモードの一致", "ok": bool(self.mode in {"test", "live"} and self.key.startswith("sk_"+self.mode+"_"))},
+            {"label": "秘密鍵とモードの一致", "ok": self.key_matches_mode()},
             {"label": "決済Webhook署名鍵", "ok": self.webhook_secret.startswith("whsec_")},
             {"label": "Connect Webhook署名鍵", "ok": self.connect_webhook_secret.startswith("whsec_")},
             {"label": "2種類のWebhook署名鍵の分離", "ok": bool(self.webhook_secret and self.connect_webhook_secret and self.webhook_secret != self.connect_webhook_secret)},
