@@ -1,0 +1,46 @@
+name: Admin Access Verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-access-main
+  cancel-in-progress: true
+
+jobs:
+  access-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CIRCLEMATCH_EMAIL_NOTIFICATIONS_ENABLED: 'false'
+      CIRCLEMATCH_EMAIL_AUTH_ENABLED: 'false'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r requirements.txt
+      - name: Independent ordinary-account and anonymous integration tests
+        run: python -m unittest discover -s scripts -p test_admin_access.py -v
+      - name: Campaign and payment regressions (synthetic payments only)
+        run: python -m unittest discover -s scripts -p test_fee_campaign.py -v
+      - name: Verify the deployed commit and live anonymous access boundaries
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: python scripts/check_admin_access.py --expected-commit "$EXPECTED_COMMIT" --wait-seconds 900 --report work/admin-access-report.json
+      - name: Save credential-free verification report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: admin-access-${{ github.sha }}
+          path: work/admin-access-report.json
+          if-no-files-found: warn
+          retention-days: 30

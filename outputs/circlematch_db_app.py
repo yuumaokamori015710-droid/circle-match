@@ -5447,24 +5447,7 @@ class Handler(BaseHTTPRequestHandler):
         if admin:
             parts = parts[1:]
         result = {"ok":True}
-        if parts == ['host-fees','campaign'] and admin:
-            if not HOST_FEES_ENABLED:
-                raise ValueError('主催者利用料の管理は無効です')
-            if data.get('enabled') is True:
-                probe = host_fee_service().payments
-                probe.config.validate_new_payments()
-                probe.platform_check(accepting_payments=True)
-            with connect() as conn:
-                before = fee_campaign.status(conn)
-                current = fee_campaign.change(conn,data)
-                if current['revision'] != before['revision']:
-                    audit(conn,'host_fee_campaign_change','app_state',fee_campaign.KEY,
-                          {'enabled':current['enabled'],'revision':current['revision'],'actor':'admin'})
-            if not current['enabled']:
-                host_fee_service().stop_open_checkouts(limit=1)
-            with connect() as conn:
-                result['campaign'] = fee_campaign.status(conn)
-        elif parts == ["connection-status"] and admin:
+        if parts == ["connection-status"] and admin:
             result["connection_status"] = service.connection_status(check_stripe=True)
         elif parts == ["connect","onboard"] and not admin:
             result = service.onboard(uid)
@@ -5679,14 +5662,8 @@ class Handler(BaseHTTPRequestHandler):
             if match := guests.ROUTE.fullmatch(parsed.path):
                 self.guest_route(match[1],match[2],post=False)
                 return
-            if parsed.path == '/api/payments/admin/host-fees/campaign':
-                if not self.payment_admin():
-                    return
-                if not HOST_FEES_ENABLED:
-                    self.send_json({'error':'not found'},404)
-                    return
-                with connect() as conn:
-                    self.send_json(fee_campaign.status(conn))
+            if parsed.path.rstrip('/') in fee_campaign.REMOVED_HTTP_PATHS:
+                self.send_json({'error':'not found'},404)
                 return
             if parsed.path == "/payments" or parsed.path.startswith("/payments/") or parsed.path == "/admin/payments" or parsed.path.startswith("/admin/payments/"):
                 admin = parsed.path.startswith("/admin/")
@@ -5698,13 +5675,6 @@ class Handler(BaseHTTPRequestHandler):
                     return
                 parts = [unquote(v) for v in parsed.path.strip("/").split("/")][2 if admin else 1:]
                 kind,identifier = (parts[0] if parts else "index"),(parts[1] if len(parts)>1 else "")
-                if admin and kind == 'host-fees' and not identifier and HOST_FEES_ENABLED:
-                    with connect() as conn:
-                        campaign_state = fee_campaign.status(conn)
-                    body,script = fee_campaign.admin_page(campaign_state,self.payment_csrf(True),
-                        host_fee_service().config.connection_checks())
-                    self.send_html(event_page('主催者利用料のキャンペーン設定',body,script).encode('utf-8'))
-                    return
                 if kind not in {"index","connect","applications","orders","cancel"} or (admin and kind not in {"index","orders"}):
                     raise ValueError("ページが見つかりません")
                 self.send_html(payment_ui.render(payment_service(),kind,identifier,user,event_page,self.payment_csrf(admin),admin).encode("utf-8"))
@@ -5971,7 +5941,10 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self.send_html("<h1>記事が見つかりません</h1>".encode("utf-8"), 404)
             elif parsed.path == "/healthz":
-                self.send_json({"ok": True, **summary()})
+                health = {"ok": True, **summary()}
+                if revision := os.environ.get("RENDER_GIT_COMMIT"):
+                    health['revision'] = revision
+                self.send_json(health)
             elif parsed.path == "/robots.txt":
                 self.send_text(robots_txt())
             elif parsed.path == "/ads.txt":
@@ -6112,6 +6085,17 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             return
         try:
+            if parsed.path.rstrip('/') in fee_campaign.REMOVED_HTTP_PATHS:
+                self.connection.settimeout(2)
+                try:
+                    length = int(self.headers.get('Content-Length','0'))
+                    if 0 < length <= 65536:
+                        self.rfile.read(length)
+                except (ValueError,OSError):
+                    pass
+                self.close_connection = True
+                self.send_json({'error':'not found'},404)
+                return
             if match := guests.ROUTE.fullmatch(parsed.path):
                 self.guest_route(match[1],match[2],post=True)
                 return

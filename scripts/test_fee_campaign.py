@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 
 from test_event_flow import event_payload
 import test_host_success_fees as fixtures
+import manage_host_fee_campaign as operator
 
 
 class FeeCampaignTests(unittest.TestCase):
@@ -97,27 +98,27 @@ class FeeCampaignTests(unittest.TestCase):
             self.assertEqual(conn.execute('select count(*) from host_fee_orders').fetchone()[0],0)
             self.assertEqual(schema,list(conn.execute('select name,sql from sqlite_master order by name')))
 
-    def test_admin_auth_csrf_explicit_consent_revision_audit_and_separate_switches(self):
-        path = '/api/payments/admin/host-fees/campaign'
-        data = dict(enabled=True,revision=0,accepted=True)
-        for opts in [{},{'member':True}]:
-            self.assertEqual(self.request(path,data,**opts)[0],401)
-        self.assertEqual(self.request(path,data,admin=True,csrf=False)[0],403)
-        self.assertEqual(self.request(path,data,admin=True,headers={'Origin':'https://foreign.example'})[0],403)
-        for invalid in [dict(data,accepted=False),dict(data,enabled=1),dict(data,revision=True),dict(data,fee=0)]:
-            self.assertEqual(self.request(path,invalid,admin=True)[0],400)
-        status,result = self.request(path,data,admin=True)
-        self.assertEqual(status,200,result)
-        self.assertTrue(result['campaign']['enabled'])
-        self.assertEqual(self.request(path,data,admin=True)[0],400)
+    def manage(self, command, revision, confirm=False):
+        return operator.run(command,self.app.connect,revision=revision,confirm=confirm,actor='test-render-shell',
+            config=self.app.payment_service().config,gateway=self.gateway,app=self.app)
+
+    def test_shell_requires_explicit_consent_revision_audit_and_separate_switches(self):
+        with self.app.connect() as conn:
+            before = conn.execute("select count(*) from audit_logs where action='host_fee_campaign_change'").fetchone()[0]
+        for revision,confirm in [(0,False),(True,True),(None,True)]:
+            with self.assertRaises(ValueError):
+                self.manage('on',revision,confirm)
+        self.assertTrue(self.manage('on',0,True)['enabled'])
+        with self.assertRaises(ValueError):
+            self.manage('on',0,True)
         self.assertFalse(self.app.payment_service().config.enabled)
         self.assertFalse(self.app.payment_service().config.live_approved)
         self.assertTrue(self.app.host_fee_service().config.enabled)
         with self.app.connect() as conn:
-            self.assertEqual(conn.execute("select count(*) from audit_logs where action='host_fee_campaign_change'").fetchone()[0],1)
-        for page in ['/admin/payments/host-fees',path]:
-            self.assertEqual(self.request(page)[0],401)
-            self.assertEqual(self.request(page,admin=True)[0],200)
+            self.assertEqual(conn.execute("select count(*) from audit_logs where action='host_fee_campaign_change'").fetchone()[0],before+1)
+            payload = json.loads(conn.execute("select payload from audit_logs where action='host_fee_campaign_change' order by rowid desc limit 1").fetchone()[0])
+            self.assertEqual(payload['source'],'render_shell')
+        self.assertFalse(self.manage('off',1)['enabled'])
 
     def test_first_publication_requires_new_consent_after_on_even_if_form_was_off(self):
         payload = event_payload(self.id(),capacity='')
@@ -172,10 +173,8 @@ class FeeCampaignTests(unittest.TestCase):
     def test_off_expires_link_and_blocks_old_quote_without_creating_invoice(self):
         eid,order = self.open_order()
         quote = self.balance(eid)['quote_token']
-        status,result = self.request('/api/payments/admin/host-fees/campaign',
-            dict(enabled=False,revision=1,accepted=False),admin=True)
-        self.assertEqual(status,200,result)
-        self.assertFalse(result['campaign']['stopping'])
+        result = self.manage('off',1)
+        self.assertFalse(result['stopping'])
         self.assertEqual(self.gateway.sessions[order['session_id']]['status'],'expired')
         with self.assertRaises(ValueError):
             self.checkout(eid,quote)
@@ -331,41 +330,5 @@ class FeeCampaignTests(unittest.TestCase):
         self.assertTrue(self.balance(eid)['fee_waived'])
 
 
-def preview():
-    """Bounded, local-only UI harness; never authenticates a real administrator."""
-    FeeCampaignTests.setUpClass()
-    case = FeeCampaignTests('test_default_off_freezes_exemption_and_never_records_stale_consent')
-    case.setUp()
-    eid = case.event('Campaign preview ')
-    app = case.app
-
-    class PreviewHandler(app.Handler):
-        def cookie_value(self,name):
-            return super().cookie_value('cm_campaign_preview_session' if name == 'cm_session' else name)
-
-        def payment_admin(self):
-            return True if self.cookie_value('cm_campaign_preview_admin') == 'synthetic' else super().payment_admin()
-
-        def do_GET(self):
-            role = self.path.removeprefix('/__campaign__/')
-            if self.path.startswith('/__campaign__/') and role in {'admin','host','participant'}:
-                account = case.host if role == 'host' else case.guest
-                target = '/admin/payments/host-fees' if role == 'admin' else '/events/'+eid+('/host-fee' if role == 'host' else '')
-                self.redirect(target,[
-                    'cm_campaign_preview_admin='+('synthetic' if role == 'admin' else '')+'; Path=/; HttpOnly; SameSite=Lax',
-                    'cm_campaign_preview_session='+case.sessions[account['user_id']]+'; Path=/; HttpOnly; SameSite=Lax'])
-                return
-            super().do_GET()
-    case.server.RequestHandlerClass = PreviewHandler
-    print('Synthetic campaign preview (180 seconds): '+case.base+'/__campaign__/admin',flush=True)
-    print('Host: '+case.base+'/__campaign__/host',flush=True)
-    print('Participant: '+case.base+'/__campaign__/participant',flush=True)
-    try:
-        threading.Event().wait(180)
-    finally:
-        FeeCampaignTests.tearDownClass()
-
-
 if __name__ == '__main__':
-    import sys
-    preview() if '--preview' in sys.argv else unittest.main()
+    unittest.main()

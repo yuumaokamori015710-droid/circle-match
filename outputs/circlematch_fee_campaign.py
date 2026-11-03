@@ -1,12 +1,12 @@
 """Organizer-fee rollout policy, stored in the existing app_state table."""
 
-import html
 import json
 
 from circlematch_payments import PaymentError, stamp
 
 KEY = "organizer_fee_campaign:v1"
 EVENT_PREFIX = "organizer_fee_publication:v1:"
+REMOVED_HTTP_PATHS = frozenset({"/admin/payments/host-fees", "/api/payments/admin/host-fees/campaign"})
 
 
 def _read(conn, key):
@@ -93,40 +93,3 @@ def notice(conn, event_id="", *, compact=False):
     return ('<section class="host-fee-note" data-host-fee-private><h3>' + reason + '</h3>'
         '<p>この大会の主催者利用料は0円です。徴収を再開しても後から請求しません。</p>'
         '<p>参加者の参加費・振込・現地払いは変更ありません。</p></section>')
-
-
-def admin_page(state, csrf, readiness):
-    import circlematch_payment_ui as payment_ui
-    checked = " checked" if state["enabled"] else ""
-    label = "ON / 新規公開分から10%" if state["enabled"] else "OFF / キャンペーン免除"
-    warning = ('<p role="alert">既存決済画面の停止・照合待ち：' + str(state["pending_checkouts"])
-        + '件。完了するまでONへ戻せません。結果不明の支払いは再請求しないでください。</p>') if state["stopping"] else ""
-    checks = ''.join('<li>' + html.escape(item["label"]) + '：' + ('設定済み' if item["ok"] else '未設定・要確認') + '</li>'
-                     for item in readiness)
-    body = ('<section class="payment-shell"><a href="/admin/payments">決済運営管理へ</a>'
-        '<h1>主催者利用料</h1><p id="campaignStatus" role="status">' + label + '</p>' + warning
-        + '<form id="feeCampaignForm"><label class="campaign-switch"><input id="campaignEnabled" type="checkbox" role="switch"'
-        + checked + '><span>主催者利用料の徴収</span></label>'
-        '<p>ONにした後で新規公開し、主催者が条件に同意した大会だけが対象です。'
-        '開催確定後、入金確認済み参加費売上の10%を主催者が支払います。</p>'
-        '<p>OFF中の公開分・既存大会・今回の駒沢大会は免除を継続します。参加者の支払方法とConnect受付は変更しません。</p>'
-        '<label class="payment-consent" id="campaignConsent"><input id="campaignAccepted" type="checkbox">'
-        'ON後に新規公開する大会への10%徴収開始を確認しました</label>'
-        '<button class="button primary" type="submit">変更を保存</button><p id="campaignError" role="alert" hidden></p></form>'
-        '<h2>接続設定</h2><ul>' + checks + '</ul><p>OFFにしても既存の入金・Webhook照合は継続します。'
-        '既存の未完了決済は終了を確認するまで停止処理中になります。支払い済みの自動返金は行いません。</p></section>')
-    script = '''<style>.campaign-switch{display:flex;gap:12px;align-items:center;font-weight:700;min-height:48px}
-.campaign-switch input{appearance:auto;width:24px;height:24px;accent-color:#187551;flex:0 0 24px}
-#campaignStatus{font-weight:700}#campaignError{color:#b42318;overflow-wrap:anywhere}</style><script>(()=>{
-const form=document.getElementById('feeCampaignForm'),toggle=document.getElementById('campaignEnabled'),
-consent=document.getElementById('campaignConsent'),accepted=document.getElementById('campaignAccepted'),error=document.getElementById('campaignError');
-const update=()=>{consent.hidden=!toggle.checked;accepted.required=toggle.checked;accepted.checked=false};toggle.onchange=update;update();
-form.onsubmit=async e=>{e.preventDefault();if(!form.reportValidity()||form.dataset.busy)return;
-form.dataset.busy='1';const button=form.querySelector('button');button.disabled=true;error.hidden=true;
-try{const response=await fetch('/api/payments/admin/host-fees/campaign',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':__CSRF__},
-body:JSON.stringify({enabled:toggle.checked,revision:__REVISION__,accepted:accepted.checked})});const data=await response.json();
-if(!response.ok)throw Error(data.error||'設定を保存できませんでした');location.reload()}
-catch(e){error.textContent=e.message;error.hidden=false;delete form.dataset.busy;button.disabled=false}};
-if(__STOPPING__)setTimeout(()=>location.reload(),15000);
-})();</script>'''.replace('__CSRF__', json.dumps(csrf)).replace('__REVISION__', str(state["revision"])).replace('__STOPPING__', json.dumps(state["stopping"]))
-    return body, payment_ui.script(csrf) + script
