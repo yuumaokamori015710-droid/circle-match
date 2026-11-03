@@ -82,7 +82,7 @@ def json_ld(data):
         data, ensure_ascii=False, allow_nan=False).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026') + '</script>'
 
 
-def apply_metadata(body, request_path, configured_origin, sports, regions, status=200, event=None):
+def apply_metadata(body, request_path, configured_origin, sports, regions, status=200, event=None, article=None):
     """Decorate the rendered head, without changing body, forms or scripts."""
     text = body.decode('utf-8') if isinstance(body, bytes) else body
     head, separator, rest = text.partition('</head>')
@@ -186,6 +186,8 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         '/terms':'Circle Matchの利用条件と、イベント掲載・参加申込にあたっての注意事項をご案内します。',
     }
     description = descriptions.get(path, description)
+    if article and path.startswith('/guides/'):
+        description = str(article.get('lead') or description)[:160]
     if event:
         title = f'{event.get("title") or "大会・イベント"} | Circle Match'
         description = ' '.join(str(event.get(key) or '') for key in ('sport_category', 'starts_at', 'prefecture', 'location', 'description'))[:160]

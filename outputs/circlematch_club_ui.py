@@ -107,6 +107,8 @@ def decorate(body, request_path):
             ('venues', '会場', 'map-pin', '/venues'), ('db', 'サークル', 'users', '/'),
             ('account', 'マイページ', 'user-round', '/mypage')):
         values = dict(shared) if key != 'account' else {}
+        if key == 'venues' and values.get('sport') in {'サッカー', 'フットサル'}:
+            values['sport'] = 'サッカー・フットサル'
         if key == 'db':
             values['tab'] = 'db'
         href = path + ('?' + urlencode(values) if values else '')

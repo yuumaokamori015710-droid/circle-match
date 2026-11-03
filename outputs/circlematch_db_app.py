@@ -28,6 +28,7 @@ import circlematch_seo as seo
 import circlematch_venues as venues
 import circlematch_settings as settings_ui
 import circlematch_club_ui as club_ui
+import circlematch_public_content as public_content
 import circlematch_regions as circle_regions
 import circlematch_invitations as invitations
 import circlematch_invitation_ui as invitation_ui
@@ -759,7 +760,7 @@ PUBLIC_HTML = """<!doctype html>
     function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); const url=new URLSearchParams(location.search);for(const key of ['places','c_map'])if(url.has(key))qs.set(key,url.get(key));return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("uniCount").textContent=stats.universities; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
-    function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="7">データなし</td></tr>`}
+    function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.university_name)}</span><span class="sub">${esc(c.prefecture)}${c.city?` / ${esc(c.city)}`:""}</span></td><td><span class="name">${esc(c.circle_name)}</span>${sourceNote(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"不明","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="7">データなし</td></tr>`}
     function applyInitialSummary(){if(!initialCircleSummary)return; $("prefCount").textContent=initialCircleSummary.prefectures; $("uniCount").textContent=initialCircleSummary.universities; $("circleCount").textContent=initialCircleSummary.circles; $("verifiedCount").textContent=initialCircleSummary.verified_circles}
     let refreshRequest=0;
     async function refresh(event){const latest=++refreshRequest,qs=currentQuery(); const next=new URL(location.href);for(const key of ['q','sport','status','sort']){if(qs.get(key))next.searchParams.set(key,qs.get(key));else next.searchParams.delete(key)}history.replaceState(null,'',next.pathname+next.search);if(event?.type!=='circle-region-change')document.dispatchEvent(new Event('circle-filters-updated'));qs.set("limit","120"); $("matchBridge").href="/events?"+qs;try{const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]);if(latest!==refreshRequest)return;updateSummary(stats); $("rows").innerHTML=renderRows(data)}catch(e){if(latest!==refreshRequest)return;$("rows").innerHTML='<tr><td colspan="7" class="ssr-error">データを取得できませんでした</td></tr>';for(const id of ['prefCount','uniCount','circleCount','verifiedCount'])$(id).textContent='取得失敗'}}
@@ -821,7 +822,7 @@ SOCIAL_HTML = """<!doctype html>
     function currentQuery(){const qs=new URLSearchParams({audience:"social",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value,status:$("statusFilter").value,sort:$("sortFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value);const url=new URLSearchParams(location.search);for(const key of ['places','c_map'])if(url.has(key))qs.set(key,url.get(key));return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function updateSummary(stats){$("prefCount").textContent=stats.prefectures; $("sportCount").textContent=stats.sports; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("regionCrumb").textContent=selectedRegion()?.label||"全地域"; $("prefCrumb").textContent=$("prefFilter").value||"すべて"; const region=$("regionFilter").value; $("coverageNotice").style.display=region&&region!=="kanto"?"block":"none"}
-    function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span></td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
+    function renderRows(data){return data.map(c=>`<tr><td><span class="name">${esc(c.prefecture||"地域未設定")}</span><span class="sub">${esc(c.city||c.activity_area||"")}</span></td><td><span class="name">${esc(c.circle_name)}</span>${sourceNote(c)}</td><td>${listingBadge(c)}</td><td>${c.profile_url?`<a href="${esc(c.profile_url)}">URL</a>`:""}</td><td>${badge(c.organization_type||"社会人サークル","blue")}</td><td>${esc(c.sport_category||"その他")}</td><td>${badge(statusLabel(c.verification_status),["admin_verified","university_verified"].includes(c.verification_status)?"ok":"")}</td><td>${contactCell(c)}</td><td>${badge(sourceLabel(c.source_type))}${c.source_url?`<span class="sub"><a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典URL</a></span>`:""}</td></tr>`).join("") || `<tr><td colspan="9" class="empty">社会人サークルDBは現在拡充中です。掲載希望の団体は「サークル員を募集する」または問い合わせから連絡してください。</td></tr>`}
     let refreshRequest=0;
     async function refresh(event){const latest=++refreshRequest,qs=currentQuery();const next=new URL(location.href);for(const key of ['q','sport','status','sort']){if(qs.get(key))next.searchParams.set(key,qs.get(key));else next.searchParams.delete(key)}history.replaceState(null,'',next.pathname+next.search);if(event?.type!=='circle-region-change')document.dispatchEvent(new Event('circle-filters-updated'));qs.set("limit","120");$("matchBridge").href="/events?"+qs;try{const [data,stats]=await Promise.all([api("/api/circles?"+qs),api("/api/circle-stats?"+qs)]);if(latest!==refreshRequest)return;updateSummary(stats);$("rows").innerHTML=renderRows(data)}catch(e){if(latest!==refreshRequest)return;$("rows").innerHTML='<tr><td colspan="9" class="ssr-error">データを取得できませんでした</td></tr>';for(const id of ['prefCount','sportCount','circleCount','verifiedCount'])$(id).textContent='取得失敗'}}
     async function boot(){fillRegions(); fillSportOptions(); $("regionFilter").value=params.get("region")||""; syncPrefOptions(); $("q").value=params.get("q")||""; $("prefFilter").value=params.get("prefecture")||""; $("sportFilter").value=params.get("sport")||""; $("statusFilter").value=params.get("status")||""; $("sortFilter").value=params.get("sort")||"prefecture"; await refresh()}
@@ -1206,7 +1207,7 @@ def ssr_circle_rows(circles):
         rendered.append(
             "<tr>"
             f'<td><span class="name">{university}</span><span class="sub">{location}</span></td>'
-            f'<td><span class="name">{circle_name}</span></td>'
+            f'<td><span class="name">{circle_name}</span>{public_content.source_note(circle)}</td>'
             f"<td>{profile_link}</td>"
             f'<td><span class="badge blue">{organization_type}</span></td>'
             f"<td>{sport}</td>"
@@ -1623,7 +1624,7 @@ def render_db_rows(circles):
         output.append(
             '<div class="circle-row">'
             f'<div><strong>{html.escape(circle.get("university_name") or "活動地域")}</strong><small>{html.escape(circle.get("prefecture") or "")}{(" / " + html.escape(circle.get("city") or "")) if circle.get("city") else ""}</small></div>'
-            f'<div><strong>{html.escape(circle.get("circle_name") or "")}</strong><small>{html.escape(circle.get("organization_type") or "不明")}</small></div>'
+            f'<div><strong>{html.escape(circle.get("circle_name") or "")}</strong><small>{html.escape(circle.get("organization_type") or "不明")}</small>{public_content.source_note(circle)}</div>'
             f'<div>{html.escape(circle.get("sport_category") or "その他")}</div><div class="db-row-actions">{link}</div></div>'
         )
     return "".join(output)
@@ -1655,6 +1656,8 @@ def directory_url(params, tab, **updates):
     """Only the shared sport and area cross feature boundaries."""
     values = {key: params[key][0].strip() for key in ("sport", "region", "prefecture") if params.get(key) and params[key][0].strip()}
     values.update({key: value for key, value in updates.items() if value})
+    if tab == 'venues' and values.get('sport') in {'サッカー', 'フットサル'}:
+        values['sport'] = 'サッカー・フットサル'
     path = {"events": "/events", "db": "/", "venues": "/venues"}[tab]
     if tab == "db":
         values.update(tab="db", audience=updates.get("audience") or audience_scope(params, "university"))
@@ -1793,6 +1796,7 @@ def render_sports_home_html(params):
             + club_ui.search(params) + club_ui.sport_rail({key: params[key] for key in ('sport', 'region', 'prefecture') if key in params}))
     body += ('<section class="section panel home-latest-events" aria-labelledby="home-latest-heading">'
              '<div class="panel-head"><h2 id="home-latest-heading"><svg class="home-latest-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 14-5v14L3 14zM17 9l4-1v8l-4-1M6 15l2 6h4l-2-5"/></svg>最新の募集</h2><a class="home-latest-more" href="/events">すべて見る →</a></div>' + latest_markup + '</section>')
+    body += public_content.reading_links()
     body += render_home_journeys(params, primary=False)
     return event_page("スポーツから探す", body + '</div>', tab="home").encode("utf-8")
 
@@ -1800,6 +1804,7 @@ def render_sports_home_html(params):
 def render_venues_html(params=None):
     params = params or {}
     body = render_directory_context(params, "venues") + render_directory_tabs("venues", params) + club_ui.sport_rail(params, 'venues') + venues.render_venue_body(params)
+    body += '<p class="cm-source-note"><a href="/guides/tokyo-venue-costs">料金・利用区分・キャンセルの比較ガイド</a></p>'
     page = event_page("会場予約", body, DIRECTORY_CONTEXT_SCRIPT, tab="venues")
     return page.replace("</head>", venues.render_venue_head(params) + "</head>", 1).encode("utf-8")
 
@@ -1834,7 +1839,7 @@ def render_public_html(params=None, event_listing=False):
         type_options = ''.join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in EVENT_TYPES)
         introduction = render_directory_context(params, tab) + tabs + club_ui.sport_rail(params, tab)
         if not initial_events and not initial_error:
-            event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。</div>'
+            event_markup = f'<div class="empty">現在、{html.escape(sport + "の" if sport else "")}募集中の大会・イベントはありません。{public_content.empty_options(params)}</div>'
         result_count = "取得できませんでした" if initial_error else f'{len(initial_events)}件を表示'
         body = introduction + f'''<div class="event-publish"><a class="button primary publish-cta" href="{html.escape(post_url, quote=True)}">募集を掲載する</a></div><section class="section panel event-results" id="events"><div class="panel-head"><div><h2>募集中の大会・イベント</h2><p id="eventResultCount" role="status">{result_count}</p></div></div>
 <form id="eventFilters" class="filter-grid">{directory_hidden_context(params)}<input type="hidden" name="q" value="{html.escape(params.get('q', [''])[0], quote=True)}"><label class="event-filter">募集種別<select name="event_type" aria-label="募集種別"><option value="">全募集種別</option>{type_options}</select></label><label class="event-filter">開催日以降<input name="date_from" type="date" aria-label="開催日以降"></label><label class="event-filter">参加単位<select name="participation" aria-label="参加単位"><option value="">個人・チームすべて</option><option value="individual">個人参加</option><option value="team">チーム参加</option></select></label></form>
@@ -1869,6 +1874,7 @@ def render_public_html(params=None, event_listing=False):
     if tab == "db":
         body = body.replace(tabs, tabs + club_ui.sport_rail(params, tab), 1)
         body = body.replace('<div class="db-summary">', '<p class="context-notice">交流したい団体に、イベントへの招待や練習試合の相談を渡せます。<a href="/invitations">自分の交流招待を確認する</a></p><div class="db-summary">', 1)
+        body += '<p class="cm-source-note">掲載は活動中・募集中・団体の公認を保証しません。<a href="/guides/circle-database-guide">活動日・会費・掲載元を確認する</a></p>'
     page_title = (sport + "の" if sport else "") + ("大会・イベント" if tab == "events" else "サークルDB")
     script = script.replace('__CLUB_SPORTS__', script_json({name: image for name, _label, image in club_ui.SPORTS[1:]}))
     page = event_shell(page_title, body, DIRECTORY_CONTEXT_SCRIPT + script)
@@ -1888,7 +1894,8 @@ EVENT_HOME_SCRIPT = r"""
   const clubSports=__CLUB_SPORTS__;
   function clubPhoto(sport){const key=Object.keys(clubSports).find(name=>String(sport||'').includes(name)),image=key?clubSports[key]:'other';return `<figure class="club-event-photo"><img src="/assets/club/${image}.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><figcaption>競技イメージ</figcaption></figure>`}
   function eventCard(e){const st=status(e), org=e.linked_circle_name||e.organizer_name||'主催者';const id=encodeURIComponent(e.event_id),back=location.pathname+location.search+'#event-'+id,href='/events/'+id+'?'+new URLSearchParams({return_to:back}); const cap=e.capacity?`定員 ${e.confirmed_count||0}/${e.capacity}${esc(e.capacity_unit||'')}`:'定員なし'; return `<article class="event-card" id="event-${esc(e.event_id)}">${clubPhoto(e.sport_category)}<div><span class="badge ${st[1]}">${esc(st[0])}</span> <span class="badge">${esc(e.event_type||'')}</span></div><h3><a href="${esc(href)}">${esc(e.title||'')}</a></h3><p>${esc(e.sport_category||'')} / ${esc(org)}</p><div class="card-meta"><span>${formatDate(e.starts_at)}</span><span>${esc(e.prefecture||'地域未定')} / ${esc(e.location||'会場未定')}</span><span>${fee(e)} / ${esc(({individual:'個人参加',team:'チーム参加',both:'個人・チーム参加'})[e.participation_type]||'')}</span><span>${cap}</span></div><div class="card-footer"><span class="badge">${esc(({first_come:'先着順',approval:'主催者承認制'})[e.acceptance_mode]||'')}</span><a class="button" href="${esc(href)}">詳細・申込</a></div></article>`}
-  function circleRow(c){let source=false,contact=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}try{contact=['https:','http:'].includes(new URL(c.contact_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';const channel=contact&&['form','line'].includes(c.contact_method)?`<a href="${esc(c.contact_url)}" target="_blank" rel="noopener noreferrer">${c.contact_method==='form'?'問い合わせフォーム':'公式LINE案内'} ↗</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small></div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}${channel}<small>${c.public_contact_email?'公開メールあり':channel?'公式窓口あり':'連絡方法は掲載元で確認'}</small></div></div>`}
+  function circleRow(c){let source=false,contact=false;try{source=['https:','http:'].includes(new URL(c.source_url).protocol)}catch(_){}try{contact=['https:','http:'].includes(new URL(c.contact_url).protocol)}catch(_){}const profile=c.profile_url?`<a href="${esc(c.profile_url)}">紹介ページ</a>`:(source?`<a href="${esc(c.source_url)}" target="_blank" rel="noopener noreferrer">出典を確認（外部）</a>`:'<a href="/contact">情報を問い合わせる</a>');const invite=c.circle_id?`<a class="button" href="/invitations/new?circle_id=${encodeURIComponent(c.circle_id)}">交流に招待</a>`:'';const channel=contact&&['form','line'].includes(c.contact_method)?`<a href="${esc(c.contact_url)}" target="_blank" rel="noopener noreferrer">${c.contact_method==='form'?'問い合わせフォーム':'公式LINE案内'} ↗</a>`:'';return `<div class="circle-row"><div><strong>${esc(c.university_name||'活動地域')}</strong><small>${esc(c.prefecture||'')}${c.city?' / '+esc(c.city):''}</small></div><div><strong>${esc(c.circle_name||'')}</strong><small>${esc(c.organization_type||'不明')}</small>${sourceNote(c)}</div><div>${esc(c.sport_category||'その他')}</div><div class="db-row-actions">${profile}${invite}${channel}<small>${c.public_contact_email?'公開メールあり':channel?'公式窓口あり':'連絡方法は掲載元で確認'}</small></div></div>`}
+  function emptyOptions(){const context=new URLSearchParams();for(const key of ['sport','region','prefecture']){const value=qs().get(key);if(value)context.set(key,value)}const venueContext=new URLSearchParams(context);if(['サッカー','フットサル'].includes(venueContext.get('sport')))venueContext.set('sport','サッカー・フットサル');const venue='/venues?'+venueContext;context.set('tab','db');context.set('audience','university');return `<div class="cm-empty-options"><a href="${esc(venue)}">この競技の会場を探す</a><a href="/?${esc(context.toString())}">この競技の団体を探す</a><a href="/guides/practice-match-how-to">練習試合の組み方を読む</a></div>`}
   async function getJson(url){const r=await fetch(url);const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'データを取得できませんでした');return data}
   function restoreFilters(form){const current=qs();for(const input of form.elements){if(input.name)input.value=current.get(input.name)||''}}
   function syncLinks(){
@@ -1900,7 +1907,7 @@ EVENT_HOME_SCRIPT = r"""
       if(['/','/events'].includes(target.pathname)&&target.searchParams.has('tab')){
         for(const key of keys){if(key==='sport'&&link.classList.contains('sport-card'))continue;const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
       }else if(target.pathname==='/events/new'){
-        for(const key of ['sport','region','prefecture']){if(key==='sport'&&target.searchParams.get('custom')==='1'){target.searchParams.delete(key);continue}const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
+        for(const key of ['sport','region','prefecture']){if(key==='sport'&&target.searchParams.get('custom')==='1'){target.searchParams.delete(key);continue}let value=current.get(key);if(key==='sport'&&target.pathname==='/venues'&&['サッカー','フットサル'].includes(value))value='サッカー・フットサル';if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
       }else if(['/circles','/social/circles'].includes(target.pathname)){
         for(const key of ['sport','region','prefecture','q']){const value=current.get(key);if(value)target.searchParams.set(key,value);else target.searchParams.delete(key)}
       }else return;
@@ -1912,7 +1919,7 @@ EVENT_HOME_SCRIPT = r"""
     const form=document.getElementById('eventFilters'),list=document.getElementById('eventList');if(!form)return;
     restoreFilters(form);syncLinks();let request=0;
     const count=document.getElementById('eventResultCount');
-    function render(items){const sport=form.elements.sport.value;list.innerHTML=items.length?items.map(eventCard).join(''):`<div class="empty">現在、${sport?esc(sport)+'の':''}募集中の大会・イベントはありません。</div>`;count.textContent=items.length+'件を表示'}
+    function render(items){const sport=form.elements.sport.value;list.innerHTML=items.length?items.map(eventCard).join(''):`<div class="empty">現在、${sport?esc(sport)+'の':''}募集中の大会・イベントはありません。${emptyOptions()}</div>`;count.textContent=items.length+'件を表示'}
     if(initialError)list.innerHTML=`<div class="error-box">${esc(initialError)}</div>`;else render(initialEvents);
     const sync=async()=>{updateUrl(form);const latest=++request;count.textContent='検索中';list.innerHTML='<div class="empty">募集を検索しています。</div>';try{const data=await getJson('/api/events?'+qs().toString());if(latest===request)render(data)}catch(e){if(latest===request){count.textContent='取得できませんでした';list.innerHTML=`<div class="error-box">${esc(e.message)}</div>`}}};
     form.addEventListener('submit',e=>{e.preventDefault();sync()});form.addEventListener('change',e=>{if(e.target.name==='sport'){updateUrl(form);location.assign('/events?'+qs().toString());return}sync()});
@@ -2872,7 +2879,7 @@ def ssr_social_circle_rows(circles):
         status = html.escape(status_labels.get(circle.get('verification_status'), circle.get('verification_status') or '未確認'))
         email = circle.get('public_contact_email') or ''
         contact = f'<a href="mailto:{html.escape(quote(email), quote=True)}">メールを作成</a>' if email else source
-        output.append(f'<tr><td><span class="name">{esc("prefecture")}</span><span class="sub">{esc("city") or esc("activity_area")}</span></td><td><span class="name">{esc("circle_name")}</span></td><td>{listing}</td><td>{profile}</td><td>{esc("organization_type")}</td><td>{esc("sport_category")}</td><td>{status}</td><td>{contact}</td><td>{source}</td></tr>')
+        output.append(f'<tr><td><span class="name">{esc("prefecture")}</span><span class="sub">{esc("city") or esc("activity_area")}</span></td><td><span class="name">{esc("circle_name")}</span>{public_content.source_note(circle)}</td><td>{listing}</td><td>{profile}</td><td>{esc("organization_type")}</td><td>{esc("sport_category")}</td><td>{status}</td><td>{contact}</td><td>{source}</td></tr>')
     return ''.join(output)
 
 
@@ -3697,24 +3704,6 @@ def legal_layout(title, body):
 
 
 GUIDE_PAGES = {
-    "practice-match-how-to": {
-        "title": "大学サークルの練習試合相手を探す手順",
-        "lead": "初めて練習試合を組む代表者向けに、募集条件を整理して相手に伝わりやすくするための基本をまとめます。",
-        "sections": [
-            ("先に決めること", ["競技、希望日程、場所、レベル感、人数、審判や用具の有無を先に決めます。", "曖昧な募集は返信が来ても調整に時間がかかるため、最低条件と相談可能な条件を分けて書きます。"]),
-            ("募集文の型", ["大学名、団体名、競技、希望期間、活動エリア、レベル、連絡方法、補足条件の順に書くと読みやすくなります。", "例: 8月中の土日、東京都内、経験者中心、グラウンド確保済み、同程度の相手を募集。"]),
-            ("安全に進めるポイント", ["個人の電話番号やLINE IDをいきなり公開せず、まずはサービス上のフォームや代表メールでやり取りします。", "相手団体の大学名、代表者、活動実態、過去の公開情報を確認してから詳細調整に進みます。"]),
-        ],
-    },
-    "recruiting-template": {
-        "title": "サークル代表向け募集文テンプレート",
-        "lead": "練習試合、合同練習、助っ人募集、メンバー募集で使える文章の型を用意します。",
-        "sections": [
-            ("練習試合募集", ["「競技」「希望日」「場所」「レベル」「人数」「費用負担」「連絡期限」を1つずつ埋めると、相手が判断しやすくなります。", "勝敗より交流重視なのか、公式戦に近い強度なのかを必ず書きます。"]),
-            ("合同練習募集", ["練習メニュー、参加人数、経験者割合、初心者参加可否、途中参加可否を書きます。", "練習後の交流や食事の有無も、雰囲気を判断する材料になります。"]),
-            ("社会人サークルのメンバー募集", ["活動曜日、活動場所、会費、年齢層、初心者歓迎度、体験参加の流れを明記します。", "社会人は時間調整が重要なので、毎週固定か不定期かを先に見せます。"]),
-        ],
-    },
     "verification-policy": {
         "title": "Circle Matchの掲載情報と検証の考え方",
         "lead": "公開DBを安心して使えるように、情報源、検証ステータス、訂正依頼の考え方を説明します。",
@@ -3722,16 +3711,6 @@ GUIDE_PAGES = {
             ("公開情報を中心に扱う", ["大学公式ページ、団体本人の登録、公開SNSなど、公開されている情報を中心に整理します。", "代表者の個人メールアドレスや電話番号など、本人確認に使う情報は公開DBに出しません。"]),
             ("検証ステータス", ["大学公式情報掲載、公開情報掲載、申請済み、未確認を分けて表示し、出典がわかるものは出典URLを残します。", "未確認情報は、団体本人や大学関係者からの訂正で更新していきます。"]),
             ("削除・訂正", ["掲載内容に誤りがある場合は、問い合わせから対象URL、団体名、訂正内容を送ってください。", "個人情報や誤掲載の疑いがあるものは、確認中に非公開化する場合があります。"]),
-        ],
-    },
-    "circle-database-guide": {
-        "title": "Circle Match DBでスポーツ団体を探す方法",
-        "lead": "分散しやすい大学・社会人スポーツ団体の情報を、競技、地域、出典、検証状態から比較するための見方を説明します。",
-        "sections": [
-            ("まず競技と活動地域を決める", ["スポーツ別ページでは、同じ競技の団体と交流募集をまとめて確認できます。地域を選ぶと、都道府県まで候補を絞り込めます。", "大学名や団体名が分かっている場合は、サークルDBの検索欄から直接調べることもできます。候補が少ない競技では、隣接地域まで広げて確認するのが有効です。"]),
-            ("出典と検証状態を確認する", ["一覧の出典は、大学公式ページ、団体本人登録、公開SNSなど、情報を確認した入口を示します。出典URLがある場合は、連絡前に活動内容や最新情報を確認できます。", "検証状態は掲載団体の存在や申請状況を示すための補助情報です。活動の安全性、募集の実現、公式な公認を保証するものではありません。"]),
-            ("大学団体と社会人サークルを分けて見る", ["大学サークルDBでは大学名・都道府県・競技を軸に、社会人サークルDBでは活動地域・競技を軸に探せます。所属形態が違うため、一覧と検索結果を分けて表示しています。", "練習相手や合同練習の候補を探す場合は、団体の種別、活動場所、競技カテゴリを確認してから連絡条件を調整してください。"]),
-            ("情報をより正確にするために", ["掲載漏れ、活動停止、名称変更、誤掲載に気付いた場合は、対象ページまたは出典URLと訂正内容を問い合わせ窓口へ送ってください。", "団体代表者は自分の団体情報を申請でき、確認後は紹介ページや公開連絡先を整備できます。公開DBは、利用者と団体関係者の訂正によって更新していきます。"]),
         ],
     },
     "sports-match-manners": {
@@ -3782,6 +3761,9 @@ GUIDE_PAGES = {
 }
 
 
+GUIDE_PAGES.update(public_content.GUIDES)
+
+
 def operator_page():
     body = f"""
 <h1>運営者情報</h1>
@@ -3812,41 +3794,58 @@ def operator_page():
 
 
 def guides_page():
-    items = "\n".join(
-        f"""<li><a href="/guides/{slug}">{data["title"]}</a><br><span class="meta">{data["lead"]}</span></li>"""
-        for slug, data in GUIDE_PAGES.items()
-    )
+    ordered = ['tokyo-venue-costs', 'practice-match-how-to', 'recruiting-template', 'circle-database-guide']
+    ordered.extend(slug for slug in GUIDE_PAGES if slug not in ordered)
+    items = ''.join('<li><a href="/guides/' + slug + '">' + html.escape(GUIDE_PAGES[slug]['title'])
+                    + '</a><p>' + html.escape(GUIDE_PAGES[slug]['lead']) + '</p></li>' for slug in ordered)
     body = f"""
-<h1>サークル運営ガイド</h1>
-<p class="meta">練習試合、合同練習、助っ人募集、メンバー募集をスムーズに進めるための基礎情報です。</p>
-<p>Circle MatchはDB検索だけでなく、代表者が安全に募集し、参加者が安心して比較できるための情報も整備していきます。</p>
+<article class="cm-article"><nav aria-label="パンくず"><a href="/">ホーム</a> / 活動ガイド</nav>
+<h1>会場選び・サークル運営ガイド</h1>
+<p>会場費の比較、練習試合の準備、参加前の確認まで。実際に活動を進めるときの判断材料をまとめています。</p>
 <h2>記事一覧</h2>
-<ul>{items}</ul>
+<ul class="cm-guide-list">{items}</ul></article>
 """
-    return legal_layout("サークル運営ガイド", body)
+    return event_page("会場選び・サークル運営ガイド", body).encode('utf-8')
 
 
 def guide_page(slug):
     data = GUIDE_PAGES.get(slug)
     if not data:
         return None
-    sections = "\n".join(
-        f"<h2>{title}</h2><ul>{''.join(f'<li>{item}</li>' for item in items)}</ul>"
-        for title, items in data["sections"]
-    )
+    sections = ''.join(f'<section id="section-{i}"><h2>{html.escape(title)}</h2><ul>'
+                       + ''.join(f'<li>{html.escape(item)}</li>' for item in items) + '</ul></section>'
+                       for i, (title, items) in enumerate(data['sections'], 1))
+    toc = '<nav class="cm-article-toc" aria-label="この記事の目次">' + ''.join(
+        f'<a href="#section-{i}">{html.escape(title)}</a>' for i, (title, _) in enumerate(data['sections'], 1)) + '</nav>'
+    date = public_content.UPDATED if slug in public_content.GUIDES else POLICY_UPDATED_AT
+    extra = ''
+    if slug == 'tokyo-venue-costs':
+        toc = toc.replace('</nav>', '<a href="#comparison-heading">施設の料金・条件を見比べる</a></nav>')
+        try:
+            extra = public_content.comparison(venues.get_venue_catalog())
+        except Exception as exc:
+            log(f'guide comparison failed: {type(exc).__name__}')
+            extra = '<p class="error-box" role="status">比較データを取得できませんでした。時間をおいて再度お試しください。</p>'
+    sources = ''
+    if data.get('sources'):
+        sources = '<h2>公式情報・確認日</h2><p>記事内の制度・料金の例は2026-11-04に確認。比較例のカタログ確認日は各施設に表示しています。</p><ul>' + ''.join(
+            '<li><a href="' + html.escape(url, quote=True) + '" target="_blank" rel="noopener noreferrer">'
+            + html.escape(label) + '</a></li>' for label, url in data['sources']) + '</ul>'
     body = f"""
-<h1>{data["title"]}</h1>
-<p class="meta">サークル代表者・参加希望者向けガイド</p>
-<p>{data["lead"]}</p>
-{sections}
+<article class="cm-article"><nav aria-label="パンくず"><a href="/">ホーム</a> / <a href="/guides">活動ガイド</a></nav>
+<h1>{html.escape(data["title"])}</h1>
+<p class="cm-article-meta">編集：Circle Match編集 / 更新日：<time datetime="{date}">{date}</time></p>
+<p>{html.escape(data["lead"])}</p>
+{toc}{sections}{extra}{sources}
 <h2>関連ページ</h2>
 <ul>
   <li><a href="/guides">サークル運営ガイド一覧</a></li>
+  <li><a href="/venues">会場の料金・条件を確認する</a></li>
   <li><a href="/circles">サークルDBを見る</a></li>
   <li><a href="/contact">掲載情報の訂正・問い合わせ</a></li>
-</ul>
+</ul></article>
 """
-    return legal_layout(data["title"], body)
+    return event_page(data["title"], body).encode('utf-8')
 
 
 def privacy_page():
@@ -5331,13 +5330,16 @@ class Handler(BaseHTTPRequestHandler):
     def send_html(self, body, status=200):
         body = personalize_navigation(body, self.cookie_value("cm_session"), self.path)
         body = settings_ui.decorate(body)
+        body = public_content.decorate(body, self.path, status)
         body = club_ui.decorate(body, self.path)
         event = None
         event_path = urlparse(self.path).path
         if status == 200 and re.fullmatch(r'/events/[^/]+', event_path) and event_path != '/events/new':
             event = get_event(unquote(event_path.removeprefix('/events/')))
         body = seo.apply_metadata(body, self.path, SITE_BASE_URL,
-                                  {item[0]: item[4] for item in POPULAR_SPORTS}, REGION_GROUPS, status, event)
+                                  {item[0]: item[4] for item in POPULAR_SPORTS}, REGION_GROUPS, status, event,
+                                  GUIDE_PAGES.get(unquote(event_path.removeprefix('/guides/'))) if event_path.startswith('/guides/') else None)
+        body = public_content.apply_ad_policy(body, self.path, status, ADSENSE_HEAD, event)
         self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Cache-Control", "no-store, max-age=0, must-revalidate")
