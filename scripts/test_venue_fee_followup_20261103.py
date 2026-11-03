@@ -94,6 +94,15 @@ class November3VenueReviewTests(unittest.TestCase):
         self.assertEqual(filter_catalog([row], {}), [])
         self.assertEqual(len(filter_catalog([row], {'show_suspended': '1'})), 1)
 
+    def test_dark_theme_tariff_header_has_explicit_readable_colors(self):
+        css = (ROOT / 'outputs/club_static/styles.css').read_text(encoding='utf-8')
+        self.assertIn('.cm-club .venue-directory .venue-tariff thead{background:#29332b;color:#f2f5f2}', css)
+        def luminance(color):
+            channels = [int(color[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+            linear = [v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4 for v in channels]
+            return sum(v * w for v, w in zip(linear, [.2126, .7152, .0722]))
+        self.assertGreater((luminance('f2f5f2') + .05) / (luminance('29332b') + .05), 4.5)
+
     def test_prior_records_ids_booking_urls_and_all_nonclosure_fields_preserved(self):
         for name in ['tokyo_tennis.json', 'tokyo_sports.json', 'tokyo_expansion.json', 'fee_plans.json', 'cancellation_policies.json']:
             rel = 'outputs/venues/catalogs/' + name

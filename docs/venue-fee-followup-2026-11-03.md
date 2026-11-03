@@ -16,7 +16,8 @@ correction is the confirmed Higashikomagata closure: status, closure note,
 checked date and one appended official source. Historical tests explicitly
 validate that correction before comparing their original snapshots; they do
 not broadly exempt future changes. No UI redesign, environment, plan, schema,
-contact privacy, account, event, payment or user database changes. No inquiries,
+contact privacy, account, event, payment or user database changes. One scoped
+Club Edit tariff-header contrast correction is included, not a redesign. No inquiries,
 reservations, payments or authenticated source access.
 
 ## New Tariffs
@@ -128,7 +129,7 @@ Local complete PDFs and rendered table images were visually checked.
 
 ## Verification And Release
 
-Passed 201 existing/detailed venue tests (including the eight new dated tests),
+Passed 202 existing/detailed venue tests (including the nine new dated tests),
 plus 27 Club Edit, sports-navigation and public-event-URL tests. The initial
 restricted HTTP attempt could not access localhost; the same suite passed with
 local network permission. The fixture's intentionally raised source-read error
@@ -139,7 +140,11 @@ and availability fields exactly. All 29 reviewed server-rendered pages returned
 200 with matching fee notes; the closed record appears only when suspended
 records are included. Browser QA at 320px, 390px and 1440px confirmed expanded
 room/field details, separate unit labels, source links, stable navigation and no
-page-level horizontal overflow. No UI code changes were needed.
+page-level horizontal overflow. The production desktop screenshot exposed a
+white inherited tariff-header background with near-white text in Club Edit.
+One scoped CSS rule gives that header the existing dark table-header background
+and explicit light text. A contrast regression test and computed-color browser
+check cover the correction; no layout, navigation or broader UI redesign.
 
 Private complete source PDFs, rendered table images, browser screenshots, HTTP
 comparisons and final deployment evidence stay in

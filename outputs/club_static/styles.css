@@ -42,6 +42,7 @@ body.cm-club{--bg:#131719;--ink:#f2f5f2;--muted:#a5afaa;--line:#343c38;--accent:
 .cm-club .venue-directory{--green:#d9f66f;--ink:#f2f5f2;--muted:#a5afaa;--border:#47514a}
 .cm-club .venue-directory :is(button,.venue-region-dialog,.venue-dialog-footer,.venue-map-zoom,.venue-map-choice,.venue-table,.venue-column-options,.venue-fee-table,.venue-page-button){background:#202722;color:#f2f5f2;border-color:#47514a}
 .cm-club .venue-directory .venue-table>thead th{background:#29332b;color:#c7d1cb}.cm-club .venue-directory .venue-column-options :is(a:hover,a.is-active),.cm-club .venue-directory .venue-map-choice.is-active{background:#303b24;color:#d9f66f;border-color:#d9f66f}
+.cm-club .venue-directory .venue-tariff thead{background:#29332b;color:#f2f5f2}
 .cm-club .venue-directory .venue-primary-link{background:#d9f66f;color:#1b2412}.cm-club .venue-directory .venue-primary-link:hover{background:#e3fa95;color:#1b2412}.cm-club .venue-directory #venue-result-count{background:#303b24;color:#d9f66f}
 .cm-club :is(.circle-region-picker,.circle-region-dialog,.circle-dialog-footer,.circle-region-trigger,.circle-map-choice,.circle-map-zoom,#circle-region-close){background:#202722;color:#f2f5f2;border-color:#47514a}
 .cm-club .circle-map-choice.is-active{background:#303b24;color:#d9f66f;border-color:#d9f66f}.cm-club .circle-map-breadcrumbs a{color:#b1c5ff}.cm-club .circle-region-field{color:#b4bdb7}
