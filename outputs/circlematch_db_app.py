@@ -33,6 +33,7 @@ import circlematch_invitation_ui as invitation_ui
 import circlematch_contact_research as contact_research
 import circlematch_public_contacts as public_contacts
 import circlematch_payments as online_payments
+import circlematch_stripe_qa as stripe_qa
 import circlematch_payment_ui as payment_ui
 import circlematch_event_pricing as event_pricing
 import circlematch_host_fees as host_fees
@@ -5393,6 +5394,19 @@ class Handler(BaseHTTPRequestHandler):
         return self.require_admin()
 
     def payment_post(self, path):
+        if path == stripe_qa.WEBHOOK_PATH:
+            try:
+                config = stripe_qa.settings()
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= stripe_qa.MAX_BODY:
+                    raise ValueError("invalid_sandbox_payload")
+                result = stripe_qa.receive(self.rfile.read(length), self.headers.get("Stripe-Signature", ""),
+                                           config=config)
+            except stripe_qa.Disabled:
+                self.send_json({"error": "sandbox_verification_disabled"}, 410)
+                return
+            self.send_json(result)
+            return
         service = payment_service()
         if path in {"/api/payments/webhook", "/api/payments/connect-webhook"}:
             length = int(self.headers.get("Content-Length", "0"))
