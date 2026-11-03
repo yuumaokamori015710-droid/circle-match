@@ -159,6 +159,16 @@ loopback以外へ公開しない。`participant / host / receipt / cancel / paym
 キーの形式が有効でも権限・審査・実Stripe試験の完了は別途必要であり、
 モード一致・本番承認・Webhookのチェックを省略して受付を有効にしない。
 
+固定APIバージョン`2026-09-30.endive`では、Checkout作成に
+`allowed_payment_method_types=['card']`を使用する。廃止された
+`payment_method_types`は送らず、保存済み旧リクエストは送信時だけ変換する。
+この変更でカード以外の決済方法を自動開放しない。
+従来のPayments連携を維持するため、リクエスト単位で
+`managed_payments={'enabled':False}`も明示する。アカウント全体の設定・契約や
+料金プランを変更する処理ではない。既定でManaged Paymentsが有効なアカウントでも
+カード限定のCheckoutを作成できることをサンドボックスで確認する。
+出典: https://docs.stripe.com/changelog/endive/2026-09-30/remove-payment-method-types-checkout-sessions
+
 1. 専用テスト環境・独立DB・テストユーザーを作成。StripeのテストモードでConnect設定を確認。
 2. APIキーとプラットフォームIDが同じテスト環境であることを確認。
 3. 下記2種類のWebhookを設定。APIバージョンはコードと合わせる。

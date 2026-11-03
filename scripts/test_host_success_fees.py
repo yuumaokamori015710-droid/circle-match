@@ -209,6 +209,9 @@ class HostSuccessFeeTests(unittest.TestCase):
                 return dict(id='acct_Local',country='JP',default_currency='jpy',charges_enabled=True)
 
             def create_session(inner, params, key):
+                self.assertEqual(params.get('allowed_payment_method_types'), ['card'])
+                self.assertNotIn('payment_method_types', params)
+                self.assertEqual(params.get('managed_payments'), {'enabled':False})
                 if key not in inner.keys:
                     inner.created += 1
                     sid = 'cs_host_' + params['client_reference_id']

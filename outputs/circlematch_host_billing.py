@@ -190,7 +190,8 @@ class Billing:
                     raise PaymentError('利用料の総額が決済上限を超えています。運営へ連絡してください')
                 order_id = 'hf_' + secrets.token_hex(16)
                 destination = self.config.base_url+'/events/'+quote(event_id, safe='')+'/host-fee'
-                params = dict(mode='payment', payment_method_types=['card'], client_reference_id=order_id,
+                params = dict(mode='payment', allowed_payment_method_types=['card'], client_reference_id=order_id,
+                              managed_payments={'enabled':False},
                               success_url=destination, cancel_url=destination,
                               metadata={'host_fee_order_id':order_id},
                               payment_intent_data={'metadata':{'host_fee_order_id':order_id}},

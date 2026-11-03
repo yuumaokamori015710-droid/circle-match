@@ -53,6 +53,10 @@ class FakeStripe:
         return {"url":"https://connect.stripe.com/setup/mock/"+aid}
 
     def create_session(self,params,key):
+        if params.get("allowed_payment_method_types") != ["card"] or "payment_method_types" in params:
+            raise AssertionError("Endive Checkout requires the card-only allowed_payment_method_types filter")
+        if params.get("managed_payments") != {"enabled":False}:
+            raise AssertionError("Circle Match uses standard Payments, not Managed Payments")
         self.create_calls += 1
         if key not in self.keys:
             sid = "cs_test_"+str(len(self.sessions)+1)

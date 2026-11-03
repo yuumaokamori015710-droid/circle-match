@@ -38,7 +38,7 @@ class SDKTests(unittest.TestCase):
 
     def test_versions_and_destination_parameters(self):
         self.assertEqual(stripe.VERSION,"16.0.0")
-        self.gateway.create_session({"mode":"payment","payment_method_types":["card"],
+        self.gateway.create_session({"mode":"payment","allowed_payment_method_types":["card"],
             "payment_intent_data":{"application_fee_amount":600,"transfer_data":{"destination":"acct_host"}},
             "line_items":[{"price_data":{"currency":"jpy","unit_amount":2000,"product_data":{"name":"Test"}},"quantity":3}]},"stable-order-key")
         method,url,headers,data=self.transport.calls[-1]
@@ -49,7 +49,24 @@ class SDKTests(unittest.TestCase):
         self.assertEqual(data["payment_intent_data[application_fee_amount]"],["600"])
         self.assertEqual(data["payment_intent_data[transfer_data][destination]"],["acct_host"])
         self.assertEqual(data["line_items[0][quantity]"],["3"])
+        self.assertEqual(data["allowed_payment_method_types[0]"],["card"])
+        self.assertEqual(data["managed_payments[enabled]"],["false"])
+        self.assertFalse(any(k.startswith("payment_method_types") for k in data))
         self.assertFalse(any("on_behalf_of" in k for k in data))
+
+    def test_legacy_attempt_request_is_adapted_without_mutating_snapshot(self):
+        params={"mode":"payment","payment_method_types":["card"]}
+        self.gateway.create_session(params,"legacy-attempt")
+        data=self.transport.calls[-1][3]
+        self.assertEqual(data["allowed_payment_method_types[0]"],["card"])
+        self.assertFalse(any(k.startswith("payment_method_types") for k in data))
+        self.assertEqual(params,{"mode":"payment","payment_method_types":["card"]})
+        before=len(self.transport.calls)
+        for changes in ({"payment_method_types":["card","konbini"]},
+                        {"payment_method_types":["card"],"allowed_payment_method_types":["konbini"]},
+                        {"allowed_payment_method_types":["card"],"managed_payments":{"enabled":True}}):
+            with self.assertRaises(Unavailable):self.gateway.create_session(changes,"unsafe-legacy")
+        self.assertEqual(len(self.transport.calls),before)
 
     def test_restricted_keys_preserve_mode_and_live_approval_guards(self):
         for mode in ("test", "live"):

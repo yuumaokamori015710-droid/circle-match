@@ -270,6 +270,16 @@ class StripeGateway:
             "return_url":self.config.base_url+"/payments/connect", "refresh_url":self.config.base_url+"/payments/connect"}))
 
     def create_session(self, params, key):
+        params = dict(params)
+        if params.get("managed_payments", {"enabled": False}) != {"enabled": False}:
+            raise Unavailable("Managed Paymentsはこの決済連携では利用できません")
+        params["managed_payments"] = {"enabled": False}
+        # Older durable attempts retain their original snapshot; adapt only the API request.
+        if "payment_method_types" in params:
+            methods = params.pop("payment_method_types")
+            if methods != ["card"] or params.get("allowed_payment_method_types", methods) != methods:
+                raise Unavailable("保存済みの決済方法を運営が確認する必要があります")
+            params["allowed_payment_method_types"] = methods
         return self.plain(self.client.v1.checkout.sessions.create(params, options={"idempotency_key":key}))
 
     def session(self, session_id):
@@ -484,7 +494,7 @@ class Payments:
                 if data.get("quote_token") != self.quote_token(snapshot):
                     raise PaymentError("料金・開催案内が変わりました。支払内容を再確認してください")
                 order_id = "po_"+secrets.token_hex(16)
-                params = {"mode":"payment","payment_method_types":["card"],"locale":"ja",
+                params = {"mode":"payment","allowed_payment_method_types":["card"],"managed_payments":{"enabled":False},"locale":"ja",
                     "client_reference_id":order_id,"metadata":{"order_id":order_id},
                     "line_items":[{"price_data":{"currency":"jpy","unit_amount":amounts["unit_amount"],
                     "product_data":{"name":event["title"]}},"quantity":amounts["quantity"]}],
