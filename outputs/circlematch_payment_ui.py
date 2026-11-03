@@ -149,6 +149,7 @@ def render(service, kind, identifier, user, page, csrf, admin=False):
         title = "決済運営管理" if admin else "オンライン決済"
         body += '<h1>'+title+'</h1>'
         if admin:
+            body += '<p><a class="button" href="/admin/payments/host-fees">主催者利用料・キャンペーン設定</a></p>'
             status = service.connection_status()
             body += '<h2>オンライン決済の接続確認</h2><p>新規受付：'+('有効' if status['enabled'] else '停止中')+'</p>'
             body += '<div id="payment-connection-status" role="status">'+''.join('<p>'+esc(check['label'])+'：'+('設定済み' if check['ok'] else '未設定・要確認')+'</p>' for check in status['checks'])+'</div>'

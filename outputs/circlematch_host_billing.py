@@ -9,6 +9,7 @@ from urllib.parse import quote
 
 import circlematch_event_pricing as pricing
 import circlematch_host_fees as policy
+import circlematch_fee_campaign as campaign
 from circlematch_payments import PaymentError, Unavailable, VerificationError, stamp
 
 
@@ -61,10 +62,10 @@ def agreement(conn, event_id):
 
 
 def validate_consent(conn, event_id, payload, data):
+    if campaign.terms(conn, event_id)["waived"]:
+        return
     existing = agreement(conn, event_id) if event_id else None
     # Legacy events are never silently enrolled by an edit or re-announcement.
-    if event_id and not existing:
-        return
     if existing and existing['accepted_at']:
         return
     if payload['status'] == 'published' and not pricing.is_free(payload):
@@ -74,11 +75,13 @@ def validate_consent(conn, event_id, payload, data):
 
 def enroll(conn, event_id, user_id, data, *, is_new):
     row = agreement(conn, event_id)
-    if not is_new and not row:
+    if not is_new and not row and campaign.terms(conn, event_id)['waived']:
         return
-    if is_new:
+    if not row:
         conn.execute('insert into host_fee_agreements values(?,?,?,?,null,?)',
                      (event_id, user_id, policy.POLICY_VERSION, policy.FEE_BPS, stamp()))
+    if campaign.terms(conn, event_id)["waived"]:
+        return False
     if data.get('host_fee_accepted') is True and data.get('host_fee_policy_version') == policy.POLICY_VERSION:
         return bool(conn.execute('update host_fee_agreements set accepted_at=? where event_id=? and organizer_id=? and accepted_at is null',
                                  (stamp(), event_id, user_id)).rowcount)
@@ -86,6 +89,8 @@ def enroll(conn, event_id, user_id, data, *, is_new):
 
 
 def legacy_opt_in_blocker(conn, event, local_now):
+    if campaign.terms(conn, event['event_id'])["waived"]:
+        return '免除対象の大会です。徴収再開後も遡って利用料を適用しません。'
     if event['status'] not in {'published', 'closed'} or event['starts_at'] <= local_now or event['announcement_version']:
         return '開催決定前の、開催予定の公開大会だけが対象です。'
     if pricing.is_free(event):
@@ -135,6 +140,8 @@ class Billing:
         orders = [dict(r) for r in conn.execute('select * from payment_orders where event_id=? and mode=? and platform=?',
                                                (event_id, self.config.mode, self.config.platform))]
         result = policy.estimate(event, applications, orders)
+        current_campaign = campaign.status(conn)
+        publication = campaign.terms(conn, event_id)
         accepted = agreement(conn, event_id)
         covered = bool(accepted and accepted['accepted_at'])
         collected, unknown = 0, False
@@ -148,8 +155,8 @@ class Billing:
         withheld = sum(max(0, r['fee'] - r['fee_refunded']) for r in relevant)
         unsafe = unknown or any(r['needs_review'] or r['refund_state'] not in {'none', 'succeeded'}
                                or r['dispute_state'] != 'none' for r in relevant)
-        eligible = covered and result['state'] == 'announced'
-        total = None if unsafe else policy.fee(collected) if eligible else 0
+        eligible = covered and not publication['waived'] and result['state'] == 'announced'
+        total = 0 if publication['waived'] else None if unsafe else policy.fee(collected) if eligible else 0
         paid = conn.execute('''select coalesce(sum(amount-refund_amount),0) from host_fee_orders
                               where event_id=? and mode=? and platform=? and paid_at is not null''',
                             (event_id, self.config.mode, self.config.platform)).fetchone()[0]
@@ -160,13 +167,15 @@ class Billing:
                                     (event_id,self.config.mode,self.config.platform)).fetchone()
         if needs_review:
             total = None
-        result.update(preview_only=self.config.mode != 'live', billing_enabled=self.config.enabled,
+        result.update(preview_only=self.config.mode != 'live', billing_enabled=current_campaign['enabled'],
+                      campaign_enabled=current_campaign['enabled'], campaign_revision=current_campaign['revision'],
+                      fee_waived=publication['waived'], waiver_reason=publication['reason'],
                       agreement_accepted=covered, legacy_event=accepted is None, mode=self.config.mode,
                       collected_gross=collected, fee_total=total, online_fee_withheld=withheld, fee_paid=paid,
-                      charge_due=None if total is None else max(0, total-withheld-paid),
+                      charge_due=None if total is None else max(0, total-withheld-paid) if current_campaign['enabled'] else 0,
                       refund_review_amount=0 if total is None else max(0, paid-max(0,total-withheld)),
                       pending_order=dict(pending) if pending else None)
-        digest = json.dumps({k: result[k] for k in ('policy_version','collected_gross','fee_total','online_fee_withheld','fee_paid','charge_due','state')}, sort_keys=True)
+        digest = json.dumps({k: result[k] for k in ('policy_version','collected_gross','fee_total','online_fee_withheld','fee_paid','charge_due','state','campaign_revision')}, sort_keys=True)
         result['quote_token'] = hashlib.sha256((event_id+user_id+digest).encode()).hexdigest()
         return event, result
 
@@ -177,6 +186,8 @@ class Billing:
         self.payments.platform_check(accepting_payments=True)
         with self.connect() as conn:
             conn.execute('begin immediate')
+            if not campaign.status(conn)['enabled']:
+                raise PaymentError('キャンペーン中のため主催者利用料の徴収は停止しています')
             event, balance = self.balance(conn, event_id, user_id)
             existing = balance['pending_order']
             if existing:
@@ -211,12 +222,14 @@ class Billing:
             raise PermissionError('この利用料の確認権限がありません')
         return dict(row)
 
-    def resume(self, order_id, user_id, *, create=True):
+    def resume(self, order_id, user_id, *, create=True, recover=False):
         if create:
             self.payments.new_allowed()
         token = secrets.token_hex(16)
         with self.connect() as conn:
             conn.execute('begin immediate')
+            if create and not campaign.status(conn)['enabled']:
+                raise PaymentError('主催者利用料の徴収は停止しています')
             order = self.order(conn, order_id, user_id)
             if order['lease_until'] > int(time.time()):
                 raise PaymentError('利用料決済を確認中です。重ねて支払わず少し待ってください')
@@ -228,7 +241,7 @@ class Billing:
             if order['session_id']:
                 session = self.payments.gateway.session(order['session_id'])
             else:
-                if not create:
+                if not create and not recover:
                     raise PaymentError('決済作成の確認待ちです')
                 if int(time.time())-order['created_epoch'] > 23*3600:
                     with self.connect() as conn:
@@ -272,14 +285,24 @@ class Billing:
                     self.notify(conn,user_id,order['event_id'],'host_fee_paid','主催者利用料の支払いを確認しました',
                                 f"Circle Matchへの利用料 {order['amount']:,}円を確認しました。参加者の参加費とは別の支払いです。")
             if state == 'open' and create:
-                if balance['charge_due'] is None or balance['charge_due'] < order['amount'] or not self.config.enabled:
+                if balance['charge_due'] is None or balance['charge_due'] < order['amount'] or not balance['campaign_enabled'] or not self.config.enabled:
                     self.payments.gateway.expire(session['id'])
+                    with self.connect() as conn:
+                        conn.execute('update host_fee_orders set next_sync_at=0 where order_id=?',(order_id,))
                     raise PaymentError('対象売上・成立状態が変わりました。支払状況を更新してください')
                 self.payments.platform_check(accepting_payments=True)
                 url = session.get('url') or ''
                 if not url.startswith('https://checkout.stripe.com/'):
                     raise VerificationError('決済先URLが正しくありません')
-                return {'url':url}
+                with self.connect() as conn:
+                    conn.execute('begin immediate')
+                    _, latest = self.balance(conn, order['event_id'], user_id)
+                    if latest['campaign_enabled'] and latest['charge_due'] is not None and latest['charge_due'] >= order['amount']:
+                        return {'url':url}
+                self.payments.gateway.expire(session['id'])
+                with self.connect() as conn:
+                    conn.execute('update host_fee_orders set next_sync_at=0 where order_id=?',(order_id,))
+                raise PaymentError('徴収設定・対象売上が更新されました。支払状況を更新してください')
             return {'url':'/events/'+quote(order['event_id'], safe='')+'/host-fee'}
         except VerificationError:
             with self.connect() as conn:
@@ -321,6 +344,10 @@ class Billing:
         if not self.config.key or not self.config.platform:
             return
         with self.connect() as conn:
+            paused = not campaign.status(conn)['enabled']
+        if paused:
+            self.stop_open_checkouts()
+        with self.connect() as conn:
             rows = conn.execute('''select order_id,organizer_id from host_fee_orders where mode=? and platform=?
                 and state in ('open','paid') and session_id is not null and next_sync_at<=? limit 3''',
                 (self.config.mode,self.config.platform,int(time.time()))).fetchall()
@@ -330,3 +357,26 @@ class Billing:
             except Exception:
                 with self.connect() as conn:
                     conn.execute('update host_fee_orders set next_sync_at=? where order_id=?', (int(time.time())+300,row['order_id']))
+
+    def stop_open_checkouts(self, limit=3):
+        with self.connect() as conn:
+            if campaign.status(conn)['enabled']:
+                return
+            rows = conn.execute('''select order_id,organizer_id from host_fee_orders
+                where mode=? and platform=? and active=1 and state!='review'
+                and lease_until<=? and next_sync_at<=? order by next_sync_at,created_epoch limit ?''',
+                (self.config.mode,self.config.platform,int(time.time()),int(time.time()),limit)).fetchall()
+        for row in rows:
+            try:
+                # Recover only the durable attempt/key; never create another invoice.
+                self.resume(row['order_id'], row['organizer_id'], create=False, recover=True)
+                with self.connect() as conn:
+                    order = self.order(conn, row['order_id'], row['organizer_id'])
+                if order['state'] == 'open' and order['session_id']:
+                    self.payments.gateway.expire(order['session_id'])
+                    self.resume(row['order_id'], row['organizer_id'], create=False)
+            except Exception:
+                # The admin screen retains the pending count until remotely verified.
+                with self.connect() as conn:
+                    conn.execute('update host_fee_orders set next_sync_at=? where order_id=?',
+                                 (int(time.time())+300,row['order_id']))

@@ -13,6 +13,7 @@ import sys
 import threading
 import time
 from datetime import datetime, timedelta, timezone
+from dataclasses import replace
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
@@ -38,6 +39,7 @@ import circlematch_payment_ui as payment_ui
 import circlematch_event_pricing as event_pricing
 import circlematch_host_fees as host_fees
 import circlematch_host_billing as host_billing
+import circlematch_fee_campaign as fee_campaign
 import circlematch_event_guests as guests
 import circlematch_login_security as login_security
 
@@ -55,7 +57,13 @@ def payment_service():
 
 
 def host_fee_service():
-    return host_billing.Billing(connect, payment_service(), add_event_notification)
+    base = payment_service()
+    with connect() as conn:
+        enabled = fee_campaign.status(conn)['enabled']
+    # The authenticated campaign switch approves organizer fees only, not Connect.
+    config = replace(base.config, enabled=enabled, live_approved=True)
+    payments = online_payments.Payments(connect, add_event_notification, config, base._gateway)
+    return host_billing.Billing(connect, payments, add_event_notification)
 
 
 DB_PATH = Path(os.environ.get("CIRCLEMATCH_DB_PATH", ROOT / "circlematch.sqlite"))
@@ -2244,15 +2252,18 @@ def render_event_form_html(params, user):
     if HOST_FEES_ENABLED:
         with connect() as conn:
             agreement = host_billing.agreement(conn, event_id) if event_id else None
+            campaign_notice = fee_campaign.notice(conn, event_id)
         require_consent = not event_id or bool(agreement and not agreement['accepted_at'])
-        fee_help = ('この募集は利用料導入前のため対象外です。新しい利用料は遡及適用しません。'
+        fee_help = ('この大会の主催者利用料は0円です。徴収再開後も遡って請求しません。' if campaign_notice else
+                    'この募集は利用料導入前のため対象外です。新しい利用料は遡及適用しません。'
                     if event_id and not agreement else
                     '成立した有料大会には、参加費売上の10%の主催者利用料がかかります。発生条件は「公開確認」で確認できます。')
         body = body.replace('<span class="help" id="targetTotalHelp">主催者にのみ表示されます。</span>',
                             '<span class="help" id="targetTotalHelp">主催者にのみ表示されます。</span><p class="help">' + fee_help + '</p>')
         body = body.replace('<div class="field full"><label>公開前プレビュー</label>',
-                            '<div class="field full">' + host_fees.form_notice(require_consent=require_consent,legacy=bool(event_id and not agreement)) + '</div><div class="field full"><label>公開前プレビュー</label>')
-        script += host_fees.FORM_SCRIPT
+                            '<div class="field full">' + (host_fees.STYLE + campaign_notice if campaign_notice else host_fees.form_notice(require_consent=require_consent,legacy=bool(event_id and not agreement))) + '</div><div class="field full"><label>公開前プレビュー</label>')
+        if not campaign_notice:
+            script += host_fees.FORM_SCRIPT
     return event_page("募集を掲載する", body, script, post_url=return_to)
 
 
@@ -2335,6 +2346,7 @@ def render_event_organize_html(event_id, user):
         event = dict(event_owner(conn, event_id, user["user_id"]))
         count = active_confirmed_capacity(conn, event_id)
         fee_agreement = host_billing.agreement(conn,event_id) if HOST_FEES_ENABLED else None
+        campaign_notice = fee_campaign.notice(conn,event_id) if HOST_FEES_ENABLED else ''
     event["confirmed_count"] = count
     back = '<a class="button" href="/mypage?tab=hosted">マイページへ戻る</a>'
     if (not event["minimum_participants"] or event["status"] not in {"published", "closed"}
@@ -2374,7 +2386,7 @@ def render_event_organize_html(event_id, user):
             + event_formation_warning(event) + '<p>受付確定済みの参加者に通知します。' + payment_note + '案内を更新した場合は再確認を依頼します。未確認・未入金の自動取消は行いません。</p>'
             f'<form id="formationForm"><div class="field-grid">{fields}</div><div class="card-actions">{back}<button class="button primary" type="submit">{label}</button></div></form><p id="formationError" class="error-box" role="alert" hidden></p></section>')
     if HOST_FEES_ENABLED:
-        fee_notice = host_fees.notice(event_id=event_id) if fee_agreement else host_fees.legacy_notice(event_id)
+        fee_notice = campaign_notice or (host_fees.notice(event_id=event_id) if fee_agreement else host_fees.legacy_notice(event_id))
         body = body.replace('<form id="formationForm">', host_fees.STYLE + fee_notice + '<form id="formationForm">')
     return event_page("開催案内", body, formation_form_script(event, "announce", "/mypage?tab=hosted"))
 
@@ -2495,9 +2507,11 @@ def render_mypage_html(user):
         return None
     data = event_my_page(user)
     fee_events = set()
+    fee_notices = {}
     if HOST_FEES_ENABLED:
         with connect() as conn:
             fee_events = {row['event_id'] for row in conn.execute('select event_id from host_fee_agreements where organizer_id=?',(user['user_id'],))}
+            fee_notices = {event['event_id']:fee_campaign.notice(conn,event['event_id']) for event in data['hosted']}
     hosted = []
     for event in data["hosted"]:
         eid, url_id = html.escape(event["event_id"], quote=True), quote(event["event_id"])
@@ -2525,7 +2539,7 @@ def render_mypage_html(user):
         if target_total:
             target_total = '<details class="host-financial"><summary>収支の見込み</summary>' + target_total + '</details>'
         if HOST_FEES_ENABLED:
-            target_total += host_fees.notice(event_id=event['event_id'], compact=True) if event['event_id'] in fee_events else host_fees.legacy_notice(event['event_id'])
+            target_total += fee_notices.get(event['event_id']) or (host_fees.notice(event_id=event['event_id'], compact=True) if event['event_id'] in fee_events else host_fees.legacy_notice(event['event_id']))
         if event.get("minimum_participants"):
             formation_text = '' if event_formation_warning(event) else html.escape(event_formation_label(event)) + f' / 最低開催数：{event["minimum_participants"]}{html.escape(event["capacity_unit"])} / '
             target_total += f'<p>{formation_text}最終参加確認済み：{event.get("final_attendance_count", 0)}{html.escape(event["capacity_unit"])}</p>'
@@ -5433,7 +5447,24 @@ class Handler(BaseHTTPRequestHandler):
         if admin:
             parts = parts[1:]
         result = {"ok":True}
-        if parts == ["connection-status"] and admin:
+        if parts == ['host-fees','campaign'] and admin:
+            if not HOST_FEES_ENABLED:
+                raise ValueError('主催者利用料の管理は無効です')
+            if data.get('enabled') is True:
+                probe = host_fee_service().payments
+                probe.config.validate_new_payments()
+                probe.platform_check(accepting_payments=True)
+            with connect() as conn:
+                before = fee_campaign.status(conn)
+                current = fee_campaign.change(conn,data)
+                if current['revision'] != before['revision']:
+                    audit(conn,'host_fee_campaign_change','app_state',fee_campaign.KEY,
+                          {'enabled':current['enabled'],'revision':current['revision'],'actor':'admin'})
+            if not current['enabled']:
+                host_fee_service().stop_open_checkouts(limit=1)
+            with connect() as conn:
+                result['campaign'] = fee_campaign.status(conn)
+        elif parts == ["connection-status"] and admin:
             result["connection_status"] = service.connection_status(check_stripe=True)
         elif parts == ["connect","onboard"] and not admin:
             result = service.onboard(uid)
@@ -5648,6 +5679,15 @@ class Handler(BaseHTTPRequestHandler):
             if match := guests.ROUTE.fullmatch(parsed.path):
                 self.guest_route(match[1],match[2],post=False)
                 return
+            if parsed.path == '/api/payments/admin/host-fees/campaign':
+                if not self.payment_admin():
+                    return
+                if not HOST_FEES_ENABLED:
+                    self.send_json({'error':'not found'},404)
+                    return
+                with connect() as conn:
+                    self.send_json(fee_campaign.status(conn))
+                return
             if parsed.path == "/payments" or parsed.path.startswith("/payments/") or parsed.path == "/admin/payments" or parsed.path.startswith("/admin/payments/"):
                 admin = parsed.path.startswith("/admin/")
                 if admin and not self.payment_admin():
@@ -5658,6 +5698,13 @@ class Handler(BaseHTTPRequestHandler):
                     return
                 parts = [unquote(v) for v in parsed.path.strip("/").split("/")][2 if admin else 1:]
                 kind,identifier = (parts[0] if parts else "index"),(parts[1] if len(parts)>1 else "")
+                if admin and kind == 'host-fees' and not identifier and HOST_FEES_ENABLED:
+                    with connect() as conn:
+                        campaign_state = fee_campaign.status(conn)
+                    body,script = fee_campaign.admin_page(campaign_state,self.payment_csrf(True),
+                        host_fee_service().config.connection_checks())
+                    self.send_html(event_page('主催者利用料のキャンペーン設定',body,script).encode('utf-8'))
+                    return
                 if kind not in {"index","connect","applications","orders","cancel"} or (admin and kind not in {"index","orders"}):
                     raise ValueError("ページが見つかりません")
                 self.send_html(payment_ui.render(payment_service(),kind,identifier,user,event_page,self.payment_csrf(admin),admin).encode("utf-8"))
@@ -7140,7 +7187,7 @@ def announce_event(conn, event_id, data, user):
                                f"{event['title']}\n開催日時: {starts_at}\n会場: {event['prefecture']} / {location}\n{details}\n最終参加確認の期限: {attendance_deadline}\n\nマイページから開催内容・キャンセル条件を確認し、参加する旨をお知らせください。{payment_note}")
     if HOST_FEES_ENABLED and version == 1:
         fee_agreement = host_billing.agreement(conn,event_id)
-        if fee_agreement and fee_agreement['accepted_at'] and not event_pricing.is_free(event):
+        if fee_agreement and fee_agreement['accepted_at'] and not fee_campaign.terms(conn,event_id)['waived'] and not event_pricing.is_free(event):
             add_event_notification(conn,user['user_id'],event_id,'host_fee_eligible','主催者利用料の対象になりました',
                                    '開催を確定したため、入金確認済み参加費売上の10%が利用料の対象です。未入金分は含めず、オンラインで控除済みの利用料を差し引きます。支払額は主催者の利用料画面で確認できます。自動引落しは行いません。')
     audit(conn, "event_announce", "event_post", event_id, {"version": version})
@@ -7674,6 +7721,7 @@ def save_event_post(conn, data, user):
     event_id = event_form_value(data, "event_id", "募集ID", max_length=120)
     payload = event_payload_from_data(conn, data, user, event_id)
     is_new = not event_id
+    first_publication = payload['status'] == 'published' and (is_new or not event_owner(conn,event_id,user['user_id'])['published_at'])
     if HOST_FEES_ENABLED:
         if event_id:
             event_owner(conn, event_id, user['user_id'])
@@ -7753,6 +7801,8 @@ def save_event_post(conn, data, user):
                  (payload['individual_fee_amount'], payload['team_fee_amount'], payload['individual_online_price_input'], payload['team_online_price_input'], event_id))
     conn.execute("update event_posts set allow_on_site_payment=? where event_id=?", (payload["allow_on_site_payment"], event_id))
     if HOST_FEES_ENABLED:
+        if first_publication:
+            fee_campaign.freeze(conn,event_id)
         if host_billing.enroll(conn,event_id,user['user_id'],data,is_new=is_new):
             audit(conn,'host_fee_consent','event_post',event_id,{'policy_version':host_fees.POLICY_VERSION,'fee_bps':host_fees.FEE_BPS,'organizer_id':user['user_id']})
     update_event_formation(conn, event_id)

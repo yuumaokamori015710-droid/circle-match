@@ -304,8 +304,13 @@ class StripeGateway:
         return self.plain(self.client.v1.payouts.retrieve(payout_id, options={"stripe_account":account_id}))
 
     def verify(self, body, signature, connected=False):
-        secret = self.config.connect_webhook_secret if connected else self.config.webhook_secret
-        return self.plain(self.stripe.Webhook.construct_event(body, signature, secret, tolerance=300))
+        return verify_webhook(self.config, body, signature, connected)
+
+
+def verify_webhook(config, body, signature, connected=False):
+    import stripe
+    secret = config.connect_webhook_secret if connected else config.webhook_secret
+    return stripe.Webhook.construct_event(body, signature, secret, tolerance=300).to_dict()
 
 
 class Payments:
@@ -886,7 +891,8 @@ class Payments:
         if not (self.config.connect_webhook_secret if connected else self.config.webhook_secret):
             raise Unavailable("Webhookは未設定です")
         try:
-            event = self.gateway.verify(body,signature,connected=connected)
+            event = (self._gateway.verify(body,signature,connected=connected) if self._gateway is not None
+                     else verify_webhook(self.config,body,signature,connected))
         except Exception:
             raise PaymentError("Webhook署名が正しくありません") from None
         if event.get("livemode") != (self.config.mode == "live") or not event.get("id"):

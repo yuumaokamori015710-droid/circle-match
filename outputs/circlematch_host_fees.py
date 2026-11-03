@@ -86,7 +86,7 @@ def notice(*, event_id='', heading='大会成立時の主催者利用料', compa
 
 def legacy_notice(event_id=''):
     link = f'<p><a href="/events/{quote(event_id,safe="")}/host-fee">利用料の条件と適用可否を確認する</a></p>' if event_id else ''
-    return '<section class="host-fee-note" data-host-fee-private><h3>主催者利用料は未適用</h3><p>この募集に利用料は自動で適用されません。開催決定前・入金前に限り、主催者がこの大会だけに適用できます。</p>' + link + '</section>'
+    return '<section class="host-fee-note" data-host-fee-private><h3>既存大会の主催者利用料は免除</h3><p>この大会には徴収再開後も遡って利用料を適用しません。</p>' + link + '</section>'
 
 
 def form_notice(*, require_consent=True, legacy=False):
@@ -120,14 +120,16 @@ def render(event, estimate):
     money = lambda n: '未確定' if n is None else f'{n:,}円'
     lines = [('受付確定分の参加費見込', money(estimate['forecast_gross'])),
              ('入金確認済みの参加費売上', money(estimate['collected_gross'])),
-             ('成立後の利用料（売上の10%）', money(estimate['fee_total'])),
+             ('主催者利用料（免除）' if estimate.get('fee_waived') else '成立後の利用料（売上の10%）', money(estimate['fee_total'])),
              ('オンライン決済で控除確認済み', money(estimate['online_fee_withheld'])),
              ('Circle Matchへの利用料支払済み', money(estimate['fee_paid'])),
              ('今回のお支払額', money(estimate['charge_due']))]
     actions = ''
     if estimate['mode'] == 'test':
         actions += '<p class="host-fee-note">テストモードです。実際の請求・送金は行いません。</p>'
-    if estimate['legacy_event']:
+    if estimate.get('fee_waived'):
+        actions += '<p class="host-fee-note">この大会の主催者利用料は0円です。徴収を再開しても後から請求しません。</p>'
+    elif estimate['legacy_event']:
         actions += '<h3>この大会への適用は任意です</h3><p>同意しなくても、今の募集・受付はそのまま続けられます。</p>'
         if estimate['opt_in_blocker']:
             actions += '<p>' + html.escape(estimate['opt_in_blocker']) + '</p>'
@@ -142,8 +144,8 @@ def render(event, estimate):
         actions += '<p>主催者利用料の条件に同意済みです。</p>'
     if estimate['refund_review_amount']:
         actions += '<p class="host-fee-note">利用料の返金・精算確認が必要です：' + money(estimate['refund_review_amount']) + '。重ねて支払わず、運営へ連絡してください。自動返金の完了を示すものではありません。</p>'
-    if not estimate['billing_enabled']:
-        actions += '<p class="host-fee-note">利用料のオンライン決済は接続準備中です。現在、この画面から支払い・自動引落しは行えません。</p>'
+    if not estimate['billing_enabled'] and not estimate.get('fee_waived'):
+        actions += '<p class="host-fee-note">主催者利用料の新規支払いは停止中です。既存の入金・支払状況の照合は継続します。</p>'
     elif estimate['charge_due'] is not None and estimate['charge_due'] >= 50:
         actions += payment_ui.action('/api/payments/host-fees/'+event_id+'/checkout','Stripeの利用料支払確認へ',
             values={'quote_token':estimate['quote_token']},confirm=True)
@@ -156,14 +158,16 @@ def render(event, estimate):
         actions += '<p class="host-fee-note" role="alert">利用料の決済照合に確認が必要です。重ねて支払わず運営へご連絡ください。</p>'
     return (STYLE + '<section class="host-fee-page" data-host-fee-private>'
             f'<a href="/mypage?tab=hosted">主催するイベントへ</a><h1>大会成立時の利用料</h1>'
-            f'<p>{html.escape(event["title"])}</p><span class="host-fee-badge">主催者のみ / 利用料10%</span>'
+            f'<p>{html.escape(event["title"])}</p><span class="host-fee-badge">主催者のみ / 利用料{"0円・免除" if estimate.get("fee_waived") else "10%"}</span>'
             f'<h2>{html.escape(estimate["state_label"])}</h2>'
             '<p>最低開催数に到達しただけでは仮成立です。主催者が開催を決定した大会だけが利用料の対象です。</p>'
             '<dl class="host-fee-totals">' + ''.join(f'<dt>{html.escape(k)}</dt><dd>{v}</dd>' for k, v in lines) + '</dl>'
             '<p>受付確定分の見込と、入金確認済みの売上は別です。未入金分を利用料の請求対象にしません。'
             '返金中・料金不明・決済要確認のときは、照合するまで追加決済できません。</p>'
-            '<h2>主催者への料金案内</h2><p>募集掲載・仮成立の段階は利用料なし。無料大会・開催中止は0円。'
-            '売上は確認済みの参加費から返金分を除いて計算し、利用料10%は1円未満切り上げです。</p>'
+            '<h2>主催者への料金案内</h2><p>' +
+            ('この大会は利用料の免除対象です。開催確定後や徴収再開後も主催者利用料は0円です。' if estimate.get('fee_waived') else
+             '募集掲載・仮成立の段階は利用料なし。無料大会・開催中止は0円。'
+             '売上は確認済みの参加費から返金分を除いて計算し、利用料10%は1円未満切り上げです。') + '</p>'
             '<p>参加費の口座振込・現地払いは主催者への支払いです。Circle Matchへの利用料の支払いとは別です。'
             'オンライン決済で控除済みの利用料は追加決済から差し引き、重複して請求しません。</p>'
             + actions +

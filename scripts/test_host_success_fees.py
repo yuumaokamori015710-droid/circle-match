@@ -21,6 +21,8 @@ class HostSuccessFeeTests(unittest.TestCase):
         cls.app = load_app(Path(cls.temp.name) / 'host-fees.sqlite')
         cls.app.HOST_FEES_ENABLED = True
         cls.app.init_db()
+        with cls.app.connect() as conn:
+            cls.app.fee_campaign.change(conn, dict(enabled=True, revision=0, accepted=True))
         cls.app.EMAIL_NOTIFICATIONS_ENABLED = False
         cls.host = user('fee_host', 'host@example.test', 'Fee Host')
         cls.guest = user('fee_guest', 'guest@example.test', 'Fee Guest')
@@ -143,7 +145,7 @@ class HostSuccessFeeTests(unittest.TestCase):
             self.assertIn('no-store', response.headers['Cache-Control'])
             page = response.read().decode()
         self.assertIn('主催者のみ / 利用料10%', page)
-        self.assertIn('オンライン決済は接続準備中', page)
+        self.assertIn('主催者利用料の条件に同意済み', page)
         self.assertIn('noindex', page)
 
     def test_owner_disclosure_never_enters_participant_views_or_public_api(self):
@@ -271,11 +273,12 @@ class HostSuccessFeeTests(unittest.TestCase):
         with self.app.connect() as conn:
             self.assertIsNotNone(self.app.host_billing.agreement(conn,eid)['accepted_at'])
             conn.execute('delete from host_fee_agreements where event_id=?', (eid,))
+            conn.execute('delete from app_state where state_key=?', (self.app.fee_campaign.EVENT_PREFIX+eid,))
         _, balance = self.app.host_fee_estimate(eid,self.host)
         self.assertTrue(balance['legacy_event'])
         self.assertEqual(balance['charge_due'],0)
         form = self.app.render_event_form_html({'event_id':[eid]},self.host)
-        self.assertIn('この募集は利用料導入前のため対象外',form)
+        self.assertIn('徴収再開後も遡って請求しません',form)
         self.assertNotIn('id="hostFeeConsent"',form)
         self.assertNotIn('成立した有料大会には、参加費売上の10%',form)
 
@@ -298,16 +301,16 @@ class HostSuccessFeeTests(unittest.TestCase):
         with self.app.connect() as conn:
             self.assertEqual(conn.execute('select count(*) from host_fee_orders where event_id=?',(eid,)).fetchone()[0],1)
 
-    def test_legacy_opt_in_requires_owner_csrf_and_current_explicit_consent(self):
+    def test_legacy_opt_in_is_rejected_with_owner_and_csrf_checks_preserved(self):
         eid = self.event()
         with self.app.connect() as conn:
             conn.execute('delete from host_fee_agreements where event_id=?', (eid,))
+            conn.execute('delete from app_state where state_key=?', (self.app.fee_campaign.EVENT_PREFIX+eid,))
         path = f'/events/{eid}/host-fee'
         with self.get(path, self.host) as response:
             page = response.read().decode()
-        self.assertIn('この大会への適用は任意', page)
-        self.assertIn('type="checkbox" name="accepted" required', page)
-        self.assertNotIn(' checked', page.split('data-pay=')[-1].split('</form>')[0])
+        self.assertIn('利用料0円・免除', page)
+        self.assertNotIn('/opt-in', page)
         data = dict(accepted=True, policy_version=self.app.host_fees.POLICY_VERSION)
 
         def post(account, payload, csrf=True):
@@ -335,14 +338,10 @@ class HostSuccessFeeTests(unittest.TestCase):
             self.assertEqual(post(self.host,invalid),400)
         with self.app.connect() as conn:
             self.assertIsNone(self.app.host_billing.agreement(conn,eid))
-        self.assertEqual(post(self.host,data),200)
+        self.assertEqual(post(self.host,data),400)
+        self.assertEqual(post(self.host,data),400)
         with self.app.connect() as conn:
-            accepted = self.app.host_billing.agreement(conn,eid)
-        self.assertEqual(post(self.host,data),200)
-        with self.app.connect() as conn:
-            self.assertEqual(accepted,self.app.host_billing.agreement(conn,eid))
-            self.assertEqual(accepted['organizer_id'],self.host['user_id'])
-            self.assertTrue(accepted['accepted_at'])
+            self.assertIsNone(self.app.host_billing.agreement(conn,eid))
             self.assertEqual(conn.execute('select count(*) from host_fee_orders where event_id=?',(eid,)).fetchone()[0],0)
         self.assertNotIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
         self.assertNotIn('/opt-in',self.app.render_event_detail_html(eid,self.guest))
@@ -351,7 +350,7 @@ class HostSuccessFeeTests(unittest.TestCase):
         self.assertEqual(self.app.host_fee_estimate(eid,self.host)[1]['charge_due'],0)
         with self.app.connect() as conn:
             conn.execute("update event_applications set payment_status='paid' where event_id=?", (eid,))
-        self.assertEqual(self.app.host_fee_estimate(eid,self.host)[1]['charge_due'],500)
+        self.assertEqual(self.app.host_fee_estimate(eid,self.host)[1]['charge_due'],0)
 
     def test_legacy_consent_rechecks_formation_and_existing_payments(self):
         for reason in ['announced','paid','cancelled','past','free']:
@@ -360,7 +359,8 @@ class HostSuccessFeeTests(unittest.TestCase):
                 self.apply(eid)
                 with self.app.connect() as conn:
                     conn.execute('delete from host_fee_agreements where event_id=?',(eid,))
-                self.assertIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
+                    conn.execute('delete from app_state where state_key=?',(self.app.fee_campaign.EVENT_PREFIX+eid,))
+                self.assertNotIn('/opt-in',self.app.render_host_fee_html(eid,self.host))
                 with self.app.connect() as conn:
                     if reason == 'paid':
                         conn.execute("update event_applications set payment_status='paid' where event_id=?",(eid,))
