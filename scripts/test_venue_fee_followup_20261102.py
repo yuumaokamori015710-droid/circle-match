@@ -107,9 +107,10 @@ class November2VenueReviewTests(unittest.TestCase):
     def test_all_thirteen_holds_stay_unknown_with_original_status(self):
         self.assertEqual(len(review.HOLDS), 13)
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
-        self.assertEqual(sum(self.rows[i]['availability_status'] == 'SUSPENDED' for i in review.HOLDS), 7)
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
+        # Honshuku's November closure was confirmed on November 4.
+        self.assertEqual(sum(self.rows[i]['availability_status'] == 'SUSPENDED' for i in review.HOLDS), 8)
 
     def test_mobile_detail_track_cannot_expand_to_long_tariff_min_content(self):
         css = (ROOT / 'outputs/venues/static/tennis.css').read_text(encoding='utf-8')

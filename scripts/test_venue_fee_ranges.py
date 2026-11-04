@@ -33,7 +33,8 @@ class VenueFeeRangeTests(IsolatedAppHttpCase):
                 card = next(c for c in page.select('.venue-court-card') if c.h3.get_text() == row['name'])
                 self.assertEqual(card.select_one('.venue-fee-link')['href'], row['fee_options'][0]['source_url'])
                 self.assertNotIn('金額未取得', card.get_text())
-        self.assertEqual(rows['tokyo-venue-8e6c0f81a52c']['fee_ranges'], [])
+        from venue_review_test_helpers import assert_historical_hold
+        assert_historical_hold(self, rows['tokyo-venue-8e6c0f81a52c'])
         fujimori = rows['tokyo-venue-5b81852866ce']
         self.assertEqual(fujimori['fee_checked_at'], '2026-10-26')
         self.assertEqual([(r['unit'], r['minimum'], r['maximum']) for r in fujimori['fee_ranges']],

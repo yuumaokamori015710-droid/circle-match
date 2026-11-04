@@ -69,8 +69,8 @@ class October29VenueReviewTests(unittest.TestCase):
 
     def test_six_holds_remain_unknown_not_old_closure_or_restricted_prices(self):
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
         self.assertIn('貸切受付停止', self.rows['tokyo-gym-aa77f48e78d0']['cancellation']['summary'])
 
     def test_policy_qualifications(self):

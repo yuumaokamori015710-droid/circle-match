@@ -48,8 +48,8 @@ class October25VenueReviewTests(unittest.TestCase):
                 self.assertEqual(self.rows[ident]['fee_checked_at'], '2026-10-26')
                 self.assertTrue(has_price(self.rows[ident]))
                 continue
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
         self.assertTrue(all(p['amount'] > 0 for r in review.reviewed_fees() for p in r['fee_options']))
 
     def test_hachioji_current_rates_and_short_daytime(self):

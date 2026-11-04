@@ -85,8 +85,8 @@ class November3VenueReviewTests(unittest.TestCase):
 
     def test_holds_unknown_and_new_closure_hidden_not_deleted(self):
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
         row = self.rows[review.CLOSED]
         self.assertEqual(row['availability_status'], 'SUSPENDED')
         self.assertEqual(row['availability_note'], review.CLOSURE_NOTE)
@@ -108,6 +108,8 @@ class November3VenueReviewTests(unittest.TestCase):
             rel = 'outputs/venues/catalogs/' + name
             before = json.loads(subprocess.check_output(['git', 'show', review.BASE + ':' + rel], cwd=ROOT))
             after = json.loads((ROOT / rel).read_bytes())
+            from venue_review_test_helpers import before_november4_closure
+            after = before_november4_closure(after, before)
             if name.startswith('tokyo_'):
                 self.assertEqual([r['id'] for r in before], [r['id'] for r in after])
                 for old, new in zip(before, after):

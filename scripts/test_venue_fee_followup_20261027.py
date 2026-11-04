@@ -42,8 +42,8 @@ class October27VenueReviewTests(unittest.TestCase):
 
     def test_holds_not_free_or_legacy_tariffs(self):
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
 
     def test_hachioji_baseball_not_lighting_or_other_space(self):
         for index, amount in [(0, 8000), (1, 8000), (4, 4000), (5, 2000), (10, 1000)]:

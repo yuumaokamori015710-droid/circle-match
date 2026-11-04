@@ -61381,5 +61381,572 @@
         "source_url": "https://tama-sports.com/wp/images/%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84%E6%96%BD%E8%A8%AD%E3%81%AE%E5%88%A9%E7%94%A8%E6%89%8B%E5%BC%95%E3%81%8D20260525.pdf"
       }
     ]
+  },
+  {
+    "id": "tokyo-venue-d40445daf945",
+    "checked_at": "2026-11-04",
+    "fee_note": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+    "fee_options": [
+      {
+        "label": "会議室 / 平日 / 午前9～12時",
+        "amount": 860,
+        "unit": "会議室・3時間（区内通常・平日）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      },
+      {
+        "label": "会議室 / 平日 / 午後13～17時",
+        "amount": 1700,
+        "unit": "会議室・4時間（区内通常・平日）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      },
+      {
+        "label": "会議室 / 平日 / 夜間18～22時",
+        "amount": 2500,
+        "unit": "会議室・4時間（区内通常・平日）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      },
+      {
+        "label": "会議室 / 土日祝 / 午前9～12時",
+        "amount": 980,
+        "unit": "会議室・3時間（区内通常・土日祝）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      },
+      {
+        "label": "会議室 / 土日祝 / 午後13～17時",
+        "amount": 2100,
+        "unit": "会議室・4時間（区内通常・土日祝）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      },
+      {
+        "label": "会議室 / 土日祝 / 夜間18～22時",
+        "amount": 3100,
+        "unit": "会議室・4時間（区内通常・土日祝）",
+        "conditions": "会議室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/community/life_kaigi0930.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-9f1e6da622bb",
+    "checked_at": "2026-11-04",
+    "fee_note": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+    "fee_options": [
+      {
+        "label": "第一集会室 / 平日 / 午前9～12時",
+        "amount": 1700,
+        "unit": "第一集会室・3時間（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      },
+      {
+        "label": "第一集会室 / 平日 / 午後13～16時30分",
+        "amount": 2900,
+        "unit": "第一集会室・3時間30分（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      },
+      {
+        "label": "第一集会室 / 平日 / 夜間17時30分～21時30分",
+        "amount": 4700,
+        "unit": "第一集会室・4時間（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 午前9～12時",
+        "amount": 1700,
+        "unit": "第一集会室・3時間（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 午後13～16時30分",
+        "amount": 3500,
+        "unit": "第一集会室・3時間30分（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 夜間17時30分～21時30分",
+        "amount": 5600,
+        "unit": "第一集会室・4時間（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/rokugosyuukaishitsu/daiichishukaishitsu.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-a01a8272f849",
+    "checked_at": "2026-11-04",
+    "fee_note": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+    "fee_options": [
+      {
+        "label": "集会室 / 平日 / 午前9～12時",
+        "amount": 1500,
+        "unit": "集会室・3時間（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 平日 / 午後13～17時",
+        "amount": 2900,
+        "unit": "集会室・4時間（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 平日 / 夜間18～22時",
+        "amount": 4300,
+        "unit": "集会室・4時間（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 午前9～12時",
+        "amount": 1800,
+        "unit": "集会室・3時間（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 午後13～17時",
+        "amount": 3500,
+        "unit": "集会室・4時間（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 夜間18～22時",
+        "amount": 5100,
+        "unit": "集会室・4時間（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/sannou_k/sannokaikan_shukaishitsu.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-acafbf43b734",
+    "checked_at": "2026-11-04",
+    "fee_note": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+    "fee_options": [
+      {
+        "label": "第一集会室 / 平日 / 午前9～12時",
+        "amount": 740,
+        "unit": "第一集会室・3時間（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      },
+      {
+        "label": "第一集会室 / 平日 / 午後13～17時",
+        "amount": 1500,
+        "unit": "第一集会室・4時間（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      },
+      {
+        "label": "第一集会室 / 平日 / 夜間18～22時",
+        "amount": 2200,
+        "unit": "第一集会室・4時間（区内通常・平日）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 午前9～12時",
+        "amount": 860,
+        "unit": "第一集会室・3時間（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 午後13～17時",
+        "amount": 1700,
+        "unit": "第一集会室・4時間（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      },
+      {
+        "label": "第一集会室 / 土日祝 / 夜間18～22時",
+        "amount": 2600,
+        "unit": "第一集会室・4時間（区内通常・土日祝）",
+        "conditions": "第一集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.htmlこの室の申込は施設へ直接行う案内です。一般のWeb予約可とはしません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/tamagawasyuukai/tamagawa1.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-f756c371fa95",
+    "checked_at": "2026-11-04",
+    "fee_note": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+    "fee_options": [
+      {
+        "label": "集会室 / 平日 / 午前9～12時",
+        "amount": 3000,
+        "unit": "集会室・3時間（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 平日 / 午後13～16時30分",
+        "amount": 4500,
+        "unit": "集会室・3時間30分（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 平日 / 夜間17時30分～21時30分",
+        "amount": 7500,
+        "unit": "集会室・4時間（区内通常・平日）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 午前9～12時",
+        "amount": 3000,
+        "unit": "集会室・3時間（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 午後13～16時30分",
+        "amount": 5400,
+        "unit": "集会室・3時間30分（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      },
+      {
+        "label": "集会室 / 土日祝 / 夜間17時30分～21時30分",
+        "amount": 9000,
+        "unit": "集会室・4時間（区内通常・土日祝）",
+        "conditions": "集会室単室・区内通常料金のみ。全室の最安値ではありません。平日と土日祝を明示し、異なる時間数は分離。区外の約2割増は正確な適用額を確認できないため算出せず、備品・営利目的の割増・減免・全日・他室料金を含みません。うぐいすネットは本人確認を伴う窓口登録が必要（個人16歳以上、区内在勤在学も区内扱い）。登録・予約・取消方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/ugu.html",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/araijuku_k/araijukukaikan_shukaishitsu.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-3dad1de4b1e7",
+    "checked_at": "2026-11-04",
+    "fee_note": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。天井が低く種目制限あり、利用可否を事前確認。",
+    "fee_options": [
+      {
+        "label": "体育室 / 午前9～12時",
+        "amount": 1700,
+        "unit": "体育室・3時間（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。天井が低く種目制限あり、利用可否を事前確認。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/minemachibunkacenter.html"
+      },
+      {
+        "label": "体育室 / 午後A13～15時30分",
+        "amount": 1400,
+        "unit": "体育室・2時間30分（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。天井が低く種目制限あり、利用可否を事前確認。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/minemachibunkacenter.html"
+      },
+      {
+        "label": "体育室 / 午後B16～18時30分",
+        "amount": 1400,
+        "unit": "体育室・2時間30分（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。天井が低く種目制限あり、利用可否を事前確認。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/minemachibunkacenter.html"
+      },
+      {
+        "label": "体育室 / 夜間19～22時",
+        "amount": 1700,
+        "unit": "体育室・3時間（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。天井が低く種目制限あり、利用可否を事前確認。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/minemachibunkacenter.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-52d36d518953",
+    "checked_at": "2026-11-04",
+    "fee_note": "第一集会室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html掲載住所の羽田1-18-13にある第一集会室のみ。羽田4-11-1の体育室料金は別棟のため採用しません。",
+    "fee_options": [
+      {
+        "label": "第一集会室 / 午前9～12時",
+        "amount": 1300,
+        "unit": "第一集会室・3時間（通常）",
+        "conditions": "第一集会室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html掲載住所の羽田1-18-13にある第一集会室のみ。羽田4-11-1の体育室料金は別棟のため採用しません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/hanedabunkacenter.html"
+      },
+      {
+        "label": "第一集会室 / 午後13～17時",
+        "amount": 1800,
+        "unit": "第一集会室・4時間（通常）",
+        "conditions": "第一集会室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html掲載住所の羽田1-18-13にある第一集会室のみ。羽田4-11-1の体育室料金は別棟のため採用しません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/hanedabunkacenter.html"
+      },
+      {
+        "label": "第一集会室 / 夜間18～22時",
+        "amount": 1800,
+        "unit": "第一集会室・4時間（通常）",
+        "conditions": "第一集会室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html掲載住所の羽田1-18-13にある第一集会室のみ。羽田4-11-1の体育室料金は別棟のため採用しません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/hanedabunkacenter.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-8d8fb7de1c48",
+    "checked_at": "2026-11-04",
+    "fee_note": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。正式なバスケットコートはとれません。",
+    "fee_options": [
+      {
+        "label": "体育室 / 午前9～12時",
+        "amount": 1500,
+        "unit": "体育室・3時間（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。正式なバスケットコートはとれません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/haginakabunkacenter.html"
+      },
+      {
+        "label": "体育室 / 午後A13～15時30分",
+        "amount": 1200,
+        "unit": "体育室・2時間30分（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。正式なバスケットコートはとれません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/haginakabunkacenter.html"
+      },
+      {
+        "label": "体育室 / 午後B16～18時30分",
+        "amount": 1200,
+        "unit": "体育室・2時間30分（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。正式なバスケットコートはとれません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/haginakabunkacenter.html"
+      },
+      {
+        "label": "体育室 / 夜間19～22時",
+        "amount": 1500,
+        "unit": "体育室・3時間（通常）",
+        "conditions": "体育室単室の公表通常料金。全館の最安値ではなく、個人入場・他室・備品・減免を含みません。午前・午後・夜間の実時間数を分離し、1時間単価に換算しません。うぐいすネットの窓口利用者登録が必要。区外利用可否や割増適用額を推測しません。抽選対象団体と一般の先着予約は別条件。予約方法：https://www.city.ota.tokyo.jp/shisetsu/uguisunet_annai/bunka-c_yoyaku-henkou.html体育室はバレー1面・バドミントン2面等。正式なバスケットコートはとれません。",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/bunkacenter/haginakabunkacenter.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-7f86d45f6b38",
+    "checked_at": "2026-11-04",
+    "fee_note": "第一集会室（2階・定員30名）単室の通常料金のみ。全館・多目的室・音楽スタジオ料金ではありません。午前3時間、午後夜間4時間を分離。全日・備品・減免を含みません。市の現行ページが案内する料金PDFと指定管理者案内を確認。区内の団体・個人のうぐいすネット登録・予約が必要。区外向け料金を推測しません。準備・原状回復を含む。利用資格：https://shinkamata.jp/guide/",
+    "fee_options": [
+      {
+        "label": "第一集会室 / 午前9～12時",
+        "amount": 1600,
+        "unit": "第一集会室・3時間（区内通常）",
+        "conditions": "第一集会室（2階・定員30名）単室の通常料金のみ。全館・多目的室・音楽スタジオ料金ではありません。午前3時間、午後夜間4時間を分離。全日・備品・減免を含みません。市の現行ページが案内する料金PDFと指定管理者案内を確認。区内の団体・個人のうぐいすネット登録・予約が必要。区外向け料金を推測しません。準備・原状回復を含む。利用資格：https://shinkamata.jp/guide/",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/shisetu_kamkamshinkamata.files/sisetusiyouryou3.pdf"
+      },
+      {
+        "label": "第一集会室 / 午後13～17時",
+        "amount": 2100,
+        "unit": "第一集会室・4時間（区内通常）",
+        "conditions": "第一集会室（2階・定員30名）単室の通常料金のみ。全館・多目的室・音楽スタジオ料金ではありません。午前3時間、午後夜間4時間を分離。全日・備品・減免を含みません。市の現行ページが案内する料金PDFと指定管理者案内を確認。区内の団体・個人のうぐいすネット登録・予約が必要。区外向け料金を推測しません。準備・原状回復を含む。利用資格：https://shinkamata.jp/guide/",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/shisetu_kamkamshinkamata.files/sisetusiyouryou3.pdf"
+      },
+      {
+        "label": "第一集会室 / 夜間18～22時",
+        "amount": 2100,
+        "unit": "第一集会室・4時間（区内通常）",
+        "conditions": "第一集会室（2階・定員30名）単室の通常料金のみ。全館・多目的室・音楽スタジオ料金ではありません。午前3時間、午後夜間4時間を分離。全日・備品・減免を含みません。市の現行ページが案内する料金PDFと指定管理者案内を確認。区内の団体・個人のうぐいすネット登録・予約が必要。区外向け料金を推測しません。準備・原状回復を含む。利用資格：https://shinkamata.jp/guide/",
+        "source_url": "https://www.city.ota.tokyo.jp/shisetsu/hall/shisetu_kamkamshinkamata.files/sisetusiyouryou3.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-17c00cfd90cb",
+    "checked_at": "2026-11-04",
+    "fee_note": "B102単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+    "fee_options": [
+      {
+        "label": "B102 / 午前9～12時",
+        "amount": 2800,
+        "unit": "B102・3時間（その他団体）",
+        "conditions": "B102単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/chuocho.html"
+      },
+      {
+        "label": "B102 / 午後1・12時30分～15時",
+        "amount": 2900,
+        "unit": "B102・2時間30分（その他団体）",
+        "conditions": "B102単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/chuocho.html"
+      },
+      {
+        "label": "B102 / 午後2・15時30分～18時",
+        "amount": 2900,
+        "unit": "B102・2時間30分（その他団体）",
+        "conditions": "B102単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/chuocho.html"
+      },
+      {
+        "label": "B102 / 夜間18時30分～21時",
+        "amount": 2900,
+        "unit": "B102・2時間30分（その他団体）",
+        "conditions": "B102単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/chuocho.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-51e711229a72",
+    "checked_at": "2026-11-04",
+    "fee_note": "701単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+    "fee_options": [
+      {
+        "label": "701 / 午前9～12時",
+        "amount": 3600,
+        "unit": "701・3時間（その他団体）",
+        "conditions": "701単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_kumin_center.html"
+      },
+      {
+        "label": "701 / 午後1・12時30分～15時",
+        "amount": 3700,
+        "unit": "701・2時間30分（その他団体）",
+        "conditions": "701単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_kumin_center.html"
+      },
+      {
+        "label": "701 / 午後2・15時30分～18時",
+        "amount": 3700,
+        "unit": "701・2時間30分（その他団体）",
+        "conditions": "701単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_kumin_center.html"
+      },
+      {
+        "label": "701 / 夜間18時30分～21時",
+        "amount": 3700,
+        "unit": "701・2時間30分（その他団体）",
+        "conditions": "701単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_kumin_center.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-d8e3b629e732",
+    "checked_at": "2026-11-04",
+    "fee_note": "201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+    "fee_options": [
+      {
+        "label": "201 / 午前9～12時",
+        "amount": 3400,
+        "unit": "201・3時間（その他団体）",
+        "conditions": "201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/higashiyama.html"
+      },
+      {
+        "label": "201 / 午後1・12時30分～15時",
+        "amount": 3500,
+        "unit": "201・2時間30分（その他団体）",
+        "conditions": "201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/higashiyama.html"
+      },
+      {
+        "label": "201 / 午後2・15時30分～18時",
+        "amount": 3500,
+        "unit": "201・2時間30分（その他団体）",
+        "conditions": "201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/higashiyama.html"
+      },
+      {
+        "label": "201 / 夜間18時30分～21時",
+        "amount": 3500,
+        "unit": "201・2時間30分（その他団体）",
+        "conditions": "201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/higashiyama.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-cf9e1adb9414",
+    "checked_at": "2026-11-04",
+    "fee_note": "303単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+    "fee_options": [
+      {
+        "label": "303 / 午前9～12時",
+        "amount": 2800,
+        "unit": "303・3時間（その他団体）",
+        "conditions": "303単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_megurohonmachi.html"
+      },
+      {
+        "label": "303 / 午後1・12時30分～15時",
+        "amount": 2900,
+        "unit": "303・2時間30分（その他団体）",
+        "conditions": "303単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_megurohonmachi.html"
+      },
+      {
+        "label": "303 / 午後2・15時30分～18時",
+        "amount": 2900,
+        "unit": "303・2時間30分（その他団体）",
+        "conditions": "303単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_megurohonmachi.html"
+      },
+      {
+        "label": "303 / 夜間18時30分～21時",
+        "amount": 2900,
+        "unit": "303・2時間30分（その他団体）",
+        "conditions": "303単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_megurohonmachi.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-13e7f69454a5",
+    "checked_at": "2026-11-04",
+    "fee_note": "本館201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+    "fee_options": [
+      {
+        "label": "本館201 / 午前9～12時",
+        "amount": 4800,
+        "unit": "本館201・3時間（その他団体）",
+        "conditions": "本館201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_midorigaoka.html"
+      },
+      {
+        "label": "本館201 / 午後1・12時30分～15時",
+        "amount": 5000,
+        "unit": "本館201・2時間30分（その他団体）",
+        "conditions": "本館201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_midorigaoka.html"
+      },
+      {
+        "label": "本館201 / 午後2・15時30分～18時",
+        "amount": 5000,
+        "unit": "本館201・2時間30分（その他団体）",
+        "conditions": "本館201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_midorigaoka.html"
+      },
+      {
+        "label": "本館201 / 夜間18時30分～21時",
+        "amount": 5000,
+        "unit": "本館201・2時間30分（その他団体）",
+        "conditions": "本館201単室・その他団体（利用者登録のみ）の料金。全室の最安値ではありません。区外のみの団体・個人も利用者登録可。区民の一般団体・登録団体の割引料金、備品、他室を混ぜません。午前3時間と他の2時間30分枠を分離。その他団体の空き予約は利用月の1か月前の月初から。利用内容・音振動等の室別制限に従い、球技場利用料へ流用しません。準備片付け込み。登録：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/touroku.html 申込：https://www.city.meguro.tokyo.jp/toubu/kusei/onlineservice/communityroom.html",
+        "source_url": "https://www.city.meguro.tokyo.jp/shougaigakushuu/shisetsu/bunkakouryuu/kyoiku_midorigaoka.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-8e6c0f81a52c",
+    "checked_at": "2026-11-04",
+    "fee_note": "公式施設案内が無料開放と明示する球技場1面。無料の登録料を施設料に流用したものではありません。貸切予約には団体登録・承認が必要で、フットサル等6人以上、サッカー等9人以上、競技メンバーの半数以上が市内在住在勤在学。2026年10月以降の団体要件を使用。営利行為不可。2時間枠と冬季15～16時30分の1時間30分枠を分離。第2土曜・第4日曜は自由開放で団体予約不可、当日予約不可。予約枠は抽選当選を含め月5区分まで。現行利用方法：https://www.city.mitaka.lg.jp/c_service/079/079234.html",
+    "fee_options": [
+      {
+        "label": "球技場 / 通常予約枠",
+        "amount": 0,
+        "unit": "球技場1面・2時間（登録承認団体・無料）",
+        "conditions": "公式施設案内が無料開放と明示する球技場1面。無料の登録料を施設料に流用したものではありません。貸切予約には団体登録・承認が必要で、フットサル等6人以上、サッカー等9人以上、競技メンバーの半数以上が市内在住在勤在学。2026年10月以降の団体要件を使用。営利行為不可。2時間枠と冬季15～16時30分の1時間30分枠を分離。第2土曜・第4日曜は自由開放で団体予約不可、当日予約不可。予約枠は抽選当選を含め月5区分まで。現行利用方法：https://www.city.mitaka.lg.jp/c_service/079/079234.html",
+        "source_url": "https://www.city.mitaka.lg.jp/c_service/079/079233.html"
+      },
+      {
+        "label": "球技場 / 冬季最終15～16時30分",
+        "amount": 0,
+        "unit": "球技場1面・1時間30分（登録承認団体・無料）",
+        "conditions": "公式施設案内が無料開放と明示する球技場1面。無料の登録料を施設料に流用したものではありません。貸切予約には団体登録・承認が必要で、フットサル等6人以上、サッカー等9人以上、競技メンバーの半数以上が市内在住在勤在学。2026年10月以降の団体要件を使用。営利行為不可。2時間枠と冬季15～16時30分の1時間30分枠を分離。第2土曜・第4日曜は自由開放で団体予約不可、当日予約不可。予約枠は抽選当選を含め月5区分まで。現行利用方法：https://www.city.mitaka.lg.jp/c_service/079/079234.html",
+        "source_url": "https://www.city.mitaka.lg.jp/c_service/079/079233.html"
+      }
+    ]
   }
 ]

@@ -45,8 +45,8 @@ class October24VenueReviewTests(unittest.TestCase):
 
     def test_unknown_not_zero_and_public_opening_not_private_hire(self):
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
         self.assertTrue(all(p['amount'] > 0 for row in review.reviewed_fees() for p in row['fee_options']))
         self.assertEqual(self.ranges(review.MACHIDA[1]), {
             'グラウンド全面・2時間30分': (2090, 2090), 'グラウンド全面・1時間30分': (1250, 1250)})

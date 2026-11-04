@@ -28431,7 +28431,7 @@
     "booking_note": "団体貸切は施設ごとの事前登録・抽選・受付期間の確認が必要です。 利用条件：■団体利用 （市内団体） 「構成員は１０名以上、かつ代表者は成人、かつ市内在住者のみ」又は「構成員は１０名以上、、かつ代表者は成人、かつ過半数の市内在住者、その他市内在勤者・在学者のみ」 ■個人利用 どなたでも利用可 区市町村外からの利用条件：■個人利用 料金/市外料金の適用 最新条件と使用する体育室の対応競技は公式案内で確認してください。",
     "booking_url": "https://spopita.jp/%e6%9c%ac%e5%ae%bf%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
     "official_url": "https://spopita.jp/%e6%9c%ac%e5%ae%bf%e4%bd%93%e8%82%b2%e9%a4%a8%e4%bd%93%e8%82%b2%e9%a4%a8-%e3%82%a2%e3%83%aa%e3%83%bc%e3%83%8a/",
-    "checked_at": "2026-10-17",
+    "checked_at": "2026-11-04",
     "operator_type": "PUBLIC",
     "courts_count": null,
     "surface": null,
@@ -28447,10 +28447,14 @@
       {
         "title": "府中市公式：本宿体育館の工事・貸切休止案内（2026-10-17確認）",
         "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/honshuku.html"
+      },
+      {
+        "title": "府中市公式：本宿体育館の全館休館・貸切予約不可期間",
+        "url": "https://www.city.fuchu.tokyo.jp/shisetu/supotu/taikukan/honshuku.html"
       }
     ],
-    "availability_status": "UNKNOWN",
-    "availability_note": "2026年10月・2027年3月は体育室の貸切予約を受け付けず一般公開のみの予定。2026年11月～2027年2月末は改修で完全休館予定（期間は前後あり）。貸切料金の掲載は保留しています。"
+    "availability_status": "SUSPENDED",
+    "availability_note": "本宿体育館はトイレ改修工事で2026年11月～2027年2月末まで全館休館予定（期間変更の場合あり）。2026年10月と2027年3月も貸切予約不可・一般公開のみ。旧貸切料金を現在予約可能な額として追加せず、通常検索から除外します。"
   },
   {
     "id": "tokyo-gym-426f334c2d57",
