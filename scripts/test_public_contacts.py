@@ -562,6 +562,38 @@ class PublicContactTests(unittest.TestCase):
         self.assertTrue(all(row['circle_source_url'] and row['source_url'] and row['purpose']
                             and '社会人サークル' in row['circle_id'] for row in batch))
 
+    def test_november_4_sfc_email_keeps_scope_and_all_opt_out_states(self):
+        batch = [row for row in self.seed if row['checked_at'] == '2026-11-04']
+        self.assertEqual(len(batch), 1)
+        entry = batch[0]
+        self.assertEqual(entry['circle_name'], 'SFC')
+        self.assertEqual(entry['circle_source_url'], 'https://circle-book.com/circles/13829')
+        self.assertEqual(entry['source_url'], 'https://sfc-ikebukuro.jimdofree.com/')
+        self.assertEqual(entry['email'], 'sfc_mgnt@yahoo.co.jp')
+        for restriction in ['ビジター参加申請', '継続参加', '平日は初心者不可',
+                            '前日18時', '当日15時', '参加確定ではありません', '受信同意']:
+            self.assertIn(restriction, entry['purpose'])
+        ident = entry['circle_id']
+        contacts.import_reviewed(self.conn)
+        self.conn.execute('update circle_public_contacts set enabled=0 where circle_id=?', (ident,))
+        contacts.import_reviewed(self.conn)
+        target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+        self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+        self.assertEqual(self.conn.execute(
+            'select enabled from circle_public_contacts where circle_id=?', (ident,)).fetchone()[0], 0)
+        self.conn.execute('update circle_public_contacts set enabled=1 where circle_id=?', (ident,))
+        for consent, published in [(0, 1), (1, 0), (0, 0)]:
+            with self.subTest(consent=consent, published=published):
+                self.conn.execute('insert into circle_public_profiles values(?,?,?)',
+                                  (ident, consent, published))
+                contacts.import_reviewed(self.conn)
+                target = contacts.attach(self.conn, [{'circle_id': ident, 'public_contact_email': ''}])[0]
+                self.assertFalse(target.get('public_contact_email') or target.get('contact_url'))
+                self.assertEqual(tuple(self.conn.execute(
+                    'select public_contact_consent,is_published from circle_public_profiles where circle_id=?',
+                    (ident,)).fetchone()), (consent, published))
+                self.conn.execute('delete from circle_public_profiles where circle_id=?', (ident,))
+
     def test_november_3_participation_emails_keep_scope_and_opt_outs(self):
         batch = [row for row in self.seed if row['checked_at'] == '2026-11-03']
         self.assertEqual(len(batch), 2)
@@ -603,6 +635,59 @@ class PublicContactTests(unittest.TestCase):
 
 
 class PublicContactHttpTests(IsolatedAppHttpCase):
+    def test_november_4_review_matches_all_listings_and_preserves_prior_contacts(self):
+        circle_book = [('RUPINAS', 10965), ('SFC', 13829), ('SMBC', 8472),
+                       ('SONS', 43632), ('SUN SUN', 11936), ('TAKEOUT', 11438),
+                       ('TB', 1435), ('TEAM GO', 18123)]
+        net_member = [('Rondo', 15695), ('RUN&FUN', 211109), ('Ryusei', 210584),
+                      ('SAND9', 212598), ('SBVC', 210418), ('SCRATCH', 204770),
+                      ('SDKP', 94179), ('SH', 212699), ('SHINMEI CLUB', 215653),
+                      ('SIL', 227145), ('Sunday Ping Pong K', 228637), ('SVT', 226653),
+                      ('SYBC', 184376), ('TAILS TABLE TENNIS', 220805), ('TAM', 6522),
+                      ('tank pop', 21365), ('TEAM HG', 114569), ('Teamノマコウ', 11553)]
+        cases = [(query, f'https://circle-book.com/circles/{number}')
+                 for query, number in circle_book]
+        cases += [(query, f'https://www.net-menber.com/look/data/{number}.html')
+                  for query, number in net_member]
+        seed = json.loads(contacts.SEED_PATH.read_text(encoding='utf-8'))
+        reviewed = {r['circle_id']: r for r in seed}
+        self.assertEqual(len(cases), 26)
+        identifiers = set()
+        for query, source in cases:
+            with self.subTest(source=source):
+                rows = json.loads(self.request('/api/circles?audience=social&q=' + quote(query))[1])
+                row = next(r for r in rows if r['source_url'] == source)
+                self.assertNotIn(row['circle_id'], identifiers)
+                identifiers.add(row['circle_id'])
+                self.assertEqual(row['organization_type'], '社会人サークル')
+                self.assertNotIn('claimant_email', row)
+                self.assertNotIn('user_id', row)
+                entry = reviewed.get(row['circle_id'])
+                if entry and entry['checked_at'] >= '2026-11-04':
+                    self.assertEqual(row['circle_name'], entry['circle_name'])
+                    self.assertEqual(row['source_url'], entry['circle_source_url'])
+                    self.assertEqual(row['public_contact_email'], entry['email'])
+                    self.assertEqual(row['contact_source_url'], entry['source_url'])
+                    self.assertEqual(row['contact_purpose'], entry['purpose'])
+                    self.assertEqual(row['contact_checked_at'], entry['checked_at'])
+                    page = BeautifulSoup(self.request('/?tab=db&audience=social&q=' + quote(query))[1],
+                                         'html.parser')
+                    self.assertIn(entry['circle_name'], page.get_text())
+                    self.assertIn('公開メールあり', page.get_text())
+                    self.assertIsNotNone(page.find(
+                        'a', href='/invitations/new?circle_id=' + quote(entry['circle_id'], safe='')))
+                    markup, _ = ui.compose(row, [], {'authenticated': True})
+                    for value in [entry['email'], entry['source_url'], entry['checked_at']]:
+                        self.assertIn(value, markup)
+                    self.assertIn(entry['purpose'], BeautifulSoup(markup, 'html.parser').get_text())
+                else:
+                    self.assertFalse(row.get('public_contact_email') or row.get('contact_url'))
+        previous = json.loads(subprocess.check_output(
+            ['git', 'show', '7f50d638f2527efafc39661f3f8e8c211a3d9a96:outputs/circle_public_contacts.json'],
+            cwd=contacts.SEED_PATH.parents[1]))
+        self.assertEqual(len(previous), 484)
+        self.assertEqual(seed[:484], previous)
+
     def test_november_3_review_keeps_exact_listing_identity_and_prior_contacts(self):
         circle_book = [('enjoy badminton', 4561), ('enjoy_tennis', 8437), ('EPOCH', 4201),
                        ('EVOLVE', 18666), ('Full Force', 58585), ('futbal', 72986),
