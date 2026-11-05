@@ -27,9 +27,11 @@ class November4VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(review.reviewed_fees()), 15)
         self.assertEqual(len(review.reviewed_policies()), 14)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 906)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 300)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 289)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        later_closures = sum(not has_price(r) and r['availability_status'] == 'SUSPENDED' and r['checked_at'] > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 906)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 300)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later + later_closures, 289)
         for fee in review.reviewed_fees():
             row = self.rows[fee['id']]
             self.assertEqual(row['fee_checked_at'], review.CHECKED)
@@ -122,7 +124,9 @@ class November4VenueReviewTests(unittest.TestCase):
                 self.assertEqual([r['booking_url'] for r in old], [r['booking_url'] for r in new])
             else:
                 self.assertEqual(old, new[:len(old)])
-                self.assertEqual(new[len(old):], review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies())
+                additions = review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies()
+                self.assertEqual(new[len(old):len(old) + len(additions)], additions)
+                self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
 
     def test_closure_exception_rejects_any_other_source_change(self):
         rel = 'outputs/venues/catalogs/tokyo_expansion.json'

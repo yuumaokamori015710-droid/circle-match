@@ -173,3 +173,12 @@ facilities represented by 22 existing records, adding 16 tariff records and
 source catalogs, booking links and prior reviews are preserved. Room closures,
 personal-use-only fees, sport mismatches and seasonal three-hour slots are
 qualified explicitly rather than implying unrestricted group hire.
+
+The [2026-11-05 review](venue-fee-followup-2026-11-05.md) checks 21 existing
+records, prioritizing the four unresolved active soccer/indoor facilities,
+then Suginami rooms/gyms and Machida/Inagi tennis courts. Sixteen newly priced
+records and 16 cancellation/weather records bring the unchanged 1,206-record
+catalog to 922 priced and 284 unpriced (273 active unpriced). Five tariff
+holds remain unknown; the free South Tama court is explicitly registered-only.
+Lighting, room/area size, residency and cancellation conditions remain scoped.
+Original IDs, booking URLs, source catalogs and earlier reviews are unchanged.
