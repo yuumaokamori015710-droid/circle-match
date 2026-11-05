@@ -1,5 +1,6 @@
 """Public-response caching and bounded, credential-free delivery diagnostics."""
 from collections import defaultdict, OrderedDict
+import gzip
 import hashlib
 import ipaddress
 import json
@@ -7,6 +8,32 @@ import os
 import threading
 import time
 from urllib.parse import urlsplit
+
+PUBLIC_LISTINGS = {'/', '/events', '/venues', '/circles', '/social', '/social/circles',
+                   '/sports', '/social/sports', '/regions', '/guides'}
+
+
+def public_listing(path):
+    return urlsplit(path).path in PUBLIC_LISTINGS
+
+
+def accepts_gzip(header):
+    wildcard = False
+    for value in header.lower().split(','):
+        encoding, *parameters = value.strip().split(';')
+        quality = 1.0
+        for parameter in parameters:
+            key, _, number = parameter.strip().partition('=')
+            if key == 'q':
+                try:
+                    quality = float(number)
+                except ValueError:
+                    quality = 0
+        if encoding == 'gzip':
+            return 0 < quality <= 1
+        if encoding == '*':
+            wildcard = 0 < quality <= 1
+    return wildcard
 
 
 def etag(body):
@@ -24,10 +51,14 @@ def route_group(path):
         return '/assets/' + (extension if extension in {'css', 'js', 'json', 'png', 'webp', 'svg', 'woff2'} else 'other')
     if path in {'/', '/venues', '/api/venues', '/api/tennis-courts', '/healthz',
                 '/api/circles', '/api/circle-stats', '/api/region-counts',
-                '/api/events', '/robots.txt', '/sitemap.xml', '/ads.txt'}:
+                '/api/events', '/robots.txt', '/sitemap.xml', '/ads.txt',
+                '/circles', '/social', '/social/circles', '/sports', '/social/sports',
+                '/regions', '/guides', '/operator', '/about-data', '/contact'}:
         return path
     if path.startswith('/events/'):
         return '/events/:event'
+    if path.startswith('/guides/'):
+        return '/guides/:article'
     if path.startswith('/api/'):
         return '/api/other'
     return '/other'
@@ -41,6 +72,16 @@ def client_group(user_agent):
         return 'research'
     if any(word in agent for word in ('render/', 'render-health', 'go-http-client')):
         return 'health-or-go-client'
+    for family, words in (
+            ('google', ('googlebot', 'adsbot-google', 'mediapartners-google')),
+            ('bing', ('bingbot', 'bingpreview')),
+            ('apple', ('applebot',)),
+            ('openai', ('gptbot', 'oai-searchbot', 'chatgpt-user')),
+            ('meta', ('meta-external', 'facebookexternalhit')),
+            ('ahrefs', ('ahrefsbot',)), ('semrush', ('semrushbot',)),
+            ('bytespider', ('bytespider',)), ('mj12', ('mj12bot',))):
+        if any(word in agent for word in words):
+            return family + '-crawler'
     if any(word in agent for word in ('bot', 'crawler', 'spider')):
         return 'crawler'
     if any(word in agent for word in ('python', 'curl', 'wget', 'node', 'undici', 'codex')):
@@ -78,8 +119,9 @@ class DeliveryStats:
 
 class CatalogLimiter:
     """Only public catalog GETs are limited; no account or payment routes enter here."""
-    def __init__(self, clock=time.monotonic, capacity=4096):
+    def __init__(self, clock=time.monotonic, capacity=4096, limits=(30, 240)):
         self.clock, self.capacity = clock, capacity
+        self.limits = limits
         self.lock = threading.Lock()
         self.clients = OrderedDict()
 
@@ -87,8 +129,8 @@ class CatalogLimiter:
         now = self.clock()
         with self.lock:
             key = (address, bool(paginated))
-            tokens, updated = self.clients.pop(key, (240 if paginated else 30, now))
-            limit = 240 if paginated else 30
+            limit = self.limits[int(bool(paginated))]
+            tokens, updated = self.clients.pop(key, (limit, now))
             tokens = min(limit, tokens + (now - updated) * limit / 60)
             allowed = tokens >= 1
             self.clients[key] = (tokens - int(allowed), now)
@@ -129,6 +171,7 @@ class _MeteredWriter:
 
 STATS = DeliveryStats()
 LIMITER = CatalogLimiter()
+CRAWLER_LIMITER = CatalogLimiter(limits=(20, 20))
 
 
 class DeliveryMixin:
@@ -158,12 +201,16 @@ class DeliveryMixin:
         super().end_headers()
         self._delivery_body = True
 
-    def send_public(self, body, content_type, max_age=300):
+    def send_public(self, body, content_type, max_age=300, encoding=None, vary=None):
         tag = etag(body)
         same = unchanged(self.headers.get('If-None-Match', ''), tag)
         self.send_response(304 if same else 200)
         self.send_header('Cache-Control', f'public, max-age={max_age}, must-revalidate')
         self.send_header('ETag', tag)
+        if vary:
+            self.send_header('Vary', vary)
+        if encoding:
+            self.send_header('Content-Encoding', encoding)
         if not same:
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', str(len(body)))
@@ -171,19 +218,45 @@ class DeliveryMixin:
         if not same:
             self.wfile.write(body)
 
-    def catalog_allowed(self, paginated):
-        if not os.environ.get('RENDER'):
+    def send_anonymous_listing(self, body):
+        encoding = 'gzip' if accepts_gzip(self.headers.get('Accept-Encoding', '')) else None
+        if encoding:
+            body = gzip.compress(body, compresslevel=6, mtime=0)
+        self.send_public(body, 'text/html; charset=utf-8', max_age=60, encoding=encoding,
+                         vary='Cookie, Authorization, Accept-Encoding')
+
+    def observed_client(self):
+        return client_address(self.client_address[0], self.headers.get('X-Forwarded-For', ''),
+                              True, self.headers.get('CF-Connecting-IP', ''))
+
+    def public_crawler_allowed(self):
+        family = client_group(self.headers.get('User-Agent', ''))
+        if (not os.environ.get('RENDER') or not public_listing(self.path)
+                or self.headers.get('Cookie') or self.headers.get('Authorization')
+                or not (family == 'crawler' or family.endswith('-crawler'))
+                or family in {'google-crawler', 'bing-crawler', 'apple-crawler'}):
             return True
-        address = client_address(self.client_address[0], self.headers.get('X-Forwarded-For', ''),
-                                 True, self.headers.get('CF-Connecting-IP', ''))
-        if address is None or LIMITER.allow(address, paginated):
+        address = self.observed_client()
+        if address is None or CRAWLER_LIMITER.allow(address, False):
             return True
-        body = b'{"error":"catalog_rate_limit","retry_after":2}'
+        self.send_rate_limit('crawler_rate_limit', 3)
+        return False
+
+    def send_rate_limit(self, code, retry):
+        body = json.dumps({'error': code, 'retry_after': retry}, separators=(',', ':')).encode()
         self.send_response(429)
         self.send_header('Content-Type', 'application/json; charset=utf-8')
         self.send_header('Cache-Control', 'no-store')
-        self.send_header('Retry-After', '2')
+        self.send_header('Retry-After', str(retry))
         self.send_header('Content-Length', str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def catalog_allowed(self, paginated):
+        if not os.environ.get('RENDER'):
+            return True
+        address = self.observed_client()
+        if address is None or LIMITER.allow(address, paginated):
+            return True
+        self.send_rate_limit('catalog_rate_limit', 2)
         return False

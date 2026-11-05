@@ -1,5 +1,6 @@
 """Cost controls exercise disposable SQLite/loopback HTTP, never production."""
 import json
+import gzip
 import os
 import sys
 from pathlib import Path
@@ -82,6 +83,50 @@ class DeliveryTests(IsolatedAppHttpCase):
             status, _, headers = self.call('/settings')
             self.assertEqual(status, 200)
             self.assertIn('no-store', headers['Cache-Control'])
+
+    def test_only_cookie_free_public_listings_cache_and_compress(self):
+        status, body, headers = self.call('/venues', {'Accept-Encoding': 'gzip'})
+        self.assertEqual(status, 200)
+        self.assertEqual(headers['Content-Encoding'], 'gzip')
+        self.assertIn(b'venue-directory', gzip.decompress(body))
+        self.assertIn('Cookie', headers['Vary'])
+        self.assertIn('Authorization', headers['Vary'])
+        self.assertIn('Accept-Encoding', headers['Vary'])
+        self.assertIn('max-age=60', headers['Cache-Control'])
+        self.assertEqual(self.call('/venues', {'Accept-Encoding': 'gzip', 'If-None-Match': headers['ETag']})[:2], (304, b''))
+        for extra in ({'Cookie': 'cm_session=invalid'}, {'Authorization': 'Basic invalid'}):
+            status, body, private = self.call('/venues', {**extra, 'Accept-Encoding': 'gzip', 'If-None-Match': '*'})
+            self.assertEqual(status, 200)
+            self.assertIn('no-store', private['Cache-Control'])
+            self.assertNotIn('ETag', private)
+            self.assertNotIn('Content-Encoding', private)
+        self.assertEqual(self.call('/venues', {'Accept-Encoding': 'gzip;q=0, *;q=1'})[2].get('Content-Encoding'), None)
+        self.assertTrue(delivery.accepts_gzip('br, gzip'))
+        self.assertFalse(delivery.accepts_gzip('gzip;q=bad'))
+
+    def test_excess_crawlers_only_not_browsers_or_search_engines(self):
+        class Reject:
+            def allow(self, *args):
+                return False
+        with patch.dict(os.environ, {'RENDER': 'true'}), patch.object(delivery, 'CRAWLER_LIMITER', Reject()):
+            headers = {'CF-Connecting-IP': '192.0.2.1', 'User-Agent': 'AhrefsBot'}
+            status, _, response = self.call('/', headers)
+            self.assertEqual(status, 429)
+            self.assertEqual(response['Retry-After'], '3')
+            for agent in ('Mozilla/5.0', 'Googlebot', 'AdsBot-Google', 'Mediapartners-Google', 'bingbot', 'Applebot'):
+                self.assertEqual(self.call('/', {**headers, 'User-Agent': agent})[0], 200)
+            self.assertEqual(self.call('/', {**headers, 'Cookie': 'cm_session=invalid'})[0], 200)
+            for path in ('/signin', '/healthz', '/events/new'):
+                self.assertNotEqual(self.call(path, headers)[0], 429)
+        self.assertEqual(delivery.client_group('GPTBot'), 'openai-crawler')
+
+    def test_robots_excludes_duplicate_facets_not_public_core(self):
+        status, body, _ = self.call('/robots.txt')
+        self.assertEqual(status, 200)
+        self.assertIn(b'Disallow: /*?*q=', body)
+        self.assertIn(b'Disallow: /*?*v_', body)
+        self.assertNotIn(b'Disallow: /events\n', body)
+        self.assertNotIn(b'Disallow: /venues\n', body)
 
     def test_limit_applies_only_to_catalogs_not_login_health_or_applications(self):
         class Reject:

@@ -2,7 +2,8 @@
 
 ## Scope
 
-Only the public venue catalogs and public assets are cacheable. Personal HTML,
+Public venue catalogs, public assets and strictly cookie-free public listing
+HTML are cacheable. Personal HTML,
 login, guest verification, applications, bank details, payments and webhooks
 retain their existing no-store/authentication/CSRF behavior. No billing plan,
 environment variable, database schema or runtime service configuration changes.
@@ -18,6 +19,14 @@ Public assets keep their one-day TTL and gain ETag revalidation. An unchanged
 conditional GET returns 304 with no response body. New catalog content changes
 the tag; the maximum browser freshness period is five minutes. This does not
 enable Render's optional edge-cache setting or cache personalized pages.
+
+Cookie-free public listing HTML has a 60-second cache TTL and conditional GETs,
+with `Vary: Cookie, Authorization, Accept-Encoding`. Any Cookie or Authorization
+header keeps the original no-store response and disables this HTML compression
+path. Forms, account pages, guest links and event details are never included.
+Anonymous listings use deterministic gzip where accepted, reducing origin
+transfer as well as the existing edge compression. Private responses are not
+compressed by this code.
 
 The initial all-sports response measured with the same local gzip settings:
 
@@ -45,6 +54,20 @@ service traffic cap is introduced. Cloudflare's overwritten CF-Connecting-IP is
 preferred on Render; an unambiguous single X-Forwarded-For address is the
 fallback. Ambiguous/missing proxy identity fails open instead of treating every
 visitor as the same proxy client. Local test servers do not trust these headers.
+
+After the first deployment, the first complete 60-second log window contained
+87 self-declared crawler requests to `/` and other public pages, accounting for
+8,696,580 uncompressed body bytes. Release-check traffic was separately labeled.
+This is evidence of a large crawler contribution in that window, not proof of
+every historical charge or a verified bot identity.
+
+The follow-up limits self-declared non-search crawlers on cookie-free public
+listing GETs to 20/minute per observed address. Ordinary browsers,
+authenticated/cookie-bearing requests, Google/AdSense, Bing and Apple crawlers,
+event details, login, applications and payment routes bypass that limiter.
+Robots rules discourage duplicate free-text/filter/sort/offset URLs already
+excluded from indexing; canonical listings, event details and sitemap stay open.
+Crawler family labels are fixed categories and do not retain raw user agents.
 
 ## Diagnostics
 
@@ -100,4 +123,5 @@ Do not submit a production application, send verification mail or create payment
 
 Persistent-disk Render deploys can briefly interrupt connections at rollout;
 this change cannot promise zero downtime. Sessions and application data stay on
-the existing disk. Consolidate into one normal main deployment.
+the existing disk. The first rollout enabled diagnostics; the follow-up responds
+to newly observed crawler traffic without changing any service configuration.
