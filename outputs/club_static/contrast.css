@@ -1,0 +1,147 @@
+/* Shared dark-theme pairs also cover legacy component-local light styles. */
+body:not(.cm-club) {
+  --cm-light-text: #17212f;
+  --cm-light-muted: #526173;
+  --cm-light-action: #a63b1f;
+  --cm-light-surface: #ffffff;
+  --cm-light-border: #7a8997;
+  --muted: var(--cm-light-muted);
+  --accent: var(--cm-light-action);
+}
+body:not(.cm-club) :is(.hero p, .intro p, .lead, .admin-link) { color: var(--cm-light-muted); }
+body:not(.cm-club) .nav a.cm-account { color: var(--cm-light-action); }
+body:not(.cm-club) :is(input, select, textarea):not([type=radio]):not([type=checkbox]) {
+  border-color: var(--cm-light-border);
+}
+
+body.cm-club {
+  --cm-bg: #131719;
+  --cm-surface: #202722;
+  --cm-raised: #29332b;
+  --cm-text: #f2f5f2;
+  --cm-muted: #b4bdb7;
+  --cm-link: #b1c5ff;
+  --cm-border: #839088;
+  --cm-action: #d9f66f;
+  --cm-action-text: #1b2412;
+  --cm-selected: #303b24;
+  --cm-success: #b1e3c7;
+  --cm-success-bg: #23382d;
+  --cm-warning: #f4d282;
+  --cm-warning-bg: #332d1d;
+  --cm-danger: #ffb7ad;
+  --cm-danger-bg: #382724;
+  --ink: var(--cm-text);
+  --muted: var(--cm-muted);
+  --brand: var(--cm-action);
+  --paper: var(--cm-surface);
+}
+
+.cm-club :is(label, .intro p, .payment-details dt, .host-fee-badge) {
+  color: var(--cm-muted);
+}
+.cm-club #directoryContext label { color: var(--cm-muted); }
+.cm-club :is(.payment-details > div, .payment-order, .host-fee-totals dt, .host-fee-totals dd, .host-fee-unit) {
+  border-color: var(--cm-border);
+}
+.cm-club :is(.cm-settings-note, .cm-source-note, .cm-public-footer, .cm-article-meta, .cm-reading-item p) {
+  color: var(--cm-muted);
+}
+.cm-club :is(.help, .cm-settings-note, .invite-help, .payment-details, .host-fee-note) a {
+  color: var(--cm-link);
+}
+
+/* Settings: labels, checked choices, saved feedback, and action states. */
+.cm-club .cm-view-options label {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .cm-view-options label:has(input:checked) {
+  background: var(--cm-selected);
+  color: var(--cm-text);
+  border-color: var(--cm-action);
+}
+.cm-club .cm-view-options label:hover { background: var(--cm-raised); }
+.cm-club .cm-preferences fieldset { border-color: var(--cm-border); }
+.cm-club .cm-preferences :focus-visible { outline-color: var(--cm-link); }
+.cm-club .cm-settings-actions button {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .cm-settings-actions button[type=submit] {
+  background: var(--cm-action);
+  color: var(--cm-action-text);
+  border-color: var(--cm-action);
+}
+.cm-club #cm-settings-status { color: var(--cm-success); }
+
+/* Invitation creation, list, public view, conversation, and withdrawal. */
+.cm-club .invite-ui :is(.invite-card, .invite-event-summary, .invite-message) {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .invite-ui :is(.invite-heading > p:last-child, .invite-label, label, .invite-help, .invite-kind, .invite-from, .invite-facts dt, .invite-message small) {
+  color: var(--cm-muted);
+}
+.cm-club .invite-ui :is(.invite-nav a, .invite-text-link) { color: var(--cm-link); }
+.cm-club .invite-ui .invite-eyebrow { color: var(--cm-action); }
+.cm-club .invite-ui .invite-field :is(input, select, textarea) {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .invite-ui .invite-field [readonly] { background: var(--cm-raised); }
+.cm-club .invite-ui .invite-button {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .invite-ui .invite-primary {
+  background: var(--cm-action);
+  color: var(--cm-action-text);
+  border-color: var(--cm-action);
+}
+.cm-club .invite-ui .invite-note, .cm-club .host-fee-note {
+  background: var(--cm-success-bg);
+  color: var(--cm-text);
+  border-color: var(--cm-success);
+}
+.cm-club .invite-ui :is(.invite-status, .invite-self) {
+  background: var(--cm-success-bg);
+  color: var(--cm-success);
+  border-color: var(--cm-border);
+}
+.cm-club .invite-ui .invite-error {
+  background: var(--cm-danger-bg);
+  color: var(--cm-danger);
+  border-color: var(--cm-danger);
+}
+.cm-club .invite-ui .invite-manage .invite-primary {
+  background: var(--cm-danger-bg);
+  color: var(--cm-danger);
+  border-color: var(--cm-danger);
+}
+.cm-club .invite-ui :is(a, button, input, select, textarea):focus-visible {
+  outline-color: var(--cm-link);
+}
+
+/* Venue skip/loading states are not covered by the normal results table. */
+.cm-club .venue-directory :is(.venue-skip-link, .venue-message-panel) {
+  background: var(--cm-surface);
+  color: var(--cm-text);
+  border-color: var(--cm-border);
+}
+.cm-club .venue-directory .venue-message-panel p { color: var(--cm-muted); }
+
+/* Disabled controls remain legible while their native disabled state is retained. */
+.cm-club fieldset:disabled { opacity: 1; }
+.cm-club :is(button, input, select, textarea, .button):disabled {
+  opacity: 1;
+  background: var(--cm-surface);
+  color: var(--cm-muted);
+  border-color: var(--cm-border);
+  cursor: not-allowed;
+}

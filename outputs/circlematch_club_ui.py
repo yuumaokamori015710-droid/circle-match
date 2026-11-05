@@ -95,7 +95,9 @@ def decorate(body, request_path):
     if signin:
         page = page.replace('<body>', '<body class="cm-club">', 1)
     if '<body class="cm-club">' not in page:
-        return body
+        contrast = STATIC / 'contrast.css'
+        url = f'/assets/club/contrast.css?v={sha256(contrast.read_bytes()).hexdigest()[:12]}'
+        return page.replace('</head>', f'<link rel="stylesheet" href="{url}"></head>', 1).encode('utf-8')
     parsed = urlparse(request_path)
     params = parse_qs(parsed.query)
     shared = {key: params[key][0] for key in ('sport', 'region', 'prefecture') if params.get(key)}
@@ -118,7 +120,7 @@ def decorate(body, request_path):
     if not signin:
         page = page.replace('</body>', '<nav class="club-bottom-nav" aria-label="主要メニュー">' + ''.join(links) + '</nav></body>', 1)
     resources = ''
-    for name in ('styles.css', 'app.js'):
+    for name in ('styles.css', 'contrast.css', 'app.js'):
         path = STATIC / name
         url = f'/assets/club/{name}?v={sha256(path.read_bytes()).hexdigest()[:12]}'
         resources += f'<link rel="stylesheet" href="{url}">' if name.endswith('.css') else f'<script src="{url}" defer></script>'
