@@ -82,7 +82,9 @@ No query strings, event IDs, IP addresses, emails, cookies, credentials, request
 bodies, referrers or raw user-agent strings are logged. Arbitrary paths and asset
 extensions map to fixed `other` groups. A failed log write cannot fail a request.
 
-`body_bytes` is uncompressed application output, not Render's metered byte total.
+`body_bytes` counts the application response body as sent (gzip bytes for
+compressed anonymous HTML, otherwise uncompressed bytes), not Render's metered
+byte total. The edge may compress or transform it further.
 Client classes are hints from self-declared user agents, not verified identity.
 Browser-driven Codex actions cannot reliably be distinguished from real browsers.
 Use the aggregate to rank routes; compare trends against Render billing metrics.
