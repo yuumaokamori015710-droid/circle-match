@@ -128,6 +128,19 @@ class DeliveryTests(IsolatedAppHttpCase):
         self.assertNotIn(b'Disallow: /events\n', body)
         self.assertNotIn(b'Disallow: /venues\n', body)
 
+    def test_distributed_crawler_family_shares_one_budget(self):
+        calls = []
+        class Record:
+            def allow(self, key, paginated):
+                calls.append(key)
+                return True
+        with patch.dict(os.environ, {'RENDER': 'true'}), patch.object(delivery, 'CRAWLER_LIMITER', Record()):
+            for address in ('192.0.2.1', '192.0.2.2'):
+                self.assertEqual(self.call('/', {'User-Agent': 'meta-externalagent', 'CF-Connecting-IP': address})[0], 200)
+            self.assertEqual(self.call('/signin', {'User-Agent': 'meta-externalagent'})[0], 200)
+            self.assertEqual(self.call('/', {'User-Agent': 'Mozilla/5.0'})[0], 200)
+        self.assertEqual(calls, ['meta-crawler', 'meta-crawler'])
+
     def test_limit_applies_only_to_catalogs_not_login_health_or_applications(self):
         class Reject:
             def allow(self, *args):

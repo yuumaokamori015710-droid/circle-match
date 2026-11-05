@@ -62,7 +62,11 @@ This is evidence of a large crawler contribution in that window, not proof of
 every historical charge or a verified bot identity.
 
 The follow-up limits self-declared non-search crawlers on cookie-free public
-listing GETs to 20/minute per observed address. Ordinary browsers,
+listing GETs to 20/minute per declared family across the single service instance.
+The first follow-up logs identified the dominant family as self-declared Meta
+crawlers; a family-wide budget also covers their distributed source addresses.
+This attribution is user-agent based, not independent ownership verification.
+Ordinary browsers,
 authenticated/cookie-bearing requests, Google/AdSense, Bing and Apple crawlers,
 event details, login, applications and payment routes bypass that limiter.
 Robots rules discourage duplicate free-text/filter/sort/offset URLs already

@@ -236,8 +236,10 @@ class DeliveryMixin:
                 or not (family == 'crawler' or family.endswith('-crawler'))
                 or family in {'google-crawler', 'bing-crawler', 'apple-crawler'}):
             return True
-        address = self.observed_client()
-        if address is None or CRAWLER_LIMITER.allow(address, False):
+        # Distributed crawlers can rotate source addresses. Bound the declared
+        # family across this single instance, not ordinary visitors or shares
+        # of individual event pages.
+        if CRAWLER_LIMITER.allow(family, False):
             return True
         self.send_rate_limit('crawler_rate_limit', 3)
         return False
