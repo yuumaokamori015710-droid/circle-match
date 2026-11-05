@@ -93,6 +93,20 @@ def venue_defaults(venue_id, sport=''):
             'sport_category': sport if sport in row['sports'] else row['sports'][0]}
 
 
+def get_venue_page(params):
+    catalog = get_venue_catalog(params)
+    matches = filter_catalog(catalog['courts'], params)
+    def integer(key, default, maximum):
+        try:
+            return max(0, min(int(selected(params, key) or default), maximum))
+        except ValueError:
+            return default
+    offset = integer('offset', 0, 100000)
+    limit = max(1, integer('limit', 50, 50))
+    return {'courts': matches[offset:offset + limit], 'meta': dict(catalog['meta'],
+        results=len(matches), offset=offset, limit=limit, has_more=offset + limit < len(matches))}
+
+
 def _link(url, label, css='venue-secondary-link'):
     return f'<a href="{escape(url, quote=True)}" class="{css}" target="_blank" rel="noopener noreferrer">{escape(label)} ↗</a>'
 

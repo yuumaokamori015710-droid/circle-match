@@ -43,6 +43,7 @@ import circlematch_host_billing as host_billing
 import circlematch_fee_campaign as fee_campaign
 import circlematch_event_guests as guests
 import circlematch_login_security as login_security
+import circlematch_delivery as delivery
 
 HOST_FEES_ENABLED = os.environ.get('CIRCLEMATCH_HOST_FEES_ENABLED', 'false') == 'true'
 
@@ -5280,7 +5281,7 @@ def rows(query, params=()):
         return [dict(row) for row in conn.execute(query, params).fetchall()]
 
 
-class Handler(BaseHTTPRequestHandler):
+class Handler(delivery.DeliveryMixin, BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         return
 
@@ -5373,13 +5374,7 @@ class Handler(BaseHTTPRequestHandler):
         if not path.exists():
             self.send_text(b"Not found\n", "text/plain; charset=utf-8", 404)
             return
-        body = path.read_bytes()
-        self.send_response(200)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Cache-Control", "public, max-age=86400")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
+        self.send_public(path.read_bytes(), content_type, max_age=86400)
 
     def read_json(self):
         path = urlparse(self.path).path
@@ -5726,9 +5721,13 @@ class Handler(BaseHTTPRequestHandler):
                 query.pop("tab", None)
                 self.redirect("/venues" + ("?" + urlencode(query, doseq=True) if query else ""))
             elif parsed.path == "/api/tennis-courts":
-                self.send_json(venues.get_catalog())
+                if self.catalog_allowed(False):
+                    self.send_public(json.dumps(venues.get_catalog(), ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 'application/json; charset=utf-8')
             elif parsed.path == "/api/venues":
-                self.send_json(venues.get_venue_catalog(query))
+                paginated = venues.selected(query, 'view') == 'page'
+                if self.catalog_allowed(paginated):
+                    data = venues.get_venue_page(query) if paginated else venues.get_venue_catalog(query)
+                    self.send_public(json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 'application/json; charset=utf-8')
             elif parsed.path in venues.ASSET_PATHS:
                 path, content_type = venues.ASSET_PATHS[parsed.path]
                 self.send_file(path, content_type)

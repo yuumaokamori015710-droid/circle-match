@@ -14,8 +14,11 @@ The [2026-10-26 review](venue-fee-followup-2026-10-26.md) reviewed 22 existing f
 directory tabs. It lists Tokyo facilities for all 14 main sports/activity
 categories. The first 50 matching facilities, booking links, counts and GET
 filters are server-rendered and usable without JavaScript. Client-side search,
-filtering, sorting and incremental pagination enhance the same list after one
-read-only catalog request. API failure leaves the initial records readable.
+filtering, sorting and incremental pagination enhance the same list using
+cacheable read-only requests for up to 50 matching records at a time. Unchanged
+public catalogs and assets support ETag revalidation; personal responses remain
+uncacheable. API failure leaves the initial records readable. See
+[delivery controls and diagnostics](bandwidth-controls.md).
 Reservation links lead to the facility's official reservation instructions or
 booking site; this page does not submit reservations or process payments.
 

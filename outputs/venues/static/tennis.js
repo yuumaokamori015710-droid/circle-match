@@ -12,8 +12,10 @@
   const SELECT_VALUES = {operator_type:["","PUBLIC","PRIVATE"],facility_kind:["","COURT","SCHOOL","VENUE"],venue_type:["","gym","field","court","track","meeting","karaoke","boardgame","golf","other"],booking_channel:["","web","phone","counter","unknown"],registration:["","required","not_required","unknown"],price_status:["","available","missing","hourly"],sort:[...$('#venue-sort').options].map(option=>option.value)};
   const AREA_STAGES = {'23区':'wards','多摩':'tama','島しょ':'islands'};
   const placeParents = Object.fromEntries([...$('#venue-places-filter').options].map(option=>[option.value,option.dataset.parent]));
-  const state = {courts:[],meta:{},matches:[],visibleCount:PAGE_SIZE,loaded:false};
+  const state = {courts:[],meta:{},matches:[],total:0,loaded:false};
   let loadingRequest = null;
+  let catalogRequest;
+  let catalogGeneration = 0;
   let searchTimer;
   let mapRequest;
   let regionDraft = null;
@@ -49,9 +51,7 @@
   }
   function previewRegion() {
     if(state.loaded) {
-      state.matches=sortCourts(filterCourts(state.courts,{...readFilters(),places:regionDraft.places}),readFilters().sort);
-      state.visibleCount=PAGE_SIZE;
-      renderResults();
+      loadCourts(false,true);
     }
     paintMap();
   }
@@ -280,8 +280,8 @@
     }
   }
   function renderResults() {
-    const count = state.matches.length;
-    const visible = state.matches.slice(0,state.visibleCount);
+    const count = state.total;
+    const visible = state.matches;
     $("#venue-court-list").innerHTML = visible.map(courtCard).join("");
     $("#venue-result-count").textContent = state.loaded ? `${count.toLocaleString("ja-JP")} 件` : "";
     $("#venue-visible-count").textContent = count ? `${visible.length.toLocaleString("ja-JP")} / ${count.toLocaleString("ja-JP")} 件を表示` : "";
@@ -322,10 +322,8 @@
     if(invalidPrice) return;
     if (updateUrl) persistUrlFilters(filters, pushUrl);
     if(updateUrl) browser.CircleMatchSettings?.saveVenue(state.meta.sport || "all",filters);
-    state.matches = sortCourts(filterCourts(state.courts,filters),filters.sort);
-    state.visibleCount = PAGE_SIZE;
-    renderResults();
     syncMap();
+    return loadCourts();
   }
   function fieldsPriceInvalid() {
     const raw=normalize($("#venue-court-filters").elements.price_max.value).replaceAll(",", "");
@@ -348,35 +346,54 @@
     const municipalities = [...new Set([...list(state.meta.municipalities).filter(value => typeof value === "string"),...state.courts.map(court => court.municipality)].filter(value => typeof value === "string" && value.trim()))].sort((a,b) => a.localeCompare(b,"ja"));
     $("#venue-catalog-total").textContent += ` · ${municipalities.length} 自治体`;
   }
-  function loadCourts() {
-    if (loadingRequest) return loadingRequest;
+  function loadCourts(append = false, preview = false) {
+    if (append && loadingRequest) return loadingRequest;
+    catalogRequest?.abort();
+    catalogRequest = new AbortController();
+    const signal = catalogRequest.signal;
+    const generation = ++catalogGeneration;
+    const filters = readFilters();
+    if (preview && regionDraft) filters.places = regionDraft.places;
+    const url = new URL(directory.dataset.catalogUrl,location.origin);
+    url.searchParams.set('view','page');
+    url.searchParams.set('limit',String(PAGE_SIZE));
+    url.searchParams.set('offset',String(append ? state.matches.length : 0));
+    for (const [key,value] of Object.entries(filters)) {
+      if (value !== null && value !== '' && value !== false && value !== undefined) {
+        url.searchParams.set('v_'+key,Array.isArray(value)?value.join(','):value===true?'1':String(value));
+      }
+    }
     $("#venue-loading-state").hidden = false;
     $("#venue-error-state").hidden = true;
     $("#venue-empty-state").hidden = true;
     $("#venue-retry-load").disabled = true;
-    $("#venue-filter-fields").disabled = true;
-    $("#venue-sort").disabled=true;
+    $("#venue-filter-fields").disabled = !state.loaded;
+    $("#venue-sort").disabled = !state.loaded;
     loadingRequest = (async () => {
       try {
-        const response = await fetch(directory.dataset.catalogUrl,{credentials:"omit",headers:{Accept:"application/json"}});
+        const response = await fetch(url.href,{credentials:"omit",signal,headers:{Accept:"application/json"}});
         if (!response.ok) throw new Error("Unable to load courts");
         const data = await response.json();
         if (!data || !Array.isArray(data.courts)) throw new Error("Invalid court listing");
-        state.courts = data.courts.filter(court => court && typeof court === "object");
+        if (generation !== catalogGeneration) return false;
+        const courts = data.courts.filter(court => court && typeof court === "object");
+        state.courts = append ? [...state.courts,...courts] : courts;
+        state.matches = state.courts;
         state.meta = data.meta && typeof data.meta === "object" ? data.meta : {};
+        state.total = numberOrNull(state.meta.results) ?? state.courts.length;
         state.loaded = true;
         renderMetadata();
-        restoreUrlFilters(true);
         $("#venue-filter-fields").disabled = false;
         $("#venue-sort").disabled=false;
-        persistUrlFilters(readFilters());
-        applyFilters(false);
-        browser.CircleMatchSettings?.saveVenue(state.meta.sport || 'all',readFilters());
+        renderResults();
+        return true;
       } catch {
+        if (signal.aborted || generation !== catalogGeneration) return false;
         $("#venue-error-state").hidden = false;
         // Keep server-rendered records and counts readable on network failure.
         $("#venue-empty-state").hidden = $("#venue-court-list").children.length > 0;
       } finally {
+        if (generation !== catalogGeneration) return;
         $("#venue-filter-fields").disabled = false;
         $("#venue-sort").disabled=false;
         $("#venue-loading-state").hidden = true;
@@ -438,9 +455,17 @@
   window.addEventListener('scroll',()=>directory.querySelectorAll('.venue-column-menu[open]').forEach(positionColumnMenu));
   $("#venue-reset-filters").addEventListener("click",resetFilters);
   $("#venue-empty-reset").addEventListener("click",resetFilters);
-  $("#venue-retry-load").addEventListener("click",loadCourts);
-  $("#venue-show-more").addEventListener("click",() => {state.visibleCount += PAGE_SIZE;renderResults();});
-  $("#venue-show-all").addEventListener("click",() => {state.visibleCount = state.matches.length;renderResults();});
+  $("#venue-retry-load").addEventListener("click",() => loadCourts());
+  $("#venue-show-more").addEventListener("click",() => loadCourts(true));
+  $("#venue-show-all").addEventListener("click",async () => {
+    const button=$('#venue-show-all');button.disabled=true;
+    try {
+      while(state.matches.length<state.total) {
+        const previous=state.matches.length;
+        if(!await loadCourts(true) || state.matches.length<=previous)break;
+      }
+    } finally {button.disabled=false;}
+  });
   const regionDialog = $('#venue-region-dialog');
   $('#venue-open-region').addEventListener('click',() => {
     if (state.loaded && fieldsPriceInvalid()) {
@@ -497,5 +522,8 @@
     restoreUrlFilters();
     applyFilters(false);
   });
+  state.meta.sport=new URL(directory.dataset.catalogUrl,location.origin).searchParams.get('sport') || '';
+  restoreUrlFilters(true);
+  persistUrlFilters(readFilters());
   loadCourts();
 })();
