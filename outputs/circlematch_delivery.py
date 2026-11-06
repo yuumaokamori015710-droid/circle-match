@@ -11,10 +11,20 @@ from urllib.parse import urlsplit
 
 PUBLIC_LISTINGS = {'/', '/events', '/venues', '/circles', '/social', '/social/circles',
                    '/sports', '/social/sports', '/regions', '/guides'}
+PUBLIC_INFORMATION = {'/privacy', '/terms', '/operator', '/about-data', '/contact'}
+COMPRESSIBLE_TYPES = {'text/html', 'text/css', 'text/javascript', 'application/javascript',
+                      'application/json', 'application/xml', 'text/plain', 'image/svg+xml'}
 
 
 def public_listing(path):
     return urlsplit(path).path in PUBLIC_LISTINGS
+
+
+def public_document(path):
+    path = urlsplit(path).path
+    parts = path.split('/')
+    return (path in PUBLIC_LISTINGS or path in PUBLIC_INFORMATION
+            or (len(parts) == 3 and parts[1] in {'circles', 'guides'} and bool(parts[2])))
 
 
 def accepts_gzip(header):
@@ -49,16 +59,19 @@ def route_group(path):
     if path.startswith('/assets/'):
         extension = path.rsplit('.', 1)[-1]
         return '/assets/' + (extension if extension in {'css', 'js', 'json', 'png', 'webp', 'svg', 'woff2'} else 'other')
-    if path in {'/', '/venues', '/api/venues', '/api/tennis-courts', '/healthz',
+    if path in PUBLIC_LISTINGS | PUBLIC_INFORMATION | {'/api/venues', '/api/tennis-courts', '/healthz',
                 '/api/circles', '/api/circle-stats', '/api/region-counts',
                 '/api/events', '/robots.txt', '/sitemap.xml', '/ads.txt',
                 '/circles', '/social', '/social/circles', '/sports', '/social/sports',
-                '/regions', '/guides', '/operator', '/about-data', '/contact'}:
+                '/regions', '/guides', '/operator', '/about-data', '/contact',
+                '/signin', '/settings', '/representative', '/mypage', '/notifications', '/payments'}:
         return path
     if path.startswith('/events/'):
         return '/events/:event'
     if path.startswith('/guides/'):
         return '/guides/:article'
+    if path.startswith('/circles/'):
+        return '/circles/:profile'
     if path.startswith('/api/'):
         return '/api/other'
     return '/other'
@@ -202,6 +215,14 @@ class DeliveryMixin:
         self._delivery_body = True
 
     def send_public(self, body, content_type, max_age=300, encoding=None, vary=None):
+        if content_type.partition(';')[0] in COMPRESSIBLE_TYPES:
+            varies = [value.strip() for value in (vary or '').split(',') if value.strip()]
+            if 'accept-encoding' not in {value.lower() for value in varies}:
+                varies.append('Accept-Encoding')
+            vary = ', '.join(varies)
+            if not encoding and accepts_gzip(self.headers.get('Accept-Encoding', '')):
+                body = gzip.compress(body, compresslevel=6, mtime=0)
+                encoding = 'gzip'
         tag = etag(body)
         same = unchanged(self.headers.get('If-None-Match', ''), tag)
         self.send_response(304 if same else 200)
@@ -219,10 +240,9 @@ class DeliveryMixin:
             self.wfile.write(body)
 
     def send_anonymous_listing(self, body):
-        encoding = 'gzip' if accepts_gzip(self.headers.get('Accept-Encoding', '')) else None
-        if encoding:
-            body = gzip.compress(body, compresslevel=6, mtime=0)
-        self.send_public(body, 'text/html; charset=utf-8', max_age=60, encoding=encoding,
+        # Profile contact consent/visibility must be rechecked on each request.
+        max_age = 0 if urlsplit(self.path).path.startswith('/circles/') else 60
+        self.send_public(body, 'text/html; charset=utf-8', max_age=max_age,
                          vary='Cookie, Authorization, Accept-Encoding')
 
     def observed_client(self):
@@ -231,7 +251,7 @@ class DeliveryMixin:
 
     def public_crawler_allowed(self):
         family = client_group(self.headers.get('User-Agent', ''))
-        if (not os.environ.get('RENDER') or not public_listing(self.path)
+        if (not os.environ.get('RENDER') or not public_document(self.path)
                 or self.headers.get('Cookie') or self.headers.get('Authorization')
                 or not (family == 'crawler' or family.endswith('-crawler'))
                 or family in {'google-crawler', 'bing-crawler', 'apple-crawler'}):

@@ -5347,7 +5347,7 @@ class Handler(delivery.DeliveryMixin, BaseHTTPRequestHandler):
                                   {item[0]: item[4] for item in POPULAR_SPORTS}, REGION_GROUPS, status, event,
                                   GUIDE_PAGES.get(unquote(event_path.removeprefix('/guides/'))) if event_path.startswith('/guides/') else None)
         body = public_content.apply_ad_policy(body, self.path, status, ADSENSE_HEAD, event)
-        if (status == 200 and delivery.public_listing(self.path)
+        if (status == 200 and delivery.public_document(self.path)
                 and not self.headers.get('Cookie') and not self.headers.get('Authorization')):
             self.send_anonymous_listing(body)
             return

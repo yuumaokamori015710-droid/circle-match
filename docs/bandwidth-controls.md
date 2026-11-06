@@ -131,3 +131,43 @@ Persistent-disk Render deploys can briefly interrupt connections at rollout;
 this change cannot promise zero downtime. Sessions and application data stay on
 the existing disk. The first rollout enabled diagnostics; the follow-up responds
 to newly observed crawler traffic without changing any service configuration.
+
+## Additional Public Delivery Controls (2026-11-07)
+
+A later 601-second live aggregate still showed 522 Meta-declared successful
+responses in the coarse `/other` group, carrying 20,300,134 application body
+bytes. This group was not sufficient to identify each actual path. The follow-up
+therefore extends the explicit public-document allowlist to legal/information
+pages and single-segment published circle profiles and guides, not arbitrary
+paths or a generic catch-all. They share the existing non-search crawler-family
+budget with listings, rather than each gaining a fresh budget. Fixed log groups
+now separate policies, event listings and circle profiles without recording IDs
+or query strings. Ordinary browsers, cookie/authorization-bearing requests,
+search/ad crawlers and every event detail/application route remain exempt.
+
+Cookie-free successful public information pages and guides gain the existing
+60-second cache TTL, encoding-specific ETags and deterministic gzip. Circle
+profiles use `max-age=0, must-revalidate` so each request rechecks publication and
+contact consent. Failed/unpublished profiles never return a cached 304.
+Cookie-bearing and authorization-bearing HTML retains
+no-store and remains outside this compression path. No event, invitation,
+account, notification, bank, payment or authentication response enters it.
+
+Already-public venue JSON and textual static assets also negotiate gzip, with
+`Vary: Accept-Encoding` on both compressed and identity responses. Their ETags
+identify the bytes of the selected representation; a compressed validator does
+not suppress a different identity response. PNG and other binary assets are not
+recompressed. Existing full-catalog compatibility and pagination are unchanged.
+
+Use `python -m unittest discover -s scripts -p 'test_delivery*.py' -q` for the
+focused contracts and the full `test_*.py` suite for application regressions.
+`scripts/check_public_delivery.py --base-url <origin> --expected-commit <sha>`
+makes a fixed set of read-only requests, downloads only 50 venue rows, checks
+304/body-zero behavior and private-route cache boundaries, and writes a
+credential-free report. It never loops over catalogs, signs in, applies, sends
+mail or creates a Checkout session. Use disposable local data for authenticated
+and guest-flow tests; do not submit test applications to production.
+
+Application byte savings are not a bill estimate: Render's edge may already
+compress responses. Compare subsequent Render bandwidth metrics over complete,
+comparable time windows before extrapolating any further monthly savings.
