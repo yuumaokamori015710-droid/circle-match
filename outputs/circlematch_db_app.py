@@ -3215,6 +3215,8 @@ def robots_txt():
         "Allow: /",
         "Disallow: /admin",
         "Disallow: /api/",
+        "Disallow: /signin",
+        "Disallow: /settings",
         "Disallow: /*?*q=",
         "Disallow: /*?*v_",
         "Disallow: /*?*sort=",

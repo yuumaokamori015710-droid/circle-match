@@ -47,7 +47,7 @@ def check(base, expected_commit=''):
         report['checks'].append({'path': path, 'status': status, 'plain_bytes': len(body),
                                  'wire_bytes': wire, 'conditional_status': same_status})
     event = '/events/event_user_supabase_fe23d660_0d10_49cc_ae6_f42c6bd8fd'
-    for path in ('/signin', '/api/me', '/api/notifications/unread', event, event + '/apply', event + '/guest'):
+    for path in ('/signin', '/settings', '/api/me', '/api/notifications/unread', event, event + '/apply', event + '/guest'):
         status, _, headers, _ = get(path, {'If-None-Match': '*'})
         assert status in (200, 302, 401, 404), path
         if expected_commit and path == event:

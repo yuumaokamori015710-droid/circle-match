@@ -77,9 +77,32 @@ class PublicDocumentDeliveryTests(IsolatedAppHttpCase):
                 self.assertEqual(self.call('/privacy', {'User-Agent': agent})[0], 200)
             for extra in ({'Cookie': 'cm_session=invalid'}, {'Authorization': 'Basic invalid'}):
                 self.assertEqual(self.call('/privacy', {'User-Agent': 'meta-externalagent', **extra})[0], 200)
-            for path in ('/signin', '/healthz', '/events/new', '/events/example', '/events/example/guest'):
+            for path in ('/healthz', '/events/new', '/events/example', '/events/example/guest'):
                 self.assertNotEqual(self.call(path, {'User-Agent': 'meta-externalagent'})[0], 429)
         self.assertEqual(calls, [('meta-crawler', False)] * 4)
+
+    def test_entry_page_crawler_budget_never_restricts_browser_or_authentication(self):
+        class Reject:
+            def allow(self, *args):
+                return False
+
+        with patch.dict(os.environ, {'RENDER': 'true'}), patch.object(delivery, 'CRAWLER_LIMITER', Reject()):
+            for path in ('/signin', '/settings'):
+                self.assertEqual(self.call(path, {'User-Agent': 'meta-externalagent'})[0], 429)
+                for agent in ('Mozilla/5.0', 'Googlebot', 'AdsBot-Google', 'Mediapartners-Google', 'Bingbot', 'Applebot'):
+                    status, _, headers = self.call(path, {'User-Agent': agent})
+                    self.assertEqual(status, 200)
+                    self.assertIn('no-store', headers['Cache-Control'])
+                    self.assertNotIn('ETag', headers)
+                for extra in ({'Cookie': 'cm_session=invalid'}, {'Authorization': 'Basic invalid'}):
+                    self.assertEqual(self.call(path, {'User-Agent': 'meta-externalagent', **extra})[0], 200)
+            for path in ('/api/me', '/api/notifications/unread', '/auth/google/callback',
+                         '/events/new', '/events/example/apply', '/events/example/guest'):
+                self.assertNotEqual(self.call(path, {'User-Agent': 'meta-externalagent'})[0], 429)
+            self.assertNotEqual(self.call('/api/auth/supabase', {'User-Agent': 'meta-externalagent'}, method='POST')[0], 429)
+        robots = self.call('/robots.txt')[1]
+        self.assertIn(b'Disallow: /signin\n', robots)
+        self.assertIn(b'Disallow: /settings\n', robots)
 
     def test_profile_visibility_and_private_navigation_remain_live(self):
         with self.app.connect() as conn:

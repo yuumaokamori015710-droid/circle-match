@@ -68,7 +68,8 @@ crawlers; a family-wide budget also covers their distributed source addresses.
 This attribution is user-agent based, not independent ownership verification.
 Ordinary browsers,
 authenticated/cookie-bearing requests, Google/AdSense, Bing and Apple crawlers,
-event details, login, applications and payment routes bypass that limiter.
+event details, login submissions, authentication APIs, applications and payment
+routes bypass that limiter.
 Robots rules discourage duplicate free-text/filter/sort/offset URLs already
 excluded from indexing; canonical listings, event details and sitemap stay open.
 Crawler family labels are fixed categories and do not retain raw user agents.
@@ -171,3 +172,13 @@ and guest-flow tests; do not submit test applications to production.
 Application byte savings are not a bill estimate: Render's edge may already
 compress responses. Compare subsequent Render bandwidth metrics over complete,
 comparable time windows before extrapolating any further monthly savings.
+
+The first follow-up's expanded fixed log groups resolved the former `/other`
+traffic to non-search crawlers repeatedly fetching `/signin` and `/settings`.
+These two **GET screen routes only** now share the same crawler-family budget.
+They are not added to the cache/compression allowlist: even anonymous entry
+screens keep no-store. Ordinary browser agents, all Cookie/Authorization-bearing
+requests, Google/AdSense/Bing/Apple and every authentication API, OAuth callback,
+POST, event/application/payment route bypass this crawler guard. Robots rules
+also discourage indexing these two non-content screens. This is neither a human
+login throttle nor a change to login eligibility, sessions or form submission.

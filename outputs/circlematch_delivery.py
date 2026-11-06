@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 PUBLIC_LISTINGS = {'/', '/events', '/venues', '/circles', '/social', '/social/circles',
                    '/sports', '/social/sports', '/regions', '/guides'}
 PUBLIC_INFORMATION = {'/privacy', '/terms', '/operator', '/about-data', '/contact'}
+CRAWLER_ENTRY_PAGES = {'/signin', '/settings'}
 COMPRESSIBLE_TYPES = {'text/html', 'text/css', 'text/javascript', 'application/javascript',
                       'application/json', 'application/xml', 'text/plain', 'image/svg+xml'}
 
@@ -251,7 +252,9 @@ class DeliveryMixin:
 
     def public_crawler_allowed(self):
         family = client_group(self.headers.get('User-Agent', ''))
-        if (not os.environ.get('RENDER') or not public_document(self.path)
+        limited_path = (public_document(self.path)
+                        or urlsplit(self.path).path in CRAWLER_ENTRY_PAGES)
+        if (not os.environ.get('RENDER') or not limited_path
                 or self.headers.get('Cookie') or self.headers.get('Authorization')
                 or not (family == 'crawler' or family.endswith('-crawler'))
                 or family in {'google-crawler', 'bing-crawler', 'apple-crawler'}):

@@ -116,7 +116,7 @@ class DeliveryTests(IsolatedAppHttpCase):
             for agent in ('Mozilla/5.0', 'Googlebot', 'AdsBot-Google', 'Mediapartners-Google', 'bingbot', 'Applebot'):
                 self.assertEqual(self.call('/', {**headers, 'User-Agent': agent})[0], 200)
             self.assertEqual(self.call('/', {**headers, 'Cookie': 'cm_session=invalid'})[0], 200)
-            for path in ('/signin', '/healthz', '/events/new'):
+            for path in ('/healthz', '/events/new'):
                 self.assertNotEqual(self.call(path, headers)[0], 429)
         self.assertEqual(delivery.client_group('GPTBot'), 'openai-crawler')
 
@@ -139,7 +139,7 @@ class DeliveryTests(IsolatedAppHttpCase):
                 self.assertEqual(self.call('/', {'User-Agent': 'meta-externalagent', 'CF-Connecting-IP': address})[0], 200)
             self.assertEqual(self.call('/signin', {'User-Agent': 'meta-externalagent'})[0], 200)
             self.assertEqual(self.call('/', {'User-Agent': 'Mozilla/5.0'})[0], 200)
-        self.assertEqual(calls, ['meta-crawler', 'meta-crawler'])
+        self.assertEqual(calls, ['meta-crawler', 'meta-crawler', 'meta-crawler'])
 
     def test_limit_applies_only_to_catalogs_not_login_health_or_applications(self):
         class Reject:
