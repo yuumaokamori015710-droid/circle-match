@@ -7917,13 +7917,19 @@
     "booking_note": "団体貸切は登録が必要。個人使用は当日受付・予約不可。資格は公式案内参照。",
     "booking_url": "https://www.yoyaku.mitaka.site/",
     "official_url": "https://www.city.mitaka.lg.jp/c_service/017/017503.html",
-    "checked_at": "2026-10-10",
+    "checked_at": "2026-11-06",
     "sources": [
       {
         "title": "大沢野川グラウンドテニスコート 公式案内",
         "url": "https://www.city.mitaka.lg.jp/c_service/017/017503.html"
+      },
+      {
+        "title": "大沢野川グラウンド・冠水による使用中止（2026年11月6日確認）",
+        "url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/nogawa.html"
       }
-    ]
+    ],
+    "availability_status": "SUSPENDED",
+    "availability_note": "大雨による冠水・復旧作業のためテニスコート全4面を当面使用中止。2026年11月6日に市と指定管理者の休止告知を確認。再開日未確認のため通常検索から除外。"
   },
   {
     "id": "mitaka-shinkawa",

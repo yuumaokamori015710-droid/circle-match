@@ -28,9 +28,10 @@ class November5VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(review.reviewed_fees()), 16)
         self.assertEqual(len(review.reviewed_policies()), 16)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 922)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 284)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 273)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 922)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 284)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later, 273)
         for fee in review.reviewed_fees():
             row = self.rows[fee['id']]
             self.assertEqual(row['fee_checked_at'], review.CHECKED)
@@ -98,11 +99,14 @@ class November5VenueReviewTests(unittest.TestCase):
             before = subprocess.check_output(['git', 'show', review.BASE + ':' + rel], cwd=ROOT)
             current = (ROOT / rel).read_bytes()
             if name.startswith('tokyo_'):
-                self.assertEqual(before.replace(b'\r\n', b'\n'), current.replace(b'\r\n', b'\n'))
+                from venue_review_test_helpers import before_november6_closure
+                self.assertEqual(json.loads(before), before_november6_closure(json.loads(current), json.loads(before)))
             else:
                 old, new = json.loads(before), json.loads(current)
                 self.assertEqual(old, new[:len(old)])
-                self.assertEqual(new[len(old):], review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies())
+                additions = review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies()
+                self.assertEqual(new[len(old):len(old) + len(additions)], additions)
+                self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
 
     def test_idempotence_and_conflicting_prior_price_preflight(self):
         paths = [review.CATALOGS / p for p in ['fee_plans.json', 'cancellation_policies.json']]

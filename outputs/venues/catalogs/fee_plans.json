@@ -62277,5 +62277,376 @@
         "source_url": "https://www.city.inagi.tokyo.jp/shisetsu/sports/1004857/1004871/1004876.html"
       }
     ]
+  },
+  {
+    "id": "tokyo-venue-8a29b57a2a95",
+    "checked_at": "2026-11-06",
+    "fee_note": "自治大学校専用登録をした市内在住・在勤・在学の5人以上の団体のみ。土曜9～17時の1面2時間。市外料金・一般個人利用を推測しません。現金の支払場所・期限は施設別案内を確認。不特定多数への参加費付き募集は営利のおそれとしてペナルティ対象。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+    "fee_options": [
+      {
+        "label": "市内登録団体・基本料金",
+        "amount": 800,
+        "unit": "テニスコート1面・2時間（市内登録団体）",
+        "conditions": "自治大学校専用登録をした市内在住・在勤・在学の5人以上の団体のみ。土曜9～17時の1面2時間。市外料金・一般個人利用を推測しません。現金の支払場所・期限は施設別案内を確認。不特定多数への参加費付き募集は営利のおそれとしてペナルティ対象。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tachikawa-izumi",
+    "checked_at": "2026-11-06",
+    "fee_note": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+    "fee_options": [
+      {
+        "label": "市内・基本料金（照明別）",
+        "amount": 800,
+        "unit": "テニスコート1面・2時間（市内・照明別）",
+        "conditions": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      },
+      {
+        "label": "市外・基本料金（照明別）",
+        "amount": 1600,
+        "unit": "テニスコート1面・2時間（市外・照明別）",
+        "conditions": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tachikawa-sunagawa",
+    "checked_at": "2026-11-06",
+    "fee_note": "市内個人専用のクレーコート1面2時間。現地当日払い。市外向け料金を推測しません。11～3月は10～16時。事前登録・予約が必要。参加費付き一般公募等の制限はhttps://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+    "fee_options": [
+      {
+        "label": "市内登録個人・基本料金",
+        "amount": 100,
+        "unit": "テニスコート1面・2時間（市内登録個人）",
+        "conditions": "市内個人専用のクレーコート1面2時間。現地当日払い。市外向け料金を推測しません。11～3月は10～16時。事前登録・予約が必要。参加費付き一般公募等の制限はhttps://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tachikawa-nishisuna",
+    "checked_at": "2026-11-06",
+    "fee_note": "市内個人専用のクレーコート1面2時間。現地当日払い。市外向け料金を推測しません。11～3月は10～16時。事前登録・予約が必要。参加費付き一般公募等の制限はhttps://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+    "fee_options": [
+      {
+        "label": "市内登録個人・基本料金",
+        "amount": 100,
+        "unit": "テニスコート1面・2時間（市内登録個人）",
+        "conditions": "市内個人専用のクレーコート1面2時間。現地当日払い。市外向け料金を推測しません。11～3月は10～16時。事前登録・予約が必要。参加費付き一般公募等の制限はhttps://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tachikawa-nishiki",
+    "checked_at": "2026-11-06",
+    "fee_note": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+    "fee_options": [
+      {
+        "label": "市内・基本料金（照明別）",
+        "amount": 800,
+        "unit": "テニスコート1面・2時間（市内・照明別）",
+        "conditions": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      },
+      {
+        "label": "市外・基本料金（照明別）",
+        "amount": 1600,
+        "unit": "テニスコート1面・2時間（市外・照明別）",
+        "conditions": "1面2時間の基本料金。登録・予約が必要で現地当日払い。市内・市外を別の課金区分として表示。17～19時内の照明加算は1面1時間につき市内700円・市外1400円、19～21時の2時間分は市内1400円・市外2800円。照明加算だけをコートの最安値にせず、錦町フットサル料金とも分離。参加費付き不特定多数の募集は営利のおそれとして制限されるため商用利用の許可を意味しません。https://www.city.tachikawa.lg.jp/kanko/sports/1002923/1002944/1025596.html",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/tebiki_20260801.pdf"
+      }
+    ]
+  },
+  {
+    "id": "musashimurayama-ominami",
+    "checked_at": "2026-11-06",
+    "fee_note": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+    "fee_options": [
+      {
+        "label": "市内・通常枠",
+        "amount": 1020,
+        "unit": "テニスコート1面・2時間（市内登録団体）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市外・通常枠",
+        "amount": 2040,
+        "unit": "テニスコート1面・2時間（市外登録団体）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市内・4/5/9/10月17～18時",
+        "amount": 510,
+        "unit": "テニスコート1面・1時間（市内登録団体・季節限定）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市外・4/5/9/10月17～18時",
+        "amount": 1020,
+        "unit": "テニスコート1面・1時間（市外登録団体・季節限定）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      }
+    ]
+  },
+  {
+    "id": "musashimurayama-kaminarizuka",
+    "checked_at": "2026-11-06",
+    "fee_note": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+    "fee_options": [
+      {
+        "label": "市内・通常枠",
+        "amount": 1020,
+        "unit": "テニスコート1面・2時間（市内登録団体）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市外・通常枠",
+        "amount": 2040,
+        "unit": "テニスコート1面・2時間（市外登録団体）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市内・4/5/9/10月17～18時",
+        "amount": 510,
+        "unit": "テニスコート1面・1時間（市内登録団体・季節限定）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      },
+      {
+        "label": "市外・4/5/9/10月17～18時",
+        "amount": 1020,
+        "unit": "テニスコート1面・1時間（市外登録団体・季節限定）",
+        "conditions": "2026年7月1日利用分からの改定料金。登録団体のコート1面2時間と、4・5・9・10月の17～18時だけの1時間枠を分離。市内・市外を混ぜず、旧640円を採用しません。営利目的利用不可。利用方法・返還：https://musashimurayama-gym.jp/sports-facilities/tennis",
+        "source_url": "https://musashimurayama-gym.jp/news/info/5717"
+      }
+    ]
+  },
+  {
+    "id": "fussa-sdfield",
+    "checked_at": "2026-11-06",
+    "fee_note": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。",
+    "fee_options": [
+      {
+        "label": "市内・基本料金",
+        "amount": 500,
+        "unit": "テニスコート1面・1時間（市内・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001680.html"
+      },
+      {
+        "label": "市外・基本料金",
+        "amount": 1500,
+        "unit": "テニスコート1面・1時間（市外・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001680.html"
+      }
+    ]
+  },
+  {
+    "id": "fussa-minami",
+    "checked_at": "2026-11-06",
+    "fee_note": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+    "fee_options": [
+      {
+        "label": "市内・基本料金",
+        "amount": 500,
+        "unit": "テニスコート1面・1時間（市内・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001670.html"
+      },
+      {
+        "label": "市外・基本料金",
+        "amount": 1500,
+        "unit": "テニスコート1面・1時間（市外・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001670.html"
+      }
+    ]
+  },
+  {
+    "id": "fussa-musashinodai",
+    "checked_at": "2026-11-06",
+    "fee_note": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。フットサルはテニス2面分・窓口予約のみで別料金のため、このテニス料金へ混ぜません。",
+    "fee_options": [
+      {
+        "label": "市内・基本料金",
+        "amount": 800,
+        "unit": "テニスコート1面・1時間（市内・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。フットサルはテニス2面分・窓口予約のみで別料金のため、このテニス料金へ混ぜません。",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001677.html"
+      },
+      {
+        "label": "市外・基本料金",
+        "amount": 2400,
+        "unit": "テニスコート1面・1時間（市外・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html照明は別途1面1時間・市内1000円、市外3000円。フットサルはテニス2面分・窓口予約のみで別料金のため、このテニス料金へ混ぜません。",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001677.html"
+      }
+    ]
+  },
+  {
+    "id": "fussa-fukuto",
+    "checked_at": "2026-11-06",
+    "fee_note": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+    "fee_options": [
+      {
+        "label": "市内・基本料金",
+        "amount": 800,
+        "unit": "テニスコート1面・1時間（市内・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001666.html"
+      },
+      {
+        "label": "市外・基本料金",
+        "amount": 2400,
+        "unit": "テニスコート1面・1時間（市外・照明別）",
+        "conditions": "テニスコート1面1時間の基本料金。市内・市外を別区分で表示。事前利用者登録・施設窓口への申請と審査が必要。取消期限・取消料・天候時の還付は今回の取得範囲では未確認。予約方法：https://www.city.fussa.tokyo.jp/1021105/index.html",
+        "source_url": "https://www.city.fussa.tokyo.jp/map/sports/1001666.html"
+      }
+    ]
+  },
+  {
+    "id": "hino-tamadaira",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。2027年3月31日利用分まで700円。2027年4月1日から980円に改定予定（現行最安最高には混ぜません）。https://www.city.hino.lg.jp/shisetsu/sports/1032278.html夜間照明は別途1面2時間以内600円（照明のあるコートのみ）。",
+    "fee_options": [
+      {
+        "label": "通常基本・2027年3月31日利用分まで",
+        "amount": 700,
+        "unit": "テニスコート1面・2時間以内（通常基本・2027年3月まで）",
+        "conditions": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。2027年3月31日利用分まで700円。2027年4月1日から980円に改定予定（現行最安最高には混ぜません）。https://www.city.hino.lg.jp/shisetsu/sports/1032278.html夜間照明は別途1面2時間以内600円（照明のあるコートのみ）。",
+        "source_url": "https://hino-playground.com/facility/tennis"
+      }
+    ]
+  },
+  {
+    "id": "hino-asahigaoka",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。2027年3月31日利用分まで700円。2027年4月1日から980円に改定予定（現行最安最高には混ぜません）。https://www.city.hino.lg.jp/shisetsu/sports/1032278.html",
+    "fee_options": [
+      {
+        "label": "通常基本・2027年3月31日利用分まで",
+        "amount": 700,
+        "unit": "テニスコート1面・2時間以内（通常基本・2027年3月まで）",
+        "conditions": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。2027年3月31日利用分まで700円。2027年4月1日から980円に改定予定（現行最安最高には混ぜません）。https://www.city.hino.lg.jp/shisetsu/sports/1032278.html",
+        "source_url": "https://hino-playground.com/facility/tennis"
+      }
+    ]
+  },
+  {
+    "id": "hino-nanao",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。",
+    "fee_options": [
+      {
+        "label": "通常2時間枠",
+        "amount": 2100,
+        "unit": "テニスコート1面・2時間（通常基本）",
+        "conditions": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。",
+        "source_url": "https://hino-playground.com/facility/tennis"
+      },
+      {
+        "label": "一部の3時間枠",
+        "amount": 3150,
+        "unit": "テニスコート1面・3時間（通常基本・指定枠）",
+        "conditions": "登録個人の通常貸切基本料金。市内外の登録・予約時期は別条件。市外加算・入場料徴収加算・備品を含まず、市外割増を推測しません。現地当日払いで、事前納付後は不使用でも原則返還なし。",
+        "source_url": "https://hino-playground.com/facility/tennis"
+      }
+    ]
+  },
+  {
+    "id": "kiyose-uchiyama",
+    "checked_at": "2026-11-06",
+    "fee_note": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。1日4時間まで。抽選は市内在住者のみ、市外は使用月の前月1日から予約可能。",
+    "fee_options": [
+      {
+        "label": "市内・通常基本",
+        "amount": 600,
+        "unit": "テニスコート1面・2時間（市内通常）",
+        "conditions": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。1日4時間まで。抽選は市内在住者のみ、市外は使用月の前月1日から予約可能。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005433.html"
+      },
+      {
+        "label": "市外・50%加算",
+        "amount": 900,
+        "unit": "テニスコート1面・2時間（市外通常）",
+        "conditions": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。1日4時間まで。抽選は市内在住者のみ、市外は使用月の前月1日から予約可能。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005433.html"
+      }
+    ]
+  },
+  {
+    "id": "kiyose-himawari",
+    "checked_at": "2026-11-06",
+    "fee_note": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。対象は中学生以上、サブコートは奥行きが狭い点に注意。",
+    "fee_options": [
+      {
+        "label": "市内・通常基本",
+        "amount": 600,
+        "unit": "テニスコート1面・2時間（市内通常）",
+        "conditions": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。対象は中学生以上、サブコートは奥行きが狭い点に注意。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005439.html"
+      },
+      {
+        "label": "市外・50%加算",
+        "amount": 900,
+        "unit": "テニスコート1面・2時間（市外通常）",
+        "conditions": "1面2時間の基本料金。市外は公式の50%加算に従い600円×1.5＝900円で、市内と別区分に表示。事前登録・予約が必要。減免・用途別割増は除き、備品の無料料金を施設料に流用しません。対象は中学生以上、サブコートは奥行きが狭い点に注意。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005439.html"
+      }
+    ]
+  },
+  {
+    "id": "mitaka-osawa",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html",
+    "fee_options": [
+      {
+        "label": "市内登録団体・通常貸切",
+        "amount": 1500,
+        "unit": "テニスコート1面・2時間（市内登録団体・照明別）",
+        "conditions": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html",
+        "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/"
+      }
+    ]
+  },
+  {
+    "id": "mitaka-shinkawa",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html",
+    "fee_options": [
+      {
+        "label": "市内登録団体・通常貸切",
+        "amount": 700,
+        "unit": "テニスコート1面・2時間（市内登録団体・照明別）",
+        "conditions": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html",
+        "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/tennis/"
+      }
+    ]
+  },
+  {
+    "id": "mitaka-nogawa",
+    "checked_at": "2026-11-06",
+    "fee_note": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html大雨による冠水・復旧作業のためテニスコート全4面を当面使用中止。2026年11月6日に市と指定管理者の休止告知を確認。再開日未確認のため通常検索から除外。 公表料金は再開や予約可能を保証しません。",
+    "fee_options": [
+      {
+        "label": "市内登録団体・通常貸切",
+        "amount": 700,
+        "unit": "テニスコート1面・2時間（市内登録団体・照明別）",
+        "conditions": "登録市内団体のコート1面2時間の通常貸切料金のみ。1人あたりの共用個人開放料金とは分離。市外団体・入場料徴収・照明・備品・減免の料金は推測しません。2026年10月利用分からテニス団体は4人以上、市内団体は市民半数以上等の要件があり、利用者全員登録・当日使用責任者の本人確認が必要。転貸不可。新制度：https://www.mitakagenki-plaza.jp/sports/dantai_20260223101459.html大雨による冠水・復旧作業のためテニスコート全4面を当面使用中止。2026年11月6日に市と指定管理者の休止告知を確認。再開日未確認のため通常検索から除外。 公表料金は再開や予約可能を保証しません。",
+        "source_url": "https://mitaka-sportsandculture.or.jp/zaidan/other/ground/nogawa.html"
+      }
+    ]
   }
 ]
