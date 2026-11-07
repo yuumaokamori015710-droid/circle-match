@@ -64,6 +64,12 @@ def assert_historical_hold(test, row):
         test.assertEqual(row['fee_options'], reviewed['fee_options'])
         test.assertEqual(row['fee_note'], reviewed['fee_note'])
         test.assertTrue(has_price(row))
+    elif row.get('fee_checked_at') == '2026-11-07':
+        from record_venue_fee_review_20261107 import reviewed_fees as later_fees
+        reviewed, = [r for r in later_fees() if r['id'] == row['id']]
+        test.assertEqual(row['fee_options'], reviewed['fee_options'])
+        test.assertEqual(row['fee_note'], reviewed['fee_note'])
+        test.assertTrue(has_price(row))
     elif row.get('fee_checked_at') == '2026-11-06':
         from record_venue_fee_review_20261106 import reviewed_fees as later_fees
         reviewed, = [r for r in later_fees() if r['id'] == row['id']]

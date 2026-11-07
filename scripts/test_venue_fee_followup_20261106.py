@@ -29,9 +29,10 @@ class November6VenueReviewTests(unittest.TestCase):
         self.assertEqual(len(review.reviewed_fees()), 19)
         self.assertEqual(len(review.reviewed_policies()), 18)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 941)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 265)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 254)
+        later = sum(has_price(r) and r.get('fee_checked_at', '') > review.CHECKED for r in self.rows.values())
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - later, 941)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + later, 265)
+        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()) + later, 254)
         for fee in review.reviewed_fees():
             row = self.rows[fee['id']]
             self.assertEqual(row['fee_checked_at'], review.CHECKED)
@@ -120,7 +121,9 @@ class November6VenueReviewTests(unittest.TestCase):
                 self.assertEqual([r['booking_url'] for r in old], [r['booking_url'] for r in new])
             else:
                 self.assertEqual(old, new[:len(old)])
-                self.assertEqual(new[len(old):], review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies())
+                additions = review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies()
+                self.assertEqual(new[len(old):len(old) + len(additions)], additions)
+                self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
 
     def test_closure_whitelist_does_not_mask_other_changes(self):
         rel = 'outputs/venues/catalogs/tokyo_tennis.json'

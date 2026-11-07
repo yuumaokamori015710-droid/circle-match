@@ -1,5 +1,7 @@
 # 会場予約タブ
 
+Latest official-price review: [2026-11-07](venue-fee-followup-2026-11-07.md). It checked 24 existing facilities, added 17 scoped tariff sets and six cancellation/weather records, and retained seven tariff holds. The unchanged 1,206-record inventory has 958 priced and 248 unpriced records (237 active). Residency, age eligibility, seasonal one-hour/two-hour/three-hour slots and lighting remain separate. New-sand filming tariffs are not used as tennis-hire prices. Original catalogs, IDs, booking URLs, existing reviews, UI and delivery controls are unchanged.
+
 Latest official-price review: [2026-11-06](venue-fee-followup-2026-11-06.md). It checked 26 existing records, added 19 scoped tariff sets and 18 cancellation records, rechecked two existing prices, and retained five tariff holds. The unchanged 1,206-record inventory has 941 priced and 265 unpriced records (254 active). Residency, exact duration, lighting and future-effective tariffs remain separate. 大沢野川テニスコート is retained but hidden during its confirmed flood-recovery closure. Only its availability metadata and appended source changed in the original catalogs; IDs, booking URLs, prior reviews and unrelated UI/payment/delivery controls are preserved.
 
 The [2026-11-05 review](venue-fee-followup-2026-11-05.md) checked 21 records, added 16 scoped tariff sets and 16 cancellation records, and retained five tariff holds. At that release the inventory had 922 priced and 284 unpriced records (273 active).

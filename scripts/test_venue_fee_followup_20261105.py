@@ -63,7 +63,8 @@ class November5VenueReviewTests(unittest.TestCase):
             for phrase in ['15歳以上', '中学生除く', '市内在住・在勤・在学', '鶴間公園', '換算しません']:
                 self.assertIn(phrase, self.rows[ident]['fee_note'])
             self.assertEqual('30分410円' in self.rows[ident]['fee_note'], lit)
-        self.assertFalse(has_price(self.rows[review.TSURUMA]))
+        from venue_review_test_helpers import assert_historical_hold
+        assert_historical_hold(self, self.rows[review.TSURUMA])
         self.assertIn('開始30分前', self.rows[review.TSURUMA]['cancellation']['summary'])
 
     def test_machida_cancel_penalty_is_not_money_and_weather_is_facility_decision(self):
@@ -90,8 +91,8 @@ class November5VenueReviewTests(unittest.TestCase):
             self.assertIn(phrase, row['fee_note'])
         self.assertIsNone(row['cancellation'])
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            from venue_review_test_helpers import assert_historical_hold
+            assert_historical_hold(self, self.rows[ident])
 
     def test_catalog_bytes_and_prior_sidecar_entries_are_unchanged(self):
         for name in ['tokyo_tennis.json', 'tokyo_sports.json', 'tokyo_expansion.json', 'fee_plans.json', 'cancellation_policies.json']:
