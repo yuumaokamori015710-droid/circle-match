@@ -44,6 +44,7 @@ import circlematch_fee_campaign as fee_campaign
 import circlematch_event_guests as guests
 import circlematch_login_security as login_security
 import circlematch_delivery as delivery
+import circlematch_support as support_ui
 
 HOST_FEES_ENABLED = os.environ.get('CIRCLEMATCH_HOST_FEES_ENABLED', 'false') == 'true'
 
@@ -76,7 +77,7 @@ HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8787"))
 SITE_NAME = os.environ.get("CIRCLEMATCH_SITE_NAME", "Circle Match")
 SITE_OPERATOR = os.environ.get("CIRCLEMATCH_OPERATOR", "Circle Match 運営")
-CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "contact@circle-match.jp")
+CONTACT_EMAIL = os.environ.get("CIRCLEMATCH_CONTACT_EMAIL", "sapia.business@gmail.com")
 POLICY_UPDATED_AT = "2026年8月31日"
 SITE_BASE_URL = os.environ.get("CIRCLEMATCH_SITE_BASE_URL", "")
 ADMIN_USERNAME = os.environ.get("CIRCLEMATCH_ADMIN_USERNAME", "admin")
@@ -268,7 +269,7 @@ MATCH_HTML = """<!doctype html>
     <section class="section panel"><div class="panel-head"><div><h2>地域から探す</h2><p>地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。</p></div></div><div class="map-board"><p class="map-headline"><strong id="mapCircleCount">__SSR_CIRCLE_COUNT__</strong>件の大学サークル候補から地域で探す</p><div class="map-stage"><svg class="japan-silhouette" id="japanMap" viewBox="0 0 520 560" role="img" aria-label="日本地図"></svg><div class="map-region-buttons" id="regionGrid"></div></div></div></section>
     <section class="section panel database-value"><h2>Circle Match DBとは</h2><p>大学・社会人のスポーツ団体や交流相手を、競技・地域から探せるサービスです。</p><div class="database-links"><a href="/circles">大学サークルDBを見る</a><a href="/social/circles">社会人サークルDBを見る</a><a href="/about-data">データの掲載・更新方針</a></div></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/about-data">データ方針</a><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="__CONTACT_MAILTO__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/circles">サークルDB</a><a class="admin-link" href="/about-data">データ方針</a><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/terms">利用規約</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <script>
@@ -477,7 +478,7 @@ SPORT_HTML = """<!doctype html>
     <section class="stats"><div class="metric"><span>サークル</span><strong id="circleCount">0</strong></div><div class="metric"><span>交流募集</span><strong id="matchCount">0</strong></div><div class="metric"><span>対象都道府県</span><strong id="prefCount">0</strong></div></section>
     <section class="grid"><aside class="panel"><h2>地域別の交流募集</h2><div id="regionList" class="region-list"></div><div id="areaList" class="area-list"></div></aside><section class="panel db-panel"><h2>__SPORT__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><span id="activeFilterText"></span></div><div id="filterMenu" class="filter-menu hidden"></div><div class="tablewrap"><table><thead><tr><th><button class="th-filter" data-filter="university">大学 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="circle">団体名 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th>登録済み</th><th><button class="th-filter" data-filter="type">種別 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th><th><button class="th-filter" data-filter="source">出典 <svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7z"/></svg></button></th></tr></thead><tbody id="circleRows"></tbody></table></div></section></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="__CONTACT_MAILTO__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const sport = __SPORT_JSON__;
     const params = new URLSearchParams(location.search);
@@ -533,7 +534,7 @@ REGION_HTML = """<!doctype html>
     <div class="coverage-notice">関東以外の地域は現在DB拡充中です。掲載漏れや訂正は問い合わせから連絡してください。</div>
     <section class="grid"><aside class="panel"><h2>スポーツ別の交流募集</h2><div class="sport-search"><input id="sportSearch" placeholder="その他の競技を検索"></div><div id="sportList" class="sport-list"></div><div id="areaList" class="area-list"></div></aside><section class="right-stack"><div class="panel"><h2>交流募集</h2><div id="matchList" class="match-list"></div></div><div class="panel"><h2>__REGION_LABEL__サークルDB</h2><div class="table-tools"><span><strong id="visibleCircleCount">0</strong> 件を表示</span><a id="dbLink" class="admin-link" href="/circles">DBで詳しく見る</a></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th></tr></thead><tbody id="circleRows"></tbody></table></div></div></section></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="__CONTACT_MAILTO__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/">トップへ戻る</a><a class="admin-link" href="/circles">サークルDBを見る</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const region = __REGION_JSON__;
     const regionLabel = __REGION_LABEL_JSON__;
@@ -739,7 +740,7 @@ PUBLIC_HTML = """<!doctype html>
     <div class="breadcrumb"><span>検索範囲</span><b id="regionCrumb">関東</b><span>›</span><b id="prefCrumb">すべて</b></div>
     <section class="panel"><div class="filters"><input id="q" placeholder="大学名・団体名・競技で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><input id="sportFilter" list="sportOptions" placeholder="競技名を入力" aria-label="競技名で絞り込み" autocomplete="off"><datalist id="sportOptions"></datalist><select id="statusFilter"><option value="">全検証</option><option value="university_verified">大学公式情報掲載</option><option value="admin_verified">公開情報掲載</option><option value="claimed">申請済み</option><option value="unverified">未確認</option></select><select id="sortFilter"><option value="university">大学名順</option><option value="circle">団体名順</option><option value="prefecture">都道府県順</option><option value="sport">競技順</option><option value="status">検証順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table><thead><tr><th>大学</th><th>団体名</th><th>登録済み</th><th>種別</th><th>競技</th><th>検証</th><th>出典</th></tr></thead><tbody id="rows">__INITIAL_CIRCLE_ROWS__</tbody></table></div></section>
   </main>
-  <footer>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a> <a class="admin-link" href="/guides">サークル運営ガイド</a> <a class="admin-link" href="/operator">運営者情報</a> <a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="__CONTACT_MAILTO__">__CONTACT_EMAIL__</a> <a class="admin-link" href="/guides">サークル運営ガイド</a> <a class="admin-link" href="/operator">運営者情報</a> <a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const prefs = __PREFS__;
     const regions = __REGIONS__;
@@ -800,7 +801,7 @@ SOCIAL_HTML = """<!doctype html>
     <div class="breadcrumb"><span>検索範囲</span><b id="regionCrumb">全地域</b><span>›</span><b id="prefCrumb">すべて</b></div>
     <section class="panel"><div class="filters"><input id="q" placeholder="団体名・競技・地域で検索"><select id="regionFilter"><option value="">全地域</option></select><select id="prefFilter"><option value="">全都道府県</option></select><input id="sportFilter" list="sportOptions" placeholder="競技名を入力" aria-label="競技名で絞り込み" autocomplete="off"><datalist id="sportOptions"></datalist><select id="statusFilter"><option value="">全検証</option><option value="university_verified">大学公式情報掲載</option><option value="admin_verified">公開情報掲載</option><option value="claimed">申請済み</option><option value="unverified">未確認</option></select><select id="sortFilter"><option value="prefecture">活動地域順</option><option value="circle">団体名順</option><option value="sport">競技順</option><option value="status">検証順</option><option value="updated">更新日順</option></select></div><div class="tablewrap"><table><thead><tr><th>活動地域</th><th>団体名</th><th>掲載状態</th><th>登録済み</th><th>種別</th><th>競技</th><th>検証</th><th>連絡する</th><th>出典</th></tr></thead><tbody id="rows"></tbody></table></div></section>
   </main>
-  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="mailto:__CONTACT_EMAIL__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">大学サークルDB</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
+  <footer><span>サイトへのご意見・ご要望はこちら: <a class="admin-link" href="__CONTACT_MAILTO__">__CONTACT_EMAIL__</a></span><a class="admin-link" href="/guides">サークル運営ガイド</a><a class="admin-link" href="/operator">運営者情報</a><a class="admin-link" href="/circles">大学サークルDB</a><a class="admin-link" href="/contact">問い合わせ</a></footer>
   <script>
     const prefs = __PREFS__;
     const regions = __REGIONS__;
@@ -1246,7 +1247,8 @@ def render_legacy_home_html():
     page = (
         with_adsense(MATCH_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORTS__", script_json(initial_sports))
         .replace("__REGIONS__", script_json(region_options()))
         .replace("__POPULAR_SPORTS__", script_json([
@@ -1281,7 +1283,7 @@ def event_shell(title, body, script=""):
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} | __SITE_NAME__</title><style>{EVENT_BASE_CSS}{EVENT_UX_CSS}</style></head><body class="cm-club">
 <header class="site-header"><div class="site-nav"><a class="brand" href="/">__SITE_NAME__</a><nav class="main-nav"><a class="tab-link __EVENT_TAB__" href="__EVENT_TAB_URL__">大会・イベント</a><a class="tab-link db-label __DB_TAB__" href="__DB_TAB_URL__">サークルDB</a><a id="accountLink" class="account" href="/signin?return_to=/mypage">ログイン</a></nav></div></header>
-<main class="container">{body}</main>{script}</body></html>"""
+<main class="container">{body}</main>{support_ui.footer(SITE_NAME, CONTACT_EMAIL)}{script}</body></html>"""
     return with_adsense(page).replace("__SITE_NAME__", SITE_NAME)
 
 
@@ -2830,7 +2832,8 @@ def render_circles_html(params=None):
     page = (
         with_adsense(PUBLIC_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORTS__", script_json(initial_sports))
         .replace("__REGIONS__", script_json(region_options()))
         .replace("__PREFS__", script_json(PREFECTURES))
@@ -2848,7 +2851,8 @@ def render_social_circles_html(params=None):
     page = (
         with_adsense(SOCIAL_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORTS__", json.dumps(sport_options("social"), ensure_ascii=False))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__PREFS__", json.dumps(PREFECTURES, ensure_ascii=False))
@@ -2961,7 +2965,8 @@ def render_social_html():
     page = (
         with_adsense(html)
         .replace("__SITE_NAME__", SITE_NAME)
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORTS__", script_json(initial_sports))
         .replace("__REGIONS__", json.dumps(region_options(), ensure_ascii=False))
         .replace("__POPULAR_SPORTS__", json.dumps([
@@ -3024,7 +3029,8 @@ def render_sport_html(sport):
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORT__", sport)
         .replace("__SPORT_IMAGE__", f"/assets/sports/{sport_image}?v=20260713v1")
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
         .encode("utf-8")
     )
@@ -3058,7 +3064,8 @@ def render_social_sport_html(sport):
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__SPORT__", sport)
         .replace("__SPORT_IMAGE__", f"/assets/sports/{sport_image}?v=20260713v1")
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__SPORT_JSON__", json.dumps(sport, ensure_ascii=False))
         .encode("utf-8")
     )
@@ -3073,7 +3080,8 @@ def render_region_html(region):
         .replace("__REGION_LABEL__", REGION_GROUPS[region]["label"])
         .replace("__REGION_LABEL_JSON__", json.dumps(REGION_GROUPS[region]["label"], ensure_ascii=False))
         .replace("__SPORT_IMAGES__", json.dumps(sport_images, ensure_ascii=False))
-        .replace("__CONTACT_EMAIL__", CONTACT_EMAIL)
+        .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
+        .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
         .replace("__REGION_NOTICE_DISPLAY__", "none" if region == "kanto" else "block")
         .replace("__REGION_JSON__", json.dumps(region, ensure_ascii=False))
         .encode("utf-8")
@@ -3708,7 +3716,7 @@ def legal_layout(title, body):
   <title>{title} | {SITE_NAME}</title>
   <style>{LEGAL_CSS}</style>
 </head>
-<body><main><a class="back" href="/">トップへ戻る</a><div class="panel">{body}</div></main></body></html>"""
+<body><main><a class="back" href="/">トップへ戻る</a><div class="panel">{body}</div></main>{support_ui.footer(SITE_NAME, CONTACT_EMAIL)}</body></html>"""
     return with_adsense(html).encode("utf-8")
 
 
@@ -3797,7 +3805,7 @@ def operator_page():
 <h2>対応方針</h2>
 <p>掲載情報の訂正・削除、個人情報、権利侵害のおそれに関する連絡は優先して確認します。受付の目安は5営業日以内ですが、内容確認が必要な場合は追加の確認をお願いすることがあります。</p>
 <h2>問い合わせ窓口</h2>
-<p>掲載情報の訂正、削除、代表者登録、広告掲載、サービス改善に関する連絡は <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> までお願いします。</p>
+<p>掲載情報の訂正、削除、代表者登録、広告掲載、サービス改善に関する連絡は <a href="{html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True)}">{CONTACT_EMAIL}</a> までお願いします。</p>
 """
     return legal_layout("運営者情報", body)
 
@@ -3897,7 +3905,7 @@ def privacy_page():
 <h2>漏えい等が発生した場合</h2>
 <p>個人情報の漏えい、滅失、毀損等が発生した場合、被害拡大防止、原因調査、本人通知、個人情報保護委員会への報告等、法令に従って対応します。</p>
 <h2>問い合わせ窓口</h2>
-<p>個人情報、掲載情報、削除訂正に関する問い合わせ: <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
+<p>個人情報、掲載情報、削除訂正に関する問い合わせ: <a href="{html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True)}">{CONTACT_EMAIL}</a></p>
 """
     return legal_layout("プライバシーポリシー", body)
 
@@ -3925,7 +3933,7 @@ def terms_page():
 <h2>免責</h2>
 <p>本サービスの利用、掲載情報、ユーザー間の連絡・試合調整により生じた損害について、運営者の故意または重過失がある場合を除き、運営者は責任を負いません。</p>
 <h2>問い合わせ</h2>
-<p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
+<p><a href="{html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True)}">{CONTACT_EMAIL}</a></p>
 """
     return legal_layout("利用規約", body)
 
@@ -3969,7 +3977,7 @@ def about_data_page():
   <li>未確認: 公開情報から候補として登録した状態</li>
 </ul>
 <h2>削除・訂正依頼</h2>
-<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名または活動地域、対象URL、依頼内容、申請者の立場を記載して <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a> まで連絡してください。個人情報、権利侵害、なりすましのおそれがある内容は優先して確認します。</p>
+<p>掲載情報の削除、訂正、非公開化を希望する場合は、団体名、大学名または活動地域、対象URL、依頼内容、申請者の立場を記載して <a href="{html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True)}">{CONTACT_EMAIL}</a> まで連絡してください。個人情報、権利侵害、なりすましのおそれがある内容は優先して確認します。</p>
 """
     return legal_layout("Circle Match DBの掲載方針", body)
 
@@ -3979,7 +3987,7 @@ def contact_page():
 <h1>問い合わせ</h1>
 <p class="meta">運営者: {SITE_OPERATOR} / 最終更新日: {POLICY_UPDATED_AT}</p>
 <p>サイトへのご意見・ご要望はこちら。掲載情報の訂正、削除、代表者申請、個人情報に関する問い合わせも、以下のメールアドレスまで連絡してください。</p>
-<p><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
+{support_ui.contact_card(SITE_NAME, CONTACT_EMAIL)}
 <p>原則として5営業日以内の返信を目安にしています。個人情報、権利侵害、なりすましのおそれがある掲載については、対象ページのURLを添えてください。</p>
 <h2>記載してほしい内容</h2>
 <ul>
