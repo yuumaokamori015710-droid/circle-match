@@ -63061,5 +63061,530 @@
         "source_url": "https://tsuruma-park.com/playfield/sports-ground/"
       }
     ]
+  },
+  {
+    "id": "tokyo-gym-a231878afdcf",
+    "checked_at": "2026-11-08",
+    "fee_note": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+    "fee_options": [
+      {
+        "label": "全面",
+        "amount": 6600,
+        "unit": "大体育室全面・3時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "全面",
+        "amount": 26400,
+        "unit": "大体育室全面・12時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "2/3面",
+        "amount": 4400,
+        "unit": "大体育室2/3面・3時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "2/3面",
+        "amount": 17600,
+        "unit": "大体育室2/3面・12時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "半面",
+        "amount": 3300,
+        "unit": "大体育室半面・3時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "半面",
+        "amount": 13200,
+        "unit": "大体育室半面・12時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "1/3面",
+        "amount": 2200,
+        "unit": "大体育室1/3面・3時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      },
+      {
+        "label": "1/3面",
+        "amount": 8800,
+        "unit": "大体育室1/3面・12時間（団体貸切）",
+        "conditions": "大体育室の団体貸切。利用者登録が必要。3時間枠は9～12時、12～15時、15～18時、18～21時。市の料金表に沿って面積と時間を区分。個人利用・小体育室・入場料を徴収する利用は対象外。",
+        "source_url": "https://www.city.koganei.lg.jp/kosodatekyoiku/kyoikuiinkai/kakusyuzigyou/R6koganeinokyouiku.files/R6koganeinokyouiku.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-9385bad84a18",
+    "checked_at": "2026-11-08",
+    "fee_note": "市内料金は当日の構成員の半数以上が市内在住・在勤・在学の場合。照明は別途1時間あたり、半点灯は市内1600円・市外3200円、全点灯は市内3200円・市外6400円。",
+    "fee_options": [
+      {
+        "label": "市内・基本",
+        "amount": 1800,
+        "unit": "野球場1面・2時間（市内・照明別）",
+        "conditions": "市内料金は当日の構成員の半数以上が市内在住・在勤・在学の場合。照明は別途1時間あたり、半点灯は市内1600円・市外3200円、全点灯は市内3200円・市外6400円。",
+        "source_url": "https://www.city.akiruno.tokyo.jp/0000007644.html"
+      },
+      {
+        "label": "市外・基本",
+        "amount": 5400,
+        "unit": "野球場1面・2時間（市外・照明別）",
+        "conditions": "市内料金は当日の構成員の半数以上が市内在住・在勤・在学の場合。照明は別途1時間あたり、半点灯は市内1600円・市外3200円、全点灯は市内3200円・市外6400円。",
+        "source_url": "https://www.city.akiruno.tokyo.jp/0000007644.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-17f2a6ab5bfc",
+    "checked_at": "2026-11-08",
+    "fee_note": "月島運動場の野球場利用。事前に団体登録。夜間8000円は照明込みの合計で、照明の追加料金ではありません。",
+    "fee_options": [
+      {
+        "label": "昼間",
+        "amount": 2000,
+        "unit": "野球場1面・2時間（昼間）",
+        "conditions": "月島運動場の野球場利用。事前に団体登録。夜間8000円は照明込みの合計で、照明の追加料金ではありません。",
+        "source_url": "https://www.city.chuo.lg.jp/a0015/bunkakankou/sports/mosikomihoho/undouzyou.html"
+      },
+      {
+        "label": "夜間",
+        "amount": 8000,
+        "unit": "野球場1面・2時間（夜間・照明込み）",
+        "conditions": "月島運動場の野球場利用。事前に団体登録。夜間8000円は照明込みの合計で、照明の追加料金ではありません。",
+        "source_url": "https://www.city.chuo.lg.jp/a0015/bunkakankou/sports/mosikomihoho/undouzyou.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-c282bded258a",
+    "checked_at": "2026-11-08",
+    "fee_note": "市の施設一覧で無料と明記。中学生以下対象。水・木曜の無人開場は事前申請した登録団体に限ります。隣接サッカー場の料金ではありません。",
+    "fee_options": [
+      {
+        "label": "予約利用",
+        "amount": 0,
+        "unit": "少年野球場1面・予約利用",
+        "conditions": "市の施設一覧で無料と明記。中学生以下対象。水・木曜の無人開場は事前申請した登録団体に限ります。隣接サッカー場の料金ではありません。",
+        "source_url": "https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/002/011/p031243_d/fil/shisetsuichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-456ad6cd0311",
+    "checked_at": "2026-11-08",
+    "fee_note": "市の施設一覧で無料と明記。少年野球場の料金。隣接する庭球場・少年サッカー場とは別です。",
+    "fee_options": [
+      {
+        "label": "予約利用",
+        "amount": 0,
+        "unit": "少年野球場1面・予約利用",
+        "conditions": "市の施設一覧で無料と明記。少年野球場の料金。隣接する庭球場・少年サッカー場とは別です。",
+        "source_url": "https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/002/011/p031243_d/fil/shisetsuichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-40fd2672b512",
+    "checked_at": "2026-11-08",
+    "fee_note": "市の施設一覧で無料と明記。軟式野球・ソフトボール用。予約後、使用の1週間前までに富士森体育館窓口で利用申請が必要。未申請は取消・ペナルティの対象です。",
+    "fee_options": [
+      {
+        "label": "予約利用",
+        "amount": 0,
+        "unit": "野球場1面・予約利用",
+        "conditions": "市の施設一覧で無料と明記。軟式野球・ソフトボール用。予約後、使用の1週間前までに富士森体育館窓口で利用申請が必要。未申請は取消・ペナルティの対象です。",
+        "source_url": "https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/002/011/p031243_d/fil/shisetsuichiran.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-a933f2959eeb",
+    "checked_at": "2026-11-08",
+    "fee_note": "野球場1面1時間。登録が必要。市内・市外を分離し、学生については指定管理者の対象条件を確認してください。",
+    "fee_options": [
+      {
+        "label": "市内",
+        "amount": 650,
+        "unit": "野球場1面・1時間（市内）",
+        "conditions": "野球場1面1時間。登録が必要。市内・市外を分離し、学生については指定管理者の対象条件を確認してください。",
+        "source_url": "https://kuzaidan.or.jp/gym/park/shisetsu-k3/"
+      },
+      {
+        "label": "市外",
+        "amount": 975,
+        "unit": "野球場1面・1時間（市外）",
+        "conditions": "野球場1面1時間。登録が必要。市内・市外を分離し、学生については指定管理者の対象条件を確認してください。",
+        "source_url": "https://kuzaidan.or.jp/gym/park/shisetsu-k3/"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-7b029d9557da",
+    "checked_at": "2026-11-08",
+    "fee_note": "2026年4月改定後の少年野球場全面。事前登録が必要。区内在住・在勤が対象で、学生は区内在住のみ。ソフトボールは抽選後に空きがある場合のみ。",
+    "fee_options": [
+      {
+        "label": "全面・通常枠",
+        "amount": 1200,
+        "unit": "少年野球場全面・2時間（登録団体）",
+        "conditions": "2026年4月改定後の少年野球場全面。事前登録が必要。区内在住・在勤が対象で、学生は区内在住のみ。ソフトボールは抽選後に空きがある場合のみ。",
+        "source_url": "https://www.city.bunkyo.lg.jp/documents/6499/shiseturyoukinnitirann.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-1990d1bb3cff",
+    "checked_at": "2026-11-08",
+    "fee_note": "少年野球・ソフトボール用。事前登録が必要。障害者手帳等による減免は通常料金に含みません。芝生養生のため1～2月は休場。",
+    "fee_options": [
+      {
+        "label": "通常枠",
+        "amount": 1000,
+        "unit": "グラウンド1面・2時間（登録団体）",
+        "conditions": "少年野球・ソフトボール用。事前登録が必要。障害者手帳等による減免は通常料金に含みません。芝生養生のため1～2月は休場。",
+        "source_url": "https://www.city.hino.lg.jp/shisetsu/sports/ground/1001001.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-1687c06f7eb7",
+    "checked_at": "2026-11-08",
+    "fee_note": "野球場（陸上競技場を含む）の1枠2時間。陸上競技場のみの料金とは別。ナイター照明は別途1枠6000円。利用者登録が必要。中学生以下の利用は保護者同伴。",
+    "fee_options": [
+      {
+        "label": "大人",
+        "amount": 2400,
+        "unit": "野球場1面・2時間（大人・照明別）",
+        "conditions": "野球場（陸上競技場を含む）の1枠2時間。陸上競技場のみの料金とは別。ナイター照明は別途1枠6000円。利用者登録が必要。中学生以下の利用は保護者同伴。",
+        "source_url": "https://static.wixstatic.com/media/21c974_2487df7908744b339379387542e7a10c~mv2.png"
+      },
+      {
+        "label": "中学生以下",
+        "amount": 600,
+        "unit": "野球場1面・2時間（中学生以下・照明別）",
+        "conditions": "野球場（陸上競技場を含む）の1枠2時間。陸上競技場のみの料金とは別。ナイター照明は別途1枠6000円。利用者登録が必要。中学生以下の利用は保護者同伴。",
+        "source_url": "https://static.wixstatic.com/media/21c974_2487df7908744b339379387542e7a10c~mv2.png"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-81b1c0e602be",
+    "checked_at": "2026-11-08",
+    "fee_note": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。大南の夜間照明使用時は照明込み総額。昼間と照明を使わない夜間の料金は同じ。",
+    "fee_options": [
+      {
+        "label": "市内・照明なし",
+        "amount": 750,
+        "unit": "野球場1面・1時間（市内・照明なし）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。大南の夜間照明使用時は照明込み総額。昼間と照明を使わない夜間の料金は同じ。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      },
+      {
+        "label": "市外・照明なし",
+        "amount": 1500,
+        "unit": "野球場1面・1時間（市外・照明なし）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。大南の夜間照明使用時は照明込み総額。昼間と照明を使わない夜間の料金は同じ。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      },
+      {
+        "label": "市内・夜間照明込み",
+        "amount": 3830,
+        "unit": "野球場1面・1時間（市内・夜間照明込み）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。大南の夜間照明使用時は照明込み総額。昼間と照明を使わない夜間の料金は同じ。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      },
+      {
+        "label": "市外・夜間照明込み",
+        "amount": 7660,
+        "unit": "野球場1面・1時間（市外・夜間照明込み）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。大南の夜間照明使用時は照明込み総額。昼間と照明を使わない夜間の料金は同じ。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-94d26ef99463",
+    "checked_at": "2026-11-08",
+    "fee_note": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。",
+    "fee_options": [
+      {
+        "label": "市内・照明なし",
+        "amount": 750,
+        "unit": "野球場1面・1時間（市内・照明なし）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      },
+      {
+        "label": "市外・照明なし",
+        "amount": 1500,
+        "unit": "野球場1面・1時間（市外・照明なし）",
+        "conditions": "市内料金は市内在住・在勤・在学者が構成員の半数以上を占める団体に適用。市外・市内を分けて表示。",
+        "source_url": "https://www2.city.musashimurayama.lg.jp/reiki/H353901010031/H353901010031_j.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-4f32c019760c",
+    "checked_at": "2026-11-08",
+    "fee_note": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+    "fee_options": [
+      {
+        "label": "中学生以下・市内",
+        "amount": 1200,
+        "unit": "野球場1面・2時間（市内・中学生以下）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      },
+      {
+        "label": "中学生以下・市外",
+        "amount": 1800,
+        "unit": "野球場1面・2時間（市外・中学生以下）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      },
+      {
+        "label": "大人・市内平日",
+        "amount": 3500,
+        "unit": "野球場1面・2時間（市内・大人）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      },
+      {
+        "label": "大人・市内土日祝",
+        "amount": 4600,
+        "unit": "野球場1面・2時間（市内・大人）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      },
+      {
+        "label": "大人・市外平日",
+        "amount": 5250,
+        "unit": "野球場1面・2時間（市外・大人）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      },
+      {
+        "label": "大人・市外土日祝",
+        "amount": 6900,
+        "unit": "野球場1面・2時間（市外・大人）",
+        "conditions": "下宿第二運動公園の野球場1面2時間。市外は料金表の50%増し。減免は通常料金に含みません。",
+        "source_url": "https://www.city.kiyose.lg.jp/shisetsu/riyouyoyaku/1005434.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-d7f8d384bd4b",
+    "checked_at": "2026-11-08",
+    "fee_note": "少年野球場の予約利用は区の施設案内で無料と明記。大人の野球や他の用途に適用される料金ではありません。",
+    "fee_options": [
+      {
+        "label": "少年野球・予約利用",
+        "amount": 0,
+        "unit": "少年野球場1面・予約利用",
+        "conditions": "少年野球場の予約利用は区の施設案内で無料と明記。大人の野球や他の用途に適用される料金ではありません。",
+        "source_url": "https://www.city.shibuya.tokyo.jp/shisetsu/sports-shisetsu/sports-center/sp3_oyama.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-2304376db3f5",
+    "checked_at": "2026-11-08",
+    "fee_note": "町営グランドの野球場1面、1枠2時間30分。町内在住・在勤・在学とその他を分離。照明は別料金。",
+    "fee_options": [
+      {
+        "label": "町内",
+        "amount": 1200,
+        "unit": "野球場1面・2時間30分（町内・照明別）",
+        "conditions": "町営グランドの野球場1面、1枠2時間30分。町内在住・在勤・在学とその他を分離。照明は別料金。",
+        "source_url": "https://www.town.mizuho.tokyo.jp/kyoikuiinkai/about/007/002/p010807.html"
+      },
+      {
+        "label": "その他",
+        "amount": 3600,
+        "unit": "野球場1面・2時間30分（町外・照明別）",
+        "conditions": "町営グランドの野球場1面、1枠2時間30分。町内在住・在勤・在学とその他を分離。照明は別料金。",
+        "source_url": "https://www.town.mizuho.tokyo.jp/kyoikuiinkai/about/007/002/p010807.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-9f9cb61f606a",
+    "checked_at": "2026-11-08",
+    "fee_note": "軟式野球場。市登録団体は通常料金、未登録団体は窓口申込で2倍。中学生以上と小学生以下を分け、大会本部室の利用料は含みません。",
+    "fee_options": [
+      {
+        "label": "登録・中学生以上",
+        "amount": 4530,
+        "unit": "野球場1面・2時間（登録・中学生以上）",
+        "conditions": "軟式野球場。市登録団体は通常料金、未登録団体は窓口申込で2倍。中学生以上と小学生以下を分け、大会本部室の利用料は含みません。",
+        "source_url": "https://www.city.inagi.tokyo.jp/shisetsu/sports/1004857/1004868/1004869.html"
+      },
+      {
+        "label": "登録・小学生以下",
+        "amount": 2260,
+        "unit": "野球場1面・2時間（登録・小学生以下）",
+        "conditions": "軟式野球場。市登録団体は通常料金、未登録団体は窓口申込で2倍。中学生以上と小学生以下を分け、大会本部室の利用料は含みません。",
+        "source_url": "https://www.city.inagi.tokyo.jp/shisetsu/sports/1004857/1004868/1004869.html"
+      },
+      {
+        "label": "未登録・中学生以上",
+        "amount": 9060,
+        "unit": "野球場1面・2時間（未登録・中学生以上）",
+        "conditions": "軟式野球場。市登録団体は通常料金、未登録団体は窓口申込で2倍。中学生以上と小学生以下を分け、大会本部室の利用料は含みません。",
+        "source_url": "https://www.city.inagi.tokyo.jp/shisetsu/sports/1004857/1004868/1004869.html"
+      },
+      {
+        "label": "未登録・小学生以下",
+        "amount": 4520,
+        "unit": "野球場1面・2時間（未登録・小学生以下）",
+        "conditions": "軟式野球場。市登録団体は通常料金、未登録団体は窓口申込で2倍。中学生以上と小学生以下を分け、大会本部室の利用料は含みません。",
+        "source_url": "https://www.city.inagi.tokyo.jp/shisetsu/sports/1004857/1004868/1004869.html"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-aed3f0dc916c",
+    "checked_at": "2026-11-08",
+    "fee_note": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+    "fee_options": [
+      {
+        "label": "市内・通常",
+        "amount": 3200,
+        "unit": "野球場1面・2時間（市内・通常）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・通常",
+        "amount": 6400,
+        "unit": "野球場1面・2時間（市外・通常）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市内・17～19時・照明込み",
+        "amount": 6400,
+        "unit": "野球場1面・2時間（市内・17～19時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・17～19時・照明込み",
+        "amount": 15200,
+        "unit": "野球場1面・2時間（市外・17～19時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市内・19～21時・照明込み",
+        "amount": 9600,
+        "unit": "野球場1面・2時間（市内・19～21時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・19～21時・照明込み",
+        "amount": 24000,
+        "unit": "野球場1面・2時間（市外・19～21時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-336735e641ac",
+    "checked_at": "2026-11-08",
+    "fee_note": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+    "fee_options": [
+      {
+        "label": "市内・通常",
+        "amount": 400,
+        "unit": "野球場1面・2時間（市内・通常）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・通常",
+        "amount": 1000,
+        "unit": "野球場1面・2時間（市外・通常）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市内・17～19時・照明込み",
+        "amount": 1200,
+        "unit": "野球場1面・2時間（市内・17～19時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・17～19時・照明込み",
+        "amount": 2600,
+        "unit": "野球場1面・2時間（市外・17～19時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市内・19～21時・照明込み",
+        "amount": 2000,
+        "unit": "野球場1面・2時間（市内・19～21時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      },
+      {
+        "label": "市外・19～21時・照明込み",
+        "amount": 4200,
+        "unit": "野球場1面・2時間（市外・19～21時・照明込み）",
+        "conditions": "野球場1面2時間。市内・市外を分離。夜間は照明込み合計で、開始時刻ごとに別の料金です。夜間枠の有無は季節の開場時間を確認してください。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-25810e9403da",
+    "checked_at": "2026-11-08",
+    "fee_note": "中里野球場は市内登録団体のみ。市外の料金はありません。",
+    "fee_options": [
+      {
+        "label": "市内・通常",
+        "amount": 400,
+        "unit": "野球場1面・2時間（市内登録のみ）",
+        "conditions": "中里野球場は市内登録団体のみ。市外の料金はありません。",
+        "source_url": "https://www.city.tachikawa.lg.jp/_res/projects/default_project/_page_/001/008/085/sportsshisetsu_20260201.pdf"
+      }
+    ]
+  },
+  {
+    "id": "tokyo-venue-14d1b8c3ab17",
+    "checked_at": "2026-11-08",
+    "fee_note": "軟式野球場1面2時間。区外在住も利用可、チーム登録が必要。照明は別途1面1時間あたり大人6500円・中学生以下2500円。",
+    "fee_options": [
+      {
+        "label": "大人・基本",
+        "amount": 2600,
+        "unit": "野球場1面・2時間（大人・照明別）",
+        "conditions": "軟式野球場1面2時間。区外在住も利用可、チーム登録が必要。照明は別途1面1時間あたり大人6500円・中学生以下2500円。",
+        "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"
+      },
+      {
+        "label": "中学生以下・基本",
+        "amount": 1000,
+        "unit": "野球場1面・2時間（中学生以下・照明別）",
+        "conditions": "軟式野球場1面2時間。区外在住も利用可、チーム登録が必要。照明は別途1面1時間あたり大人6500円・中学生以下2500円。",
+        "source_url": "https://www.city.arakawa.tokyo.jp/documents/1537/114_137.pdf"
+      }
+    ]
   }
 ]

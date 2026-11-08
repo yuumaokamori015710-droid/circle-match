@@ -98,8 +98,7 @@ class November4VenueReviewTests(unittest.TestCase):
 
     def test_hold_and_closure_are_not_erased_or_old_prices_reused(self):
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            assert_historical_hold(self, self.rows[ident])
         row = self.rows[review.CLOSED]
         self.assertEqual(row['availability_status'], 'SUSPENDED')
         self.assertEqual(row['availability_note'], review.CLOSURE_NOTE)

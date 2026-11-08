@@ -41,9 +41,9 @@ class November6VenueReviewTests(unittest.TestCase):
             self.assertTrue(all(p['amount'] > 0 for p in row['fee_options']))
         for policy in review.reviewed_policies():
             self.assertEqual(self.rows[policy['id']]['cancellation'], policy)
+        from venue_review_test_helpers import assert_historical_hold
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            assert_historical_hold(self, self.rows[ident])
 
     def test_residency_and_seasonal_duration_are_separate(self):
         for ident in review.MUSASHI[:2]:

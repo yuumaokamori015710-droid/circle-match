@@ -191,3 +191,10 @@ catalog to 922 priced and 284 unpriced (273 active unpriced). Five tariff
 holds remain unknown; the free South Tama court is explicitly registered-only.
 Lighting, room/area size, residency and cancellation conditions remain scoped.
 Original IDs, booking URLs, source catalogs and earlier reviews are unchanged.
+
+The [2026-11-08 review](venue-fee-followup-2026-11-08.md) checks 25 existing
+records, starting with the unresolved active soccer/indoor venues. Twenty
+tariffs and ten cancellation/weather policies bring the unchanged 1,206-record
+catalog to 978 priced and 228 unpriced (217 active unpriced). Gym area,
+duration, residency, age and lighting remain separate. Four free rates are
+explicitly confirmed by the municipalities; five amounts remain unknown.

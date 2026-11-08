@@ -26,9 +26,11 @@ class November7VenueReviewTests(unittest.TestCase):
     def test_exact_inventory_sources_and_saved_data(self):
         self.assertEqual(len(set(review.REVIEWED_IDS)), 24)
         self.assertEqual(len(self.rows), 1206)
-        self.assertEqual(sum(has_price(r) for r in self.rows.values()), 958)
-        self.assertEqual(sum(not has_price(r) for r in self.rows.values()), 248)
-        self.assertEqual(sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values()), 237)
+        later = [r for r in self.rows.values() if has_price(r) and r.get('fee_checked_at', '') > review.CHECKED]
+        self.assertEqual(sum(has_price(r) for r in self.rows.values()) - len(later), 958)
+        self.assertEqual(sum(not has_price(r) for r in self.rows.values()) + len(later), 248)
+        active = sum(not has_price(r) and r['availability_status'] != 'SUSPENDED' for r in self.rows.values())
+        self.assertEqual(active + sum(r['availability_status'] != 'SUSPENDED' for r in later), 237)
         self.assertEqual(len(review.reviewed_fees()), 17)
         self.assertEqual(len(review.reviewed_policies()), 6)
         for fee in review.reviewed_fees():
@@ -39,9 +41,9 @@ class November7VenueReviewTests(unittest.TestCase):
             self.assertTrue(all(p['amount'] > 0 and p['source_url'].startswith('https://') for p in row['fee_options']))
         for policy in review.reviewed_policies():
             self.assertEqual(self.rows[policy['id']]['cancellation'], policy)
+        from venue_review_test_helpers import assert_historical_hold
         for ident in review.HOLDS:
-            self.assertFalse(has_price(self.rows[ident]))
-            self.assertEqual(self.rows[ident]['fee_ranges'], [])
+            assert_historical_hold(self, self.rows[ident])
 
     def test_actual_hire_not_filming_individual_or_lighting(self):
         self.assertEqual(self.ranges('koto-shinsuna'), {'テニスコート1面・1時間（団体通常）': (1100, 1800)})
@@ -102,7 +104,9 @@ class November7VenueReviewTests(unittest.TestCase):
             else:
                 old, new = json.loads(old_bytes), json.loads(new_bytes)
                 self.assertEqual(new[:len(old)], old)
-                self.assertEqual(new[len(old):], review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies())
+                additions = review.reviewed_fees() if name == 'fee_plans.json' else review.reviewed_policies()
+                self.assertEqual(new[len(old):len(old) + len(additions)], additions)
+                self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
 
     def test_idempotent_and_conflicting_price_rejected_before_writing(self):
         paths = [review.CATALOGS / n for n in ['fee_plans.json', 'cancellation_policies.json']]
