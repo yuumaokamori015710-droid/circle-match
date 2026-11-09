@@ -4,7 +4,7 @@ import json
 import re
 from datetime import datetime, timezone, timedelta
 from html.parser import HTMLParser
-from urllib.parse import parse_qs, quote, urlencode, urlsplit
+from urllib.parse import parse_qs, quote, urlsplit
 
 
 class HeadParser(HTMLParser):
@@ -101,7 +101,7 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
     description = 'Circle Matchでスポーツの大会・イベント、大学・社会人サークルの情報を探せます。開催日時・会場・参加条件を確認して参加できます。'
     public = path in {'/', '/events', '/venues', '/circles', '/social', '/social/circles', '/sports', '/social/sports', '/regions', '/guides', '/operator', '/privacy', '/terms', '/about-data', '/contact'}
     public = public or bool(re.fullmatch(r'/(events|circles|guides)/[^/]+', path) and path != '/events/new')
-    canonical_params = {}
+    canonical_path = path
     image = origin + '/assets/hero-court.png'
     listing = path in {'/', '/events'}
     if listing:
@@ -119,10 +119,9 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
             title = f'{area + "の" if area else ""}スポーツの大会・サークル・会場を探す | Circle Match'
             description = f'{area or "全国"}のスポーツ情報を競技から探すCircle Match。大会・イベントへの参加、大学・社会人サークルの検索、会場の場所・料金・予約方法の確認へ進めます。'
         if db:
-            canonical_params.update(tab='db', audience=audience)
-        for key in ('sport', 'region', 'prefecture', 'page'):
-            if value(key):
-                canonical_params[key] = value(key)
+            canonical_path = '/social/circles' if audience == 'social' else '/circles'
+        elif path == '/' and not home:
+            canonical_path = '/events'
         allowed = {'sport', 'region', 'prefecture', 'page', 'tab', 'audience', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'}
         if any(key not in allowed for key in params):
             public = False
@@ -132,7 +131,8 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
             public = False
         if value('page') and (not value('page').isdigit() or not 1 <= int(value('page')) <= 10000):
             public = False
-        if canonical_params and (re.search(r'(?<!\d)0件を表示', visible) or '条件に合う団体はありません' in visible):
+        if (db or any(value(key) for key in ('sport', 'region', 'prefecture', 'page'))) and (
+                re.search(r'(?<!\d)0件を表示', visible) or '条件に合う団体はありません' in visible):
             public = False
         if '取得できませんでした' in visible:
             public = False
@@ -154,16 +154,16 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
             public = False
             if sport in sports:
                 image = origin + '/assets/sports/' + sports[sport]
-        for key in ('sport', 'region', 'prefecture'):
-            if value(key):
-                canonical_params[key] = value(key)
-        # Shared selections describe this page; local browser filters are not indexed.
+        # Shared selections describe this view, but canonicalize to the directory.
         venue_params = parse_qs(parsed.query, keep_blank_values=True)
         if any(key not in {'sport', 'region', 'prefecture'} for key in venue_params):
             public = False
         if any(len(values) != 1 for values in venue_params.values()):
             public = False
-    elif path in {'/circles', '/social/circles', '/social'}:
+    elif path == '/social':
+        title = '社会人サークルのメンバー募集・交流 | Circle Match'
+        description = '社会人スポーツサークルのメンバー募集・練習試合・合同練習を競技や地域から探せます。'
+    elif path in {'/circles', '/social/circles'}:
         audience = '社会人' if path.startswith('/social') else '大学'
         title = f'{audience}サークルDB・団体一覧 | Circle Match'
         description = f'{audience}サークルの団体名・競技・活動地域・公開情報の出典を確認できます。競技や地域、団体名で検索して交流相手を探せます。'
@@ -175,8 +175,6 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         public = False
     elif params:
         public = False
-    if listing and path == '/' and value('tab') != 'db' and (value('sport') or value('tab') == 'events'):
-        path = '/events'
     descriptions = {
         '/guides':'サークル活動や大会・イベントへの参加、練習試合の準備に役立つガイドを掲載しています。',
         '/about-data':'Circle MatchのサークルDBの収集元・掲載基準・更新方法と、情報の訂正・削除依頼についてご案内します。',
@@ -193,17 +191,17 @@ def apply_metadata(body, request_path, configured_origin, sports, regions, statu
         description = ' '.join(str(event.get(key) or '') for key in ('sport_category', 'starts_at', 'prefecture', 'location', 'description'))[:160]
         if event.get('visibility', 'public') != 'public':
             public = False
-    canonical = origin + path + ('?' + urlencode(canonical_params) if canonical_params else '')
+    canonical = origin + canonical_path
     robots = 'index, follow, max-image-preview:large' if public and status == 200 else 'noindex, follow'
     escape = lambda v: html.escape(str(v), quote=True)
     tags = [f'<title>{escape(title)}</title>', f'<meta name="description" content="{escape(description)}">',
             f'<meta name="robots" content="{robots}">', f'<link rel="canonical" href="{escape(canonical)}">']
-    if path == '/' and origin == 'https://circle-match.jp' and status == 200:
+    if canonical_path == '/' and origin == 'https://circle-match.jp' and status == 200:
         tags.append('<meta name="google-site-verification" content="NsSb1F5VFGCahwyM8eJB4lLyy6geXyv1q3ne-H4xEJE">')
     for key, content in {'type':'website', 'site_name':'Circle Match', 'locale':'ja_JP', 'title':title, 'description':description, 'url':canonical, 'image':image}.items():
         tags.append(f'<meta property="og:{key}" content="{escape(content)}">')
     tags.extend([f'<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:title" content="{escape(title)}">', f'<meta name="twitter:description" content="{escape(description)}">', f'<meta name="twitter:image" content="{escape(image)}">'])
-    if path == '/' and not canonical_params and public and robots.startswith('index'):
+    if canonical_path == '/' and public and robots.startswith('index'):
         tags.append(json_ld({'@context':'https://schema.org', '@type':'WebSite', 'name':'Circle Match', 'url':origin + '/', 'inLanguage':'ja'}))
     if event and public and status == 200:
         tags.append(event_schema(event, configured_origin))

@@ -286,6 +286,7 @@ MATCH_HTML = """<!doctype html>
     function fillSelect(el, values, first){el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}
     function fillSportOptions(){ $("sportOptions").innerHTML=sports.map(v=>`<option value="${esc(v)}"></option>`).join("") }
     function fillRegions(){ $("regionFilter").innerHTML='<option value="">全地域</option>'+regions.map(r=>`<option value="${esc(r.value)}">${esc(r.label)}</option>`).join("") }
+    function applyInitialSummary(){if(!initialSummary)return; $("uniCount").textContent=initialSummary.universities; $("circleCount").textContent=initialSummary.circles; $("verifiedCount").textContent=initialSummary.verified_circles; $("matchCount").textContent=initialSummary.match_posts; $("mapCircleCount").textContent=initialSummary.circles}
     async function drawJapanMap(){if(!window.d3||!window.topojson)return; const svg=d3.select("#japanMap"); if(svg.select(".country").size())return; const world=await d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"); const countries=topojson.feature(world, world.objects.countries); const japan=countries.features.find(d=>String(d.id)==="392"); if(!japan)return; const projection=d3.geoMercator().fitSize([520,560],japan); const path=d3.geoPath(projection); svg.append("path").datum(japan).attr("class","country").attr("d",path); svg.append("path").datum(topojson.mesh(world, world.objects.countries, (a,b)=>String(a.id)==="392"||String(b.id)==="392")).attr("class","outline").attr("d",path)}
     function renderSports(){ $("sportGrid").innerHTML=popularSports.map(s=>`<a class="sport-card" style="--tone:${esc(s.color)}" data-code="${esc(s.code)}" href="/sports?sport=${encodeURIComponent(s.name)}"><span class="sport-visual"><img src="/assets/sports/${esc(s.image)}?v=20260706v1" alt=""></span><span class="sport-copy"><strong>${esc(s.name)}</strong><em>${esc(s.label)}</em></span><b>相手を探す</b></a>`).join("") }
     function renderRegions(regionData){const pos={hokkaido:"pos-hokkaido",tohoku:"pos-tohoku",kanto:"pos-kanto",chubu:"pos-chubu",kansai:"pos-kansai",chugoku_shikoku:"pos-chugoku_shikoku",kyushu:"pos-kyushu"}; const total=regionData.reduce((sum,r)=>sum+(r.circle_count||0),0); $("mapCircleCount").textContent=total; $("regionGrid").innerHTML=regions.map(r=>{const stat=regionData.find(item=>item.value===r.value)||{}; const note=r.value==="kanto"?"":`<span class="region-note">DB拡充中</span>`; return `<a class="map-region ${esc(pos[r.value]||"")}" href="/regions?region=${encodeURIComponent(r.value)}"><strong>${esc(r.label)}</strong><span>募集 ${stat.match_count||0}件</span><span>DB ${stat.circle_count||0}件</span>${note}</a>`}).join("")}
@@ -295,7 +296,6 @@ MATCH_HTML = """<!doctype html>
     function currentQuery(){const qs=new URLSearchParams({audience:"university",q:$("q").value,prefecture:$("prefFilter").value,sport:$("sportFilter").value}); if($("regionFilter").value) qs.set("region",$("regionFilter").value); return qs}
     async function api(path){const r=await fetch(path); if(!r.ok)throw new Error(await r.text()); return r.json()}
     function updateStats(stats,matches){$("uniCount").textContent=stats.universities; $("circleCount").textContent=stats.circles; $("verifiedCount").textContent=stats.verified_circles; $("matchCount").textContent=matches.length}
-    function applyInitialSummary(){if(!initialSummary)return; $("uniCount").textContent=initialSummary.universities; $("circleCount").textContent=initialSummary.circles; $("verifiedCount").textContent=initialSummary.verified_circles; $("matchCount").textContent=initialSummary.match_posts; $("mapCircleCount").textContent=initialSummary.circles}
     function matchesFilter(m){const q=$("q").value.trim().toLowerCase(); const sport=$("sportFilter").value.trim().toLowerCase(); const blob=[m.university_name,m.circle_name,m.sport_category,m.prefecture,m.place,m.conditions,m.level_label].join(" ").toLowerCase(); if(q && !blob.includes(q))return false; if($("typeFilter").value && m.match_type!==$("typeFilter").value)return false; if(sport && !String(m.sport_category||"").toLowerCase().includes(sport))return false; if($("prefFilter").value && m.prefecture!==$("prefFilter").value)return false; return true}
     function sortMatches(rows){const v=$("sortFilter").value; return rows.slice().sort((a,b)=>{if(v==="new")return String(b.created_at||"").localeCompare(String(a.created_at||"")); if(v==="university")return String(a.university_name||"").localeCompare(String(b.university_name||""),"ja"); if(v==="sport")return String(a.sport_category||"").localeCompare(String(b.sport_category||""),"ja"); return String(a.scheduled_at||"9999").localeCompare(String(b.scheduled_at||"9999"))})}
     function card(m){return `<article class="match-card"><div class="badges"><span class="badge open">${esc(m.status||"open")}</span><span class="badge type">${esc(m.match_type)}</span><span class="badge">${esc(m.sport_category||"競技未設定")}</span></div><h3>${esc(m.circle_name)}</h3><div class="meta"><span>${esc(m.university_name)} / ${esc(m.prefecture||"地域未設定")}</span><span>${esc(m.scheduled_at||"日時未定")} / ${esc(m.place||"場所未定")}</span><span>${esc(m.level_label||"レベル未設定")}</span></div><p class="tagline">${esc(m.conditions||"条件は登録後に調整します。")}</p></article>`}
@@ -1949,8 +1949,8 @@ def event_page(title, body, script="", tab="events", post_url="/events/new"):
         event_shell(title, body, script)
         .replace("__EVENT_TAB__", "active" if tab == "events" else "")
         .replace("__DB_TAB__", "active" if tab == "db" else "")
-        .replace("__EVENT_TAB_URL__", "/?tab=events")
-        .replace("__DB_TAB_URL__", "/?tab=db&audience=university")
+        .replace("__EVENT_TAB_URL__", "/events")
+        .replace("__DB_TAB_URL__", "/circles")
         .replace("__POST_URL__", html.escape(post_url, quote=True))
     )
 
@@ -2005,6 +2005,10 @@ def render_event_detail_html(event_id, user=None, params=None):
     if not event:
         return None
     state, can_apply = event_availability(event)
+    end_time = event.get("ends_at") or event.get("starts_at")
+    ended = event["status"] != "cancelled" and end_time and end_time <= event_local_now()
+    if ended:
+        state, can_apply = "開催終了", False
     state_class = "open" if can_apply else ("cancelled" if event.get("status") == "cancelled" else "closed")
     apply_label = "参加を申請する" if event.get("acceptance_mode") == "approval" else "参加を申し込む"
     application = user_event_application(event_id, user)
@@ -2046,6 +2050,13 @@ def render_event_detail_html(event_id, user=None, params=None):
                             + member_cta.replace('button primary','button') + '</div>')
         body = body.replace(f'<a class="button primary mobile-apply" href="{application_url}">{apply_label}</a>',
                             '<a class="button primary mobile-apply" href="#entry-options">参加方法を選ぶ</a>')
+    if ended:
+        body = body.replace(
+            '<section class="detail">',
+            '<section class="notice"><strong>このイベントは終了しました</strong>'
+            '<div class="card-actions"><a class="button" href="/events">開催予定のイベントを見る</a></div>'
+            '</section><section class="detail">', 1,
+        )
     if application:
         label = event_admission_label(event, application)
         body = body.replace('<h2>参加受付</h2>', '<h2>参加受付</h2><p>あなたの申込: ' + html.escape(label) + '</p><a class="button" href="/mypage?tab=attending">申込状況・主催者への連絡</a>')
@@ -2065,6 +2076,14 @@ def render_event_detail_html(event_id, user=None, params=None):
     share_markup, share_script = event_share_dialog(event, auto_after_publish=is_host and event["status"] == "published")
     body += '<div class="card-actions">' + event_share_button() + '</div>' + share_markup
     return event_page(event.get("title") or "大会・イベント詳細", body, share_script)
+
+
+def render_event_not_found_html():
+    return event_page("イベントが見つかりません",
+                      '<section class="form-shell"><h1>イベントが見つかりません</h1>'
+                      '<p>このイベントは削除されたか、URLが変更された可能性があります。</p>'
+                      '<div class="card-actions"><a class="button primary" href="/events">開催予定のイベントを見る</a>'
+                      '<a class="button" href="/">トップへ戻る</a></div></section>').encode("utf-8")
 
 
 def render_event_apply_html(event_id, user, params=None, *, guest=False):
@@ -2932,38 +2951,38 @@ def render_social_html():
     async function refresh(){const qs=currentQuery(); $("dbBridge").href="/social/circles?"+qs; const [all,stats,regionData]=await Promise.all([api("/api/matches?"+qs),api("/api/circle-stats?"+qs),api("/api/region-counts?audience=social")]); const data=sortMatches(all.filter(matchesFilter)); renderRegions(regionData); updateStats(stats,data); $("matchList").innerHTML=data.map(card).join("") || `<div class="empty">現在公開中の募集はありません。同じ条件の社会人サークル候補は ${stats.circles} 件あります。下のDBから候補団体を確認できます。</div>`}
     function updateCoverageNotice(){$("coverageNotice").style.display="none"}
     """
-    html = MATCH_HTML
-    html = html.replace("<title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>", "<title>社会人サークル | __SITE_NAME__</title>")
-    html = html.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="signup-user" href="/representative">団体代表者の方へ</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="signup-user" href="/representative?type=social">団体代表者の方へ</a></nav>')
-    html = html.replace(
+    template = MATCH_HTML
+    template = template.replace("<title>__SITE_NAME__ | 大学サークルの練習試合・交流募集</title>", "<title>社会人サークル | __SITE_NAME__</title>")
+    template = template.replace('<nav class="nav"><a href="/social">社会人はこちら</a><a class="signup-user" href="/representative">団体代表者の方へ</a></nav>', '<nav class="nav"><a href="/">大学サークルはこちら</a><a class="signup-user" href="/representative?type=social">団体代表者の方へ</a></nav>')
+    template = template.replace(
         '<img src="/assets/hero-court.png" alt="屋外コートで交流する大学生グループ">',
         '<img src="/assets/hero-social-adults.png" alt="仕事帰りに交流する社会人スポーツ仲間">',
     )
-    html = html.replace("Practice Match / Circle Meetup", "Social Circle / Member Recruiting")
-    html = html.replace("練習相手も、仲間も、ここで見つかる。", "社会人のスポーツ仲間も、ここで見つかる。")
-    html = html.replace("Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。", "Circle Matchは、社会人スポーツサークルのメンバー募集、練習試合、合同練習、交流イベントをつなぐマッチングサービスです。")
-    html = html.replace('href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a>', 'href="#matches">メンバー募集を見る</a><a class="button primary hero-cta" href="/representative?type=social&intent=post-match">サークル員を募集する</a>')
-    html = html.replace("<span>対象大学</span>", "<span>対象地域</span>")
-    html = html.replace("<span>検証済み/申請済み</span>", "<span>公開掲載・代表申請</span>")
-    html = html.replace("<span>募集中</span>", "<span>メンバー・交流募集中</span>")
-    html = html.replace('<h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p>', '<h2>メンバー募集・交流掲示板</h2><p>地域、都道府県、競技、団体名、活動場所で絞り込めます。募集中が少ない時は、その条件の社会人サークルDB候補へ広げられます。</p>')
-    html = html.replace('<a class="button light" href="/social">社会人サークルを見る</a>', '<a class="button light" href="/social/circles">社会人サークルDBを見る</a>')
-    html = html.replace('placeholder="大学名・団体名・場所で検索"', 'placeholder="団体名・競技・活動地域で検索"')
-    html = html.replace('<a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a>', '<a id="dbBridge" href="/social/circles">同じ条件で社会人サークルDBを見る</a>')
-    html = html.replace("競技を押すと、サークルDBと交流募集を同時に確認できます。", "競技を押すと、社会人サークルDBとメンバー・交流募集を同時に確認できます。")
-    html = html.replace("サークルDBで候補を広げる", "社会人サークルDBで候補を広げる")
-    html = html.replace('<a href="/circles">社会人サークルDBで候補を広げる</a>', '<a href="/social/circles">社会人サークルDBで候補を広げる</a>')
-    html = html.replace("地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。", "地図上の地域を押すと、社会人の募集掲示板とDB候補をその地域で絞り込めます。")
-    html = html.replace('<strong id="mapCircleCount">0</strong>件の大学サークル候補から地域で探す', '<strong id="mapCircleCount">0</strong>件の社会人サークル候補から地域で探す')
-    html = html.replace('<a class="admin-link" href="/circles">サークルDB</a>', '<a class="admin-link" href="/social/circles">社会人サークルDB</a>')
-    html = html.replace("  </main>\n  <footer>", social_db_panel + "  </main>\n  <footer>")
-    html = html.replace("  </style>", social_css + "  </style>", 1)
-    start = html.index("    function renderSports(){")
-    end = html.index("    function updateCoverageNotice()", start)
-    replacement_end = html.index("\n", html.index("}", end)) + 1
-    html = html[:start] + social_js + html[replacement_end:]
+    template = template.replace("Practice Match / Circle Meetup", "Social Circle / Member Recruiting")
+    template = template.replace("練習相手も、仲間も、ここで見つかる。", "社会人のスポーツ仲間も、ここで見つかる。")
+    template = template.replace("Circle Matchは、大学サークル・部活動の練習試合、合同練習、助っ人募集、交流イベントをつなぐマッチングサービスです。", "Circle Matchは、社会人スポーツサークルのメンバー募集、練習試合、合同練習、交流イベントをつなぐマッチングサービスです。")
+    template = template.replace('href="#matches">募集中はこちら</a><a class="button primary hero-cta" href="/representative?intent=post-match">募集を出す</a>', 'href="#matches">メンバー募集を見る</a><a class="button primary hero-cta" href="/representative?type=social&intent=post-match">サークル員を募集する</a>')
+    template = template.replace("<span>対象大学</span>", "<span>対象地域</span>")
+    template = template.replace("<span>検証済み/申請済み</span>", "<span>公開掲載・代表申請</span>")
+    template = template.replace("<span>募集中</span>", "<span>メンバー・交流募集中</span>")
+    template = template.replace('<h2>募集掲示板</h2><p>地域、都道府県、競技、大学名、団体名で絞り込めます。募集中が少ない時は、その条件のDB候補へ広げられます。</p>', '<h2>メンバー募集・交流掲示板</h2><p>地域、都道府県、競技、団体名、活動場所で絞り込めます。募集中が少ない時は、その条件の社会人サークルDB候補へ広げられます。</p>')
+    template = template.replace('<a class="button light" href="/social">社会人サークルを見る</a>', '<a class="button light" href="/social/circles">社会人サークルDBを見る</a>')
+    template = template.replace('placeholder="大学名・団体名・場所で検索"', 'placeholder="団体名・競技・活動地域で検索"')
+    template = template.replace('<a id="dbBridge" href="/circles">同じ条件でサークルDBを見る</a>', '<a id="dbBridge" href="/social/circles">同じ条件で社会人サークルDBを見る</a>')
+    template = template.replace("競技を押すと、サークルDBと交流募集を同時に確認できます。", "競技を押すと、社会人サークルDBとメンバー・交流募集を同時に確認できます。")
+    template = template.replace("サークルDBで候補を広げる", "社会人サークルDBで候補を広げる")
+    template = template.replace('<a href="/circles">社会人サークルDBで候補を広げる</a>', '<a href="/social/circles">社会人サークルDBで候補を広げる</a>')
+    template = template.replace("地図上の地域を押すと、募集掲示板とDB候補をその地域で絞り込めます。", "地図上の地域を押すと、社会人の募集掲示板とDB候補をその地域で絞り込めます。")
+    template = template.replace('件の大学サークル候補から地域で探す', '件の社会人サークル候補から地域で探す')
+    template = template.replace('<a class="admin-link" href="/circles">サークルDB</a>', '<a class="admin-link" href="/social/circles">社会人サークルDB</a>')
+    template = template.replace("  </main>\n  <footer>", social_db_panel + "  </main>\n  <footer>")
+    template = template.replace("  </style>", social_css + "  </style>", 1)
+    start = template.index("    function renderSports(){")
+    end = template.index("    function updateCoverageNotice()", start)
+    replacement_end = template.index("\n", template.index("}", end)) + 1
+    template = template[:start] + social_js + template[replacement_end:]
     page = (
-        with_adsense(html)
+        with_adsense(template)
         .replace("__SITE_NAME__", SITE_NAME)
         .replace("__CONTACT_EMAIL__", html.escape(CONTACT_EMAIL, quote=True))
         .replace("__CONTACT_MAILTO__", html.escape(support_ui.mailto_url(SITE_NAME, CONTACT_EMAIL), quote=True))
@@ -3238,8 +3257,7 @@ def robots_txt():
 
 def sitemap_xml():
     root = seo.public_origin(base_url())
-    paths = ["/", "/events", "/?tab=db&audience=university", "/?tab=db&audience=social", "/venues", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
-    paths.extend('/venues?' + urlencode({'sport': sport, 'prefecture': '東京都'}) for sport in venues.SPORTS)
+    paths = ["/", "/events", "/venues", "/circles", "/social", "/social/circles", "/guides", "/operator", "/privacy", "/terms", "/about-data", "/contact"]
     paths.extend([f"/guides/{slug}" for slug in GUIDE_PAGES.keys()])
     # Legacy sport/region screens are client-filtered; index the SSR portal instead.
     try:
@@ -3247,11 +3265,10 @@ def sitemap_xml():
             columns = {row['name'] for row in conn.execute('pragma table_info(event_posts)')}
             visibility = " and visibility='public'" if 'visibility' in columns else ''
             event_ids = conn.execute(
-                "select event_id, sport_category from event_posts where status='published' and starts_at>=?" + visibility + " order by starts_at limit 5000", (event_local_now(),)
+                "select event_id from event_posts where status='published' and starts_at>=?" + visibility + " order by starts_at limit 5000", (event_local_now(),)
             ).fetchall()
             profiles = conn.execute("select profile_slug from circle_public_profiles where is_published=1 and profile_slug<>'' limit 10000").fetchall()
-        paths.extend([f"/events/{quote(str(row['event_id']))}" for row in event_ids])
-        paths.extend(['/events?' + urlencode({'sport':sport}) for sport in sorted({row['sport_category'] for row in event_ids if row['sport_category'] in {item[0] for item in POPULAR_SPORTS}})])
+        paths.extend([f"/events/{quote(str(row['event_id']), safe='')}" for row in event_ids])
         paths.extend([f"/circles/{quote(str(row['profile_slug']), safe='')}" for row in profiles])
     except Exception as exc:
         log(f"event sitemap query failed: {type(exc).__name__}: {exc}")
@@ -5842,7 +5859,8 @@ class Handler(delivery.DeliveryMixin, BaseHTTPRequestHandler):
                     if page:
                         self.send_html(page.encode("utf-8"))
                     else:
-                        self.send_html(event_page("募集が見つかりません", '<div class="error-box">募集が見つかりません。</div>').encode("utf-8"), 404)
+                        log(f"event_detail_not_found path={json.dumps(parsed.path[:1024])}")
+                        self.send_html(render_event_not_found_html(), 404)
                 else:
                     self.send_json({"error": "not found"}, 404)
             elif parsed.path == "/mypage":

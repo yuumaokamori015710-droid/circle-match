@@ -347,12 +347,12 @@ class SportNavigationTests(IsolatedAppHttpCase):
         _, legacy = self.page('/?tab=events')
         self.assertEqual(legacy.metadata.canonicals, ['https://circle-match.jp/events'])
 
-    def test_venue_metadata_retains_shared_context_but_not_local_filters(self):
+    def test_venue_metadata_canonical_drops_shared_and_local_filters(self):
         _, supported = self.page('/venues?' + urlencode(self.GLOBAL))
         self.assertTrue(supported.metadata.meta['robots'].startswith('index, follow'))
         canonical = urlsplit(supported.metadata.canonicals[0])
         self.assertEqual(canonical.path, '/venues')
-        self.assertEqual(parse_qs(canonical.query), {key: [value] for key, value in self.GLOBAL.items()})
+        self.assertEqual(canonical.query, '')
         _, filtered = self.page('/venues?' + urlencode(dict(self.GLOBAL, v_q='日比谷', v_price_max='1500')))
         self.assertEqual(filtered.metadata.meta['robots'], 'noindex, follow')
         self.assertEqual(filtered.metadata.canonicals, supported.metadata.canonicals)

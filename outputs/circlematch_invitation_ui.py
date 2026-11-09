@@ -273,7 +273,7 @@ def listing(items):
     items = [item for item in (items or []) if isinstance(item, dict)]
     body = _start("招待一覧", "自分で作成した招待と、自分が返信した招待を確認できます。")
     if not items:
-        body += '<section class="invite-card"><h2>まだ招待はありません</h2><p>サークルDBで交流したい相手を探して、招待リンクを作成できます。</p><a class="invite-button invite-primary" href="/?tab=db">サークルDBで相手を探す</a></section>'
+        body += '<section class="invite-card"><h2>まだ招待はありません</h2><p>サークルDBで交流したい相手を探して、招待リンクを作成できます。</p><a class="invite-button invite-primary" href="/circles">サークルDBで相手を探す</a></section>'
     for title, selected in (("作成した招待", [item for item in items if item.get("is_sender")]),
                             ("返信した招待", [item for item in items if not item.get("is_sender") and item.get("is_recipient")])):
         if not selected:

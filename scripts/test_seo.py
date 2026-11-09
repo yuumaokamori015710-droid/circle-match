@@ -9,6 +9,8 @@ import tempfile
 import unittest
 from xml.etree import ElementTree
 
+from test_venues import IsolatedAppHttpCase
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'outputs'))
 import circlematch_seo as seo
@@ -28,11 +30,18 @@ class MetadataTests(unittest.TestCase):
         self.assertIn('content="index, follow', result)
         self.assertEqual(result.split('</head>')[1], self.body.split('</head>')[1])
 
-    def test_db_and_event_tabs_have_different_canonicals(self):
-        result = self.render('/?tab=db&audience=social')
-        self.assertIn('社会人サークルDB', result)
-        self.assertIn('/?tab=db&amp;audience=social', result)
-        self.assertIn('content="index, follow', result)
+    def test_canonical_uses_the_unfiltered_page_with_the_same_purpose(self):
+        for path, canonical in [
+            ('/', '/'), ('/?utm_source=x', '/'), ('/?tab=events', '/events'),
+            ('/?sport=野球', '/events'), ('/events?sport=野球', '/events'),
+            ('/?tab=db&audience=university&page=2', '/circles'),
+            ('/?tab=db&audience=social', '/social/circles'),
+            ('/social', '/social'), ('/social/circles?sport=テニス', '/social/circles'),
+            ('/venues?sport=サッカー・フットサル&prefecture=東京都', '/venues'),
+            ('/events/example?utm_source=x', '/events/example'),
+        ]:
+            with self.subTest(path=path):
+                self.assertIn(f'rel="canonical" href="https://circle-match.jp{canonical}"', self.render(path))
 
     def test_search_console_verification_on_production_home(self):
         tag = 'name="google-site-verification"'
@@ -43,9 +52,10 @@ class MetadataTests(unittest.TestCase):
         self.assertNotIn(tag, self.render(status=500))
         self.assertNotIn(tag, seo.apply_metadata(self.body, '/', 'http://localhost:8897', {}, {}).decode())
 
-    def test_tracking_removed_and_pagination_preserved(self):
+    def test_tracking_and_pagination_do_not_enter_metadata_urls(self):
         result = self.render('/?tab=db&audience=university&page=2&utm_source=x')
-        self.assertIn('audience=university&amp;page=2', result)
+        self.assertIn('property="og:url" content="https://circle-match.jp/circles"', result)
+        self.assertNotIn('page=2', result)
         self.assertNotIn('utm_source', result)
 
     def test_private_search_and_legacy_routes_noindex(self):
@@ -91,10 +101,28 @@ class SitemapTests(unittest.TestCase):
             xml=app.sitemap_xml()
             root=ElementTree.fromstring(xml)
             urls=[node.text for node in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-            self.assertIn('https://circle-match.jp/?tab=db&audience=social',urls)
+            for path in ('/', '/events', '/venues', '/circles', '/social', '/social/circles'):
+                self.assertIn('https://circle-match.jp' + path, urls)
+            self.assertFalse(any('?' in url or '#' in url for url in urls))
             self.assertEqual(len(urls),len(set(urls)))
             self.assertFalse(any('/representative' in u or '/signin' in u or '/sports?' in u for u in urls))
             self.assertIn(b'Sitemap: https://circle-match.jp/sitemap.xml',app.robots_txt())
+
+
+class SocialRouteTests(IsolatedAppHttpCase):
+    def test_social_listing_and_directory_are_distinct_public_pages(self):
+        for path, marker in [('/social', 'メンバー募集・交流掲示板'),
+                             ('/social/circles', '社会人サークルDB')]:
+            with self.subTest(path=path):
+                status, body, _ = self.request(path)
+                self.assertEqual(status, 200)
+                page = body.decode()
+                self.assertIn(marker, page)
+                self.assertIn(f'rel="canonical" href="https://circle-match.jp{path}"', page)
+                self.assertNotIn('__CONTACT_MAILTO__', page)
+                if path == '/social':
+                    self.assertEqual(page.count('function applyInitialSummary()'), 1)
+                    self.assertIn('件の社会人サークル候補から地域で探す', page)
 
 
 if __name__=='__main__':
