@@ -509,7 +509,14 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         meguro = next(r for r in rows if r['name']=='上目黒住区センター')
         self.assertTrue(any('一般団体' in p['label'] for p in meguro['fee_options']))
         schools = [r for r in rows if r['id'].startswith('school-')]
-        self.assertTrue(all(r['price_from'] is None and not r.get('fee_options') for r in schools))
+        from record_venue_fee_review_20261110 import CHECKED, SCHOOLS, SCHOOL_UNIT
+        for row in schools:
+            self.assertIsNone(row['price_from'])
+            self.assertIsNone(row['price_per_hour'])
+            if row['id'].removeprefix('school-') in SCHOOLS:
+                self.assertEqual([(p['amount'], p['unit']) for p in row['fee_options']], [(0, SCHOOL_UNIT)])
+            elif row.get('fee_checked_at', '') <= CHECKED:
+                self.assertFalse(row.get('fee_options'))
         example = {'id':'test','checked_at':'2026-10-12','fee_options':[{'label':'全面','amount':1,'unit':'1時間','conditions':'一般','source_url':'https://example.com/fees'}]}
         for amount in (True,-1,1.5,'100'):
             with self.assertRaises(ValueError):
