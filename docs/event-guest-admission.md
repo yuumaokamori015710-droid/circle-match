@@ -12,6 +12,17 @@ the existing admission, approval, capacity, formation, bank transfer and
 notification logic. Guest management includes attendance confirmation, private
 host messages and cancellation; it does not grant access to member pages.
 
+Anonymous `/events/<id>/apply` links go directly to the eligible event's guest
+form. A member sign-in URL whose return destination is that application's form
+also shows an explicit guest entry above the unchanged member login controls.
+This prevents old/shared member links from trapping visitors at a login gate.
+Hosting, account-management and online-only gates do not offer guest access.
+
+The guest entry asks for the representative's name and email, not a Google or
+member account. The bounded name is held with the 20-minute email proof and is
+used only after verification to prefill that event's guest application. Existing
+email-only proofs and guest sessions remain valid; no member session is created.
+
 ## Boundaries
 
 - A 256-bit random, one-use proof is valid for 20 minutes for one event only.

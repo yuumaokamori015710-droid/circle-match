@@ -350,6 +350,7 @@ SIGNIN_HTML = """<!doctype html>
   <header data-account-navigation="hidden"><div class="top"><div class="header-start"><a class="back-link" href="__SIGNIN_BACK_URL__" aria-label="戻る" title="戻る"><span aria-hidden="true">&larr;</span></a><a class="brand" href="/">__SITE_NAME__</a></div><nav class="nav" aria-label="サイトナビゲーション"><a href="__SIGNIN_FIND_URL__">募集を探す</a></nav></div></header>
   <main class="signin-main">
     <section class="hero __SIGNIN_INTRO_CLASS__"><h1>__SIGNIN_HEADING__</h1>__SIGNIN_LEAD__<p class="signin-detail">__SIGNIN_DESCRIPTION__</p></section>
+    __SIGNIN_GUEST_ENTRY__
     <section class="panel" aria-label="ログイン方法">
       <button id="googleButton" class="gsi-material-button" type="button" disabled>
         <span class="gsi-material-button-state" aria-hidden="true"></span>
@@ -2149,13 +2150,14 @@ def guest_entry_html(event):
     signin = '/signin?' + urlencode({'return_to':'/events/'+quote(eid)+'/apply'})
     body = f"""<section class="form-shell"><p><a href="/events/{quote(eid)}">{html.escape(event['title'])}</a></p>
 <h1>ゲスト申込</h1><form id="guestEmail" method="post" action="{url}/request">
+<label class="field">氏名（申込代表者）<input type="text" name="name" required maxlength="80" autocomplete="name"></label>
 <label class="field">メールアドレス<input type="email" name="email" required maxlength="254" autocomplete="email"></label>
-<p>この大会の申込・出欠確認に使うリンクをお送りします。会員登録は不要です。</p>
+<p>確認メールのリンクから、参加人数や支払方法を選んで申し込めます。ログイン・会員登録は不要です。</p>
 <button class="button primary">確認メールを受け取る</button></form><p role="status" id="guestStatus"></p>
 <p><a href="{html.escape(signin,quote=True)}">会員の方はログインして申し込む</a></p></section>"""
     script = """<script>const form=document.querySelector('#guestEmail'),out=document.querySelector('#guestStatus');
 form.onsubmit=async e=>{e.preventDefault();const b=form.querySelector('button');if(b.disabled)return;b.disabled=true;
-try{const r=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.elements.email.value})});
+try{const r=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:form.elements.email.value,name:form.elements.name.value})});
 const data=await r.json();if(!r.ok)throw Error(data.error||'メールを送信できませんでした');
 out.textContent='受付可能な場合、確認メールが届きます。20分以内にメールのリンクを開いてください。まだ申込みは確定していません。';}
 catch(e){out.textContent=e.message}finally{b.disabled=false}}</script>"""
@@ -3022,6 +3024,18 @@ def render_signin_html(return_to="/"):
         if is_hosting else
         "大会の閲覧はログイン不要です。対応する大会は、会員登録なしのゲスト申込も選べます。主催や会員としての申込・管理をする方はこちらからログインしてください。"
     )
+    guest_entry = ""
+    if match := re.fullmatch(r"/events/([^/]+)/apply", destination.path):
+        event = get_event(unquote(match[1])) if email_notifications_ready() else None
+        if event and event['payment_method'] != 'online' and event_availability(event)[1]:
+            heading = "参加方法を選ぶ"
+            description = "ログインせずに申し込むか、会員としてログインして申し込めます。"
+            guest_entry = (
+                '<section aria-label="ゲスト申込"><a id="guestEntryLink" class="button primary" href="'
+                + html.escape(guests.path(event['event_id']), quote=True)
+                + '">ログインなしで参加を申し込む</a>'
+                '<p>氏名とメールアドレスを入力し、確認メールから申し込めます。</p></section>'
+            )
     return (
         with_adsense(SIGNIN_HTML)
         .replace("__SITE_NAME__", SITE_NAME)
@@ -3029,6 +3043,7 @@ def render_signin_html(return_to="/"):
         .replace("__SIGNIN_LEAD__", f'<p class="signin-lead">{html.escape(lead)}</p>' if lead else "")
         .replace("__SIGNIN_HEADING__", html.escape(heading))
         .replace("__SIGNIN_DESCRIPTION__", html.escape(description))
+        .replace("__SIGNIN_GUEST_ENTRY__", guest_entry)
         .replace("__SIGNIN_BACK_URL__", html.escape(back_url, quote=True))
         .replace("__SIGNIN_FIND_URL__", html.escape(find_url, quote=True))
         .replace("__SUPABASE_URL__", json.dumps(SUPABASE_URL))
@@ -5611,7 +5626,8 @@ class Handler(delivery.DeliveryMixin, BaseHTTPRequestHandler):
                 email = guests.email_address(data.get('email'))
                 available = event_availability(event)[1] and event['payment_method'] != 'online'
                 with connect() as conn:
-                    token = guests.reserve_link(conn,eid,email,self.client_address[0],SESSION_SECRET,available)
+                    token = guests.reserve_link(conn,eid,email,self.client_address[0],SESSION_SECRET,available,
+                                                name=data.get('name'))
                 if token:
                     link = SITE_BASE_URL.rstrip('/')+url+'/verify#'+token
                     mail = {'from':EMAIL_FROM,'to':[email],'subject':'Circle Match | ゲスト申込のメール確認',
@@ -5845,7 +5861,7 @@ class Handler(delivery.DeliveryMixin, BaseHTTPRequestHandler):
                     if not user.get("authenticated"):
                         event = get_event(parts[1])
                         if email_notifications_ready() and event and event['payment_method'] != 'online' and event_availability(event)[1]:
-                            self.redirect('/events/'+quote(parts[1],safe='')+'#entry-options')
+                            self.redirect(guests.path(parts[1]))
                             return
                         self.redirect("/signin?" + urlencode({"return_to": safe_return_path(self.path, "/")}))
                         return

@@ -35,7 +35,10 @@ def email_address(raw):
     return email
 
 
-def reserve_link(conn, eid, email, peer, secret, available):
+def reserve_link(conn, eid, email, peer, secret, available, *, name=None):
+    name = str(name or '').strip()
+    if len(name) > 80 or any(ord(char) < 32 or ord(char) == 127 for char in name):
+        raise ValueError('氏名は80文字以内で入力してください')
     conn.execute('begin immediate')
     now = int(time.time())
     for kind in ('rate','link','session'):
@@ -55,7 +58,7 @@ def reserve_link(conn, eid, email, peer, secret, available):
         return None
     token = secrets.token_urlsafe(32)
     conn.execute('insert into app_state values(?,?,?)',(PREFIX+'link:'+digest(token),
-                 json.dumps([eid,email]),now+LINK_TTL))
+                 json.dumps([eid,{'email':email,'name':name}] if name else [eid,email]),now+LINK_TTL))
     return token
 
 
@@ -73,15 +76,20 @@ def lookup(conn, kind, token, eid):
 
 def redeem(conn, eid, token):
     conn.execute('begin immediate')
-    email = lookup(conn,'link',token,eid)
-    if not email:
+    proof = lookup(conn,'link',token,eid)
+    if not proof:
         raise ValueError('リンクは期限切れ、または使用済みです。確認メールをもう一度受け取ってください')
+    # Previously issued email-only proofs remain valid during their existing lifetime.
+    email, name = (proof['email'],proof.get('name','')) if isinstance(proof,dict) else (proof,'')
     conn.execute('delete from app_state where state_key=?',(PREFIX+'link:'+digest(token),))
     subject = identity(eid,email)
     conn.execute('''insert into user_accounts(user_id,provider,provider_subject,email,display_name,created_at,updated_at)
         values(?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP) on conflict(provider,provider_subject) do nothing''',
-        ('guest_'+secrets.token_hex(16),PROVIDER,subject,email,'ゲスト参加者'))
+        ('guest_'+secrets.token_hex(16),PROVIDER,subject,email,name or 'ゲスト参加者'))
     uid = conn.execute('select user_id from user_accounts where provider=? and provider_subject=?',(PROVIDER,subject)).fetchone()[0]
+    if name:
+        conn.execute('update user_accounts set display_name=?,updated_at=CURRENT_TIMESTAMP where user_id=? and provider=?',
+                     (name,uid,PROVIDER))
     session = secrets.token_urlsafe(32)
     conn.execute('insert into app_state values(?,?,?)',(PREFIX+'session:'+digest(session),
                  json.dumps([eid,uid]),int(time.time())+SESSION_TTL))
@@ -91,9 +99,12 @@ def redeem(conn, eid, token):
 def actor(conn, eid, session):
     uid = lookup(conn,'session',session,eid)
     if uid:
-        row = conn.execute('select user_id,email from user_accounts where user_id=? and provider=?',(uid,PROVIDER)).fetchone()
+        row = conn.execute('select user_id,email,display_name from user_accounts where user_id=? and provider=?',(uid,PROVIDER)).fetchone()
         if row:
-            return dict(authenticated=True, guest=True, display_name='', **dict(row))
+            data = dict(row)
+            if data['display_name'] == 'ゲスト参加者':
+                data['display_name'] = ''
+            return dict(authenticated=True, guest=True, **data)
     return None
 
 

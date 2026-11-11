@@ -3,7 +3,7 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor
 from urllib.error import HTTPError
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 from urllib.request import Request
 from unittest.mock import patch
 
@@ -64,13 +64,66 @@ class GuestFlowTests(IsolatedAppHttpCase):
         return dict(participation_type=kind,participant_count=1,applicant_name='Guest',team_name='Friends',
                     representative_name='Captain',payment_method='bank_transfer',conditions_accepted=True)
 
+    def test_member_signin_keeps_a_direct_guest_exit_for_the_same_event(self):
+        target = self.path.removesuffix('/guest') + '/apply'
+        signin = '/signin?' + urlencode({'return_to':target})
+        status, body, _ = self.request(signin)
+        self.assertEqual(status,200)
+        page = BeautifulSoup(body,'html.parser')
+        guest = page.find('a',href=self.path)
+        self.assertIsNotNone(guest, 'An applicant must not be trapped at the member login gate')
+        self.assertEqual(guest.get_text(strip=True),'ログインなしで参加を申し込む')
+        self.assertIn('Google でログイン',page.get_text())
+        status, _, headers = self.request(target)
+        self.assertEqual(status,302)
+        self.assertEqual(headers['Location'],self.path)
+        guest_page = BeautifulSoup(self.request(self.path)[1],'html.parser')
+        self.assertIsNotNone(guest_page.select_one('#guestEmail input[name="name"][required]'))
+        self.assertIsNotNone(guest_page.select_one('#guestEmail input[name="email"][type="email"]'))
+        self.assertIsNone(guest_page.select_one('#googleButton'))
+
+    def test_signin_does_not_offer_guest_for_other_gates_or_ineligible_events(self):
+        for target in ('/mypage','/events/new','/events/not-a-real-event/apply'):
+            page = self.app.render_signin_html(target).decode()
+            self.assertNotIn('id="guestEntryLink"',page)
+        target = self.path.removesuffix('/guest') + '/apply'
+        for column, value in (('payment_method','online'),('status','closed')):
+            with self.app.connect() as conn:
+                conn.execute(f'update event_posts set {column}=? where event_id=?',(value,self.eid))
+            self.assertNotIn('id="guestEntryLink"',self.app.render_signin_html(target).decode())
+            with self.app.connect() as conn:
+                conn.execute("update event_posts set payment_method='bank_transfer',status='published' where event_id=?",(self.eid,))
+        self.ready.return_value=False
+        self.assertNotIn('id="guestEntryLink"',self.app.render_signin_html(target).decode())
+
+    def test_guest_name_is_carried_only_after_mail_verification_and_prefills_application(self):
+        name = '山田 <ゲスト>'
+        self.assertEqual(self.post(self.path+'/request',dict(email='named@example.test',name=name))[0],200)
+        mail = json.loads(self.mail.call_args.args[1])
+        token = re.search(r'/verify#([A-Za-z0-9_-]{43})',mail['text'])[1]
+        self.assertNotIn(name,mail['text'])
+        self.assertEqual(self.post(self.path+'/apply',self.answers())[0],401)
+        status,_,headers = self.post(self.path+'/redeem',dict(token=token))
+        self.assertEqual(status,200)
+        cookie = headers['Set-Cookie'].split(';')[0]
+        page = BeautifulSoup(self.request(self.path,cookie=cookie)[1],'html.parser')
+        self.assertEqual(page.select_one('#applicant_name')['value'],name)
+        self.assertEqual(page.select_one('#representative_name')['value'],name)
+        self.assertIsNone(page.select_one('#googleButton'))
+        with self.app.connect() as conn:
+            self.assertEqual(conn.execute('select count(*) from event_applications where event_id=?',(self.eid,)).fetchone()[0],0)
+            self.assertEqual(conn.execute("select count(*) from user_sessions s join user_accounts u using(user_id) where u.provider='event_guest'").fetchone()[0],0)
+        self.mail.reset_mock()
+        self.assertEqual(self.post(self.path+'/request',dict(email='invalidname@example.test',name='a'*81))[0],400)
+        self.mail.assert_not_called()
+
     def test_two_entries_and_email_link_not_account_or_booking(self):
         detail = BeautifulSoup(self.request(self.path.removesuffix('/guest'))[1],'html.parser')
         self.assertIsNotNone(detail.find('a',href=self.path))
         member = detail.find('a',string='ログインして参加を申し込む')
         self.assertTrue(member['href'].startswith('/signin?return_to='))
         signin = self.request(member['href'])[1].decode()
-        self.assertIn('会員登録なしのゲスト申込も選べます',signin)
+        self.assertIn('ログインなしで参加を申し込む',signin)
         self.assertNotIn('申込、募集掲載、受付管理を行う時だけログイン',signin)
         self.assertEqual(self.request(self.path+'/verify')[0],200)
         self.assertNotIn('googlesyndication',self.request(self.path+'/verify')[1].decode())
