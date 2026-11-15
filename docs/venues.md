@@ -1,6 +1,8 @@
 # 会場予約タブ
 
-Latest official-price review: [2026-11-12](venue-fee-followup-2026-11-12.md). It checked 26 existing facilities, added 24 scoped tariff sets and four cancellation/weather records, rechecked one gym and retained one soccer tariff hold. The unchanged 1,206-record inventory has 1,024 priced and 182 unpriced records (171 active). School tennis entries cover only the verified daytime base charge for registered groups, not open public events. Existing catalog fields, IDs, booking URLs and prior reviews are unchanged.
+Latest official-price review: [2026-11-14](venue-fee-followup-2026-11-14.md). It checked 26 existing facilities, added 24 scoped school-court tariff sets, rechecked one gym and retained one soccer tariff hold. The unchanged 1,206-record inventory has 1,048 priced and 158 unpriced records (147 active). Free school tariffs cover only the registered-group daytime base charge, excluding lighting and insurance. Hard-only, soft-only and combined tennis restrictions stay explicit. Existing catalog fields, IDs, booking URLs and previous tariff/cancellation records are unchanged.
+
+The [2026-11-12 review](venue-fee-followup-2026-11-12.md) checked 26 existing facilities, added 24 scoped tariff sets and four cancellation/weather records, rechecked one gym and retained one soccer tariff hold. At that release the inventory had 1,024 priced and 182 unpriced records (171 active).
 
 The [2026-11-10 review](venue-fee-followup-2026-11-10.md) checked 23 existing facilities, added 22 scoped tariff sets and six cancellation/weather records, and retained one tariff hold. At that release the inventory had 1,000 priced and 206 unpriced records (195 active).
 
