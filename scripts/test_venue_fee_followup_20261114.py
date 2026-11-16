@@ -53,11 +53,11 @@ class November14VenueReviewTests(unittest.TestCase):
         for name, raw in zip(names, before):
             base = subprocess.check_output(['git', 'show', review.BASE + ':outputs/venues/catalogs/' + name],
                                            cwd=review.ROOT)
-            if name != 'fee_plans.json':
+            if name.startswith('tokyo_'):
                 self.assertEqual(raw.replace(b'\r\n', b'\n'), base.replace(b'\r\n', b'\n'))
                 continue
             old, new = json.loads(base), json.loads(raw)
-            additions = review.reviewed_fees()
+            additions = review.reviewed_fees() if name == 'fee_plans.json' else []
             self.assertEqual(new[:len(old) + len(additions)], old + additions)
             self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
         subprocess.run([sys.executable, '-B', str(review.ROOT / 'scripts/record_venue_fee_review_20261114.py')],

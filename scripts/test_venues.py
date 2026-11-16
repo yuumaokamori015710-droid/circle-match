@@ -511,11 +511,13 @@ class VenueIntegrationTests(IsolatedAppHttpCase):
         schools = [r for r in rows if r['id'].startswith('school-')]
         from record_venue_fee_review_20261110 import SCHOOLS as earlier_schools
         from record_venue_fee_review_20261112 import SCHOOLS as november12_schools
-        from record_venue_fee_review_20261114 import CHECKED, SCHOOLS, SCHOOL_UNIT
+        from record_venue_fee_review_20261114 import SCHOOLS as november14_schools
+        from record_venue_fee_review_20261116 import CHECKED, SCHOOLS, SCHOOL_UNIT
         for row in schools:
             self.assertIsNone(row['price_from'])
             self.assertIsNone(row['price_per_hour'])
-            if row['id'].removeprefix('school-') in SCHOOLS.keys() | earlier_schools.keys() | november12_schools.keys():
+            if row['id'].removeprefix('school-') in (SCHOOLS.keys() | earlier_schools.keys()
+                                                    | november12_schools.keys() | november14_schools.keys()):
                 self.assertEqual([(p['amount'], p['unit']) for p in row['fee_options']], [(0, SCHOOL_UNIT)])
             elif row.get('fee_checked_at', '') <= CHECKED:
                 self.assertFalse(row.get('fee_options'))
