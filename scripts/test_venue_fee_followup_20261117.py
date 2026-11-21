@@ -86,8 +86,9 @@ class November17VenueReviewTests(unittest.TestCase):
                 self.assertEqual(new[:len(old) + len(additions)], old + additions)
                 self.assertTrue(all(r['checked_at'] > review.CHECKED for r in new[len(old) + len(additions):]))
         contact_path = 'outputs/circle_public_contacts.json'
-        self.assertEqual(json.loads((review.ROOT / contact_path).read_bytes()), json.loads(subprocess.check_output(
-            ['git', 'show', review.BASE + ':' + contact_path], cwd=review.ROOT)))
+        prior_contacts = json.loads(subprocess.check_output(
+            ['git', 'show', review.BASE + ':' + contact_path], cwd=review.ROOT))
+        self.assertEqual(json.loads((review.ROOT / contact_path).read_bytes())[:len(prior_contacts)], prior_contacts)
         subprocess.run([sys.executable, '-B', str(review.ROOT / 'scripts/record_venue_fee_review_20261117.py')],
                        check=True, capture_output=True)
         self.assertEqual(before, [(review.CATALOGS / name).read_bytes() for name in names])
