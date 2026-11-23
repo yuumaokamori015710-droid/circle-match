@@ -1,0 +1,41 @@
+# Official venue follow-up: 2026-11-23
+
+## Outcome
+
+- Reviewed 26 existing records: 21 priced soccer/futsal or indoor-sports facilities missing cancellation evidence, plus five unpriced grounds.
+- Added one newly priced scope: Asahi Park softball ground, daytime hire, 610 yen per ground per two hours. This is not a basketball-court hire price. Night availability, applicable lighting and reductions are not inferred.
+- Added 22 conditional cancellation records, including a method-only record for Musashimurayama's youth baseball ground. That record does not establish a cancellation charge or a free tariff.
+- Retained four tariff holds. Total inventory remains 1,206: 1,123 priced and 83 unpriced (72 active unpriced). A facility having one scoped tariff does not mean every room, sport, user category or time has been verified.
+- Previous `main`: `3bd1c2c7d387c859b5d4f3e9e38a29c4fd39dad1`. Original catalogs, IDs, booking URLs, past fee/policy entries and all 494 current public-contact entries are preserved. No UI, schema, environment, plan or application/payment behavior changes.
+
+## Sources And Applicability
+
+All adopted sources were read on 2026-11-23 JST. Source snapshots and check timestamps are retained privately. Public data stores the source URL and review date.
+
+| Records | Official evidence and adopted scope |
+| --- | --- |
+| `tokyo-sports-005`, `006`, `042`: Ogikubo, Myoshoji and Shimotakaido | [Suginami cancellation rules](https://www.city.suginami.tokyo.jp/s032/652.html): seven-day deadline; late cancellation produces 30-day application restrictions, no notice produces 90 days. Optional payment to lift a restriction is not an automatic fine. Transfer is prohibited. Existing facility-specific tariffs were retained. |
+| `tokyo-sports-007` to `010`: Nerima Sogo, Hikarigaoka, Nakamuraminami and Kamishakujii | [Nerima official FAQ 3648](https://www.call-center.jp/faq_nerima/faq.asp?faqno=NER03648): cancellation itself has no facility-use charge, but July 2026 onward system restrictions last 30/90 days. Do not apply the superseded one-slot-per-month rule. Do not infer an indoor rain waiver. Current facility pages returned no extractable body; this review adopts the readable official FAQ, not new tariff amounts. |
+| `tokyo-sports-020`: FC Tokyo Park Fuchu | [Operator rental page](https://www.fctokyoparkfuchu.jp/rental/): 0/50/100-percent tiers at the published eight-/three-day boundaries; 24-hour online deadline; weather exception only on operator safety judgment, 90 minutes before use. Existing member, visitor and 45-minute tariffs stay separate. |
+| `tokyo-sports-021`: JEXER Atre Oimachi | [Operator program page](https://www.jexer.jp/futsal/oi/program.html): no charge through 11 days before, 50 percent 10-3 days before, full charge within two days/no notice. Operator decides unsafe weather; self-cancellation does not qualify. Existing student and team tiers retained. |
+| `tokyo-sports-022`: Futsal Court Shinagawa | [Operator use conditions](https://www.sports-alpha.com/shinagawa/use.html), [facility rules](https://www.sports-alpha.com/shinagawa/regulations.html): weekday one-week/weekend two-week deadlines for ordinary rentals; advance-payment, multi-court, student cancellation, junior and society-football exceptions. Weather rescheduling is not a refund. Unauthorized commercial/publicly promoted events are prohibited; no permission is inferred. |
+| `tokyo-sports-023`: JSC Nishigaoka futsal | [Current linked cancellation notice](https://www.jpnsport.go.jp/hpsc/facility/futsal/info/m7rhmn000000132t-att/kyanseruryouchoushuusaikai.pdf): resumed May 2023; ten-day free boundary, 9-3 days 50 percent, within two days 100 percent; web cutoff includes exact start time. No rain rule inferred from this notice. |
+| `tokyo-sports-027`: Omori Sports Center | [Designated operator guide](https://omori-sc.jp/information/): pay on application, cancellation after approval generally not allowed, facility-side/disaster exceptions. No arbitrary free deadline or refund percentage. |
+| `tokyo-sports-028`: Fuchu Kyodo-no-Mori gym | [Municipal cancellation/refund guide](https://www.city.fuchu.tokyo.jp/shisetu/supotu/yoyaku/torikesi.html): 100 percent through one calendar month before, 50 percent through ten days before, zero within nine days. Month-end/year-end adjustments and 50-yen rounding remain explicit. |
+| `tokyo-sports-029`, `034` to `037`: Takinogawa, Akabane Sports-no-Mori, Shinarakawa, Ukima and Toshima-kita | [Kita sports guide](https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010441.html): paid/unpaid procedures differ; 14 days full refund, 13-7 half, within six none. Late unpaid bookings still require payment; only registered members may apply. No generic weather waiver. |
+| `tokyo-sports-039` to `041`: Mizube, Rinkai and Kasai Rugby | [Outdoor sports notices](https://www.city.edogawa.tokyo.jp/e028/kuseijoho/denshi/shisetsuyoyaku/info_sports.html), [monetary cancellation/refund FAQ](https://www.city.edogawa.tokyo.jp/e030/qa/kusejoho/onlineservice/shisetsu/cancel/002.html), [points FAQ](https://www.city.edogawa.tokyo.jp/e030/qa/kusejoho/onlineservice/shisetsu/cancel/003.html). Rinkai futsal and Kasai Rugby are expressly excluded from retroactive rain cancellation-point relief. Same-day lightning/smog warnings differ. Points and financial refunds must not be conflated; paid use is generally not refunded, with specified exceptions. Commercial use is prohibited. |
+| `tokyo-venue-1c5373a218d7`: Asahi Park | [Hamura paid-park tariff](https://www.city.hamura.tokyo.jp/0000000768.html), [park identity](https://www.city.hamura.tokyo.jp/0000012580.html). Adopt daytime softball only: 610 yen/two hours. Do not use its basketball goal as evidence of a rentable basketball court. |
+| `tokyo-venue-b350e0713b8e`: Musashimurayama youth baseball | [Municipal cancellation method](https://www.city.musashimurayama.lg.jp/shisetus/reservation/1014615.html): system through three days before, facility window within two days. The old infection-control telephone exception is dated, not guaranteed current. Method only; money/weather conditions remain unknown. |
+
+## Tariff Holds
+
+| Record | Why no amount is added |
+| --- | --- |
+| `tokyo-sports-025`: Kita ground, rugby listing | The existing URL is now the [rugby reservation guide](https://www.city.kita.lg.jp/culture-tourism-sports/sports/1010385/1010387/1010432/1010434.html) naming Toshima-gochome. It does not establish a current rugby hire tariff for Kita ground. Do not borrow a soccer tariff or rename/repoint the record. |
+| `tokyo-venue-205d87234dd3`: Fuchu Asahi Football Park | [Official facility page](https://www.city.fuchu.tokyo.jp/shisetu/supotu/sakka/asahi.html) limits use to municipal/metropolitan federations, associations or equivalent organizations running competitions. No suitable generally available rental tariff verified. |
+| `tokyo-venue-b350e0713b8e`: Musashimurayama youth baseball | [Facility page](https://www.city.musashimurayama.lg.jp/shisetus/sports/1001898.html) confirms identity; a prior fee-PDF URL now returns 404. No amount or free use inferred. |
+| `tokyo-venue-74f8af5c1bc3`: Yumenoshima East youth baseball | [City facility page](https://www.city.koto.lg.jp/104010/shisetsuannai/kokyo/sportsshisetsu/yakyu/16166.html) restricts use to local registered youth teams. The [operator's similarly named Yumenoshima ground tariff](https://www.di-ksp.jp/facility/yumenoshima_u) is not sufficient to establish the distinct East site's fee. No cross-facility borrowing. |
+
+## Verification
+
+The dated recorder is append-only and idempotent. All 288 venue regression tests passed with zero failures, errors or skips. Tests cover the new tariff, all cancellation tiers/exclusions, paid/unpaid distinctions, original catalog/contact preservation and public rendering without login. Four native Chrome checks at 1440x1000 and 390x844 passed for Asahi Park and Futsal Court Shinagawa: filters and expanded details worked, no failed requests or page errors, no broken images or horizontal page overflow. Screenshots were visually inspected. Bounded production checks are recorded separately in the private release notes after deployment. No queries are sent to private production application data, and no reservations, inquiries or payments are submitted.
